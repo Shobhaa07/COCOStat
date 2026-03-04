@@ -1,1 +1,0 @@
-    "footer": "This is the footer section, properly closed."
