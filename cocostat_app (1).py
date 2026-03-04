@@ -1,26 +1,27 @@
-# Footer
+# Complete corrected code for cocostat_app (1).py
 
-Thank you for using COCOStat! If you have any questions or feedback, please reach out to us:
+import json
+import pandas as pd
+from flask import Flask, request, jsonify
 
-- **GitHub:** [Shobhaa07/COCOStat](https://github.com/Shobhaa07/COCOStat)
-- **Email:** support@cocostat.example.com
-- **Twitter:** [@COCOStat](https://twitter.com/COCOStat)
+app = Flask(__name__)
 
-Happy coding! 
+# Sample data
+coconut_locations = [
+    {'location': 'Hawaii', 'lamda': 19.8968, 'phi': -155.5828},
+    {'location': 'Thailand', 'lamda': 15.8700, 'phi': 100.9925},
+    {'location': 'India', 'lamda': 20.5937, 'phi': 78.9629}
+]  # Properly closed list
 
----
+@app.route('/coconuts', methods=['GET'])
+def get_coconuts():
+    return jsonify(coconut_locations)
 
-### Coconut Locations
+@app.route('/coconut', methods=['POST'])
+def add_coconut():
+    new_coconut = request.json
+    coconut_locations.append(new_coconut)
+    return jsonify(coconut_locations), 201
 
-- Coconut Grove, Florida
-- Coconut Island, Hawaii
-- Coconuts of the Caribbean
-- Coconut Creek, Florida
-- Coconuts on the Beach, Cocoa Beach, Florida
-- Coconut Point, Estero, Florida
-- Coconut Beach, Tafua, American Samoa
-
-### License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+if __name__ == '__main__':
+    app.run(debug=True)
