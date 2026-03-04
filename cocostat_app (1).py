@@ -16,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ─────────────────────────────────────────────
+# ──────────────���──────────────────────────────
 # TRANSLATIONS
 # ─────────────────────────────────────────────
 T = {
@@ -28,6 +28,8 @@ T = {
         "lang_label": "🌐 Language",
         "lang_option": "සිංහල",
         "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🧠 Method"],
+        "nav_icons": ["📊", "🚦", "📉", "🔮", "🏛", "📈", "🧠"],
+        "nav_labels": ["Overview", "Market", "Demand", "Forecast", "Policy", "History", "Method"],
         "card_price_label": "💰 Current Price",
         "card_price_value": "Rs. 68.50",
         "card_price_sub": "Per Nut (Auction)",
@@ -100,10 +102,12 @@ T = {
         "title": "🥥 කොකොස්ටැට්",
         "subtitle": "පොල් වෙළඳපොළ විශ්ලේෂණ පද්ධතිය",
         "tagline": "පොල් මිල පහසුවෙන් තේරුම් ගනිමු",
-        "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි සරලව පැහැදිලි කරයි.",
+        "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි ලබා දෙයි.",
         "lang_label": "🌐 භාෂාව",
         "lang_option": "English",
         "nav": ["📊 දළ විශ්ලේෂණය", "🚦 වෙළඳපොළ", "📉 ඉල්ලුම", "🔮 අනාවැකිය", "🏛 ප්‍රතිපත්ති", "📈 ඉතිහාසය", "🧠 ක්‍රමවේදය"],
+        "nav_icons": ["📊", "🚦", "📉", "🔮", "🏛", "📈", "🧠"],
+        "nav_labels": ["දළ", "වෙළඳ", "ඉල්ලුම", "අනා", "ප්‍රති", "ඉති", "ක්‍රම"],
         "card_price_label": "💰 වත්මන් මිල",
         "card_price_value": "රු. 68.50",
         "card_price_sub": "පොල් ගෙඩියකට (වෙන්දේසි)",
@@ -131,12 +135,12 @@ T = {
         "regime_status_label": "තත්ත්වය",
         "regime_status": ["✅ හොඳයි", "⚠️ නිරීක්ෂණය", "🚨 අවදානම"],
         "demand_title": "මිල ඉහළ ගෙලේ මිනිසුන් මිලදී ගැනීම අඩු කරයිද?",
-        "demand_note": "💡 පොල් අත්‍යවශ්‍ය ආහාරයක් බැවින්, මිල ඉහළ ගියත් ඉල්ලුම අඩුවන්නේ නැත.",
+        "demand_note": "💡 පොල් අත්‍යවශ්‍ය ආහාරයක් බැවින්, මිල ඉහළ ගියත් ඉල්ලුම අඩුවන්නේ ටිකයි.",
         "demand_bar_title": "මිල සංවේදීතා මට්ටම (%)",
         "demand_periods": ["ස්ථාවර", "අවවාද", "අර්බුද"],
         "demand_sens": [35, 22, 12],
         "demand_cards": [
-            ("🟢 ස්ථාවර කාලය", "මිල වෙනස්වීම් වලට ටිකක් ප්‍රතිචාර දක්වයි."),
+            ("🟢 ස්ථාවර කාල���", "මිල වෙනස්වීම් වලට ටිකක් ප්‍රතිචාර දක්වයි."),
             ("🟡 අවවාද කාලය", "මිල අස්ථාවරතාවට මධ්‍යම ප්‍රතිචාරයක්."),
             ("🔴 අර්බුද කාලය", "මිල ඉහළ ගියත් මිනිසුන් පොල් මිලදී ගනී."),
         ],
@@ -147,7 +151,7 @@ T = {
         "forecast_pred_label": "අනාවැකිය",
         "forecast_range_label": "අවිනිශ්චිත පරාසය",
         "policy_title": "දැනට රජය කුමක් කළ යුතුද?",
-        "policy_sub": "වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ප්‍රතිපත්ති නිර්දේශ.",
+        "policy_sub": "වත්මන් වෙළඳ තත්ත්වය මත පදනම��� වූ ප්‍රතිපත්ති නිර්දේශ.",
         "policy_markets": ["🟢 ස්ථාවරයි නම්", "🟡 අවවාදයි නම්", "🔴 අර්බුදයි නම්"],
         "policy_actions": [
             "ගොවීන්ට සහය ලබා දී සැපයුම් පද්ධතිය වැඩිදියුණු කරන්න.",
@@ -199,7 +203,7 @@ def generate_data():
 history_df, forecast_df = generate_data()
 
 # ─────────────────────────────────────────────
-# CUSTOM CSS
+# CUSTOM CSS - ENHANCED SIDEBAR
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -211,6 +215,117 @@ html, body, [class*="css"] {
 
 /* Hide default Streamlit header */
 #MainMenu, footer, header {visibility: hidden;}
+
+/* ═══════════════════════════════════════════ */
+/* SIDEBAR STYLING - IMPROVED & ATTRACTIVE */
+/* ═══════════════════════════════════════════ */
+
+div[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0f2027 0%, #1a3a2a 50%, #1a1f2e 100%);
+    padding: 0 !important;
+}
+
+div[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* Sidebar header styling */
+div[data-testid="stSidebar"] > div:first-child {
+    background: linear-gradient(135deg, #16a34a 0%, #0f2027 100%);
+    padding: 24px 16px !important;
+    border-bottom: 3px solid #22c55e;
+    margin-bottom: 20px;
+}
+
+div[data-testid="stSidebar"] h1, 
+div[data-testid="stSidebar"] h2,
+div[data-testid="stSidebar"] h3 {
+    color: white !important;
+    margin: 12px 0 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+}
+
+div[data-testid="stSidebar"] h1 {
+    font-size: 1.8rem !important;
+}
+
+div[data-testid="stSidebar"] h2 {
+    font-size: 1.2rem !important;
+    opacity: 0.95 !important;
+}
+
+div[data-testid="stSidebar"] h3 {
+    font-size: 1rem !important;
+    opacity: 0.9 !important;
+    margin-top: 24px !important;
+}
+
+/* Radio button styling for navigation */
+div[data-testid="stSidebar"] [role="radiogroup"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    margin: 16px 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+div[data-testid="stSidebar"] [role="radio"] {
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    margin: 6px 0 !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    transition: all 0.3s ease !important;
+    background: transparent !important;
+    border: 2px solid transparent !important;
+}
+
+div[data-testid="stSidebar"] [role="radio"]:hover {
+    background: rgba(34, 197, 94, 0.15) !important;
+    border-color: #22c55e !important;
+}
+
+div[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(59, 130, 246, 0.2)) !important;
+    border: 2px solid #22c55e !important;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.3) !important;
+    color: #a7f3d0 !important;
+}
+
+/* Select box styling */
+div[data-testid="stSidebar"] [data-baseweb="select"] {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+div[data-testid="stSidebar"] [data-baseweb="select"]:hover {
+    border-color: #22c55e !important;
+    background: rgba(34, 197, 94, 0.1) !important;
+}
+
+/* Horizontal dividers in sidebar */
+div[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    margin: 20px 0 !important;
+}
+
+/* Sidebar text styling */
+div[data-testid="stSidebar"] label {
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    opacity: 0.95 !important;
+}
+
+div[data-testid="stSidebar"] span {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ═══════════════════════════════════════════ */
+/* MAIN CONTENT STYLING */
+/* ═══════════════════════════════════════════ */
 
 /* Metric cards */
 [data-testid="metric-container"] {
@@ -309,44 +424,138 @@ html, body, [class*="css"] {
     margin: 32px 0;
 }
 
-div[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0f2027 0%, #1a3a2a 100%);
+/* Navigation pills styling */
+.nav-pill {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 6px;
+    background: linear-gradient(135deg, #16a34a, #0f2027);
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: 2px solid #22c55e;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
-div[data-testid="stSidebar"] * {
-    color: white !important;
+
+.nav-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    background: linear-gradient(135deg, #22c55e, #16a34a);
 }
+
 </style>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# SIDEBAR
-# ─────────────────────────────────────────────
+# SIDEBAR - IMPROVED DESIGN
+# ─��───────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🥥 COCOStat")
+    # ── HEADER SECTION ──────────────────────
+    st.markdown("""
+    <div style='text-align: center; margin-bottom: 16px;'>
+        <div style='font-size: 3rem; margin-bottom: 8px;'>🥥</div>
+        <div style='font-size: 1.6rem; font-weight: 900; margin-bottom: 4px;'>COCOStat</div>
+        <div style='font-size: 0.8rem; opacity: 0.7;'>Market Intelligence System</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("---")
 
-    lang_choice = st.radio("🌐 Language / භාෂාව", ["English", "සිංහල"], index=0)
+    # ── LANGUAGE SELECTOR ────────────────────
+    st.markdown("""
+    <div style='padding: 8px 0;'>
+        <span style='font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7;'>🌐 Select Language</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    lang_choice = st.radio(
+        "Language / භාෂාව",
+        ["English", "සිංහල"],
+        index=0,
+        label_visibility="collapsed",
+        horizontal=False,
+    )
     lang = "en" if lang_choice == "English" else "si"
     t = T[lang]
 
     st.markdown("---")
-    st.markdown("### " + ("Navigation" if lang == "en" else "සංචාලනය"))
-    section = st.radio("", t["nav"], label_visibility="collapsed")
+
+    # ── NAVIGATION SECTION ──────────────────
+    st.markdown("""
+    <div style='padding: 8px 0;'>
+        <span style='font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7;'>📍 Navigation</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    section = st.radio(
+        "Select Section",
+        t["nav"],
+        index=0,
+        label_visibility="collapsed",
+        horizontal=False,
+    )
 
     st.markdown("---")
+
+    # ── MARKET REGIME SELECTOR ──────────────
+    st.markdown("""
+    <div style='padding: 8px 0;'>
+        <span style='font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7;'>📊 Market Status</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
     active_regime = st.selectbox(
         t["regime_select"],
         t["regime_options"],
-        index=0
+        index=0,
+        label_visibility="collapsed",
     )
     regime_idx = t["regime_options"].index(active_regime)
 
     st.markdown("---")
+
+    # ── QUICK STATS SECTION ─────────────────
+    st.markdown("""
+    <div style='padding: 8px 0;'>
+        <span style='font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7;'>📈 Quick Stats</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric(
+            "💰 Current",
+            f"Rs. {history_df['price'].iloc[-1]:.2f}",
+            f"{((history_df['price'].iloc[-1] - history_df['price'].iloc[-13]) / history_df['price'].iloc[-13] * 100):.1f}%"
+        )
+    with col2:
+        st.metric(
+            "📊 Average",
+            f"Rs. {history_df['price'].mean():.2f}",
+            f"σ: {history_df['price'].std():.2f}"
+        )
+
+    st.markdown("---")
+
+    # ── FOOTER SECTION ──────────────────────
     st.markdown(f"""
-    <div style='font-size:0.75rem; opacity:0.7; line-height:1.8'>
-        <b>{t['footer_researcher']}:</b><br>M A C S RATHNAYAKE<br>
-        <b>{t['footer_ids']}:</b><br>UOW: w1999714<br>IIT: 20220508<br>
-        <b>{t['footer_programme']}:</b><br>BSc (Hons) Data Science & Analytics<br>University of Westminster
+    <div style='font-size: 0.7rem; opacity: 0.6; line-height: 1.8; padding: 12px 0;'>
+        <div style='margin-bottom: 12px;'>
+            <b style='opacity: 0.8;'>{t['footer_researcher']}:</b><br>
+            M A C S RATHNAYAKE
+        </div>
+        <div style='margin-bottom: 12px;'>
+            <b style='opacity: 0.8;'>{t['footer_ids']}:</b><br>
+            UOW: w1999714<br>
+            IIT: 20220508
+        </div>
+        <div>
+            <b style='opacity: 0.8;'>{t['footer_programme']}:</b><br>
+            BSc (Hons) Data Science<br>
+            University of Westminster
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -506,7 +715,7 @@ elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
     # Elasticity insight
-    st.markdown("#### " + ("📊 Elasticity Summary" if lang=="en" else "📊 ස්ථිතිස්ථික සාරාංශය"))
+    st.markdown("#### " + ("📊 Elasticity Summary" if lang=="en" else "📊 ස්ථිතිස්ථිකතා සාරාංශය"))
     c1, c2, c3 = st.columns(3)
     data_e = [
         ("-0.35", "Stable", "#22c55e", "#dcfce7"),
@@ -517,7 +726,7 @@ elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
         with col:
             st.markdown(f"""<div style='background:{bg}; border-radius:12px; padding:18px; text-align:center;'>
             <div style='font-size:0.75rem; font-weight:700; color:#64748b; margin-bottom:6px;'>
-            {"Elasticity" if lang=="en" else "ස්ථිතිස්ථිකය"} — {period}</div>
+            {"Elasticity" if lang=="en" else "ස්ථිතිස්ථිකතා"} — {period}</div>
             <div style='font-size:2rem; font-weight:900; color:{clr};'>{val}</div>
             <div style='font-size:0.8rem; color:#64748b; margin-top:4px;'>{"Inelastic" if lang=="en" else "අජඩ"}</div>
             </div>""", unsafe_allow_html=True)
@@ -616,7 +825,7 @@ elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
     st.markdown("#### " + ("📋 Policy Decision Framework" if lang=="en" else "📋 ප්‍රතිපත්ති තීරණ රාමුව"))
     steps = [
         ("1️⃣", "Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න", "#3b82f6"),
-        ("2️⃣", "Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය", "#8b5cf6"),
+        ("2️⃣", "Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තී���ණය", "#8b5cf6"),
         ("3️⃣", "Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක", "#16a34a"),
         ("4️⃣", "Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න", "#f59e0b"),
     ]
@@ -695,8 +904,9 @@ elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
         with col:
             st.markdown(f"""
             <div style='text-align:center; background:#f8fafc; border-radius:16px; padding:28px 16px; border:1px solid #e2e8f0; height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center;'>
-                <div style='width:52px; height:52px; background:linear-gradient(135deg,{clr},{clr}99); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin:0 auto 14px; box-shadow:0 4px 12px {clr}44;'>{i+1}</div>
-                <div style='font-size:1.5rem; margin-bottom:10px;'>{icon}</div>
+                <div style='width:52px; height:52px; background:linear-gradient(135deg,{clr},{clr}99); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:12px;'>
+                {icon}
+                </div>
                 <div style='font-size:0.88rem; color:#475569; line-height:1.6; font-weight:500;'>{step}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -739,6 +949,4 @@ st.markdown(f"""
             <div style='font-size:0.8rem; opacity:0.6; margin-top:4px;'>University of Westminster · IIT Campus</div>
         </div>
     </div>
-    <div style='margin-top:20px; font-size:0.75rem; opacity:0.4;'>{"Developed as part of BSc (Hons) Data Science & Analytics · University of Westminster" if lang == "en" else "BSc (Hons) දත්ත විද්\u200dයාව හා විශ්ලේෂණ පාඨමාලාව සඳහා සංවර්ධනය කරන ලදී"}</div>
-</div>
-""", unsafe_allow_html=True)
+    <div style='margin-top:20px; font-size:0.75rem; opacity:0.4;'>{"Developed as part
