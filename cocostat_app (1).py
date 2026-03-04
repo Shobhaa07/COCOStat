@@ -319,37 +319,161 @@ div[data-testid="stSidebar"] * {
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# SIDEBAR
+# SIDEBAR (IMPROVED & ATTRACTIVE)
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🥥 COCOStat")
-    st.markdown("---")
-
-    lang_choice = st.radio("🌐 Language / භාෂාව", ["English", "සිංහල"], index=0)
-    lang = "en" if lang_choice == "English" else "si"
-    t = T[lang]
-
-    st.markdown("---")
-    st.markdown("### " + ("Navigation" if lang == "en" else "සංචාලනය"))
-    section = st.radio("", t["nav"], label_visibility="collapsed")
-
-    st.markdown("---")
-    active_regime = st.selectbox(
-        t["regime_select"],
-        t["regime_options"],
-        index=0
-    )
-    regime_idx = t["regime_options"].index(active_regime)
-
-    st.markdown("---")
-    st.markdown(f"""
-    <div style='font-size:0.75rem; opacity:0.7; line-height:1.8'>
-        <b>{t['footer_researcher']}:</b><br>M A C S RATHNAYAKE<br>
-        <b>{t['footer_ids']}:</b><br>UOW: w1999714<br>IIT: 20220508<br>
-        <b>{t['footer_programme']}:</b><br>BSc (Hons) Data Science & Analytics<br>University of Westminster
+    # Header with branding
+    st.markdown("""
+    <div style='text-align:center; padding:20px 0 10px;'>
+        <div style='font-size:3rem; margin-bottom:8px;'>🥥</div>
+        <div style='font-size:1.3rem; font-weight:900; color:white; margin-bottom:4px;'>COCOStat</div>
+        <div style='font-size:0.75rem; color:#cbd5e1; opacity:0.9; letter-spacing:1px;'>Coconut Market Intelligence</div>
     </div>
     """, unsafe_allow_html=True)
-
+    
+    st.markdown('<div style="height:2px; background:linear-gradient(90deg, #22c55e, #3b82f6, #f59e0b); border-radius:2px; margin:16px 0;"></div>', unsafe_allow_html=True)
+    
+    # ───── LANGUAGE SELECTION ─────────────────
+    st.markdown('<div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#94a3b8; font-weight:800; margin:16px 0 10px;">🌐 Language</div>', unsafe_allow_html=True)
+    
+    lang_col1, lang_col2 = st.columns(2)
+    with lang_col1:
+        if st.button("🇬🇧 English", use_container_width=True, key="lang_en"):
+            st.session_state.lang = "en"
+            st.rerun()
+    with lang_col2:
+        if st.button("🇱🇰 සිංහල", use_container_width=True, key="lang_si"):
+            st.session_state.lang = "si"
+            st.rerun()
+    
+    # Set default language
+    if "lang" not in st.session_state:
+        st.session_state.lang = "en"
+    
+    lang_choice = "English" if st.session_state.lang == "en" else "සිංහල"
+    lang = st.session_state.lang
+    t = T[lang]
+    
+    st.markdown('<div style="height:1px; background:#334155; margin:16px 0;"></div>', unsafe_allow_html=True)
+    
+    # ───── NAVIGATION MENU ────────────────────
+    st.markdown('<div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#94a3b8; font-weight:800; margin:16px 0 12px;">📊 Navigation</div>', unsafe_allow_html=True)
+    
+    # Create navigation buttons with clear styling
+    nav_items = [
+        ("📊 Overview", "📊 දළ විශ්ලේෂණය", "0"),
+        ("🚦 Market", "🚦 වෙළඳපොළ", "1"),
+        ("📉 Demand", "📉 ඉල්ලුම", "2"),
+        ("🔮 Forecast", "🔮 අනාවැකිය", "3"),
+        ("🏛 Policy", "🏛 ප්‍රතිපත්ති", "4"),
+        ("📈 History", "📈 ඉතිහාසය", "5"),
+        ("🧠 Method", "🧠 ක්‍රමවේදය", "6"),
+    ]
+    
+    selected_idx = st.selectbox(
+        "Choose a section:",
+        range(len(nav_items)),
+        format_func=lambda i: nav_items[i][0] if lang == "en" else nav_items[i][1],
+        label_visibility="collapsed",
+        key="nav_select"
+    )
+    
+    section = nav_items[selected_idx][0] if lang == "en" else nav_items[selected_idx][1]
+    
+    # Visual indicator of selected section
+    st.markdown(f"""
+    <div style='background:#3b82f6; border-radius:10px; padding:10px 14px; margin-top:12px; text-align:center;'>
+        <div style='font-size:0.75rem; color:#bfdbfe; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;'>
+        {"Currently viewing" if lang=="en" else "දෙස බලමින් සිටින්න"}
+        </div>
+        <div style='font-size:1.1rem; font-weight:800; color:white;'>{nav_items[selected_idx][0 if lang=="en" else 1]}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div style="height:1px; background:#334155; margin:16px 0;"></div>', unsafe_allow_html=True)
+    
+    # ───── MARKET REGIME SELECTOR ─────────────
+    st.markdown('<div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#94a3b8; font-weight:800; margin:16px 0 12px;">📈 Market Status</div>', unsafe_allow_html=True)
+    
+    regime_options_display = t["regime_options"]
+    regime_idx = st.selectbox(
+        t["regime_select"],
+        range(len(regime_options_display)),
+        format_func=lambda i: regime_options_display[i],
+        label_visibility="collapsed",
+        key="regime_select"
+    )
+    
+    # Display regime details
+    regime_colors = ["#22c55e", "#eab308", "#ef4444"]
+    regime_bgs = ["#dcfce7", "#fef9c3", "#fee2e2"]
+    regime_emoji = ["🟢", "🟡", "🔴"]
+    
+    st.markdown(f"""
+    <div style='background:{regime_bgs[regime_idx]}; border:2px solid {regime_colors[regime_idx]}; border-radius:12px; padding:14px; margin-top:10px;'>
+        <div style='text-align:center; margin-bottom:8px; font-size:1.8rem;'>{regime_emoji[regime_idx]}</div>
+        <div style='font-weight:800; color:{regime_colors[regime_idx]}; text-align:center; margin-bottom:6px; font-size:0.95rem;'>{regime_options_display[regime_idx]}</div>
+        <div style='font-size:0.8rem; color:#475569; text-align:center; line-height:1.5; margin-bottom:8px;'>{t["regime_desc"][regime_idx]}</div>
+        <div style='background:white; border-radius:8px; padding:8px; font-size:0.75rem; margin-bottom:6px;'>
+            <div style='color:#94a3b8; margin-bottom:2px;'>💰 {t["regime_avg_label"]}</div>
+            <div style='font-weight:800; color:{regime_colors[regime_idx]};'>{t["regime_avg"][regime_idx]}</div>
+        </div>
+        <div style='background:white; border-radius:8px; padding:8px;'>
+            <div style='color:#94a3b8; margin-bottom:2px;'>📊 {t["regime_vol_label"]}</div>
+            <div style='font-weight:800; color:{regime_colors[regime_idx]};'>{t["regime_vol"][regime_idx]}</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div style="height:1px; background:#334155; margin:16px 0;"></div>', unsafe_allow_html=True)
+    
+    # ───── QUICK STATS ────────────────────────
+    st.markdown('<div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#94a3b8; font-weight:800; margin:16px 0 12px;">⚡ Quick Stats</div>', unsafe_allow_html=True)
+    
+    current_price = float(history_df["price"].iloc[-1])
+    price_change = current_price - float(history_df["price"].iloc[-2]) if len(history_df) > 1 else 0
+    price_trend = "📈" if price_change >= 0 else "📉"
+    
+    st.markdown(f"""
+    <div style='background:#f8fafc; border-radius:10px; padding:12px; margin-bottom:10px;'>
+        <div style='font-size:0.75rem; color:#94a3b8; margin-bottom:4px;'>💰 Current Price</div>
+        <div style='font-size:1.5rem; font-weight:900; color:#0f172a; margin-bottom:4px;'>Rs. {current_price:.2f}</div>
+        <div style='font-size:0.8rem; color:#475569;'>{price_trend} {price_change:+.2f} last month</div>
+    </div>
+    
+    <div style='background:#f8fafc; border-radius:10px; padding:12px; margin-bottom:10px;'>
+        <div style='font-size:0.75rem; color:#94a3b8; margin-bottom:4px;'>📊 Avg Price (2024)</div>
+        <div style='font-size:1.3rem; font-weight:900; color:#3b82f6;'>Rs. {history_df[history_df["date"].dt.year == 2024]["price"].mean():.2f}</div>
+    </div>
+    
+    <div style='background:#f8fafc; border-radius:10px; padding:12px;'>
+        <div style='font-size:0.75rem; color:#94a3b8; margin-bottom:4px;'>🎯 Market Status</div>
+        <div style='font-size:1rem; font-weight:800; color:{regime_colors[regime_idx]};'>{t["regime_status"][regime_idx]}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div style="height:1px; background:#334155; margin:16px 0;"></div>', unsafe_allow_html=True)
+    
+    # ───── FOOTER INFO ─────────────────────────
+    st.markdown('<div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#94a3b8; font-weight:800; margin:16px 0 12px;">👨‍🎓 About</div>', unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div style='font-size:0.7rem; color:#cbd5e1; line-height:1.8;'>
+        <div><strong style='color:white;'>{t["footer_researcher"]}:</strong><br>M A C S RATHNAYAKE</div>
+        <div style='margin-top:8px;'><strong style='color:white;'>{t["footer_ids"]}:</strong><br>UOW: w1999714<br>IIT: 20220508</div>
+        <div style='margin-top:8px;'><strong style='color:white;'>{t["footer_programme"]}:</strong><br>BSc (Hons)<br>Data Science & Analytics</div>
+        <div style='margin-top:8px; opacity:0.6;'>University of Westminster</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Help text
+    st.markdown("""
+    <div style='background:#1e293b; border-radius:10px; padding:10px; margin-top:16px; text-align:center;'>
+        <div style='font-size:0.65rem; color:#94a3b8; line-height:1.6;'>
+            💡 <strong>Tip:</strong> Use the navigation menu above to explore different sections of the dashboard.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # MAIN CONTENT
 # ─────────────────────────────────────────────
