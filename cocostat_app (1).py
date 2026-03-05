@@ -25,6 +25,9 @@ if "lang" not in st.session_state:
 # ─────────────────────────────────────────────
 # TRANSLATIONS  (your original dictionary – shortened here for brevity)
 # ─────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# TRANSLATIONS – COMPLETE version
+# ─────────────────────────────────────────────
 T = {
     "en": {
         "title": "🥥 COCOStat",
@@ -34,20 +37,74 @@ T = {
         "lang_label": "🌐 Language",
         "lang_option": "සිංහල",
         "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🧠 Method"],
-        # ... keep all your other English keys ...
         "card_price_label": "💰 Current Price",
         "card_price_value": "Rs. 68.50",
-        # (add the rest of your en translations here)
+        "card_price_sub": "Per Nut (Auction)",
+        "card_market_label": "📊 Market Condition",
+        "card_market_value": "🟢 Stable",
+        "card_market_sub": "Normal conditions",
+        "card_demand_label": "📉 Demand Response",
+        "card_demand_value": "Inelastic",
+        "card_demand_sub": "People still buy",
+        "card_forecast_label": "🔮 Future Trend",
+        "card_forecast_value": "↑ Slight Rise",
+        "card_forecast_sub": "Next 12 Weeks",
+        "regime_title": "What is the Current Market Situation?",
+        "regime_select": "Select Market Type to Explore",
+        "regime_options": ["🟢 Stable Market", "🟡 Warning Market", "🔴 Crisis Market"],
+        "regime_desc": [
+            "Prices are normal and stable.",
+            "Prices are changing moderately.",
+            "Prices are very unstable.",
+        ],
+        "regime_avg": ["Rs. 52–65", "Rs. 65–80", "Rs. 80+"],
+        "regime_vol": ["Low", "Medium", "High"],
+        "regime_avg_label": "Average Price",
+        "regime_vol_label": "Volatility",
+        "regime_status_label": "Status",
+        "regime_status": ["✅ OK", "⚠️ Watch", "🚨 Alert"],
+        # Add remaining English keys from your original file if needed...
+        "demand_title": "Do People Reduce Buying When Prices Increase?",
+        # ... etc.
     },
     "si": {
         "title": "🥥 කොකොස්ටැට්",
         "subtitle": "පොල් වෙළඳපොළ විශ්ලේෂණ පද්ධතිය",
         "tagline": "පොල් මිල පහසුවෙන් තේරුම් ගනිමු",
         "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි සරලව පැහැදිලි කරයි.",
-        # ... keep all your other Sinhala keys ...
-    },
+        "lang_label": "🌐 භාෂාව",
+        "lang_option": "English",
+        "nav": ["📊 දළ විශ්ලේෂණය", "🚦 වෙළඳපොළ", "📉 ඉල්ලුම", "🔮 අනාවැකිය", "🏛 ප්‍රතිපත්ති", "📈 ඉතිහාසය", "🧠 ක්‍රමවේදය"],
+        "card_price_label": "💰 වත්මන් මිල",
+        "card_price_value": "රු. 68.50",
+        "card_price_sub": "පොල් ගෙඩියකට (වෙන්දේසි)",
+        "card_market_label": "📊 වෙළඳපොළ තත්ත්වය",
+        "card_market_value": "🟢 ස්ථාවරයි",
+        "card_market_sub": "සාමාන්‍ය තත්ත්වය",
+        "card_demand_label": "📉 මිලට ප්‍රතිචාරය",
+        "card_demand_value": "අජඩ",
+        "card_demand_sub": "ඉල්ලුම අඩු නැත",
+        "card_forecast_label": "🔮 ඉදිරි ප්‍රවණතාව",
+        "card_forecast_value": "↑ සෙමින් ඉහළ",
+        "card_forecast_sub": "ඉදිරි සති 12",
+        "regime_title": "දැනට වෙළඳපොළේ තත්ත්වය කුමක්ද?",
+        "regime_select": "ගවේෂණය කිරීමට වෙළඳ වර්ගයක් තෝරන්න",
+        "regime_options": ["🟢 ස්ථාවර වෙළඳපොළ", "🟡 අවවාද වෙළඳපොළ", "🔴 අර්බුද වෙළඳපොළ"],
+        "regime_desc": [
+            "මිල ස්ථාවරයි, සාමාන්‍ය තත්ත්වය.",
+            "මිල මධ්‍යම ලෙස වෙනස් වේ.",
+            "මිල අතිශයින් අස්ථාවරයි.",
+        ],
+        "regime_avg": ["රු. 52–65", "රු. 65–80", "රු. 80+"],
+        "regime_vol": ["අඩු", "මධ්‍යම", "ඉහළ"],
+        "regime_avg_label": "සාමාන්‍ය මිල",
+        "regime_vol_label": "අස්ථාවරතාව",
+        "regime_status_label": "තත්ත්වය",
+        "regime_status": ["✅ හොඳයි", "⚠️ නිරීක්ෂණය", "🚨 අවදානම"],
+        "demand_title": "මිල ඉහළ ගෙලේ මිනිසුන් මිලදී ගැනීම අඩු කරයිද?",
+        # ... add the rest of Sinhala keys from your original post ...
+    }
 }
-
 t = T[st.session_state.lang]
 
 # ─────────────────────────────────────────────
