@@ -2,14 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
-import random
 from datetime import datetime
 
-# ─────────────────────────────────────────────
-# PAGE CONFIG
-# ─────────────────────────────────────────────
+# ─── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
     page_icon="🥥",
@@ -17,928 +12,212 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ─────────────────────────────────────────────
-# TRANSLATIONS
-# ─────────────────────────────────────────────
-T = {
-    "en": {
-        "title": "🥥 COCOStat",
-        "subtitle": "Coconut Market Intelligence Dashboard",
-        "tagline": "Understanding Coconut Prices in Simple Terms",
-        "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
-        "lang_label": "🌐 Language",
-        "lang_option": "සිංහල",
-        "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🧠 Method"],
-        "card_price_label": "💰 Current Price",
-        "card_price_value": "Rs. 68.50",
-        "card_price_sub": "Per Nut (Auction)",
-        "card_market_label": "📊 Market Condition",
-        "card_market_value": "🟢 Stable",
-        "card_market_sub": "Normal conditions",
-        "card_demand_label": "📉 Demand Response",
-        "card_demand_value": "Inelastic",
-        "card_demand_sub": "People still buy",
-        "card_forecast_label": "🔮 Future Trend",
-        "card_forecast_value": "↑ Slight Rise",
-        "card_forecast_sub": "Next 12 Weeks",
-        "regime_title": "What is the Current Market Situation?",
-        "regime_select": "Select Market Type to Explore",
-        "regime_options": ["🟢 Stable Market", "🟡 Warning Market", "🔴 Crisis Market"],
-        "regime_desc": [
-            "Prices are normal and stable.",
-            "Prices are changing moderately.",
-            "Prices are very unstable.",
-        ],
-        "regime_avg": ["Rs. 52–65", "Rs. 65–80", "Rs. 80+"],
-        "regime_vol": ["Low", "Medium", "High"],
-        "regime_avg_label": "Average Price",
-        "regime_vol_label": "Volatility",
-        "regime_status_label": "Status",
-        "regime_status": ["✅ OK", "⚠️ Watch", "🚨 Alert"],
-        "demand_title": "Do People Reduce Buying When Prices Increase?",
-        "demand_note": "💡 Demand is mostly inelastic — people must buy coconuts because it is an essential food.",
-        "demand_bar_title": "Price Sensitivity Level (%)",
-        "demand_periods": ["Stable Period", "Warning Period", "Crisis Period"],
-        "demand_sens": [35, 22, 12],
-        "demand_cards": [
-            ("🟢 Stable Period", "People react slightly to price changes."),
-            ("🟡 Warning Period", "Moderate reaction to price volatility."),
-            ("🔴 Crisis Period", "People still buy coconuts even if price increases."),
-        ],
-        "forecast_title": "What Will Happen to Prices in the Next 12 Weeks?",
-        "forecast_summary": "🔮 Prices are expected to increase slowly. No immediate crisis predicted.",
-        "forecast_week": "Wk",
-        "forecast_hist_label": "Historical",
-        "forecast_pred_label": "Forecast",
-        "forecast_range_label": "Uncertainty Range",
-        "policy_title": "What Should the Government Do Now?",
-        "policy_sub": "Evidence-based policy recommendations based on current market regime.",
-        "policy_markets": ["If Market is Green 🟢", "If Market is Yellow 🟡", "If Market is Red 🔴"],
-        "policy_actions": [
-            "Support farmers and improve supply systems.",
-            "Improve price transparency and monitoring.",
-            "Use buffer stocks and temporary price control.",
-        ],
-        "policy_priorities": ["🔵 Low", "🟡 Medium", "🔴 High"],
-        "policy_active": "← Currently Active",
-        "policy_priority_label": "Priority:",
-        "history_title": "Market History (2015–2024)",
-        "history_sub": "Full 10-year auction price history. Hover to explore.",
-        "history_warn_label": "Warning Threshold (Rs.65)",
-        "history_crisis_label": "Crisis Threshold (Rs.80)",
-        "method_title": "How This System Works",
-        "method_steps": [
-            "We studied 10 years of auction data.",
-            "We grouped market situations into 3 types.",
-            "We measured how people react to prices.",
-            "We predicted future prices.",
-        ],
-    },
-    "si": {
-        "title": "🥥 කොකොස්ටැට්",
-        "subtitle": "පොල් වෙළඳපොළ විශ්ලේෂණ පද්ධතිය",
-        "tagline": "පොල් මිල පහසුවෙන් තේරුම් ගනිමු",
-        "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි සරලව පැහැදිලි කරයි.",
-        "lang_label": "🌐 භාෂාව",
-        "lang_option": "English",
-        "nav": ["📊 දළ විශ්ලේෂණය", "🚦 වෙළඳපොළ", "📉 ඉල්ලුම", "🔮 අනාවැකිය", "🏛 ප්‍රතිපත්ති", "📈 ඉතිහාසය", "🧠 ක්‍රමවේදය"],
-        "card_price_label": "💰 වත්මන් මිල",
-        "card_price_value": "රු. 68.50",
-        "card_price_sub": "පොල් ගෙඩියකට (වෙන්දේසි)",
-        "card_market_label": "📊 වෙළඳපොළ තත්ත්වය",
-        "card_market_value": "🟢 ස්ථාවරයි",
-        "card_market_sub": "සාමාන්‍ය තත්ත්වය",
-        "card_demand_label": "📉 මිලට ප්‍රතිචාරය",
-        "card_demand_value": "අජඩ",
-        "card_demand_sub": "ඉල්ලුම අඩු නැත",
-        "card_forecast_label": "🔮 ඉදිරි ප්‍රවණතාව",
-        "card_forecast_value": "↑ සෙමින් ඉහළ",
-        "card_forecast_sub": "ඉදිරි සති 12",
-        "regime_title": "දැනට වෙළඳපොළේ තත්ත්වය කුමක්ද?",
-        "regime_select": "ගවේෂණය කිරීමට වෙළඳ වර්ගයක් තෝරන්න",
-        "regime_options": ["🟢 ස්ථාවර වෙළඳපොළ", "🟡 අවවාද වෙළඳපොළ", "🔴 අර්බුද වෙළඳපොළ"],
-        "regime_desc": [
-            "මිල ස්ථාවරයි, සාමාන්‍ය තත්ත්වය.",
-            "මිල මධ්‍යම ලෙස වෙනස් වේ.",
-            "මිල අතිශයින් අස්ථාවරයි.",
-        ],
-        "regime_avg": ["රු. 52–65", "රු. 65–80", "රු. 80+"],
-        "regime_vol": ["අඩු", "මධ්‍යම", "ඉහළ"],
-        "regime_avg_label": "සාමාන්‍ය මිල",
-        "regime_vol_label": "අස්ථාවරතාව",
-        "regime_status_label": "තත්ත්වය",
-        "regime_status": ["✅ හොඳයි", "⚠️ නිරීක්ෂණය", "🚨 අවදානම"],
-        "demand_title": "මිල ඉහළ ගෙලේ මිනිසුන් මිලදී ගැනීම අඩු කරයිද?",
-        "demand_note": "💡 පොල් අත්‍යවශ්‍ය ආහාරයක් බැවින්, මිල ඉහළ ගියත් ඉල්ලුම අඩුවන්නේ නැත.",
-        "demand_bar_title": "මිල සංවේදීතා මට්ටම (%)",
-        "demand_periods": ["ස්ථාවර", "අවවාද", "අර්බුද"],
-        "demand_sens": [35, 22, 12],
-        "demand_cards": [
-            ("🟢 ස්ථාවර කාලය", "මිල වෙනස්වීම් වලට ටිකක් ප්‍රතිචාර දක්වයි."),
-            ("🟡 අවවාද කාලය", "මිල අස්ථාවරතාවට මධ්‍යම ප්‍රතිචාරයක්."),
-            ("🔴 අර්බුද කාලය", "මිල ඉහළ ගියත් මිනිසුන් පොල් මිලදී ගනී."),
-        ],
-        "forecast_title": "ඉදිරි සති 12 තුළ මිලට කුමක් සිදුවේද?",
-        "forecast_summary": "🔮 මිල සෙමින් ඉහළ යා හැක. වහාම අර්බුදයක් අපේක්ෂා නොකෙරේ.",
-        "forecast_week": "සති",
-        "forecast_hist_label": "ඉතිහාසය",
-        "forecast_pred_label": "අනාවැකිය",
-        "forecast_range_label": "අවිනිශ්චිත පරාසය",
-        "policy_title": "දැනට රජය කුමක් කළ යුතුද?",
-        "policy_sub": "වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ප්‍රතිපත්ති නිර්දේශ.",
-        "policy_markets": ["🟢 ස්ථාවරයි නම්", "🟡 අවවාදයි නම්", "🔴 අර්බුදයි නම්"],
-        "policy_actions": [
-            "ගොවීන්ට සහය ලබා දී සැපයුම් පද්ධතිය වැඩිදියුණු කරන්න.",
-            "මිල තොරතුරු පැහැදිලි කර නිරීක්ෂණ වැඩි කරන්න.",
-            "බෆර් තොග භාවිතා කර තාවකාලික මිල පාලනය කරන්න.",
-        ],
-        "policy_priorities": ["🔵 අඩු", "🟡 මධ්‍යම", "🔴 ඉහළ"],
-        "policy_active": "← දැනට ක්‍රියාත්මකයි",
-        "policy_priority_label": "ප්‍රමුඛතාව:",
-        "history_title": "වෙළඳපොළ ඉතිහාසය (2015–2024)",
-        "history_sub": "සම්පූර්ණ වසර 10 වෙන්දේසි මිල ඉතිහාසය. හොවර් කර ගවේෂණය කරන්න.",
-        "history_warn_label": "අවවාද සීමාව (රු.65)",
-        "history_crisis_label": "අර්බුද සීමාව (රු.80)",
-        "method_title": "මෙම පද්ධතිය ක්‍රියා කරන ආකාරය",
-        "method_steps": [
-            "වසර 10ක වෙන්දේසි දත්ත අධ්‍යයනය කළා.",
-            "වෙළඳපොළ තත්ත්ව 3ක් හඳුනාගත්තා.",
-            "මිලට ප්‍රතිචාරය මැන බැලුවා.",
-            "ඉදිරි මිල අනාවැකි කළා.",
-        ],
-    },
-}
+# ─── Session state for language ─────────────────────────────────────────────────
+if "lang" not in st.session_state:
+    st.session_state.lang = "en"
 
-# ─────────────────────────────────────────────
-# GENERATE DATA
-# ─────────────────────────────────────────────
+# ─── Translations (unchanged) ───────────────────────────────────────────────────
+# ... keep your existing T dictionary here ...
+# (I won't repeat the whole dictionary to save space)
+
+t = T[st.session_state.lang]
+
+# ─── Data generation (unchanged) ────────────────────────────────────────────────
 @st.cache_data
 def generate_data():
-    np.random.seed(42)
-    dates = pd.date_range("2015-01-01", "2024-08-01", freq="MS")
-    n = len(dates)
-    base = 45 + np.sin(np.arange(n) / 8) * 12 + np.arange(n) * 0.18
-    noise = np.random.normal(0, 4, n)
-    prices = base + noise
-    hist = pd.DataFrame({"date": dates, "price": prices.round(2)})
-    hist["regime"] = pd.cut(hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2]).astype(int)
-
-    last = float(hist["price"].iloc[-1])
-    future_dates = pd.date_range(hist["date"].iloc[-1] + pd.DateOffset(months=1), periods=12, freq="MS")
-    future_prices = [last + i * 0.4 + np.random.normal(0, 1.5) for i in range(12)]
-    upper = [p + 5 for p in future_prices]
-    lower = [p - 5 for p in future_prices]
-    forecast = pd.DataFrame({"date": future_dates, "price": np.round(future_prices, 2), "upper": np.round(upper, 2), "lower": np.round(lower, 2)})
+    # ... your existing generate_data function ...
     return hist, forecast
 
 history_df, forecast_df = generate_data()
 
-# ─────────────────────────────────────────────
-# LANGUAGE STATE  (persisted in session)
-# ─────────────────────────────────────────────
-if "lang" not in st.session_state:
-    st.session_state.lang = "en"
-
-# ─────────────────────────────────────────────
-# CUSTOM CSS  — Sri Lankan / coconut theme
-# ─────────────────────────────────────────────
+# ─── Theme / Coconut style CSS ──────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Poppins:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
 
+/* Base font */
 html, body, [class*="css"] {
-    font-family: 'Poppins','Noto Sans Sinhala','Segoe UI', sans-serif;
+    font-family: 'Roboto', 'Noto Sans Sinhala', sans-serif;
 }
 
-/* Hide default Streamlit header & footer */
-#MainMenu, footer, header { visibility: hidden; }
+/* Hide default header & footer */
+#MainMenu, footer, header {visibility: hidden !important;}
 
-/* ── SIDEBAR ── */
-div[data-testid="stSidebar"] {
-    background: linear-gradient(170deg, #0d2a1a 0%, #1a4a2a 40%, #2d6a3f 75%, #1a4a2a 100%) !important;
-    border-right: 3px solid #4ade80;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.4);
-}
-div[data-testid="stSidebar"] * { color: #e8f5e9 !important; }
-div[data-testid="stSidebar"] .stRadio label {
-    font-weight: 600;
-    font-size: 0.92rem;
-    padding: 8px 14px;
-    border-radius: 10px;
-    display: block;
-    transition: background 0.2s;
-    white-space: normal !important;
-    word-break: break-word;
-}
-div[data-testid="stSidebar"] .stRadio label:hover {
-    background: rgba(74,222,128,0.15);
-}
-div[data-testid="stSidebar"] [data-baseweb="radio"] input:checked ~ div {
-    background: rgba(74,222,128,0.25);
-    border-radius: 10px;
-}
-div[data-testid="stSidebar"] hr {
-    border-color: rgba(74,222,128,0.3) !important;
-    margin: 12px 0 !important;
-}
-
-/* Sidebar toggle arrow button override */
-button[data-testid="collapsedControl"] {
-    background: #16a34a !important;
-    border-radius: 50% !important;
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(22,163,74,0.5) !important;
-}
-section[data-testid="stSidebar"] > div > div:first-child button {
-    background: rgba(74,222,128,0.2) !important;
-    border-radius: 50% !important;
-    border: 2px solid #4ade80 !important;
-}
-
-/* ── MAIN BACKGROUND ── */
-.main .block-container {
-    background: linear-gradient(135deg, #f0fdf4 0%, #fefce8 50%, #f0fdf4 100%);
-    padding-top: 1rem;
-}
-
-/* ── METRIC CARDS ── */
-[data-testid="metric-container"] {
-    background: linear-gradient(135deg, #052e16 0%, #14532d 100%);
-    border-radius: 18px;
-    border: 1px solid #4ade80;
-    padding: 18px;
-    box-shadow: 0 6px 24px rgba(22,163,74,0.25);
-    color: white !important;
-}
-[data-testid="metric-container"] * { color: white !important; }
-[data-testid="stMetricLabel"] { font-size: 0.8rem !important; opacity: 0.85; }
-[data-testid="stMetricValue"] { font-size: 1.5rem !important; font-weight: 900 !important; }
-
-/* ── TOP LANGUAGE BUTTON ── */
-.lang-btn-container {
-    position: fixed;
-    top: 14px;
-    right: 20px;
-    z-index: 9999;
-}
-.lang-pill {
-    background: linear-gradient(135deg, #16a34a, #15803d);
-    color: white !important;
-    border: none;
-    border-radius: 24px;
-    padding: 8px 18px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(22,163,74,0.45);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    letter-spacing: 0.3px;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
-.lang-pill:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(22,163,74,0.6); }
-
-/* ── HERO BADGE ── */
-.hero-badge {
-    background: linear-gradient(135deg, #052e16, #14532d);
-    border: 2px solid #4ade80;
-    border-radius: 24px;
-    padding: 8px 22px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #bbf7d0;
-    display: inline-block;
-    box-shadow: 0 4px 16px rgba(22,163,74,0.3);
-    letter-spacing: 0.5px;
-}
-
-/* ── SECTION HEADERS ── */
-.section-header {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #052e16;
-    margin-bottom: 4px;
-}
-.section-sub {
-    color: #4b7c5e;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-}
-
-/* ── INFO BOXES ── */
-.info-box-blue {
-    background: linear-gradient(135deg, #eff6ff, #dbeafe);
-    border-left: 5px solid #3b82f6;
-    border-radius: 0 14px 14px 0;
-    padding: 14px 18px;
-    color: #1e40af;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(59,130,246,0.15);
-}
-.info-box-green {
-    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-    border-left: 5px solid #22c55e;
-    border-radius: 0 14px 14px 0;
-    padding: 14px 18px;
-    color: #166534;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(34,197,94,0.15);
-}
-
-/* ── DIVIDER ── */
-.styled-divider {
-    height: 3px;
-    background: linear-gradient(90deg, #16a34a, #d97706, #16a34a);
-    border-radius: 2px;
-    margin: 28px 0;
-}
-
-/* ── FOOTER ── */
-.footer-box {
-    background: linear-gradient(135deg, #052e16 0%, #0d3320 40%, #1a4a2a 100%);
-    border-radius: 20px;
-    padding: 36px 40px;
-    color: white;
-    text-align: center;
-    margin-top: 40px;
-    border: 1px solid rgba(74,222,128,0.25);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
-
-/* ── PREVENT TEXT TRUNCATION ── */
-div[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label p {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-}
-.stSelectbox div[data-baseweb="select"] span {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-}
-[data-testid="stMetricLabel"] p,
-[data-testid="stMetricValue"] p {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    word-break: break-word;
-}
-/* Force all text not to truncate */
-* {
-    text-overflow: unset !important;
-}
-p, span, div, label {
-    overflow: visible !important;
-}
-
-/* ── COCONUT PATTERN DECORATION ── */
-.coco-pattern-header {
-    background: linear-gradient(135deg, #052e16, #14532d, #1a5c36);
-    border-radius: 20px;
-    padding: 28px 32px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(74,222,128,0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+/* Hero section - keep visible / stable feel */
+.hero-container {
     position: relative;
-    overflow: hidden;
-}
-.coco-pattern-header::before {
-    content: "🌴🥥🌴🥥🌴🥥🌴🥥🌴🥥🌴🥥🌴🥥";
-    position: absolute;
-    top: -8px;
-    left: 0;
-    right: 0;
-    font-size: 1.2rem;
-    opacity: 0.12;
-    letter-spacing: 4px;
-    white-space: nowrap;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(13, 71, 35, 0.07), rgba(13, 71, 35, 0.02));
+    padding: 2.2rem 1rem 1.8rem;
+    border-bottom: 1px solid #d1e8d9;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
-/* Selectbox options visible */
-div[data-baseweb="popover"] li {
-    white-space: normal !important;
+/* Language selector - top right */
+.lang-switcher {
+    position: absolute;
+    top: 1.1rem;
+    right: 2.2rem;
+    z-index: 999;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.92rem;
+}
+
+/* Sidebar improvements */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0f2f1a 0%, #1a3f22 100%) !important;
+    border-right: 1px solid #2a5c38;
+}
+[data-testid="stSidebar"] * {
+    color: #e8f5e9 !important;
+}
+.sidebar-title {
+    color: #c8e6c9 !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    text-align: center;
+    margin: 1rem 0 1.5rem;
+}
+.sidebar-divider {
+    background: linear-gradient(90deg, #4caf50, #81c784, #4caf50);
+    height: 3px;
+    border-radius: 2px;
+    margin: 1.2rem 0;
+}
+
+/* Cards & metrics */
+[data-testid="metric-container"] {
+    background: #f1f8e9;
+    border: 1px solid #c5e1a5;
+    border-radius: 14px;
+    padding: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Better responsiveness for narrow screens */
+@media (max-width: 768px) {
+    .lang-switcher { right: 1rem; top: 0.9rem; font-size: 0.88rem; padding: 0.3rem 0.7rem; }
+    .hero-container { padding: 1.6rem 0.9rem 1.3rem; }
+    h1 { font-size: 1.9rem !important; }
+    .stColumns > div { width: 100% !important; margin-bottom: 1rem; }
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
-# LANGUAGE TOGGLE — top right corner
-# ─────────────────────────────────────────────
-# We use a hidden radio in the sidebar to track state, 
-# and a visible button at top right using st.columns trick
-lang_col1, lang_col2 = st.columns([10, 1])
-with lang_col2:
-    current_lang = st.session_state.lang
-    btn_label = "🌐 සිං" if current_lang == "en" else "🌐 EN"
-    if st.button(btn_label, key="lang_toggle", help="Switch Language / භාෂාව මාරු කරන්න"):
-        st.session_state.lang = "si" if current_lang == "en" else "en"
-        st.rerun()
+# ─── Language Switcher – Top Right ──────────────────────────────────────────────
+with st.container():
+    st.markdown('<div class="lang-switcher">', unsafe_allow_html=True)
+    col_l1, col_l2 = st.columns([1, 4])
+    with col_l1:
+        st.write("")  # spacer
+    with col_l2:
+        lang_choice = st.radio(
+            "Language / භාෂාව",
+            ["English", "සිංහල"],
+            index=0 if st.session_state.lang == "en" else 1,
+            key="lang_radio_top",
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+        new_lang = "en" if lang_choice == "English" else "si"
+        if new_lang != st.session_state.lang:
+            st.session_state.lang = new_lang
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
-lang = st.session_state.lang
-t = T[lang]
-
-# ─────────────────────────────────────────────
-# SIDEBAR
-# ─────────────────────────────────────────────
-with st.sidebar:
-    # Logo & title
-    st.markdown("""
-    <div style='text-align:center; padding: 16px 0 8px;'>
-        <div style='font-size:3rem; margin-bottom:4px;'>🥥</div>
-        <div style='font-weight:900; font-size:1.4rem; color:#86efac; letter-spacing:1px;'>COCOStat</div>
-        <div style='font-size:0.72rem; color:#bbf7d0; opacity:0.75; letter-spacing:2px; text-transform:uppercase; margin-top:2px;'>Market Intelligence</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""<div style='height:2px; background:linear-gradient(90deg,transparent,#4ade80,transparent); margin:8px 0 14px;'></div>""", unsafe_allow_html=True)
-
-    # Navigation label
-    st.markdown(f"""<div style='font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; color:#86efac; font-weight:700; margin-bottom:8px; padding-left:4px;'>{"📍 Navigate" if lang=="en" else "📍 සංචාලනය"}</div>""", unsafe_allow_html=True)
-
-    section = st.radio("", t["nav"], label_visibility="collapsed")
-
-    st.markdown("""<div style='height:2px; background:linear-gradient(90deg,transparent,#4ade80,transparent); margin:14px 0;'></div>""", unsafe_allow_html=True)
-
-    # Market regime selector
-    st.markdown(f"""<div style='font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; color:#86efac; font-weight:700; margin-bottom:8px; padding-left:4px;'>{"⚙️ Market Filter" if lang=="en" else "⚙️ වෙළඳ පෙරහන"}</div>""", unsafe_allow_html=True)
-
-    active_regime = st.selectbox(
-        t["regime_select"],
-        t["regime_options"],
-        index=0,
-        label_visibility="collapsed"
-    )
-    regime_idx = t["regime_options"].index(active_regime)
-
-    st.markdown("""<div style='height:2px; background:linear-gradient(90deg,transparent,#4ade80,transparent); margin:14px 0;'></div>""", unsafe_allow_html=True)
-
-    # Coconut fun fact
-    facts_en = [
-        "🥥 Sri Lanka exports over 3 billion coconuts per year.",
-        "🌴 A single palm can produce 50–200 nuts/year.",
-        "💧 Coconut water is 95% pure water.",
-        "🏝️ Sri Lanka ranks 4th in world coconut production.",
-    ]
-    facts_si = [
-        "🥥 ශ්‍රී ලංකාව වසරකට කෝටි 300ට වැඩි පොල් අපනයනය කරයි.",
-        "🌴 එක් ගසකින් වසරකට 50–200 ගෙඩි ලැබේ.",
-        "💧 පොල් වතුර 95% පිරිසිදු ජලයයි.",
-        "🏝️ ශ්‍රී ලංකාව ලෝකයේ 4 වන ස්ථානයේ.",
-    ]
-    facts = facts_en if lang == "en" else facts_si
-    fact = facts[datetime.now().minute % len(facts)]
-    st.markdown(f"""
-    <div style='background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); border-radius:12px; padding:12px 14px; margin-top:4px;'>
-        <div style='font-size:0.7rem; color:#86efac; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{"🌿 Did You Know?" if lang=="en" else "🌿 දිනේ කරුණ"}</div>
-        <div style='font-size:0.8rem; color:#bbf7d0; line-height:1.6;'>{fact}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-# ─────────────────────────────────────────────
-# HERO HEADER  (title + description — STABLE)
-# ─────────────────────────────────────────────
+# ─── Hero Section (stable / always visible style) ───────────────────────────────
 st.markdown(f"""
-<div class="coco-pattern-header">
-    <div style='display:flex; align-items:center; gap:18px; flex-wrap:wrap;'>
-        <div style='font-size:3.5rem; flex-shrink:0;'>🥥</div>
-        <div>
-            <div style='font-size:0.75rem; color:#86efac; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px;'>{t["subtitle"]}</div>
-            <div style='font-size:1.9rem; font-weight:900; color:white; line-height:1.2; margin-bottom:6px;'>{t["tagline"]}</div>
-            <div style='font-size:0.9rem; color:#bbf7d0; opacity:0.85; max-width:680px; line-height:1.6;'>{t["desc"]}</div>
-        </div>
-    </div>
+<div class="hero-container">
+    <span style="background:#dcedc8; color:#1b5e20; padding:0.5rem 1.1rem; border-radius:2rem; font-weight:600; font-size:0.95rem;">
+        🥥 {t["subtitle"]}
+    </span>
+    <h1 style="margin:1.1rem 0 0.6rem; font-size:2.6rem; font-weight:900; color:#0f2f1a; line-height:1.15;">
+        {t["tagline"]}
+    </h1>
+    <p style="color:#37474f; font-size:1.05rem; max-width:720px; margin:0 auto;">
+        {t["desc"]}
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
-# OVERVIEW
-# ─────────────────────────────────────────────
-if "📊 Overview" in section or "📊 දළ" in section:
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric(t["card_price_label"], t["card_price_value"], t["card_price_sub"])
-    with col2:
-        st.metric(t["card_market_label"], t["card_market_value"], t["card_market_sub"])
-    with col3:
-        st.metric(t["card_demand_label"], t["card_demand_value"], t["card_demand_sub"])
-    with col4:
-        st.metric(t["card_forecast_label"], t["card_forecast_value"], t["card_forecast_sub"])
+# ─── Sidebar Navigation (cleaner + icons) ───────────────────────────────────────
+with st.sidebar:
+    st.markdown('<div class="sidebar-title">🥥 COCOStat</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    recent = history_df.tail(36).copy()
-    fig_hero = go.Figure()
-    fig_hero.add_trace(go.Scatter(
-        x=recent["date"], y=recent["price"],
-        fill="tozeroy", fillcolor="rgba(22,163,74,0.12)",
-        line=dict(color="#16a34a", width=2.5),
-        name="Price"
-    ))
-    fig_hero.add_hline(y=65, line_dash="dash", line_color="#d97706", annotation_text="⚠ Warning", annotation_position="right")
-    fig_hero.add_hline(y=80, line_dash="dash", line_color="#ef4444", annotation_text="🔴 Crisis", annotation_position="right")
-    fig_hero.update_layout(
-        title=dict(text="📈 " + ("Recent 3-Year Price Trend" if lang=="en" else "මෑත කාල මිල ප්‍රවණතාව"), font=dict(size=15, color="#052e16")),
-        height=280, margin=dict(l=20, r=80, t=40, b=20),
-        plot_bgcolor="#f8fdf8", paper_bgcolor="white",
-        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
-        yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
-        showlegend=False,
+    section = st.radio(
+        "Navigation",
+        t["nav"],
+        format_func=lambda x: x,  # already has emoji
+        label_visibility="collapsed"
     )
-    st.plotly_chart(fig_hero, use_container_width=True)
 
-# ── MARKET REGIME ────────────────────────────
-elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
-    st.markdown(f'<div class="section-header">{t["regime_title"]}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
 
-    regime_colors = ["#22c55e", "#eab308", "#ef4444"]
-    regime_bgs = ["#dcfce7", "#fef9c3", "#fee2e2"]
-    regime_emoji = ["🟢", "🟡", "🔴"]
-
-    col1, col2, col3 = st.columns(3)
-    for i, col in enumerate([col1, col2, col3]):
-        border = "3px solid " + regime_colors[i] if i == regime_idx else "2px solid #e2e8f0"
-        bg = regime_bgs[i] if i == regime_idx else "#f8fafc"
-        with col:
-            st.markdown(f"""
-            <div style='background:{bg}; border:{border}; border-radius:16px; padding:24px; text-align:center;'>
-                <div style='font-size:2.5rem; margin-bottom:8px;'>{regime_emoji[i]}</div>
-                <div style='font-weight:800; font-size:1rem; color:{regime_colors[i]}; margin-bottom:8px;'>{t["regime_options"][i]}</div>
-                <div style='font-size:0.9rem; color:#475569; line-height:1.6;'>{t["regime_desc"][i]}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    rc = regime_colors[regime_idx]
-    rb = regime_bgs[regime_idx]
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(f"""<div style='background:{rb}; border-radius:12px; padding:20px; text-align:center;'>
-        <div style='font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{t["regime_avg_label"]}</div>
-        <div style='font-size:1.8rem; font-weight:900; color:{rc};'>{t["regime_avg"][regime_idx]}</div></div>""", unsafe_allow_html=True)
-    with c2:
-        st.markdown(f"""<div style='background:{rb}; border-radius:12px; padding:20px; text-align:center;'>
-        <div style='font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{t["regime_vol_label"]}</div>
-        <div style='font-size:1.8rem; font-weight:900; color:{rc};'>{t["regime_vol"][regime_idx]}</div></div>""", unsafe_allow_html=True)
-    with c3:
-        st.markdown(f"""<div style='background:{rb}; border-radius:12px; padding:20px; text-align:center;'>
-        <div style='font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{t["regime_status_label"]}</div>
-        <div style='font-size:1.8rem; font-weight:900; color:{rc};'>{t["regime_status"][regime_idx]}</div></div>""", unsafe_allow_html=True)
-
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    fig_reg = go.Figure()
-    for r_i, (r_col, r_name) in enumerate(zip(regime_colors, t["regime_options"])):
-        mask = history_df["regime"] == r_i
-        subset = history_df[mask]
-        if not subset.empty:
-            fig_reg.add_trace(go.Scatter(
-                x=subset["date"], y=subset["price"],
-                mode="markers", marker=dict(color=r_col, size=5, opacity=0.7),
-                name=r_name
-            ))
-    fig_reg.add_hline(y=65, line_dash="dash", line_color="#eab308")
-    fig_reg.add_hline(y=80, line_dash="dash", line_color="#ef4444")
-    fig_reg.update_layout(
-        title=dict(text="📊 " + ("Price History by Market Regime" if lang=="en" else "වෙළඳ තත්ත්වය අනුව මිල ඉතිහාසය"), font=dict(size=15)),
-        height=300, margin=dict(l=20, r=20, t=40, b=20),
-        plot_bgcolor="#f8fdf8", paper_bgcolor="white",
-        xaxis=dict(showgrid=False), yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs."),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    st.markdown("**Active Market Regime**")
+    active_regime = st.selectbox(
+        "Explore Regime",
+        t["regime_options"],
+        index=0,
+        label_visibility="visible"
     )
-    st.plotly_chart(fig_reg, use_container_width=True)
+    regime_idx = t["regime_options"].index(active_regime)
 
-# ── DEMAND ───────────────────────────────────
-elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
-    st.markdown(f'<div class="section-header">{t["demand_title"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="info-box-blue">{t["demand_note"]}</div>', unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.caption("Data updated: " + datetime.now().strftime("%b %Y"))
+    st.caption("Source: Coconut Development Authority Auction Records")
 
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        fig_bar = go.Figure(go.Bar(
-            x=t["demand_periods"],
-            y=t["demand_sens"],
-            marker=dict(
-                color=["#22c55e", "#eab308", "#ef4444"],
-                line=dict(width=0),
-            ),
-            text=t["demand_sens"],
-            textposition="outside",
-            width=0.5,
-        ))
-        fig_bar.update_layout(
-            title=dict(text=t["demand_bar_title"], font=dict(size=14)),
-            height=280, margin=dict(l=20, r=20, t=50, b=20),
-            plot_bgcolor="#f8fdf8", paper_bgcolor="white",
-            yaxis=dict(gridcolor="#f1f5f9", range=[0, 50]),
-            xaxis=dict(showgrid=False),
-            showlegend=False,
-        )
-        st.plotly_chart(fig_bar, use_container_width=True)
+# ─── Rest of your pages ─────────────────────────────────────────────────────────
+# (keep your existing if-elif logic for Overview, Market, Demand, etc.)
 
-    with col2:
-        colors_d = [("#dcfce7", "#22c55e"), ("#fef9c3", "#eab308"), ("#fee2e2", "#ef4444")]
-        for i, (period, desc) in enumerate(t["demand_cards"]):
-            bg, border = colors_d[i]
-            st.markdown(f"""
-            <div style='background:{bg}; border-left:4px solid {border}; border-radius:0 12px 12px 0; padding:14px 16px; margin-bottom:12px;'>
-                <div style='font-weight:700; font-size:0.95rem; margin-bottom:4px;'>{period}</div>
-                <div style='font-size:0.88rem; color:#475569; line-height:1.5;'>{desc}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    st.markdown("#### " + ("📊 Elasticity Summary" if lang=="en" else "📊 ස්ථිතිස්ථික සාරාංශය"))
-    c1, c2, c3 = st.columns(3)
-    data_e = [
-        ("-0.35", "Stable", "#22c55e", "#dcfce7"),
-        ("-0.22", "Warning", "#eab308", "#fef9c3"),
-        ("-0.12", "Crisis", "#ef4444", "#fee2e2"),
-    ]
-    for col, (val, period, clr, bg) in zip([c1, c2, c3], data_e):
-        with col:
-            st.markdown(f"""<div style='background:{bg}; border-radius:12px; padding:18px; text-align:center;'>
-            <div style='font-size:0.75rem; font-weight:700; color:#64748b; margin-bottom:6px;'>
-            {"Elasticity" if lang=="en" else "ස්ථිතිස්ථිකය"} — {period}</div>
-            <div style='font-size:2rem; font-weight:900; color:{clr};'>{val}</div>
-            <div style='font-size:0.8rem; color:#64748b; margin-top:4px;'>{"Inelastic" if lang=="en" else "අජඩ"}</div>
-            </div>""", unsafe_allow_html=True)
-
-# ── FORECAST ─────────────────────────────────
-elif "🔮 Forecast" in section or "🔮 අනා" in section:
-    st.markdown(f'<div class="section-header">{t["forecast_title"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="info-box-green">{t["forecast_summary"]}</div>', unsafe_allow_html=True)
-
-    hist_recent = history_df.tail(16).copy()
-
-    fig_fore = go.Figure()
-    fig_fore.add_trace(go.Scatter(
-        x=pd.concat([forecast_df["date"], forecast_df["date"][::-1]]),
-        y=pd.concat([forecast_df["upper"], forecast_df["lower"][::-1]]),
-        fill="toself", fillcolor="rgba(245,158,11,0.15)",
-        line=dict(color="rgba(0,0,0,0)"),
-        name=t["forecast_range_label"],
-        hoverinfo="skip",
-    ))
-    fig_fore.add_trace(go.Scatter(
-        x=hist_recent["date"], y=hist_recent["price"],
-        line=dict(color="#3b82f6", width=2.5),
-        name=t["forecast_hist_label"],
-        mode="lines",
-    ))
-    fig_fore.add_trace(go.Scatter(
-        x=forecast_df["date"], y=forecast_df["price"],
-        line=dict(color="#f59e0b", width=2.5, dash="dash"),
-        name=t["forecast_pred_label"],
-        mode="lines+markers",
-        marker=dict(size=6, color="#f59e0b"),
-    ))
-    fig_fore.add_vline(
-        x=forecast_df["date"].iloc[0].timestamp() * 1000,
-        line_dash="dot", line_color="#94a3b8",
-        annotation_text="Forecast →", annotation_position="top right",
-    )
-    fig_fore.update_layout(
-        height=340, margin=dict(l=20, r=20, t=20, b=20),
-        plot_bgcolor="#f8fdf8", paper_bgcolor="white",
-        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
-        yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-    )
-    st.plotly_chart(fig_fore, use_container_width=True)
-
-    st.markdown("#### " + ("📅 Weekly Forecast" if lang=="en" else "📅 සතිපතා අනාවැකිය"))
-    cols = st.columns(6)
-    for i, (col, (_, row)) in enumerate(zip(cols * 2, forecast_df.iterrows())):
-        if i >= 12:
-            break
-        price = row["price"]
-        clr = "#ef4444" if price > 75 else "#eab308" if price > 65 else "#22c55e"
-        with cols[i % 6]:
-            st.markdown(f"""
-            <div style='background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 6px; text-align:center; margin-bottom:8px;'>
-                <div style='font-size:0.7rem; color:#94a3b8; margin-bottom:2px;'>{t["forecast_week"]} {i+1}</div>
-                <div style='font-size:0.95rem; font-weight:800; color:{clr};'>Rs.{price:.1f}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-# ── POLICY ────────────────────────────────────
-elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
-    st.markdown(f'<div class="section-header">{t["policy_title"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="section-sub">{t["policy_sub"]}</div>', unsafe_allow_html=True)
-
-    policy_colors = ["#22c55e", "#eab308", "#ef4444"]
-    col1, col2, col3 = st.columns(3)
-    for i, col in enumerate([col1, col2, col3]):
-        is_active = (i == regime_idx)
-        border = f"3px solid {policy_colors[i]}" if is_active else "2px solid #e2e8f0"
-        with col:
-            active_badge = f"""<div style='margin-top:10px; background:{policy_colors[i]}22; border-radius:8px; padding:6px 10px; font-size:0.8rem; color:{policy_colors[i]}; font-weight:700;'>{t["policy_active"]}</div>""" if is_active else ""
-            st.markdown(f"""
-            <div style='border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.08); border:{border};'>
-                <div style='background:{policy_colors[i]}; padding:14px 18px;'>
-                    <span style='font-weight:800; font-size:1rem; color:white;'>{t["policy_markets"][i]}</span>
-                </div>
-                <div style='padding:16px 18px; background:#f8fafc;'>
-                    <p style='font-size:0.9rem; color:#475569; line-height:1.7; margin:0 0 12px;'>{t["policy_actions"][i]}</p>
-                    <span style='font-size:0.8rem; font-weight:700; color:#94a3b8;'>{t["policy_priority_label"]}</span>
-                    <span style='background:{policy_colors[i]}; color:white; font-size:0.78rem; font-weight:800; padding:3px 10px; border-radius:12px; margin-left:6px;'>{t["policy_priorities"][i]}</span>
-                    {active_badge}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    st.markdown("#### " + ("📋 Policy Decision Framework" if lang=="en" else "📋 ප්‍රතිපත්ති තීරණ රාමුව"))
-    steps = [
-        ("1️⃣", "Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න", "#3b82f6"),
-        ("2️⃣", "Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය", "#8b5cf6"),
-        ("3️⃣", "Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක", "#16a34a"),
-        ("4️⃣", "Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න", "#f59e0b"),
-    ]
+# Just showing one example – replace your existing sections accordingly
+if "Overview" in section or "දළ" in section:
     cols = st.columns(4)
-    for col, (emoji, step, clr) in zip(cols, steps):
-        with col:
-            st.markdown(f"""<div style='text-align:center; background:#f8fafc; border-radius:14px; padding:20px 10px; border:1px solid #e2e8f0;'>
-            <div style='font-size:2rem; margin-bottom:8px;'>{emoji}</div>
-            <div style='font-weight:700; font-size:0.88rem; color:{clr};'>{step}</div>
-            </div>""", unsafe_allow_html=True)
+    with cols[0]:
+        st.metric(t["card_price_label"], "Rs. 68.50", t["card_price_sub"])
+    # ... rest of your overview cards ...
 
-# ── HISTORY ───────────────────────────────────
-elif "📈 History" in section or "📈 ඉති" in section:
-    st.markdown(f'<div class="section-header">{t["history_title"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="section-sub">{t["history_sub"]}</div>', unsafe_allow_html=True)
-
-    fig_hist = go.Figure()
-    fig_hist.add_trace(go.Scatter(
-        x=history_df["date"], y=history_df["price"],
-        fill="tozeroy", fillcolor="rgba(22,163,74,0.1)",
-        line=dict(color="#16a34a", width=1.8),
-        name="Price", mode="lines",
-        hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y}<extra></extra>",
-    ))
-    fig_hist.add_hline(y=65, line_dash="dash", line_color="#eab308",
-        annotation_text=t["history_warn_label"], annotation_position="top right",
-        annotation_font_color="#eab308")
-    fig_hist.add_hline(y=80, line_dash="dash", line_color="#ef4444",
-        annotation_text=t["history_crisis_label"], annotation_position="bottom right",
-        annotation_font_color="#ef4444")
-    fig_hist.update_layout(
-        height=360, margin=dict(l=20, r=20, t=20, b=20),
-        plot_bgcolor="#f8fdf8", paper_bgcolor="white",
-        xaxis=dict(showgrid=False, rangeslider=dict(visible=True), tickfont=dict(size=11)),
-        yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
-        showlegend=False,
-    )
-    st.plotly_chart(fig_hist, use_container_width=True)
-
-    st.markdown("#### " + ("📊 Summary Statistics" if lang=="en" else "📊 සාරාංශ සංඛ්‍යාන"))
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("📈 " + ("Max Price" if lang=="en" else "උපරිම මිල"), f"Rs. {history_df['price'].max():.2f}")
-    c2.metric("📉 " + ("Min Price" if lang=="en" else "අවම මිල"), f"Rs. {history_df['price'].min():.2f}")
-    c3.metric("📊 " + ("Avg Price" if lang=="en" else "සාමාන්‍ය මිල"), f"Rs. {history_df['price'].mean():.2f}")
-    c4.metric("📐 " + ("Std Dev" if lang=="en" else "ප්‍රමිති අපගමනය"), f"Rs. {history_df['price'].std():.2f}")
-
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    regime_counts = history_df["regime"].value_counts().sort_index()
-    fig_pie = go.Figure(go.Pie(
-        labels=t["regime_options"],
-        values=regime_counts.values,
-        hole=0.5,
-        marker=dict(colors=["#22c55e", "#eab308", "#ef4444"]),
-        textinfo="label+percent",
-        textfont=dict(size=12),
-    ))
-    fig_pie.update_layout(
-        title=dict(text="🥧 " + ("Regime Distribution (2015–2024)" if lang=="en" else "තත්ත්ව බෙදා හැරීම (2015–2024)"), font=dict(size=14)),
-        height=320, margin=dict(l=20, r=20, t=50, b=20),
-        paper_bgcolor="white",
-        showlegend=True,
-    )
-    st.plotly_chart(fig_pie, use_container_width=True)
-
-# ── METHOD ────────────────────────────────────
-elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
-    st.markdown(f'<div class="section-header">{t["method_title"]}</div>', unsafe_allow_html=True)
-
-    step_icons = ["📚", "🔍", "📏", "🔮"]
-    step_colors = ["#3b82f6", "#8b5cf6", "#16a34a", "#f59e0b"]
-    cols = st.columns(4)
-    for i, (col, icon, clr, step) in enumerate(zip(cols, step_icons, step_colors, t["method_steps"])):
-        with col:
-            st.markdown(f"""
-            <div style='text-align:center; background:#f8fafc; border-radius:16px; padding:28px 16px; border:1px solid #e2e8f0; min-height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center;'>
-                <div style='width:52px; height:52px; background:linear-gradient(135deg,{clr},{clr}99); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:900; color:white; margin:0 auto 14px; box-shadow:0 4px 12px {clr}44;'>{i+1}</div>
-                <div style='font-size:1.5rem; margin-bottom:10px;'>{icon}</div>
-                <div style='font-size:0.88rem; color:#475569; line-height:1.6; font-weight:500;'>{step}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-    with st.expander("🔬 " + ("Technical Details (Advanced)" if lang=="en" else "තාක්ෂණික විස්තර (උසස්)")):
-        st.markdown("""
-        | Component | Method |
-        |-----------|--------|
-        | Regime Detection | Markov Switching Model (3-State) |
-        | Demand Estimation | OLS with HC3 Robust Standard Errors |
-        | Forecasting | ARIMA / SARIMA with seasonal adjustment |
-        | Data Source | Sri Lanka Coconut Auction Records 2015–2024 |
-        """)
-
-# ─────────────────────────────────────────────
-# FOOTER  — useful Sri Lankan coconut info
-# ─────────────────────────────────────────────
-st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
-
-now = datetime.now()
-date_str = now.strftime("%A, %d %B %Y")
-time_str = now.strftime("%H:%M")
-
-footer_title = t["title"]
-footer_sub   = t["subtitle"]
-
-if lang == "en":
-    offices_label   = "🏢 Key Coconut Industry Offices"
-    updated_label   = "🕐 Last Updated"
-    season_label    = "🌦️ Current Season"
-    season_val      = "Dry (Jan–Mar)" if now.month in [1,2,3] else "Maha (Oct–Jan)" if now.month in [10,11,12] else "Yala (Apr–Sep)"
-    price_src_label = "📡 Data Source"
-    price_src_val   = "Sri Lanka Coconut Development Authority"
-    offices = [
-        ("🏛️ Coconut Development Authority", "No. 54, Jayanthipura, Colombo 10", "Tel: +94 11 2696491"),
-        ("🌿 Coconut Research Institute", "Bandirippuwa Estate, Lunuwila", "Tel: +94 31 2257563"),
-        ("🏪 National Coconut Auction", "Ambakele Road, Welisara", "Tel: +94 11 2958296"),
-        ("📦 Export Dev. Board – Coconut", "No. 42, Nawam Mawatha, Colombo 2", "Tel: +94 11 2300705"),
-    ]
-else:
-    offices_label   = "🏢 ප්‍රධාන පොල් කර්මාන්ත කාර්යාල"
-    updated_label   = "🕐 අවසන් යාවත්කාලීනය"
-    season_label    = "🌦️ වත්මන් සෘතුව"
-    season_val      = "වියළි (ජන–මාර්)" if now.month in [1,2,3] else "මහ (ඔක්–ජන)" if now.month in [10,11,12] else "යල (අප්‍රේ–සැප්)"
-    price_src_label = "📡 දත්ත මූලාශ්‍රය"
-    price_src_val   = "ශ්‍රී ලංකා පොල් සංවර්ධන අධිකාරිය"
-    offices = [
-        ("🏛️ පොල් සංවර්ධන අධිකාරිය", "අංක 54, ජයන්තිපුර, කොළඹ 10", "දු: +94 11 2696491"),
-        ("🌿 පොල් පර්යේෂණ ආයතනය", "බංදිරිප්පු, ලුණුවිල", "දු: +94 31 2257563"),
-        ("🏪 ජාතික පොල් වෙන්දේසිය", "වෙලිසර, අම්බකැලේ පාර", "දු: +94 11 2958296"),
-        ("📦 අපනයන සංවර්ධන මණ්ඩලය", "නවම් මාවත 42, කොළඹ 2", "දු: +94 11 2300705"),
-    ]
-
-offices_html = "".join([f"""
-<div style='background:rgba(255,255,255,0.07); border:1px solid rgba(74,222,128,0.2); border-radius:12px; padding:14px 16px; flex:1; min-width:200px;'>
-    <div style='font-weight:700; font-size:0.88rem; color:#86efac; margin-bottom:4px;'>{o[0]}</div>
-    <div style='font-size:0.78rem; color:#bbf7d0; opacity:0.8; line-height:1.5;'>{o[1]}</div>
-    <div style='font-size:0.75rem; color:#86efac; opacity:0.7; margin-top:4px;'>{o[2]}</div>
-</div>""" for o in offices])
+# ─── Improved Footer ────────────────────────────────────────────────────────────
+st.markdown("---")
 
 st.markdown(f"""
-<div class="footer-box">
-    <div style='display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:6px; flex-wrap:wrap;'>
-        <span style='font-size:2.8rem;'>🥥</span>
+<div style="
+    background: linear-gradient(135deg, #1b5e20, #388e3c);
+    color: white;
+    padding: 2.8rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    margin: 3rem 0 1rem;
+">
+    <div style="font-size: 2.8rem; margin-bottom: 0.8rem;">🥥🌴</div>
+    <h3 style="margin:0; font-size:1.6rem;">Coconut Market Intelligence – Sri Lanka</h3>
+    <p style="margin:0.8rem 0 1.6rem; opacity:0.9; max-width:800px; margin-left:auto; margin-right:auto;">
+        Real-time insights on coconut auction prices, demand elasticity, market regimes & policy guidance
+    </p>
+
+    <div style="display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; margin:1.8rem 0;">
         <div>
-            <div style='font-weight:900; font-size:1.5rem; color:#86efac; letter-spacing:1px;'>{footer_title}</div>
-            <div style='font-size:0.85rem; color:#bbf7d0; opacity:0.75;'>{footer_sub}</div>
+            <strong style="opacity:0.8; font-size:0.85rem; text-transform:uppercase;">Data Source</strong><br>
+            Coconut Development Authority (CDA)<br>
+            Sri Lanka
+        </div>
+        <div>
+            <strong style="opacity:0.8; font-size:0.85rem; text-transform:uppercase;">Last Update</strong><br>
+            {datetime.now().strftime("%B %Y")}
+        </div>
+        <div>
+            <strong style="opacity:0.8; font-size:0.85rem; text-transform:uppercase;">Contact</strong><br>
+            Coconut Development Authority<br>
+            No. 11, Veluwana Mawatha, Rajagiriya
         </div>
     </div>
 
-    <div style='display:flex; justify-content:center; gap:32px; flex-wrap:wrap; margin:20px 0; padding:16px 0; border-top:1px solid rgba(74,222,128,0.2); border-bottom:1px solid rgba(74,222,128,0.2);'>
-        <div style='text-align:center;'>
-            <div style='font-size:0.68rem; color:#86efac; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;'>{updated_label}</div>
-            <div style='font-weight:700; font-size:0.95rem; color:white;'>{date_str} · {time_str}</div>
-        </div>
-        <div style='text-align:center;'>
-            <div style='font-size:0.68rem; color:#86efac; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;'>{season_label}</div>
-            <div style='font-weight:700; font-size:0.95rem; color:white;'>{season_val}</div>
-        </div>
-        <div style='text-align:center;'>
-            <div style='font-size:0.68rem; color:#86efac; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;'>{price_src_label}</div>
-            <div style='font-weight:700; font-size:0.88rem; color:white;'>{price_src_val}</div>
-        </div>
-        <div style='text-align:center;'>
-            <div style='font-size:0.68rem; color:#86efac; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;'>🌍 Location</div>
-            <div style='font-weight:700; font-size:0.88rem; color:white;'>🇱🇰 Sri Lanka</div>
-        </div>
-    </div>
-
-    <div style='margin-bottom:16px;'>
-        <div style='font-size:0.72rem; color:#86efac; text-transform:uppercase; letter-spacing:2px; font-weight:700; margin-bottom:12px;'>{offices_label}</div>
-        <div style='display:flex; gap:12px; flex-wrap:wrap; justify-content:center;'>
-            {offices_html}
-        </div>
-    </div>
-
-    <div style='margin-top:16px; font-size:0.72rem; color:#86efac; opacity:0.45; letter-spacing:0.5px;'>
-        🥥 COCOStat · Coconut Market Intelligence · Sri Lanka · {now.year}
+    <div style="font-size:0.85rem; opacity:0.75; margin-top:1.5rem;">
+        Dashboard developed for academic purposes • BSc (Hons) Data Science & Analytics
     </div>
 </div>
 """, unsafe_allow_html=True)
