@@ -717,28 +717,54 @@ elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
 # ─────────────────────────────────────────────
 # FOOTER (always visible)
 # ─────────────────────────────────────────────
-st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
+today=datetime.now().strftime("%d %B %Y")
+
 st.markdown(f"""
 <div class="footer-box">
-    <div style='font-size:2.5rem; margin-bottom:10px;'>🥥</div>
-    <div style='font-weight:900; font-size:1.4rem; margin-bottom:4px;'>{t["title"]}</div>
-    <div style='font-size:0.9rem; opacity:0.7; margin-bottom:28px;'>{t["subtitle"]}</div>
-    <div style='display:flex; justify-content:center; gap:60px; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.15); padding-top:24px;'>
-        <div>
-            <div style='font-size:0.7rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{t["footer_researcher"]}</div>
-            <div style='font-weight:700; font-size:1rem;'>M A C S RATHNAYAKE</div>
-        </div>
-        <div>
-            <div style='font-size:0.7rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{t["footer_ids"]}</div>
-            <div style='font-weight:700; font-size:0.95rem;'>UOW: w1999714</div>
-            <div style='font-weight:700; font-size:0.95rem;'>IIT: 20220508</div>
-        </div>
-        <div>
-            <div style='font-size:0.7rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{t["footer_programme"]}</div>
-            <div style='font-weight:600; font-size:0.9rem; opacity:0.85;'>BSc (Hons) Data Science & Analytics</div>
-            <div style='font-size:0.8rem; opacity:0.6; margin-top:4px;'>University of Westminster · IIT Campus</div>
-        </div>
-    </div>
-    <div style='margin-top:20px; font-size:0.75rem; opacity:0.4;'>{"Developed as part of BSc (Hons) Data Science & Analytics · University of Westminster" if lang == "en" else "BSc (Hons) දත්ත විද්\u200dයාව හා විශ්ලේෂණ පාඨමාලාව සඳහා සංවර්ධනය කරන ලදී"}</div>
+
+<div style="text-align:center;font-size:2rem;">🥥</div>
+<div style="text-align:center;font-size:1.3rem;font-weight:900;">COCOStat – Sri Lanka Coconut Intelligence</div>
+
+<hr style="border:0.5px solid rgba(255,255,255,0.2);margin:25px 0;">
+
+<div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:40px;">
+
+<div>
+<div class="footer-title">📅 Current Date</div>
+<div class="small-text">{today}</div>
+</div>
+
+<div>
+<div class="footer-title">🏢 Coconut Development Authority</div>
+<div class="small-text">
+Head Office – Colombo 02<br>
+Regional Offices – Kurunegala, Gampaha, Matara
+</div>
+</div>
+
+<div>
+<div class="footer-title">📍 Major Coconut Producing Districts</div>
+<div class="small-text">
+Kurunegala<br>
+Puttalam<br>
+Gampaha<br>
+Colombo
+</div>
+</div>
+
+<div>
+<div class="footer-title">🌴 Sri Lanka Coconut Industry</div>
+<div class="small-text">
+Over 2,500 million nuts annually<br>
+Exports: Coconut oil, desiccated coconut, coconut milk
+</div>
+</div>
+
+</div>
+
+<div style="text-align:center;margin-top:30px;font-size:0.8rem;opacity:0.7;">
+Traditional Sri Lankan Coconut Theme Dashboard
+</div>
+
 </div>
 """, unsafe_allow_html=True)
