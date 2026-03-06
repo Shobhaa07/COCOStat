@@ -273,26 +273,50 @@ html, body, [class*="css"] {
     section[data-testid="stSidebar"] > div { width: 270px !important; transform: none !important; }
 }
 
-/* ── Mobile sidebar: full-width overlay when open ── */
+/* ── Mobile: sidebar slides in as overlay, main content always full width ── */
 @media (max-width: 767px) {
+    /* Sidebar: overlay only, never pushes content */
     section[data-testid="stSidebar"] {
-        min-width: 88vw !important;
-        max-width: 88vw !important;
-        width: 88vw !important;
-        z-index: 9999 !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        height: 100vh !important;
+        min-width: 82vw !important;
+        max-width: 82vw !important;
+        width: 82vw !important;
+        z-index: 9998 !important;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.18) !important;
     }
     section[data-testid="stSidebar"] > div {
-        width: 88vw !important;
+        width: 82vw !important;
     }
+    /* Sidebar toggle button always on top */
     [data-testid="collapsedControl"] {
         display: flex !important;
-        z-index: 10000 !important;
+        z-index: 9999 !important;
+        position: fixed !important;
     }
-    .main .block-container {
-        padding-left: 0.4rem !important;
-        padding-right: 0.4rem !important;
+    /* Main content: always use full viewport, never offset by sidebar */
+    [data-testid="stAppViewContainer"] > .main {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        width: 100vw !important;
         max-width: 100vw !important;
     }
+    .main .block-container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        max-width: 100vw !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    /* Prevent any horizontal overflow */
+    html, body, .main, .block-container,
+    [data-testid="stAppViewContainer"] {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    /* Stack ALL columns vertically on mobile */
     [data-testid="column"],
     div[data-testid="column"] {
         min-width: 100% !important;
@@ -304,11 +328,9 @@ html, body, [class*="css"] {
         flex-wrap: wrap !important;
         gap: 0.5rem !important;
     }
+    /* Charts full width */
     .js-plotly-plot, .plotly, .plot-container {
         width: 100% !important;
-        overflow-x: hidden !important;
-    }
-    .main, .block-container, [data-testid="stAppViewContainer"] {
         overflow-x: hidden !important;
     }
 }
@@ -422,6 +444,23 @@ st.markdown("""
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <script>
 (function() {
+    // Force-close sidebar on mobile so it doesn't clip content
+    function closeSidebarOnMobile() {
+        if (window.innerWidth > 767) return;
+        // Find the sidebar collapse button and click it if sidebar is open
+        var btn = window.parent.document.querySelector('[data-testid="collapsedControl"]');
+        if (!btn) btn = document.querySelector('[data-testid="collapsedControl"]');
+        // Check if sidebar is currently open (not collapsed)
+        var sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
+        if (!sidebar) sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        if (sidebar) {
+            var w = sidebar.getBoundingClientRect().width;
+            if (w > 50 && btn) { btn.click(); }
+        }
+    }
+    setTimeout(closeSidebarOnMobile, 300);
+    setTimeout(closeSidebarOnMobile, 800);
+})();
     function setFavicon() {
         var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
         link.type = 'image/svg+xml';
