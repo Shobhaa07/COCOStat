@@ -27,7 +27,7 @@ T = {
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "lang_label": "🌐 Language",
         "lang_option": "සිංහල",
-        "nav": ["Overview", "Market", "Demand", "Forecast", "Policy", "History", "Compare", "Method"],
+        "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🔍 Compare", "🧠 Method"],
         "card_price_label": "💰 Current Price",
         "card_price_value": "Rs. 68.50",
         "card_price_sub": "Per Nut (Auction)",
@@ -117,7 +117,7 @@ T = {
         "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි සරලව පැහැදිලි කරයි.",
         "lang_label": "🌐 භාෂාව",
         "lang_option": "English",
-        "nav": ["දළ විශ්ලේෂණය", "වෙළඳපොළ", "ඉල්ලුම", "අනාවැකිය", "ප්‍රතිපත්ති", "ඉතිහාසය", "සංසන්දනය", "ක්‍රමවේදය"],
+        "nav": ["📊 දළ විශ්ලේෂණය", "🚦 වෙළඳපොළ", "📉 ඉල්ලුම", "🔮 අනාවැකිය", "🏛 ප්‍රතිපත්ති", "📈 ඉතිහාසය", "🔍 සංසන්දනය", "🧠 ක්‍රමවේදය"],
         "card_price_label": "💰 වත්මන් මිල",
         "card_price_value": "රු. 68.50",
         "card_price_sub": "පොල් ගෙඩියකට (වෙන්දේසි)",
@@ -302,50 +302,6 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 
 /* ── Divider: subtle green ── */
 .styled-divider { height: 1px; background: #d1e7d1; margin: 28px 0; }
-
-/* ── Navigation radio: uniform pill boxes, hide circles ── */
-div[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 5px !important;
-}
-/* Hide the actual radio circle input */
-div[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child,
-div[data-testid="stSidebar"] .stRadio input[type="radio"],
-div[data-testid="stSidebar"] .stRadio [data-testid="stWidgetLabel"] ~ div span[data-baseweb] {
-    display: none !important;
-}
-/* Style each label as a uniform full-width box */
-div[data-testid="stSidebar"] .stRadio label {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: 100% !important;
-    min-height: 40px !important;
-    padding: 0 14px !important;
-    border-radius: 8px !important;
-    border: 1px solid #d1e7d1 !important;
-    background: #ffffff !important;
-    font-size: 0.87rem !important;
-    font-weight: 600 !important;
-    color: #1a3a1a !important;
-    cursor: pointer !important;
-    transition: all 0.15s ease !important;
-    box-sizing: border-box !important;
-    gap: 8px !important;
-}
-div[data-testid="stSidebar"] .stRadio label:hover {
-    background: #dcfce7 !important;
-    border-color: #16a34a !important;
-    color: #14532d !important;
-}
-/* Selected item */
-div[data-testid="stSidebar"] .stRadio label[aria-checked="true"] {
-    background: #14532d !important;
-    border-color: #14532d !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -946,17 +902,17 @@ elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
     # Policy decision flow
     st.markdown("#### " + ("📋 Policy Decision Framework" if lang=="en" else "📋 ප්‍රතිපත්ති තීරණ රාමුව"))
     steps = [
-        ("1", "Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න"),
-        ("2", "Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය"),
-        ("3", "Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක"),
-        ("4", "Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න"),
+        ("1️⃣", "Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න", "#3b82f6"),
+        ("2️⃣", "Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය", "#8b5cf6"),
+        ("3️⃣", "Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක", "#16a34a"),
+        ("4️⃣", "Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න", "#f59e0b"),
     ]
     scols = st.columns(4)
-    for col, (num, step) in zip(scols, steps):
+    for col, (emoji, step, clr) in zip(scols, steps):
         with col:
-            st.markdown(f"""<div style='text-align:center; background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:20px 10px;'>
-            <div style='width:34px; height:34px; background:#14532d; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.88rem; margin:0 auto 10px; color:#ffffff; font-weight:800;'>{num}</div>
-            <div style='font-weight:700; font-size:0.88rem; color:#0d2b0d;'>{step}</div>
+            st.markdown(f"""<div style='text-align:center; background:#f8fafc; border-radius:14px; padding:20px 10px; border:1px solid #e2e8f0;'>
+            <div style='font-size:2rem; margin-bottom:8px;'>{emoji}</div>
+            <div style='font-weight:700; font-size:0.88rem; color:{clr};'>{step}</div>
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
@@ -1177,14 +1133,15 @@ elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
     st.markdown(f'<div class="section-header">{t["method_title"]}</div>', unsafe_allow_html=True)
 
     step_icons = ["📚", "🔍", "📏", "🔮"]
+    step_colors = ["#3b82f6", "#8b5cf6", "#16a34a", "#f59e0b"]
     cols = st.columns(4)
-    for i, (col, icon, step) in enumerate(zip(cols, step_icons, t["method_steps"])):
+    for i, (col, icon, clr, step) in enumerate(zip(cols, step_icons, step_colors, t["method_steps"])):
         with col:
             st.markdown(f"""
-            <div style='text-align:center; background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:24px 16px;'>
-                <div style='width:34px; height:34px; background:#14532d; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.88rem; margin:0 auto 10px; color:#ffffff; font-weight:800;'>{i+1}</div>
-                <div style='font-size:1.3rem; margin-bottom:8px;'>{icon}</div>
-                <div style='font-size:0.87rem; color:#374151; line-height:1.6; font-weight:500;'>{step}</div>
+            <div style='text-align:center; background:#f8fafc; border-radius:16px; padding:28px 16px; border:1px solid #e2e8f0; height:190px; display:flex; flex-direction:column; align-items:center; justify-content:center;'>
+                <div style='width:48px; height:48px; background:linear-gradient(135deg,{clr},{clr}99); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin:0 auto 12px; color:white; font-weight:900; box-shadow:0 4px 12px {clr}44;'>{i+1}</div>
+                <div style='font-size:1.4rem; margin-bottom:8px;'>{icon}</div>
+                <div style='font-size:0.88rem; color:#475569; line-height:1.6; font-weight:500;'>{step}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1194,18 +1151,18 @@ elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
     st.markdown("#### " + ("🏗️ System Architecture" if lang=="en" else "🏗️ පද්ධති ගෘහ නිර්මාණය"))
     arch_cols = st.columns(5)
     arch_steps = [
-        ("📦", "Raw Data\n(Auction Records)"),
-        ("🔄", "Pre-processing\n& Cleaning"),
-        ("🤖", "Model Training\n(Markov + ARIMA)"),
-        ("📊", "Analysis\n(Elasticity)"),
-        ("📱", "Dashboard\n(COCOStat)"),
+        ("📦", "Raw Data\n(Auction Records)", "#3b82f6"),
+        ("🔄", "Pre-processing\n& Cleaning", "#8b5cf6"),
+        ("🤖", "Model Training\n(Markov + ARIMA)", "#16a34a"),
+        ("📊", "Analysis\n(Elasticity)", "#f59e0b"),
+        ("📱", "Dashboard\n(COCOStat)", "#ef4444"),
     ]
-    for i, (col, (icon, label)) in enumerate(zip(arch_cols, arch_steps)):
+    for col, (icon, label, clr) in zip(arch_cols, arch_steps):
         with col:
             st.markdown(f"""
-            <div style='text-align:center; background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:16px 8px;'>
-                <div style='font-size:1.5rem; margin-bottom:8px;'>{icon}</div>
-                <div style='font-size:0.78rem; font-weight:700; color:#0d2b0d; white-space:pre-line; line-height:1.5;'>{label}</div>
+            <div style='text-align:center; background:#f8fafc; border-top:4px solid {clr}; border-radius:0 0 12px 12px; padding:16px 8px;'>
+                <div style='font-size:1.8rem; margin-bottom:6px;'>{icon}</div>
+                <div style='font-size:0.78rem; font-weight:700; color:{clr}; white-space:pre-line;'>{label}</div>
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
@@ -1316,6 +1273,6 @@ for col, district in zip([d1, d2, d3, d4, d5], districts):
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align:center; font-size:0.72rem; color:#4a7a4a; padding-bottom:16px; border-top:1px solid #d1e7d1; padding-top:16px; margin-top:8px;'>
-     COCOStat · Coconut Market Intelligence Dashboard · Data sourced from CDA &amp; CRI Sri Lanka
+    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data sourced from CDA &amp; CRI Sri Lanka
 </div>
 """, unsafe_allow_html=True)
