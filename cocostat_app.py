@@ -482,14 +482,21 @@ st.markdown(f"""
 # ── OVERVIEW ─────────────────────────────────
 if "📊 Overview" in section or "📊 දළ" in section:
     col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric(t["card_price_label"], t["card_price_value"], t["card_price_sub"])
-    with col2:
-        st.metric(t["card_market_label"], t["card_market_value"], t["card_market_sub"])
-    with col3:
-        st.metric(t["card_demand_label"], t["card_demand_value"], t["card_demand_sub"])
-    with col4:
-        st.metric(t["card_forecast_label"], t["card_forecast_value"], t["card_forecast_sub"])
+    overview_cards = [
+        (t["card_price_label"],    t["card_price_value"],    t["card_price_sub"],    "#16a34a", "#dcfce7", "#bbf7d0"),
+        (t["card_market_label"],   t["card_market_value"],   t["card_market_sub"],   "#2563eb", "#eff6ff", "#bfdbfe"),
+        (t["card_demand_label"],   t["card_demand_value"],   t["card_demand_sub"],   "#7c3aed", "#f5f3ff", "#ddd6fe"),
+        (t["card_forecast_label"], t["card_forecast_value"], t["card_forecast_sub"], "#d97706", "#fefce8", "#fde68a"),
+    ]
+    for col, (label, value, sub, clr, bg, border) in zip([col1, col2, col3, col4], overview_cards):
+        with col:
+            st.markdown(f"""
+            <div style='background:{bg}; border:1px solid {border}; border-radius:16px; padding:18px 20px;'>
+                <div style='font-size:0.78rem; font-weight:700; color:{clr}; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:clip;'>{label}</div>
+                <div style='font-size:1.55rem; font-weight:900; color:#0f172a; line-height:1.2; margin-bottom:8px; word-break:break-word;'>{value}</div>
+                <div style='display:inline-block; background:{clr}22; color:{clr}; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px;'>{sub}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
@@ -955,11 +962,21 @@ elif "📈 History" in section or "📈 ඉති" in section:
     # Summary stats
     st.markdown("#### " + ("📊 Summary Statistics" if lang=="en" else "📊 සාරාංශ සංඛ්‍යාන"))
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("📈 " + ("Max" if lang=="en" else "උපරිම"), f"Rs. {history_df['price'].max():.2f}")
-    c2.metric("📉 " + ("Min" if lang=="en" else "අවම"), f"Rs. {history_df['price'].min():.2f}")
-    c3.metric("📊 " + ("Avg" if lang=="en" else "සාමාන්‍ය"), f"Rs. {history_df['price'].mean():.2f}")
-    c4.metric("📐 " + ("Std Dev" if lang=="en" else "ප්‍රමිති"), f"Rs. {history_df['price'].std():.2f}")
-    c5.metric("📅 " + ("Months" if lang=="en" else "මාස"), str(len(history_df)))
+    hist_stats = [
+        ("📈 " + ("Max Price" if lang=="en" else "උපරිම මිල"),  f"Rs. {history_df['price'].max():.2f}", "#ef4444", "#fef2f2"),
+        ("📉 " + ("Min Price" if lang=="en" else "අවම මිල"),    f"Rs. {history_df['price'].min():.2f}", "#22c55e", "#dcfce7"),
+        ("📊 " + ("Avg Price" if lang=="en" else "සාමාන්‍ය මිල"), f"Rs. {history_df['price'].mean():.2f}", "#3b82f6", "#eff6ff"),
+        ("📐 " + ("Std Dev" if lang=="en" else "ප්‍රමිති අප."),  f"Rs. {history_df['price'].std():.2f}",  "#f59e0b", "#fefce8"),
+        ("📅 " + ("Total Months" if lang=="en" else "මාස ගණන"),  str(len(history_df)),                   "#8b5cf6", "#f5f3ff"),
+    ]
+    for col, (label, val, clr, bg) in zip([c1, c2, c3, c4, c5], hist_stats):
+        with col:
+            st.markdown(f"""
+            <div style='background:{bg}; border:1px solid {clr}33; border-radius:14px; padding:14px 16px; text-align:center;'>
+                <div style='font-size:0.72rem; font-weight:700; color:{clr}; margin-bottom:6px;'>{label}</div>
+                <div style='font-size:1.4rem; font-weight:900; color:#0f172a;'>{val}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
