@@ -447,14 +447,15 @@ with st.sidebar:
         st.markdown(f"<div class='info-box-green' style='margin-top:8px;'>✅ {'Market within safe range' if lang=='en' else 'ආරක්ෂිත සීමාව'}</div>", unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("""
-    <div style='font-size:0.72rem; opacity:0.75; line-height:2.0;'>
-        <div style='font-size:0.65rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>🏛 Key Contacts</div>
-        <b>📞 CDA Hotline</b><br>
-        <span style='opacity:0.8;'>+94 31 222 2481</span><br>
-        <b>📍 Coconut Triangle</b><br>
-        <span style='opacity:0.8;'>Kurunegala · Puttalam · Gampaha</span><br>
-        <b>🌐 cda.gov.lk</b>
+    st.markdown(f"""
+    <div style='font-size:0.72rem; opacity:0.75; line-height:2.0; text-align:center;'>
+        <div style='font-size:0.65rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>👤 {t['footer_researcher']}</div>
+        <div style='font-weight:800; font-size:0.85rem; margin-bottom:6px;'>M A C S RATHNAYAKE</div>
+        <div style='font-size:0.65rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;'>{t['footer_ids']}</div>
+        <div style='font-size:0.78rem;'>UOW: w1999714</div>
+        <div style='font-size:0.78rem; margin-bottom:6px;'>IIT: 20220508</div>
+        <div style='font-size:0.65rem; opacity:0.5; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;'>{t['footer_programme']}</div>
+        <div style='font-size:0.75rem; opacity:0.85; line-height:1.5;'>BSc (Hons) Data Science & Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
 
