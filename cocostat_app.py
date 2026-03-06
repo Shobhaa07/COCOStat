@@ -1190,72 +1190,37 @@ elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
 # ─────────────────────────────────────────────
 st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
+# Header
 st.markdown("""
-<div style='background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); border-radius:20px; padding:36px 32px; color:white; text-align:center;'>
-    <div style='font-size:2.2rem; margin-bottom:6px;'>🥥</div>
-    <div style='font-weight:900; font-size:1.5rem; margin-bottom:4px;'>Sri Lanka Coconut Industry</div>
-    <div style='font-size:0.85rem; opacity:0.55; margin-bottom:0;'>Key Organisations, Contacts &amp; Industry Facts</div>
+<div style='text-align:center; margin-bottom:24px;'>
+    <div style='font-size:1.5rem; font-weight:900; color:#0f172a; margin-bottom:4px;'>🥥 Sri Lanka Coconut Industry</div>
+    <div style='font-size:0.85rem; color:#64748b;'>Key Organisations, Contacts &amp; Industry Facts</div>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
-
 # ── Row 1: Organisations ──
 org_col1, org_col2, org_col3, org_col4 = st.columns(4)
-
-with org_col1:
-    st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
-        <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🏛 Primary Regulator</div>
-        <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Coconut Development Authority</div>
-        <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
-            No. 54, Nawam Mawatha<br>Colombo 02<br>
-            📞 +94 11 243 0610<br>
-            🌐 www.cda.gov.lk
+orgs = [
+    ("🏛", "Primary Regulator",  "#16a34a", "#dcfce7", "#bbf7d0", "Coconut Development Authority", "No. 54, Nawam Mawatha<br>Colombo 02", "+94 11 243 0610", "www.cda.gov.lk"),
+    ("🔬", "Research Institute",  "#3b82f6", "#eff6ff", "#bfdbfe", "Coconut Research Institute (CRI)", "Bandirippuwa Estate<br>Lunuwila 61150",  "+94 31 222 2481", "www.cri.gov.lk"),
+    ("📦", "Export Promoter",     "#8b5cf6", "#f5f3ff", "#ddd6fe", "Sri Lanka Export Development Board", "42 Nawam Mawatha<br>Colombo 02",   "+94 11 230 0705", "www.srilankabusiness.com"),
+    ("🛒", "Market &amp; Auction","#f59e0b", "#fefce8", "#fde68a", "HARTI / Economic Centres",       "Narahenpita, Colombo 05<br>(Head Office)", "+94 11 259 1919", "www.harti.gov.lk"),
+]
+for col, (icon, badge, clr, bg, border, name, addr, phone, web) in zip(
+        [org_col1, org_col2, org_col3, org_col4], orgs):
+    with col:
+        st.markdown(f"""
+        <div style='background:{bg}; border:1px solid {border}; border-radius:14px; padding:18px 16px;'>
+            <div style='font-size:0.6rem; font-weight:700; color:{clr}; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{icon} {badge}</div>
+            <div style='font-weight:800; font-size:0.88rem; color:#0f172a; margin-bottom:10px; line-height:1.4;'>{name}</div>
+            <div style='font-size:0.76rem; color:#475569; line-height:2.0;'>
+                📍 {addr}<br>
+                📞 {phone}<br>
+                🌐 {web}
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-with org_col2:
-    st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
-        <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🔬 Research Institute</div>
-        <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Coconut Research Institute (CRI)</div>
-        <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
-            Bandirippuwa Estate<br>Lunuwila 61150<br>
-            📞 +94 31 222 2481<br>
-            🌐 www.cri.gov.lk
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with org_col3:
-    st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
-        <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>📦 Export Promoter</div>
-        <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Sri Lanka Export Development Board</div>
-        <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
-            42 Nawam Mawatha<br>Colombo 02<br>
-            📞 +94 11 230 0705<br>
-            🌐 www.srilankabusiness.com
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with org_col4:
-    st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
-        <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🛒 Market &amp; Auction</div>
-        <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>HARTI / Economic Centres</div>
-        <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
-            Narahenpita, Colombo 05<br>(Head Office)<br>
-            📞 +94 11 259 1919<br>
-            🌐 www.harti.gov.lk
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
 st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
 # ── Row 2: Industry Stats ──
@@ -1263,36 +1228,35 @@ st.markdown("<div style='text-align:center; font-size:0.75rem; font-weight:700; 
 
 s1, s2, s3, s4, s5, s6 = st.columns(6)
 industry_stats = [
-    ("~2.7M", "Hectares Cultivated", "#22c55e", "#dcfce7"),
-    ("~3B", "Nuts / Year", "#3b82f6", "#eff6ff"),
-    ("450K+", "Farming Families", "#f59e0b", "#fefce8"),
-    ("$350M+", "Annual Exports", "#8b5cf6", "#f5f3ff"),
-    ("3rd", "World Producer", "#ef4444", "#fef2f2"),
-    ("~2%", "GDP Contribution", "#14b8a6", "#f0fdfa"),
+    ("~2.7M", "Hectares Cultivated", "#16a34a", "#dcfce7", "#bbf7d0"),
+    ("~3B",   "Nuts / Year",         "#3b82f6", "#eff6ff", "#bfdbfe"),
+    ("450K+", "Farming Families",    "#f59e0b", "#fefce8", "#fde68a"),
+    ("$350M+","Annual Exports",      "#8b5cf6", "#f5f3ff", "#ddd6fe"),
+    ("3rd",   "World Producer",      "#ef4444", "#fef2f2", "#fecaca"),
+    ("~2%",   "GDP Contribution",    "#14b8a6", "#f0fdfa", "#99f6e4"),
 ]
-for col, (val, label, clr, bg) in zip([s1,s2,s3,s4,s5,s6], industry_stats):
+for col, (val, label, clr, bg, border) in zip([s1, s2, s3, s4, s5, s6], industry_stats):
     with col:
         st.markdown(f"""
-        <div style='background:{bg}; border-radius:12px; padding:14px 8px; text-align:center; border:1px solid {clr}33;'>
-            <div style='font-size:1.4rem; font-weight:900; color:{clr};'>{val}</div>
-            <div style='font-size:0.7rem; color:#64748b; margin-top:4px; font-weight:600;'>{label}</div>
+        <div style='background:{bg}; border:1px solid {border}; border-radius:12px; padding:16px 8px; text-align:center;'>
+            <div style='font-size:1.5rem; font-weight:900; color:{clr};'>{val}</div>
+            <div style='font-size:0.72rem; color:#64748b; margin-top:5px; font-weight:600;'>{label}</div>
         </div>
         """, unsafe_allow_html=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
 st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
 # ── Row 3: Coconut Triangle ──
-st.markdown("<div style='text-align:center; font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px;'>📍 The Coconut Triangle — Main Growing Districts</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px;'>📍 The Coconut Triangle — Main Growing Districts</div>", unsafe_allow_html=True)
 
 d1, d2, d3, d4, d5 = st.columns(5)
 districts = ["Kurunegala", "Puttalam", "Gampaha", "Colombo", "Kalutara"]
 for col, district in zip([d1, d2, d3, d4, d5], districts):
     with col:
         st.markdown(f"""
-        <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:10px; padding:12px 8px; text-align:center; color:white;'>
-            <div style='font-size:1.3rem;'>🌴</div>
-            <div style='font-size:0.82rem; font-weight:700; margin-top:4px;'>{district}</div>
+        <div style='background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 8px; text-align:center;'>
+            <div style='font-size:1.4rem;'>🌴</div>
+            <div style='font-size:0.85rem; font-weight:700; color:#0f172a; margin-top:6px;'>{district}</div>
         </div>
         """, unsafe_allow_html=True)
 
