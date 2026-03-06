@@ -27,7 +27,7 @@ T = {
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "lang_label": "🌐 Language",
         "lang_option": "සිංහල",
-        "nav": ["Overview", "Market", "Demand", "Forecast", "Policy", "History", "Compare", "Method"],
+        "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🔍 Compare", "🧠 Method"],
         "card_price_label": "💰 Current Price",
         "card_price_value": "Rs. 68.50",
         "card_price_sub": "Per Nut (Auction)",
@@ -117,7 +117,7 @@ T = {
         "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම් හැසිරීම සහ ඉදිරි මිල අනාවැකි සරලව පැහැදිලි කරයි.",
         "lang_label": "🌐 භාෂාව",
         "lang_option": "English",
-        "nav": ["දළ විශ්ලේෂණය", "වෙළඳපොළ", "ඉල්ලුම", "අනාවැකිය", "ප්‍රතිපත්ති", "ඉතිහාසය", "සංසන්දනය", "ක්‍රමවේදය"],
+        "nav": ["📊 දළ විශ්ලේෂණය", "🚦 වෙළඳපොළ", "📉 ඉල්ලුම", "🔮 අනාවැකිය", "🏛 ප්‍රතිපත්ති", "📈 ඉතිහාසය", "🔍 සංසන්දනය", "🧠 ක්‍රමවේදය"],
         "card_price_label": "💰 වත්මන් මිල",
         "card_price_value": "රු. 68.50",
         "card_price_sub": "පොල් ගෙඩියකට (වෙන්දේසි)",
@@ -303,45 +303,44 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 /* ── Divider: subtle green ── */
 .styled-divider { height: 1px; background: #d1e7d1; margin: 28px 0; }
 
-/* ── Navigation radio: uniform pill boxes ── */
-div[data-testid="stSidebar"] .stRadio > div {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+/* ── Navigation radio: uniform pill boxes, hide circles ── */
+div[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
 }
+/* Hide the actual radio circle input */
+div[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child,
+div[data-testid="stSidebar"] .stRadio input[type="radio"],
+div[data-testid="stSidebar"] .stRadio [data-testid="stWidgetLabel"] ~ div span[data-baseweb] {
+    display: none !important;
+}
+/* Style each label as a uniform full-width box */
 div[data-testid="stSidebar"] .stRadio label {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     width: 100% !important;
-    min-height: 38px !important;
-    padding: 0 12px !important;
+    min-height: 40px !important;
+    padding: 0 14px !important;
     border-radius: 8px !important;
     border: 1px solid #d1e7d1 !important;
     background: #ffffff !important;
-    font-size: 0.85rem !important;
+    font-size: 0.87rem !important;
     font-weight: 600 !important;
     color: #1a3a1a !important;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
     box-sizing: border-box !important;
+    gap: 8px !important;
 }
 div[data-testid="stSidebar"] .stRadio label:hover {
     background: #dcfce7 !important;
     border-color: #16a34a !important;
     color: #14532d !important;
 }
-div[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] span:first-child {
-    display: none !important;
-}
-/* Hide the radio circle dot */
-div[data-testid="stSidebar"] .stRadio input[type="radio"] {
-    display: none !important;
-}
-/* Active/selected state */
-div[data-testid="stSidebar"] .stRadio label[aria-checked="true"],
-div[data-testid="stSidebar"] .stRadio label:has(input:checked) {
+/* Selected item */
+div[data-testid="stSidebar"] .stRadio label[aria-checked="true"] {
     background: #14532d !important;
     border-color: #14532d !important;
     color: #ffffff !important;
@@ -413,11 +412,11 @@ with st.sidebar:
     t = T[lang]
 
     st.markdown("---")
-    st.markdown("### " + ("Navigation" if lang == "en" else "සංචාලනය"))
+    st.markdown("### " + ("📍 Navigation" if lang == "en" else "📍 සංචාලනය"))
     section = st.radio("", t["nav"], label_visibility="collapsed")
 
     st.markdown("---")
-    st.markdown("### " + ("Settings" if lang == "en" else "සැකසුම්"))
+    st.markdown("### " + ("⚙️ Settings" if lang == "en" else "⚙️ සැකසුම්"))
     active_regime = st.selectbox(
         t["regime_select"],
         t["regime_options"],
@@ -427,7 +426,7 @@ with st.sidebar:
 
     # Alert thresholds
     st.markdown("---")
-    st.markdown("### " + ("Alerts" if lang == "en" else "ඇඟවීම්"))
+    st.markdown("### " + ("🔔 Alerts" if lang == "en" else "🔔 ඇඟවීම්"))
     warn_threshold = st.slider(
         t["alert_warn"] if "alert_warn" in t else "Warning at (Rs.)",
         min_value=50, max_value=90, value=65, step=1
@@ -526,7 +525,7 @@ st.markdown(f"""
 # ─────────────────────────────────────────────
 
 # ── OVERVIEW ─────────────────────────────────
-if "Overview" in section or "දළ" in section:
+if "📊 Overview" in section or "📊 දළ" in section:
     col1, col2, col3, col4 = st.columns(4)
     overview_cards = [
         (t["card_price_label"],    t["card_price_value"],    t["card_price_sub"]),
@@ -666,7 +665,7 @@ if "Overview" in section or "දළ" in section:
             """, unsafe_allow_html=True)
 
 # ── MARKET REGIME ────────────────────────────
-elif "Market" in section or "වෙළඳ" in section:
+elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
     st.markdown(f'<div class="section-header">{t["regime_title"]}</div>', unsafe_allow_html=True)
 
     regime_colors = ["#22c55e", "#eab308", "#ef4444"]
@@ -748,7 +747,7 @@ elif "Market" in section or "වෙළඳ" in section:
             """, unsafe_allow_html=True)
 
 # ── DEMAND ───────────────────────────────────
-elif "Demand" in section or "ඉල්ලුම" in section:
+elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
     st.markdown(f'<div class="section-header">{t["demand_title"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="info-box-blue">{t["demand_note"]}</div>', unsafe_allow_html=True)
 
@@ -829,7 +828,7 @@ elif "Demand" in section or "ඉල්ලුම" in section:
     st.plotly_chart(fig_demand, use_container_width=True, config={"displayModeBar": "hover"})
 
 # ── FORECAST ─────────────────────────────────
-elif "Forecast" in section or "අනාවැකිය" in section:
+elif "🔮 Forecast" in section or "🔮 අනා" in section:
     st.markdown(f'<div class="section-header">{t["forecast_title"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="info-box-green">{t["forecast_summary"]}</div>', unsafe_allow_html=True)
 
@@ -917,7 +916,7 @@ elif "Forecast" in section or "අනාවැකිය" in section:
             </div>""", unsafe_allow_html=True)
 
 # ── POLICY ────────────────────────────────────
-elif "Policy" in section or "ප්‍රතිපත්ති" in section:
+elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
     st.markdown(f'<div class="section-header">{t["policy_title"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="section-sub">{t["policy_sub"]}</div>', unsafe_allow_html=True)
 
@@ -990,7 +989,7 @@ elif "Policy" in section or "ප්‍රතිපත්ති" in section:
             col.plotly_chart(fig_gauge, use_container_width=True)
 
 # ── HISTORY ────────────────────────────────────
-elif "History" in section or "ඉතිහාසය" in section:
+elif "📈 History" in section or "📈 ඉති" in section:
     st.markdown(f'<div class="section-header">{t["history_title"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="section-sub">{t["history_sub"]}</div>', unsafe_allow_html=True)
 
@@ -1089,7 +1088,7 @@ elif "History" in section or "ඉතිහාසය" in section:
         st.plotly_chart(fig_annual, use_container_width=True, config={"displayModeBar": "hover"})
 
 # ── COMPARE ────────────────────────────────────
-elif "Compare" in section or "සංසන්දනය" in section:
+elif "🔍 Compare" in section or "🔍 සංසන්" in section:
     st.markdown(f'<div class="section-header">{t["compare_title"]}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="section-sub">{t["compare_sub"]}</div>', unsafe_allow_html=True)
 
@@ -1174,7 +1173,7 @@ elif "Compare" in section or "සංසන්දනය" in section:
         st.info("Please select at least one year above." if lang=="en" else "කරුණාකර ඉහතින් අවම වශයෙන් වසරක් තෝරන්න.")
 
 # ── METHOD ────────────────────────────────────
-elif "Method" in section or "ක්‍රමවේදය" in section:
+elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
     st.markdown(f'<div class="section-header">{t["method_title"]}</div>', unsafe_allow_html=True)
 
     step_icons = ["📚", "🔍", "📏", "🔮"]
