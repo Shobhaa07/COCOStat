@@ -695,10 +695,10 @@ if "📊 Overview" in section or "📊 දළ" in section:
     for col, (label, value, sub) in zip([col1, col2, col3, col4], overview_cards):
         with col:
             st.markdown(f"""
-            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:18px 20px; min-height:130px; display:flex; flex-direction:column; justify-content:space-between;'>
-                <div style='font-size:0.72rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{label}</div>
-                <div style='font-size:1.5rem; font-weight:900; color:#0d2b0d; line-height:1.2; margin-bottom:10px; word-break:break-word; flex:1;'>{value}</div>
-                <div style='display:inline-block; background:#f0fdf4; color:#166534; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:20px; border:1px solid #bbf7d0;'>{sub}</div>
+            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:16px 18px; height:130px; display:flex; flex-direction:column; justify-content:space-between; overflow:hidden;'>
+                <div style='font-size:0.68rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1px;'>{label}</div>
+                <div style='font-size:1.4rem; font-weight:900; color:#0d2b0d; line-height:1.2; word-break:break-word;'>{value}</div>
+                <div style='display:inline-block; background:#f0fdf4; color:#166534; font-size:0.72rem; font-weight:600; padding:3px 10px; border-radius:20px; border:1px solid #bbf7d0;'>{sub}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -817,9 +817,9 @@ if "📊 Overview" in section or "📊 දළ" in section:
         [diff_week, diff_month, diff_year]):
         with col:
             st.markdown(f"""
-            <div style='background:#f8fafc; border:2px solid {clr_calc}33; border-radius:14px; padding:18px; text-align:center; min-height:90px; display:flex; flex-direction:column; justify-content:center;'>
-                <div style='font-size:0.78rem; color:#64748b; font-weight:700; margin-bottom:6px;'>{label}</div>
-                <div style='font-size:1.6rem; font-weight:900; color:{clr_calc};'>{arrow} Rs. {abs(val):.2f}</div>
+            <div style='background:#f8fafc; border:2px solid {clr_calc}33; border-radius:14px; padding:14px; text-align:center; height:90px; display:flex; flex-direction:column; justify-content:center;'>
+                <div style='font-size:0.76rem; color:#64748b; font-weight:700; margin-bottom:4px;'>{label}</div>
+                <div style='font-size:1.5rem; font-weight:900; color:{clr_calc};'>{arrow} Rs. {abs(val):.2f}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -855,9 +855,9 @@ elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
         [t["regime_avg_label"], t["regime_vol_label"], t["regime_status_label"]],
         [t["regime_avg"][regime_idx], t["regime_vol"][regime_idx], t["regime_status"][regime_idx]]):
         with col:
-            st.markdown(f"""<div style='background:{rb}; border-radius:12px; padding:20px; text-align:center; min-height:100px; display:flex; flex-direction:column; justify-content:center;'>
-            <div style='font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>{label}</div>
-            <div style='font-size:1.8rem; font-weight:900; color:{rc};'>{val}</div></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div style='background:{rb}; border-radius:12px; padding:16px; text-align:center; height:90px; display:flex; flex-direction:column; justify-content:center;'>
+            <div style='font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{label}</div>
+            <div style='font-size:1.7rem; font-weight:900; color:{rc};'>{val}</div></div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
@@ -897,7 +897,7 @@ elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
         pct = count / len(history_df) * 100
         with col:
             st.markdown(f"""
-            <div style='background:{regime_bgs[i]}; border-radius:12px; padding:18px; text-align:center; min-height:110px; display:flex; flex-direction:column; justify-content:center;'>
+            <div style='background:{regime_bgs[i]}; border-radius:12px; padding:14px; text-align:center; height:110px; display:flex; flex-direction:column; justify-content:center;'>
                 <div style='font-size:1.8rem; margin-bottom:4px;'>{regime_emoji[i]}</div>
                 <div style='font-weight:800; color:{regime_colors[i]}; font-size:1rem; margin-bottom:4px;'>{t["regime_options"][i]}</div>
                 <div style='font-size:1.6rem; font-weight:900; color:{regime_colors[i]};'>{pct:.0f}%</div>
@@ -951,11 +951,11 @@ elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
               ("-0.12", "Crisis" if lang=="en" else "අර්බුද", "#ef4444", "#fee2e2")]
     for col, (val, period, clr, bg) in zip([c1, c2, c3], data_e):
         with col:
-            st.markdown(f"""<div style='background:{bg}; border-radius:12px; padding:18px; text-align:center; min-height:110px; display:flex; flex-direction:column; justify-content:center;'>
-            <div style='font-size:0.75rem; font-weight:700; color:#64748b; margin-bottom:6px;'>
+            st.markdown(f"""<div style='background:{bg}; border-radius:12px; padding:16px; text-align:center; height:110px; display:flex; flex-direction:column; justify-content:center;'>
+            <div style='font-size:0.72rem; font-weight:700; color:#64748b; margin-bottom:4px;'>
             {"Elasticity" if lang=="en" else "ස්ථිතිස්ථිකය"} — {period}</div>
-            <div style='font-size:2rem; font-weight:900; color:{clr};'>{val}</div>
-            <div style='font-size:0.8rem; color:#64748b; margin-top:4px;'>{"Inelastic" if lang=="en" else "අජඩ"}</div>
+            <div style='font-size:1.9rem; font-weight:900; color:{clr};'>{val}</div>
+            <div style='font-size:0.78rem; color:#64748b; margin-top:2px;'>{"Inelastic" if lang=="en" else "අජඩ"}</div>
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
@@ -1069,8 +1069,8 @@ elif "🔮 Forecast" in section or "🔮 අනා" in section:
     for col, label, val, clr in zip([s1, s2, s3, s4, s5], fc_labels, fc_vals, fc_colors):
         with col:
             st.markdown(f"""
-            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid {clr}; border-radius:10px; padding:12px 14px; text-align:center; min-height:80px; display:flex; flex-direction:column; justify-content:center;'>
-                <div style='font-size:0.7rem; color:#4a7a4a; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;'>{label}</div>
+            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid {clr}; border-radius:10px; padding:12px 14px; text-align:center; height:80px; display:flex; flex-direction:column; justify-content:center;'>
+                <div style='font-size:0.68rem; color:#4a7a4a; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;'>{label}</div>
                 <div style='font-size:1.2rem; font-weight:900; color:#0d2b0d;'>{val}</div>
             </div>""", unsafe_allow_html=True)
 
@@ -1113,9 +1113,9 @@ elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
     scols = st.columns(4)
     for col, (emoji, step, clr) in zip(scols, steps):
         with col:
-            st.markdown(f"""<div style='text-align:center; background:#f8fafc; border-radius:14px; padding:20px 10px; border:1px solid #e2e8f0; min-height:100px; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-            <div style='font-size:2rem; margin-bottom:8px;'>{emoji}</div>
-            <div style='font-weight:700; font-size:0.88rem; color:{clr};'>{step}</div>
+            st.markdown(f"""<div style='text-align:center; background:#f8fafc; border-radius:14px; padding:14px 10px; border:1px solid #e2e8f0; height:100px; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div style='font-size:1.8rem; margin-bottom:6px;'>{emoji}</div>
+            <div style='font-weight:700; font-size:0.85rem; color:{clr};'>{step}</div>
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
@@ -1192,9 +1192,9 @@ elif "📈 History" in section or "📈 ඉති" in section:
     for col, (label, val) in zip([c1, c2, c3, c4, c5], hist_stats):
         with col:
             st.markdown(f"""
-            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:14px 16px; text-align:center; min-height:90px; display:flex; flex-direction:column; justify-content:center;'>
-                <div style='font-size:0.72rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;'>{label}</div>
-                <div style='font-size:1.35rem; font-weight:900; color:#0d2b0d;'>{val}</div>
+            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:14px 16px; text-align:center; height:90px; display:flex; flex-direction:column; justify-content:center;'>
+                <div style='font-size:0.68rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;'>{label}</div>
+                <div style='font-size:1.3rem; font-weight:900; color:#0d2b0d;'>{val}</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1423,10 +1423,10 @@ for col, (icon, badge, name, addr, phone, web) in zip(
         [org_col1, org_col2, org_col3, org_col4], orgs):
     with col:
         st.markdown(f"""
-        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:18px 16px; min-height:160px; display:flex; flex-direction:column;'>
-            <div style='font-size:0.6rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:8px;'>{icon} {badge}</div>
-            <div style='font-weight:800; font-size:0.88rem; color:#0d2b0d; margin-bottom:10px; line-height:1.4;'>{name}</div>
-            <div style='font-size:0.76rem; color:#374151; line-height:2.0; flex:1;'>
+        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:18px 16px; height:200px; display:flex; flex-direction:column; overflow:hidden;'>
+            <div style='font-size:0.6rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:6px;'>{icon} {badge}</div>
+            <div style='font-weight:800; font-size:0.85rem; color:#0d2b0d; margin-bottom:8px; line-height:1.35;'>{name}</div>
+            <div style='font-size:0.74rem; color:#374151; line-height:1.8; flex:1; overflow:hidden;'>
                 📍 {addr}<br>
                 📞 {phone}<br>
                 🌐 {web}
@@ -1451,9 +1451,9 @@ industry_stats = [
 for col, (val, label) in zip([s1, s2, s3, s4, s5, s6], industry_stats):
     with col:
         st.markdown(f"""
-        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:16px 8px; text-align:center; min-height:80px; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-            <div style='font-size:1.5rem; font-weight:900; color:#0d2b0d;'>{val}</div>
-            <div style='font-size:0.72rem; color:#4a7a4a; margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;'>{label}</div>
+        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:12px 8px; text-align:center; height:90px; display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div style='font-size:1.4rem; font-weight:900; color:#0d2b0d; line-height:1;'>{val}</div>
+            <div style='font-size:0.68rem; color:#4a7a4a; margin-top:4px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; line-height:1.3;'>{label}</div>
         </div>
         """, unsafe_allow_html=True)
 
