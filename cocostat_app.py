@@ -1171,7 +1171,7 @@ org_col1, org_col2, org_col3, org_col4 = st.columns(4)
 
 with org_col1:
     st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white; height:170px;'>
+    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
         <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🏛 Primary Regulator</div>
         <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Coconut Development Authority</div>
         <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
@@ -1184,7 +1184,7 @@ with org_col1:
 
 with org_col2:
     st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white; height:170px;'>
+    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
         <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🔬 Research Institute</div>
         <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Coconut Research Institute (CRI)</div>
         <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
@@ -1197,7 +1197,7 @@ with org_col2:
 
 with org_col3:
     st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white; height:170px;'>
+    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
         <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>📦 Export Promoter</div>
         <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>Sri Lanka Export Development Board</div>
         <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
@@ -1210,7 +1210,7 @@ with org_col3:
 
 with org_col4:
     st.markdown("""
-    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white; height:170px;'>
+    <div style='background:linear-gradient(135deg,#0f2027,#1a3a2a); border-radius:14px; padding:18px 16px; color:white;'>
         <div style='font-size:0.6rem; opacity:0.45; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;'>🛒 Market &amp; Auction</div>
         <div style='font-weight:800; font-size:0.9rem; margin-bottom:8px; line-height:1.4;'>HARTI / Economic Centres</div>
         <div style='font-size:0.76rem; opacity:0.7; line-height:1.9;'>
