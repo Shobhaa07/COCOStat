@@ -310,8 +310,24 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 # ─────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style='text-align:center; padding:20px 0 12px; border-bottom:2px solid #d1e7d1; margin-bottom:4px;'>
-        <div style='font-size:2.4rem; margin-bottom:4px;'>🥥</div>
+    <div style='text-align:center; padding:22px 0 14px; border-bottom:2px solid #d1e7d1; margin-bottom:4px;'>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 8px; display:block;">
+          <circle cx="32" cy="32" r="30" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+          <circle cx="32" cy="32" r="23" fill="#166534"/>
+          <rect x="30.5" y="35" width="3" height="13" rx="1.5" fill="#bbf7d0"/>
+          <path d="M32 34 Q24 26 20 18 Q28 22 32 28 Q36 22 44 18 Q40 26 32 34Z" fill="#4ade80"/>
+          <path d="M32 30 Q26 24 24 16 Q31 21 32 27 Q33 21 40 16 Q38 24 32 30Z" fill="#86efac"/>
+          <circle cx="32" cy="37" r="4.5" fill="#92400e"/>
+          <circle cx="30.5" cy="35.5" r="1.2" fill="#78350f" opacity="0.7"/>
+          <circle cx="33.5" cy="35" r="0.9" fill="#78350f" opacity="0.5"/>
+          <rect x="8" y="46" width="3.5" height="9" rx="1" fill="#4ade80" opacity="0.85"/>
+          <rect x="13.5" y="42" width="3.5" height="13" rx="1" fill="#4ade80" opacity="0.85"/>
+          <rect x="19" y="45" width="3.5" height="10" rx="1" fill="#4ade80" opacity="0.85"/>
+          <polyline points="9.75,50 15.25,46 20.75,49" stroke="#bbf7d0" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9.75" cy="50" r="1.2" fill="#86efac"/>
+          <circle cx="15.25" cy="46" r="1.2" fill="#86efac"/>
+          <circle cx="20.75" cy="49" r="1.2" fill="#86efac"/>
+        </svg>
         <div style='font-size:1.3rem; font-weight:900; color:#0d2b0d; letter-spacing:0.5px;'>COCOStat</div>
         <div style='font-size:0.65rem; color:#4a7a4a; margin-top:3px; letter-spacing:2px; font-weight:600; text-transform:uppercase;'>Market Intelligence</div>
     </div>
