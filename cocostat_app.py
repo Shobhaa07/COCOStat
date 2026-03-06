@@ -335,6 +335,30 @@ html, body, [class*="css"] {
     }
 }
 
+/* ── Equal-height cards: stretch all columns and make inner divs fill height ── */
+[data-testid="stHorizontalBlock"] {
+    align-items: stretch !important;
+}
+[data-testid="stHorizontalBlock"] > [data-testid="column"] {
+    display: flex !important;
+    flex-direction: column !important;
+}
+[data-testid="stHorizontalBlock"] > [data-testid="column"] > div:first-child {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+[data-testid="stHorizontalBlock"] > [data-testid="column"] > div:first-child > div:first-child {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+/* The actual card div inside each column fills full height */
+[data-testid="stHorizontalBlock"] > [data-testid="column"] > div > div > div[style] {
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
 /* ── Sidebar: clean white, green accents ── */
 div[data-testid="stSidebar"] { background: #f7faf7 !important; border-right: 2px solid #d1e7d1 !important; }
 div[data-testid="stSidebar"] * { color: #1a3a1a !important; }
@@ -412,18 +436,45 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 <script>
 (function() {
     function stackColumnsOnMobile() {
-        if (window.innerWidth > 767) return;
-        var cols = document.querySelectorAll('[data-testid="column"]');
-        cols.forEach(function(col) {
-            col.style.setProperty('min-width', '100%', 'important');
-            col.style.setProperty('width', '100%', 'important');
-            col.style.setProperty('flex', '0 0 100%', 'important');
-            col.style.setProperty('max-width', '100%', 'important');
-        });
+        var isMobile = window.innerWidth <= 767;
         var rows = document.querySelectorAll('[data-testid="stHorizontalBlock"]');
         rows.forEach(function(row) {
-            row.style.setProperty('flex-wrap', 'wrap', 'important');
-            row.style.setProperty('gap', '0.5rem', 'important');
+            if (isMobile) {
+                row.style.setProperty('flex-wrap', 'wrap', 'important');
+                row.style.setProperty('gap', '0.5rem', 'important');
+            }
+            // Always apply stretch for equal-height cards (desktop + mobile)
+            row.style.setProperty('align-items', 'stretch', 'important');
+        });
+        var cols = document.querySelectorAll('[data-testid="column"]');
+        cols.forEach(function(col) {
+            col.style.setProperty('display', 'flex', 'important');
+            col.style.setProperty('flex-direction', 'column', 'important');
+            if (isMobile) {
+                col.style.setProperty('min-width', '100%', 'important');
+                col.style.setProperty('width', '100%', 'important');
+                col.style.setProperty('flex', '0 0 100%', 'important');
+                col.style.setProperty('max-width', '100%', 'important');
+            }
+            // Make inner wrappers stretch too
+            var inner = col.firstElementChild;
+            if (inner) {
+                inner.style.setProperty('flex', '1', 'important');
+                inner.style.setProperty('display', 'flex', 'important');
+                inner.style.setProperty('flex-direction', 'column', 'important');
+                var inner2 = inner.firstElementChild;
+                if (inner2) {
+                    inner2.style.setProperty('flex', '1', 'important');
+                    inner2.style.setProperty('display', 'flex', 'important');
+                    inner2.style.setProperty('flex-direction', 'column', 'important');
+                    // The actual card div
+                    var card = inner2.firstElementChild;
+                    if (card && card.style && card.style.background !== undefined) {
+                        card.style.setProperty('height', '100%', 'important');
+                        card.style.setProperty('box-sizing', 'border-box', 'important');
+                    }
+                }
+            }
         });
     }
     stackColumnsOnMobile();
