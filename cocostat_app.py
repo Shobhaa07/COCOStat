@@ -397,16 +397,17 @@ st.markdown(f"""
 <!-- Normal in-page hero -->
 <div id='coco-hero' style='
     text-align:center;
-    padding:28px 32px 22px;
-    border-bottom:2px solid #16a34a;
+    padding:36px 48px 32px;
     margin-bottom:0;
-    background:#ffffff;
+    background: linear-gradient(135deg, #0d2b0d 0%, #14532d 50%, #166534 100%);
+    border-bottom:3px solid #16a34a;
+    box-shadow: 0 4px 20px rgba(13,43,13,0.18);
 '>
-    <div style='display:inline-block; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#166534; letter-spacing:0.5px; margin-bottom:12px;'>
+    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:14px; backdrop-filter:blur(4px);'>
         🥥 {t["subtitle"]}
     </div>
-    <h1 style='font-size:1.9rem; font-weight:900; color:#0d2b0d; margin:0 0 10px; line-height:1.25; letter-spacing:-0.4px;'>{t["tagline"]}</h1>
-    <p style='color:#4a7a4a; font-size:0.85rem; max-width:580px; margin:0 auto; line-height:1.65; font-weight:500;'>{t["desc"]}</p>
+    <h1 style='font-size:2.2rem; font-weight:900; color:#ffffff; margin:0 0 12px; line-height:1.25; letter-spacing:-0.4px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>{t["tagline"]}</h1>
+    <p style='color:#bbf7d0; font-size:0.9rem; max-width:580px; margin:0 auto; line-height:1.7; font-weight:500; opacity:0.9;'>{t["desc"]}</p>
 </div>
 <div style='margin-bottom:24px;'></div>
 
