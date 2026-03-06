@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
-    page_icon="🥥",
+    page_icon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMCIgZmlsbD0iIzE0NTMyZCIgc3Ryb2tlPSIjMjJjNTVlIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0iIzE2NjUzNCIvPgogIDxyZWN0IHg9IjMwLjUiIHk9IjM1IiB3aWR0aD0iMyIgaGVpZ2h0PSIxMyIgcng9IjEuNSIgZmlsbD0iI2JiZjdkMCIvPgogIDxwYXRoIGQ9Ik0zMiAzNCBRMjQgMjYgMjAgMTggUTI4IDIyIDMyIDI4IFEzNiAyMiA0NCAxOCBRNDAgMjYgMzIgMzRaIiBmaWxsPSIjNGFkZTgwIi8+CiAgPHBhdGggZD0iTTMyIDMwIFEyNiAyNCAyNCAxNiBRMzEgMjEgMzIgMjcgUTMzIDIxIDQwIDE2IFEzOCAyNCAzMiAzMFoiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjM3IiByPSI0LjUiIGZpbGw9IiM5MjQwMGUiLz4KICA8Y2lyY2xlIGN4PSIzMC41IiBjeT0iMzUuNSIgcj0iMS4yIiBmaWxsPSIjNzgzNTBmIiBvcGFjaXR5PSIwLjciLz4KICA8Y2lyY2xlIGN4PSIzMy41IiBjeT0iMzUiIHI9IjAuOSIgZmlsbD0iIzc4MzUwZiIgb3BhY2l0eT0iMC41Ii8+CiAgPHJlY3QgeD0iOCIgeT0iNDYiIHdpZHRoPSIzLjUiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxMy41IiB5PSI0MiIgd2lkdGg9IjMuNSIgaGVpZ2h0PSIxMyIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxOSIgeT0iNDUiIHdpZHRoPSIzLjUiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNGFkZTgwIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBvbHlsaW5lIHBvaW50cz0iOS43NSw1MCAxNS4yNSw0NiAyMC43NSw0OSIgc3Ryb2tlPSIjYmJmN2QwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iOS43NSIgY3k9IjUwIiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIxNS4yNSIgY3k9IjQ2IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIyMC43NSIgY3k9IjQ5IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KPC9zdmc+",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -304,6 +304,34 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 .styled-divider { height: 1px; background: #d1e7d1; margin: 28px 0; }
 </style>
 """, unsafe_allow_html=True)
+
+# ── Favicon override ──────────────────────────────────────────
+st.markdown("""
+<script>
+(function() {
+    function setFavicon() {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/svg+xml';
+        link.rel = 'icon';
+        link.href = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMCIgZmlsbD0iIzE0NTMyZCIgc3Ryb2tlPSIjMjJjNTVlIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0iIzE2NjUzNCIvPgogIDxyZWN0IHg9IjMwLjUiIHk9IjM1IiB3aWR0aD0iMyIgaGVpZ2h0PSIxMyIgcng9IjEuNSIgZmlsbD0iI2JiZjdkMCIvPgogIDxwYXRoIGQ9Ik0zMiAzNCBRMjQgMjYgMjAgMTggUTI4IDIyIDMyIDI4IFEzNiAyMiA0NCAxOCBRNDAgMjYgMzIgMzRaIiBmaWxsPSIjNGFkZTgwIi8+CiAgPHBhdGggZD0iTTMyIDMwIFEyNiAyNCAyNCAxNiBRMzEgMjEgMzIgMjcgUTMzIDIxIDQwIDE2IFEzOCAyNCAzMiAzMFoiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjM3IiByPSI0LjUiIGZpbGw9IiM5MjQwMGUiLz4KICA8Y2lyY2xlIGN4PSIzMC41IiBjeT0iMzUuNSIgcj0iMS4yIiBmaWxsPSIjNzgzNTBmIiBvcGFjaXR5PSIwLjciLz4KICA8Y2lyY2xlIGN4PSIzMy41IiBjeT0iMzUiIHI9IjAuOSIgZmlsbD0iIzc4MzUwZiIgb3BhY2l0eT0iMC41Ii8+CiAgPHJlY3QgeD0iOCIgeT0iNDYiIHdpZHRoPSIzLjUiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxMy41IiB5PSI0MiIgd2lkdGg9IjMuNSIgaGVpZ2h0PSIxMyIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxOSIgeT0iNDUiIHdpZHRoPSIzLjUiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNGFkZTgwIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBvbHlsaW5lIHBvaW50cz0iOS43NSw1MCAxNS4yNSw0NiAyMC43NSw0OSIgc3Ryb2tlPSIjYmJmN2QwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iOS43NSIgY3k9IjUwIiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIxNS4yNSIgY3k9IjQ2IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIyMC43NSIgY3k9IjQ5IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KPC9zdmc+';
+        document.head.appendChild(link);
+        // Also set shortcut icon
+        var link2 = document.querySelector("link[rel='shortcut icon']") || document.createElement('link');
+        link2.rel = 'shortcut icon';
+        link2.href = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMCIgZmlsbD0iIzE0NTMyZCIgc3Ryb2tlPSIjMjJjNTVlIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0iIzE2NjUzNCIvPgogIDxyZWN0IHg9IjMwLjUiIHk9IjM1IiB3aWR0aD0iMyIgaGVpZ2h0PSIxMyIgcng9IjEuNSIgZmlsbD0iI2JiZjdkMCIvPgogIDxwYXRoIGQ9Ik0zMiAzNCBRMjQgMjYgMjAgMTggUTI4IDIyIDMyIDI4IFEzNiAyMiA0NCAxOCBRNDAgMjYgMzIgMzRaIiBmaWxsPSIjNGFkZTgwIi8+CiAgPHBhdGggZD0iTTMyIDMwIFEyNiAyNCAyNCAxNiBRMzEgMjEgMzIgMjcgUTMzIDIxIDQwIDE2IFEzOCAyNCAzMiAzMFoiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjM3IiByPSI0LjUiIGZpbGw9IiM5MjQwMGUiLz4KICA8Y2lyY2xlIGN4PSIzMC41IiBjeT0iMzUuNSIgcj0iMS4yIiBmaWxsPSIjNzgzNTBmIiBvcGFjaXR5PSIwLjciLz4KICA8Y2lyY2xlIGN4PSIzMy41IiBjeT0iMzUiIHI9IjAuOSIgZmlsbD0iIzc4MzUwZiIgb3BhY2l0eT0iMC41Ii8+CiAgPHJlY3QgeD0iOCIgeT0iNDYiIHdpZHRoPSIzLjUiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxMy41IiB5PSI0MiIgd2lkdGg9IjMuNSIgaGVpZ2h0PSIxMyIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxOSIgeT0iNDUiIHdpZHRoPSIzLjUiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNGFkZTgwIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBvbHlsaW5lIHBvaW50cz0iOS43NSw1MCAxNS4yNSw0NiAyMC43NSw0OSIgc3Ryb2tlPSIjYmJmN2QwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iOS43NSIgY3k9IjUwIiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIxNS4yNSIgY3k9IjQ2IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIyMC43NSIgY3k9IjQ5IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KPC9zdmc+';
+        document.head.appendChild(link2);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setFavicon);
+    } else {
+        setFavicon();
+    }
+    setTimeout(setFavicon, 500);
+    setTimeout(setFavicon, 1500);
+})();
+</script>
+""", unsafe_allow_html=True)
+
 
 # ─────────────────────────────────────────────
 # SIDEBAR
