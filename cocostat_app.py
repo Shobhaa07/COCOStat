@@ -252,7 +252,15 @@ html, body, [class*="css"] {
     color: #1a2e1a;
 }
 #MainMenu, footer, header { visibility: hidden; }
-.main .block-container { background: #ffffff; }
+
+/* Remove Streamlit default top whitespace */
+.main .block-container {
+    background: #ffffff;
+    padding-top: 0 !important;
+    padding-bottom: 2rem;
+}
+[data-testid="stAppViewContainer"] > section > div { padding-top: 0 !important; }
+[data-testid="stVerticalBlock"] { gap: 0.5rem; }
 
 /* ── Sidebar always open ── */
 [data-testid="collapsedControl"] { display: none !important; }
@@ -369,13 +377,25 @@ regime_colors_map = {0: "#22c55e", 1: "#eab308", 2: "#ef4444"}
 regime_labels_map = {0: "🟢 Stable" if lang=="en" else "🟢 ස්ථාවර", 1: "🟡 Warning" if lang=="en" else "🟡 අවවාද", 2: "🔴 Crisis" if lang=="en" else "🔴 අර්බුද"}
 
 st.markdown(f"""
-<div style='text-align:center; padding:32px 0 20px; border-bottom:1px solid #d1e7d1; margin-bottom:8px;'>
-    <div style='display:inline-block; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 18px; font-size:0.8rem; font-weight:700; color:#166534; letter-spacing:0.5px; margin-bottom:14px;'>
+<div style='
+    position:sticky; top:0; z-index:999;
+    background:#ffffff;
+    border-bottom:2px solid #16a34a;
+    box-shadow:0 2px 10px rgba(22,163,74,0.10);
+    padding:14px 28px;
+    display:flex; align-items:center; gap:18px;
+    margin-bottom:0;
+'>
+    <div style='flex-shrink:0; font-size:2rem; line-height:1;'>🥥</div>
+    <div style='flex:1;'>
+        <div style='font-size:1.25rem; font-weight:900; color:#0d2b0d; line-height:1.2; letter-spacing:-0.3px;'>{t["tagline"]}</div>
+        <div style='font-size:0.8rem; color:#4a7a4a; margin-top:3px; font-weight:500;'>{t["desc"]}</div>
+    </div>
+    <div style='flex-shrink:0; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 14px; font-size:0.75rem; font-weight:700; color:#166534; white-space:nowrap;'>
         🥥 {t["subtitle"]}
     </div>
-    <h1 style='font-size:2rem; font-weight:900; color:#0d2b0d; margin:0 0 10px; line-height:1.25; letter-spacing:-0.5px;'>{t["tagline"]}</h1>
-    <p style='color:#6b7280; font-size:0.9rem; max-width:540px; margin:0 auto; line-height:1.6;'>{t["desc"]}</p>
 </div>
+<div style='margin-bottom:20px;'></div>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
