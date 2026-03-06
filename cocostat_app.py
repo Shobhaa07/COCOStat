@@ -1412,7 +1412,6 @@ st.markdown("""
     border-radius:14px;
     box-shadow:0 4px 20px rgba(13,43,13,0.18);
 '>
-
     <div style='font-size:clamp(1.3rem, 5vw, 2rem); font-weight:900; color:#ffffff; margin-bottom:8px; letter-spacing:-0.3px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>Sri Lanka Coconut Industry</div>
     <div style='font-size:clamp(0.78rem, 2.5vw, 0.9rem); color:#bbf7d0; font-weight:500; opacity:0.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
 </div>
