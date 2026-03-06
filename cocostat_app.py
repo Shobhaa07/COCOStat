@@ -1423,10 +1423,10 @@ for col, (icon, badge, name, addr, phone, web) in zip(
         [org_col1, org_col2, org_col3, org_col4], orgs):
     with col:
         st.markdown(f"""
-        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:18px 16px; height:200px; display:flex; flex-direction:column; overflow:hidden;'>
-            <div style='font-size:0.6rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:6px;'>{icon} {badge}</div>
-            <div style='font-weight:800; font-size:0.85rem; color:#0d2b0d; margin-bottom:8px; line-height:1.35;'>{name}</div>
-            <div style='font-size:0.74rem; color:#374151; line-height:1.8; flex:1; overflow:hidden;'>
+        <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:10px; padding:16px 14px; height:240px; display:flex; flex-direction:column;'>
+            <div style='font-size:0.58rem; font-weight:700; color:#4a7a4a; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;'>{icon} {badge}</div>
+            <div style='font-weight:800; font-size:0.82rem; color:#0d2b0d; margin-bottom:10px; line-height:1.3;'>{name}</div>
+            <div style='font-size:0.72rem; color:#374151; line-height:1.9; flex:1;'>
                 📍 {addr}<br>
                 📞 {phone}<br>
                 🌐 {web}
