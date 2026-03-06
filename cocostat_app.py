@@ -13,7 +13,7 @@ st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
     page_icon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIzMCIgZmlsbD0iIzE0NTMyZCIgc3Ryb2tlPSIjMjJjNTVlIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0iIzE2NjUzNCIvPgogIDxyZWN0IHg9IjMwLjUiIHk9IjM1IiB3aWR0aD0iMyIgaGVpZ2h0PSIxMyIgcng9IjEuNSIgZmlsbD0iI2JiZjdkMCIvPgogIDxwYXRoIGQ9Ik0zMiAzNCBRMjQgMjYgMjAgMTggUTI4IDIyIDMyIDI4IFEzNiAyMiA0NCAxOCBRNDAgMjYgMzIgMzRaIiBmaWxsPSIjNGFkZTgwIi8+CiAgPHBhdGggZD0iTTMyIDMwIFEyNiAyNCAyNCAxNiBRMzEgMjEgMzIgMjcgUTMzIDIxIDQwIDE2IFEzOCAyNCAzMiAzMFoiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjM3IiByPSI0LjUiIGZpbGw9IiM5MjQwMGUiLz4KICA8Y2lyY2xlIGN4PSIzMC41IiBjeT0iMzUuNSIgcj0iMS4yIiBmaWxsPSIjNzgzNTBmIiBvcGFjaXR5PSIwLjciLz4KICA8Y2lyY2xlIGN4PSIzMy41IiBjeT0iMzUiIHI9IjAuOSIgZmlsbD0iIzc4MzUwZiIgb3BhY2l0eT0iMC41Ii8+CiAgPHJlY3QgeD0iOCIgeT0iNDYiIHdpZHRoPSIzLjUiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxMy41IiB5PSI0MiIgd2lkdGg9IjMuNSIgaGVpZ2h0PSIxMyIgcng9IjEiIGZpbGw9IiM0YWRlODAiIG9wYWNpdHk9IjAuODUiLz4KICA8cmVjdCB4PSIxOSIgeT0iNDUiIHdpZHRoPSIzLjUiIGhlaWdodD0iMTAiIHJ4PSIxIiBmaWxsPSIjNGFkZTgwIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBvbHlsaW5lIHBvaW50cz0iOS43NSw1MCAxNS4yNSw0NiAyMC43NSw0OSIgc3Ryb2tlPSIjYmJmN2QwIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iOS43NSIgY3k9IjUwIiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIxNS4yNSIgY3k9IjQ2IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KICA8Y2lyY2xlIGN4PSIyMC43NSIgY3k9IjQ5IiByPSIxLjIiIGZpbGw9IiM4NmVmYWMiLz4KPC9zdmc+",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # ─────────────────────────────────────────────
@@ -266,7 +266,6 @@ html, body, [class*="css"] {
 
 /* ── Sidebar: desktop always open, mobile collapsible ── */
 @media (min-width: 768px) {
-    [data-testid="collapsedControl"] { display: none !important; }
     section[data-testid="stSidebar"] {
         min-width: 270px !important; max-width: 270px !important;
         width: 270px !important; transform: none !important;
@@ -277,22 +276,40 @@ html, body, [class*="css"] {
 /* ── Mobile sidebar: full-width overlay when open ── */
 @media (max-width: 767px) {
     section[data-testid="stSidebar"] {
-        min-width: 85vw !important;
-        max-width: 85vw !important;
-        width: 85vw !important;
+        min-width: 88vw !important;
+        max-width: 88vw !important;
+        width: 88vw !important;
+        z-index: 9999 !important;
     }
     section[data-testid="stSidebar"] > div {
-        width: 85vw !important;
+        width: 88vw !important;
     }
-    /* Give main content full width on mobile */
+    [data-testid="collapsedControl"] {
+        display: flex !important;
+        z-index: 10000 !important;
+    }
     .main .block-container {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding-left: 0.4rem !important;
+        padding-right: 0.4rem !important;
+        max-width: 100vw !important;
     }
-    /* Stack columns on mobile */
-    [data-testid="column"] {
+    [data-testid="column"],
+    div[data-testid="column"] {
         min-width: 100% !important;
-        flex: 1 1 100% !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+    .js-plotly-plot, .plotly, .plot-container {
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    .main, .block-container, [data-testid="stAppViewContainer"] {
+        overflow-x: hidden !important;
     }
 }
 
@@ -370,6 +387,34 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
     }
 }
 </style>
+<script>
+(function() {
+    function stackColumnsOnMobile() {
+        if (window.innerWidth > 767) return;
+        var cols = document.querySelectorAll('[data-testid="column"]');
+        cols.forEach(function(col) {
+            col.style.setProperty('min-width', '100%', 'important');
+            col.style.setProperty('width', '100%', 'important');
+            col.style.setProperty('flex', '0 0 100%', 'important');
+            col.style.setProperty('max-width', '100%', 'important');
+        });
+        var rows = document.querySelectorAll('[data-testid="stHorizontalBlock"]');
+        rows.forEach(function(row) {
+            row.style.setProperty('flex-wrap', 'wrap', 'important');
+            row.style.setProperty('gap', '0.5rem', 'important');
+        });
+    }
+    stackColumnsOnMobile();
+    window.addEventListener('resize', stackColumnsOnMobile);
+    var observer = new MutationObserver(function() { stackColumnsOnMobile(); });
+    function startObserver() {
+        if (document.body) observer.observe(document.body, { childList: true, subtree: true });
+        else setTimeout(startObserver, 100);
+    }
+    startObserver();
+    [500, 1500, 3000].forEach(function(d) { setTimeout(stackColumnsOnMobile, d); });
+})();
+</script>
 """, unsafe_allow_html=True)
 
 # ── Viewport meta + Favicon override ──────────────────────────────────────────
@@ -492,7 +537,7 @@ st.markdown(f"""
 <!-- Fixed header injected by JS when user scrolls -->
 <div id='coco-fixed-header' style='
     display:none;
-    position:fixed; top:0; left:0; right:0; z-index:99999;
+    position:fixed; top:0; left:0; right:0; z-index:1000;
     background:#ffffff;
     border-bottom:2px solid #16a34a;
     box-shadow:0 2px 12px rgba(22,163,74,0.15);
