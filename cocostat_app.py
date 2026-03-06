@@ -514,12 +514,12 @@ if "📊 Overview" in section or "📊 දළ" in section:
             hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y:.2f}<extra></extra>",
         ))
         fig_hero.add_hline(y=warn_threshold, line_dash="dash", line_color="#eab308",
-            annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="right")
+            annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="top left")
         fig_hero.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
-            annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="right")
+            annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="top left")
         fig_hero.update_layout(
             title=dict(text="📈 " + ("Recent 3-Year Price Trend" if lang=="en" else "මෑත කාල මිල ප්‍රවණතාව"), font=dict(size=14, color="#0f172a")),
-            height=280, margin=dict(l=10, r=80, t=40, b=20),
+            height=280, margin=dict(l=80, r=20, t=40, b=20),
             plot_bgcolor="#f8fafc", paper_bgcolor="white",
             xaxis=dict(showgrid=False, tickfont=dict(size=11)),
             yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
@@ -670,12 +670,12 @@ elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
                 hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y:.2f}<extra></extra>",
             ))
     fig_reg.add_hline(y=warn_threshold, line_dash="dash", line_color="#eab308",
-        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="right")
+        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="top left")
     fig_reg.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
-        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="right")
+        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="top left")
     fig_reg.update_layout(
         title=dict(text="📊 " + ("Price History by Market Regime" if lang=="en" else "වෙළඳ තත්ත්වය අනුව මිල ඉතිහාසය"), font=dict(size=14)),
-        height=320, margin=dict(l=10, r=80, t=40, b=20),
+        height=320, margin=dict(l=80, r=20, t=40, b=20),
         plot_bgcolor="#f8fafc", paper_bgcolor="white",
         xaxis=dict(showgrid=False), yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs."),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -811,17 +811,17 @@ elif "🔮 Forecast" in section or "🔮 අනා" in section:
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y:.2f}<extra></extra>",
     ))
     fig_fore.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
-        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="right")
+        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="top left")
     fig_fore.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
-        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="right")
+        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="top left")
     fig_fore.add_vline(
         x=forecast_df["date"].iloc[0].timestamp() * 1000,
         line_dash="dot", line_color="#94a3b8",
         annotation_text="Forecast →" if lang=="en" else "අනාවැකිය →",
-        annotation_position="top right",
+        annotation_position="top left",
     )
     fig_fore.update_layout(
-        height=340, margin=dict(l=10, r=80, t=20, b=20),
+        height=340, margin=dict(l=80, r=20, t=20, b=20),
         plot_bgcolor="#f8fafc", paper_bgcolor="white",
         xaxis=dict(showgrid=False, tickfont=dict(size=11)),
         yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
@@ -962,13 +962,13 @@ elif "📈 History" in section or "📈 ඉති" in section:
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y:.2f}<extra></extra>",
     ))
     fig_hist.add_hline(y=warn_threshold, line_dash="dash", line_color="#eab308",
-        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="top right",
+        annotation_text=f"⚠ Rs.{warn_threshold}", annotation_position="top left",
         annotation_font_color="#eab308")
     fig_hist.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
-        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="bottom right",
+        annotation_text=f"🔴 Rs.{crisis_threshold}", annotation_position="bottom left",
         annotation_font_color="#ef4444")
     fig_hist.update_layout(
-        height=360, margin=dict(l=10, r=100, t=20, b=20),
+        height=360, margin=dict(l=80, r=20, t=20, b=20),
         plot_bgcolor="#f8fafc", paper_bgcolor="white",
         xaxis=dict(showgrid=False, rangeslider=dict(visible=True), tickfont=dict(size=11)),
         yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
@@ -1077,7 +1077,7 @@ elif "🔍 Compare" in section or "🔍 සංසන්" in section:
         fig_yoy.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
             annotation_text=f"🔴 Rs.{crisis_threshold}")
         fig_yoy.update_layout(
-            height=360, margin=dict(l=10, r=100, t=20, b=20),
+            height=360, margin=dict(l=80, r=20, t=20, b=20),
             plot_bgcolor="#f8fafc", paper_bgcolor="white",
             xaxis=dict(showgrid=False, tickfont=dict(size=11)),
             yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
