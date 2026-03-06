@@ -377,22 +377,58 @@ regime_colors_map = {0: "#22c55e", 1: "#eab308", 2: "#ef4444"}
 regime_labels_map = {0: "🟢 Stable" if lang=="en" else "🟢 ස්ථාවර", 1: "🟡 Warning" if lang=="en" else "🟡 අවවාද", 2: "🔴 Crisis" if lang=="en" else "🔴 අර්බුද"}
 
 st.markdown(f"""
-<div style='
-    position:sticky; top:0; z-index:999;
+<!-- Fixed header injected by JS when user scrolls -->
+<div id='coco-fixed-header' style='
+    display:none;
+    position:fixed; top:0; left:0; right:0; z-index:99999;
     background:#ffffff;
     border-bottom:2px solid #16a34a;
-    box-shadow:0 2px 10px rgba(22,163,74,0.10);
-    padding:20px 32px 18px;
+    box-shadow:0 2px 12px rgba(22,163,74,0.15);
+    padding:10px 32px 10px;
     text-align:center;
-    margin-bottom:0;
 '>
-    <div style='display:inline-block; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#166534; letter-spacing:0.5px; margin-bottom:10px;'>
+    <div style='display:inline-block; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:3px 14px; font-size:0.72rem; font-weight:700; color:#166534; letter-spacing:0.5px; margin-bottom:5px;'>
         🥥 {t["subtitle"]}
     </div>
-    <h1 style='font-size:1.9rem; font-weight:900; color:#0d2b0d; margin:0 0 8px; line-height:1.25; letter-spacing:-0.4px;'>{t["tagline"]}</h1>
-    <p style='color:#4a7a4a; font-size:0.85rem; max-width:580px; margin:0 auto; line-height:1.6; font-weight:500;'>{t["desc"]}</p>
+    <div style='font-size:1.3rem; font-weight:900; color:#0d2b0d; line-height:1.25; letter-spacing:-0.3px;'>{t["tagline"]}</div>
+    <div style='color:#4a7a4a; font-size:0.78rem; font-weight:500; margin-top:2px;'>{t["desc"]}</div>
 </div>
-<div style='margin-bottom:22px;'></div>
+
+<!-- Normal in-page hero -->
+<div id='coco-hero' style='
+    text-align:center;
+    padding:28px 32px 22px;
+    border-bottom:2px solid #16a34a;
+    margin-bottom:0;
+    background:#ffffff;
+'>
+    <div style='display:inline-block; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#166534; letter-spacing:0.5px; margin-bottom:12px;'>
+        🥥 {t["subtitle"]}
+    </div>
+    <h1 style='font-size:1.9rem; font-weight:900; color:#0d2b0d; margin:0 0 10px; line-height:1.25; letter-spacing:-0.4px;'>{t["tagline"]}</h1>
+    <p style='color:#4a7a4a; font-size:0.85rem; max-width:580px; margin:0 auto; line-height:1.65; font-weight:500;'>{t["desc"]}</p>
+</div>
+<div style='margin-bottom:24px;'></div>
+
+<script>
+(function() {{
+    function initScroll() {{
+        var hero = document.getElementById('coco-hero');
+        var fixed = document.getElementById('coco-fixed-header');
+        if (!hero || !fixed) {{ setTimeout(initScroll, 300); return; }}
+        var scrollEl = window.frameElement
+            ? window.parent.document.querySelector('[data-testid="stAppViewContainer"]') || window.parent
+            : window;
+        function onScroll() {{
+            var heroBottom = hero.getBoundingClientRect().bottom;
+            fixed.style.display = heroBottom < 0 ? 'block' : 'none';
+        }}
+        scrollEl.addEventListener('scroll', onScroll, true);
+        window.addEventListener('scroll', onScroll, true);
+    }}
+    setTimeout(initScroll, 500);
+}})();
+</script>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
