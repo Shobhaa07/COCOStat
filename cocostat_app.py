@@ -1148,9 +1148,19 @@ st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
 # Header
 st.markdown("""
-<div style='text-align:center; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid #d1e7d1;'>
-    <div style='font-size:1.5rem; font-weight:900; color:#0d2b0d; margin-bottom:4px;'>🥥 Sri Lanka Coconut Industry</div>
-    <div style='font-size:0.85rem; color:#4a7a4a; font-weight:500;'>Key Organisations, Contacts &amp; Industry Facts</div>
+<div style='
+    text-align:center;
+    padding:36px 48px 32px;
+    margin-bottom:28px;
+    background:linear-gradient(135deg, #0d2b0d 0%, #14532d 50%, #166534 100%);
+    border-radius:14px;
+    box-shadow:0 4px 20px rgba(13,43,13,0.18);
+'>
+    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:14px;'>
+        🥥 Coconut Industry Reference
+    </div>
+    <div style='font-size:2rem; font-weight:900; color:#ffffff; margin-bottom:8px; letter-spacing:-0.3px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>Sri Lanka Coconut Industry</div>
+    <div style='font-size:0.9rem; color:#bbf7d0; font-weight:500; opacity:0.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
 </div>
 """, unsafe_allow_html=True)
 
