@@ -258,17 +258,43 @@ html, body, [class*="css"] {
     background: #ffffff;
     padding-top: 0 !important;
     padding-bottom: 2rem;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 [data-testid="stAppViewContainer"] > section > div { padding-top: 0 !important; }
 [data-testid="stVerticalBlock"] { gap: 0.5rem; }
 
-/* ── Sidebar always open ── */
-[data-testid="collapsedControl"] { display: none !important; }
-section[data-testid="stSidebar"] {
-    min-width: 270px !important; max-width: 270px !important;
-    width: 270px !important; transform: none !important;
+/* ── Sidebar: desktop always open, mobile collapsible ── */
+@media (min-width: 768px) {
+    [data-testid="collapsedControl"] { display: none !important; }
+    section[data-testid="stSidebar"] {
+        min-width: 270px !important; max-width: 270px !important;
+        width: 270px !important; transform: none !important;
+    }
+    section[data-testid="stSidebar"] > div { width: 270px !important; transform: none !important; }
 }
-section[data-testid="stSidebar"] > div { width: 270px !important; transform: none !important; }
+
+/* ── Mobile sidebar: full-width overlay when open ── */
+@media (max-width: 767px) {
+    section[data-testid="stSidebar"] {
+        min-width: 85vw !important;
+        max-width: 85vw !important;
+        width: 85vw !important;
+    }
+    section[data-testid="stSidebar"] > div {
+        width: 85vw !important;
+    }
+    /* Give main content full width on mobile */
+    .main .block-container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    /* Stack columns on mobile */
+    [data-testid="column"] {
+        min-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+}
 
 /* ── Sidebar: clean white, green accents ── */
 div[data-testid="stSidebar"] { background: #f7faf7 !important; border-right: 2px solid #d1e7d1 !important; }
@@ -281,6 +307,11 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 /* ── Section typography ── */
 .section-header { font-size: 1.45rem; font-weight: 800; color: #0d2b0d; margin-bottom: 4px; letter-spacing: -0.2px; }
 .section-sub { color: #6b7280; font-size: 0.87rem; margin-bottom: 18px; }
+
+@media (max-width: 767px) {
+    .section-header { font-size: 1.15rem !important; }
+    .section-sub { font-size: 0.8rem !important; }
+}
 
 /* ── Info boxes ── */
 .info-box-green, .info-box-blue {
@@ -302,11 +333,48 @@ div[data-testid="stSidebar"] h3 { color: #14532d !important; font-size: 0.72rem 
 
 /* ── Divider: subtle green ── */
 .styled-divider { height: 1px; background: #d1e7d1; margin: 28px 0; }
+
+/* ── Mobile: responsive metric cards ── */
+@media (max-width: 767px) {
+    /* Hero banner padding reduction on mobile */
+    #coco-hero {
+        padding: 20px 16px 18px !important;
+    }
+    #coco-hero > div:first-child {
+        font-size: 0.68rem !important;
+    }
+    /* Reduce large title sizes on mobile */
+    div[style*="font-size:2.4rem"],
+    div[style*="font-size:2rem"],
+    div[style*="font-size:2.2rem"] {
+        font-size: 1.4rem !important;
+    }
+    /* Org cards full-width on mobile */
+    div[style*="border-top:3px solid #16a34a"] {
+        margin-bottom: 10px;
+    }
+    /* Industry stat numbers */
+    div[style*="font-size:1.5rem"] {
+        font-size: 1.2rem !important;
+    }
+    /* Architecture pipeline: allow wrapping */
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+    }
+}
+
+/* ── Plotly chart: make charts fill container on mobile ── */
+@media (max-width: 767px) {
+    .js-plotly-plot, .plotly, .plot-container {
+        width: 100% !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ── Favicon override ──────────────────────────────────────────
+# ── Viewport meta + Favicon override ──────────────────────────────────────────
 st.markdown("""
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <script>
 (function() {
     function setFavicon() {
@@ -441,17 +509,17 @@ st.markdown(f"""
 <!-- Normal in-page hero -->
 <div id='coco-hero' style='
     text-align:center;
-    padding:36px 48px 32px;
+    padding:clamp(16px, 4vw, 36px) clamp(12px, 5vw, 48px) clamp(14px, 3vw, 32px);
     margin-bottom:0;
     background: linear-gradient(135deg, #0d2b0d 0%, #14532d 50%, #166534 100%);
     border-bottom:3px solid #16a34a;
     box-shadow: 0 4px 20px rgba(13,43,13,0.18);
 '>
-    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:14px; backdrop-filter:blur(4px);'>
+    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:clamp(0.62rem, 2vw, 0.78rem); font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:10px; backdrop-filter:blur(4px);'>
         🥥 {t["subtitle"]}
     </div>
-    <h1 style='font-size:2.2rem; font-weight:900; color:#ffffff; margin:0 0 12px; line-height:1.25; letter-spacing:-0.4px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>{t["tagline"]}</h1>
-    <p style='color:#bbf7d0; font-size:0.9rem; max-width:580px; margin:0 auto; line-height:1.7; font-weight:500; opacity:0.9;'>{t["desc"]}</p>
+    <h1 style='font-size:clamp(1.3rem, 5vw, 2.2rem); font-weight:900; color:#ffffff; margin:0 0 10px; line-height:1.25; letter-spacing:-0.4px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>{t["tagline"]}</h1>
+    <p style='color:#bbf7d0; font-size:clamp(0.78rem, 2.5vw, 0.9rem); max-width:580px; margin:0 auto; line-height:1.7; font-weight:500; opacity:0.9;'>{t["desc"]}</p>
 </div>
 <div style='margin-bottom:24px;'></div>
 
@@ -1194,17 +1262,17 @@ st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div style='
     text-align:center;
-    padding:36px 48px 32px;
+    padding:clamp(20px, 4vw, 36px) clamp(12px, 5vw, 48px) clamp(18px, 3vw, 32px);
     margin-bottom:28px;
     background:linear-gradient(135deg, #0d2b0d 0%, #14532d 50%, #166534 100%);
     border-radius:14px;
     box-shadow:0 4px 20px rgba(13,43,13,0.18);
 '>
-    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:0.78rem; font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:14px;'>
+    <div style='display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 18px; font-size:clamp(0.62rem, 2vw, 0.78rem); font-weight:700; color:#bbf7d0; letter-spacing:1px; margin-bottom:14px;'>
         🥥 Coconut Industry Reference
     </div>
-    <div style='font-size:2rem; font-weight:900; color:#ffffff; margin-bottom:8px; letter-spacing:-0.3px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>Sri Lanka Coconut Industry</div>
-    <div style='font-size:0.9rem; color:#bbf7d0; font-weight:500; opacity:0.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
+    <div style='font-size:clamp(1.3rem, 5vw, 2rem); font-weight:900; color:#ffffff; margin-bottom:8px; letter-spacing:-0.3px; text-shadow:0 2px 8px rgba(0,0,0,0.2);'>Sri Lanka Coconut Industry</div>
+    <div style='font-size:clamp(0.78rem, 2.5vw, 0.9rem); color:#bbf7d0; font-weight:500; opacity:0.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
 </div>
 """, unsafe_allow_html=True)
 
