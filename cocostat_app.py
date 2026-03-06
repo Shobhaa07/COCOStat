@@ -525,7 +525,7 @@ if "📊 Overview" in section or "📊 දළ" in section:
             yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
             showlegend=False,
         )
-        st.plotly_chart(fig_hero, use_container_width=True)
+        st.plotly_chart(fig_hero, use_container_width=True, config={"displayModeBar": False})
 
     with col_stats:
         st.markdown("#### " + ("📊 Quick Stats" if lang=="en" else "📊 ඉක්මන් සංඛ්‍යාන"))
@@ -548,28 +548,45 @@ if "📊 Overview" in section or "📊 දළ" in section:
 
     # Monthly seasonality heatmap
     st.markdown("#### " + ("🗓️ Monthly Average Price by Year (Seasonality)" if lang=="en" else "🗓️ වර්ෂය අනුව මාසික සාමාන්‍ය මිල"))
-    pivot = history_df.pivot_table(index="year", columns="month", values="price", aggfunc="mean").round(1)
     month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    pivot.columns = [month_names[m-1] for m in pivot.columns]
+    # Build full 12-month pivot, filling missing months with NaN
+    all_months = pd.DataFrame({"month": range(1, 13)})
+    pivot_raw = history_df.pivot_table(index="year", columns="month", values="price", aggfunc="mean")
+    pivot_raw = pivot_raw.reindex(columns=range(1, 13))  # ensure all 12 months present
+    pivot_raw.columns = [month_names[m-1] for m in pivot_raw.columns]
+
+    # Build z values and text labels — show "N/A" for missing cells
+    z_vals = pivot_raw.values.tolist()
+    text_vals = []
+    for row in pivot_raw.values:
+        text_row = [f"Rs.{v:.1f}" if not np.isnan(v) else "—" for v in row]
+        text_vals.append(text_row)
+
+    # For colorscale, replace NaN with None so Plotly renders them as blank
+    import copy
+    z_clean = [[None if np.isnan(v) else round(v, 1) for v in row] for row in pivot_raw.values]
+
     fig_heat = go.Figure(go.Heatmap(
-        z=pivot.values,
-        x=pivot.columns.tolist(),
-        y=[str(y) for y in pivot.index.tolist()],
+        z=z_clean,
+        x=pivot_raw.columns.tolist(),
+        y=[str(y) for y in pivot_raw.index.tolist()],
         colorscale=[[0, "#dcfce7"], [0.5, "#fef9c3"], [1, "#fee2e2"]],
-        text=pivot.values.round(1),
-        texttemplate="Rs.%{text}",
+        text=text_vals,
+        texttemplate="%{text}",
         textfont=dict(size=9),
-        hovertemplate="<b>%{y} %{x}</b><br>Rs. %{z:.1f}<extra></extra>",
+        hovertemplate="<b>%{y} %{x}</b><br>%{text}<extra></extra>",
         showscale=True,
         colorbar=dict(title="Rs.", tickfont=dict(size=10)),
+        zmin=history_df["price"].min(),
+        zmax=history_df["price"].max(),
     ))
     fig_heat.update_layout(
-        height=260, margin=dict(l=20, r=20, t=10, b=20),
+        height=280, margin=dict(l=20, r=20, t=10, b=20),
         paper_bgcolor="white",
         xaxis=dict(tickfont=dict(size=11)),
         yaxis=dict(tickfont=dict(size=11)),
     )
-    st.plotly_chart(fig_heat, use_container_width=True)
+    st.plotly_chart(fig_heat, use_container_width=True, config={"displayModeBar": False})
 
     # Price Calculator
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
@@ -663,7 +680,7 @@ elif "🚦 Market" in section or "🚦 වෙළඳ" in section:
         xaxis=dict(showgrid=False), yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs."),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    st.plotly_chart(fig_reg, use_container_width=True)
+    st.plotly_chart(fig_reg, use_container_width=True, config={"displayModeBar": False})
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
@@ -707,7 +724,7 @@ elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
             xaxis=dict(showgrid=False),
             showlegend=False,
         )
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
 
     with col2:
         colors_d = [("#dcfce7", "#22c55e"), ("#fef9c3", "#eab308"), ("#fee2e2", "#ef4444")]
@@ -763,7 +780,7 @@ elif "📉 Demand" in section or "📉 ඉල්ලුම" in section:
         yaxis=dict(title="Price (Rs.)" if lang=="en" else "මිල (රු.)", gridcolor="#f1f5f9", tickprefix="Rs."),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    st.plotly_chart(fig_demand, use_container_width=True)
+    st.plotly_chart(fig_demand, use_container_width=True, config={"displayModeBar": False})
 
 # ── FORECAST ─────────────────────────────────
 elif "🔮 Forecast" in section or "🔮 අනා" in section:
@@ -810,7 +827,7 @@ elif "🔮 Forecast" in section or "🔮 අනා" in section:
         yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    st.plotly_chart(fig_fore, use_container_width=True)
+    st.plotly_chart(fig_fore, use_container_width=True, config={"displayModeBar": False})
 
     # 12-week mini cards
     st.markdown("#### " + ("📅 12-Week Forecast Details" if lang=="en" else "📅 සති 12 අනාවැකි විස්තර"))
@@ -957,7 +974,7 @@ elif "📈 History" in section or "📈 ඉති" in section:
         yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
         showlegend=False,
     )
-    st.plotly_chart(fig_hist, use_container_width=True)
+    st.plotly_chart(fig_hist, use_container_width=True, config={"displayModeBar": False})
 
     # Summary stats
     st.markdown("#### " + ("📊 Summary Statistics" if lang=="en" else "📊 සාරාංශ සංඛ්‍යාන"))
@@ -997,7 +1014,7 @@ elif "📈 History" in section or "📈 ඉති" in section:
             height=300, margin=dict(l=20, r=20, t=50, b=20),
             paper_bgcolor="white", showlegend=False,
         )
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
 
     with col_yoy:
         # Annual average bar chart
@@ -1024,7 +1041,7 @@ elif "📈 History" in section or "📈 ඉති" in section:
             yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", range=[0, annual_avg["price"].max() * 1.15]),
             showlegend=False,
         )
-        st.plotly_chart(fig_annual, use_container_width=True)
+        st.plotly_chart(fig_annual, use_container_width=True, config={"displayModeBar": False})
 
 # ── COMPARE ────────────────────────────────────
 elif "🔍 Compare" in section or "🔍 සංසන්" in section:
@@ -1066,7 +1083,7 @@ elif "🔍 Compare" in section or "🔍 සංසන්" in section:
             yaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=11)),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
-        st.plotly_chart(fig_yoy, use_container_width=True)
+        st.plotly_chart(fig_yoy, use_container_width=True, config={"displayModeBar": False})
 
         st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
@@ -1107,7 +1124,7 @@ elif "🔍 Compare" in section or "🔍 සංසන්" in section:
             xaxis=dict(showgrid=False),
             showlegend=False,
         )
-        st.plotly_chart(fig_vol, use_container_width=True)
+        st.plotly_chart(fig_vol, use_container_width=True, config={"displayModeBar": False})
     else:
         st.info("Please select at least one year above." if lang=="en" else "කරුණාකර ඉහතින් අවම වශයෙන් වසරක් තෝරන්න.")
 
