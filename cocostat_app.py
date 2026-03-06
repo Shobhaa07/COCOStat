@@ -1316,6 +1316,6 @@ for col, district in zip([d1, d2, d3, d4, d5], districts):
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align:center; font-size:0.72rem; color:#4a7a4a; padding-bottom:16px; border-top:1px solid #d1e7d1; padding-top:16px; margin-top:8px;'>
-    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data sourced from CDA &amp; CRI Sri Lanka
+     COCOStat · Coconut Market Intelligence Dashboard · Data sourced from CDA &amp; CRI Sri Lanka
 </div>
 """, unsafe_allow_html=True)
