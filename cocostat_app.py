@@ -27,7 +27,7 @@ T = {
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "lang_label": "🌐 Language",
         "lang_option": "සිංහල",
-        "nav": ["📊 Overview", "🚦 Market", "📉 Demand", "🔮 Forecast", "🏛 Policy", "📈 History", "🔍 Compare", "🧠 Method"],
+        "nav": ["Overview", "Market", "Demand", "Forecast", "Policy", "History", "Compare", "Method"],
         "card_price_label": "💰 Current Price",
         "card_price_value": "Rs. 68.50",
         "card_price_sub": "Per Nut (Auction)",
