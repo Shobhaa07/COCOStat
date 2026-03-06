@@ -1085,17 +1085,19 @@ elif "🏛 Policy" in section or "🏛 ප්‍රති" in section:
         is_active = (i == regime_idx)
         border = f"3px solid {policy_colors[i]}" if is_active else "2px solid #e2e8f0"
         with col:
-            active_badge = f"""<div style='margin-top:10px; background:{policy_colors[i]}22; border-radius:8px; padding:6px 10px; font-size:0.8rem; color:{policy_colors[i]}; font-weight:700;'>{t["policy_active"]}</div>""" if is_active else ""
+            active_badge = f"""<div style='margin-top:8px; background:{policy_colors[i]}22; border-radius:8px; padding:5px 10px; font-size:0.78rem; color:{policy_colors[i]}; font-weight:700;'>{t["policy_active"]}</div>""" if is_active else "<div style='margin-top:8px; height:29px;'></div>"
             st.markdown(f"""
-            <div style='border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.08); border:{border};'>
-                <div style='background:{policy_colors[i]}; padding:14px 18px;'>
+            <div style='border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.08); border:{border}; height:200px; display:flex; flex-direction:column;'>
+                <div style='background:{policy_colors[i]}; padding:14px 18px; flex-shrink:0;'>
                     <span style='font-weight:800; font-size:1rem; color:white;'>{t["policy_markets"][i]}</span>
                 </div>
-                <div style='padding:16px 18px; background:#f8fafc;'>
-                    <p style='font-size:0.9rem; color:#475569; line-height:1.7; margin:0 0 12px;'>{t["policy_actions"][i]}</p>
-                    <span style='font-size:0.8rem; font-weight:700; color:#94a3b8;'>{t["policy_priority_label"]}</span>
-                    <span style='background:{policy_colors[i]}; color:white; font-size:0.78rem; font-weight:800; padding:3px 10px; border-radius:12px; margin-left:6px;'>{t["policy_priorities"][i]}</span>
-                    {active_badge}
+                <div style='padding:14px 18px; background:#f8fafc; flex:1; display:flex; flex-direction:column; justify-content:space-between;'>
+                    <p style='font-size:0.88rem; color:#475569; line-height:1.6; margin:0 0 8px;'>{t["policy_actions"][i]}</p>
+                    <div>
+                        <span style='font-size:0.78rem; font-weight:700; color:#94a3b8;'>{t["policy_priority_label"]}</span>
+                        <span style='background:{policy_colors[i]}; color:white; font-size:0.76rem; font-weight:800; padding:3px 10px; border-radius:12px; margin-left:6px;'>{t["policy_priorities"][i]}</span>
+                        {active_badge}
+                    </div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1414,12 +1416,12 @@ st.markdown("""
 # ── Row 1: Organisations ──
 org_col1, org_col2, org_col3, org_col4 = st.columns(4)
 orgs = [
-    ("🏛", "Primary Regulator",   "Coconut Development Authority",      "No. 54, Nawam Mawatha<br>Colombo 02",          "+94 11 243 0610", "www.cda.gov.lk"),
-    ("🔬", "Research Institute",  "Coconut Research Institute (CRI)",   "Bandirippuwa Estate<br>Lunuwila 61150",         "+94 31 222 2481", "www.cri.gov.lk"),
-    ("📦", "Export Promoter",     "Sri Lanka Export Development Board", "42 Nawam Mawatha<br>Colombo 02",               "+94 11 230 0705", "www.srilankabusiness.com"),
-    ("🛒", "Market &amp; Auction","HARTI / Economic Centres",           "Narahenpita, Colombo 05<br>(Head Office)",      "+94 11 259 1919", "www.harti.gov.lk"),
+    ("🏛", "Primary Regulator",   "Coconut Development Authority",      "No. 54, Nawam Mawatha<br>Colombo 02",          "+94 11 243 0610", "www.cda.gov.lk", "https://www.cda.gov.lk"),
+    ("🔬", "Research Institute",  "Coconut Research Institute (CRI)",   "Bandirippuwa Estate<br>Lunuwila 61150",         "+94 31 222 2481", "www.cri.gov.lk", "https://www.cri.gov.lk"),
+    ("📦", "Export Promoter",     "Sri Lanka Export Development Board", "42 Nawam Mawatha<br>Colombo 02",               "+94 11 230 0705", "www.srilankabusiness.com", "https://www.srilankabusiness.com"),
+    ("🛒", "Market &amp; Auction","HARTI / Economic Centres",           "Narahenpita, Colombo 05<br>(Head Office)",      "+94 11 259 1919", "www.harti.gov.lk", "https://www.harti.gov.lk"),
 ]
-for col, (icon, badge, name, addr, phone, web) in zip(
+for col, (icon, badge, name, addr, phone, web, url) in zip(
         [org_col1, org_col2, org_col3, org_col4], orgs):
     with col:
         st.markdown(f"""
@@ -1429,7 +1431,7 @@ for col, (icon, badge, name, addr, phone, web) in zip(
             <div style='font-size:0.72rem; color:#374151; line-height:1.9; flex:1;'>
                 📍 {addr}<br>
                 📞 {phone}<br>
-                🌐 {web}
+                🌐 <a href='{url}' target='_blank' rel='noopener noreferrer' style='color:#16a34a; font-weight:600; text-decoration:none;'>{web}</a>
             </div>
         </div>
         """, unsafe_allow_html=True)
