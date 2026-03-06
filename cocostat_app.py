@@ -1337,46 +1337,44 @@ elif "🔍 Compare" in section or "🔍 සංසන්" in section:
 elif "🧠 Method" in section or "🧠 ක්‍රමවේදය" in section:
     st.markdown(f'<div class="section-header">{t["method_title"]}</div>', unsafe_allow_html=True)
 
-    # Research methodology steps — formal academic style
+    # Research methodology steps — formal, matches app green theme
     step_labels = ["Step 01", "Step 02", "Step 03", "Step 04"]
-    step_colors = ["#1e3a5f", "#1a5276", "#145a32", "#7d6608"]
-    step_borders = ["#2e86c1", "#2980b9", "#1e8449", "#b7950b"]
     cols = st.columns(4)
-    for i, (col, clr, border, step) in enumerate(zip(cols, step_colors, step_borders, t["method_steps"])):
+    for i, (col, step) in enumerate(zip(cols, t["method_steps"])):
         with col:
             st.markdown(f"""
-            <div style='background:#ffffff; border:1px solid #d1d5db; border-left:4px solid {border}; border-radius:6px; padding:20px 16px; height:130px; display:flex; flex-direction:column; justify-content:space-between;'>
-                <div style='font-size:0.65rem; font-weight:800; color:{border}; text-transform:uppercase; letter-spacing:2px;'>{step_labels[i]}</div>
-                <div style='font-size:0.88rem; color:#1f2937; line-height:1.55; font-weight:500;'>{step}</div>
+            <div style='background:#ffffff; border:1px solid #d1e7d1; border-top:4px solid #16a34a; border-radius:8px; padding:22px 18px; height:130px; display:flex; flex-direction:column; justify-content:space-between;'>
+                <div style='font-size:0.72rem; font-weight:800; color:#16a34a; text-transform:uppercase; letter-spacing:1.5px;'>{step_labels[i]}</div>
+                <div style='font-size:0.95rem; color:#0d2b0d; line-height:1.55; font-weight:600;'>{step}</div>
             </div>
             """, unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
-    # Architecture pipeline — formal table-style
+    # Architecture pipeline — formal, matches app green theme
     st.markdown(
-        "<div style='font-size:0.75rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px;'>"
-        + ("System Architecture &amp; Processing Pipeline" if lang=="en" else "පද්ධති ගෘහ නිර්මාණය සහ සැකසුම් නල මාර්ගය")
+        "<div style='font-size:0.78rem; font-weight:800; color:#14532d; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px;'>"
+        + ("System Architecture &amp; Processing Pipeline" if lang=="en" else "පද්ධති ගෘහ නිර්මාණය")
         + "</div>",
         unsafe_allow_html=True
     )
     arch_cols = st.columns(5)
     arch_steps = [
-        ("01", "Raw Data", "Auction Records", "#1e3a5f", "#2e86c1"),
-        ("02", "Pre-processing", "& Cleaning", "#1a3a2e", "#1e8449"),
-        ("03", "Model Training", "Markov + ARIMA", "#2e1a47", "#7d3c98"),
-        ("04", "Analysis", "Elasticity", "#4a2700", "#ca6f1e"),
-        ("05", "Dashboard", "COCOStat", "#1a1a2e", "#2e4057"),
+        ("01", "Raw Data",        "Auction Records",  ),
+        ("02", "Pre-processing",  "& Cleaning",       ),
+        ("03", "Model Training",  "Markov + ARIMA",   ),
+        ("04", "Analysis",        "Elasticity",       ),
+        ("05", "Dashboard",       "COCOStat",         ),
     ]
-    for i, (col, (num, title, sub, bg, accent)) in enumerate(zip(arch_cols, arch_steps)):
-        connector = "<div style='position:absolute; right:-18px; top:50%; transform:translateY(-50%); font-size:0.9rem; color:#9ca3af; z-index:1;'>→</div>" if i < 4 else ""
+    for i, (col, (num, title, sub)) in enumerate(zip(arch_cols, arch_steps)):
+        arrow = "<div style='position:absolute; right:-14px; top:50%; transform:translateY(-50%); font-size:1rem; color:#16a34a; font-weight:700; z-index:2;'>›</div>" if i < 4 else ""
         with col:
             st.markdown(f"""
-            <div style='position:relative; background:#f9fafb; border:1px solid #d1d5db; border-top:3px solid {accent}; border-radius:6px; padding:14px 10px; text-align:center; height:110px; display:flex; flex-direction:column; justify-content:center;'>
-                <div style='font-size:0.6rem; font-weight:800; color:{accent}; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px;'>{num}</div>
-                <div style='font-size:0.82rem; font-weight:700; color:#111827; margin-bottom:2px;'>{title}</div>
-                <div style='font-size:0.72rem; color:#6b7280; font-weight:500;'>{sub}</div>
-                {connector}
+            <div style='position:relative; background:#f0fdf4; border:1px solid #d1e7d1; border-top:3px solid #16a34a; border-radius:8px; padding:16px 10px; text-align:center; height:110px; display:flex; flex-direction:column; justify-content:center;'>
+                <div style='font-size:0.68rem; font-weight:800; color:#16a34a; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px;'>{num}</div>
+                <div style='font-size:0.9rem; font-weight:700; color:#0d2b0d; margin-bottom:3px;'>{title}</div>
+                <div style='font-size:0.78rem; color:#4a7a4a; font-weight:500;'>{sub}</div>
+                {arrow}
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
