@@ -1103,7 +1103,7 @@ elif t["nav"][7] in sec_name:
 
 # ══ WEATHER & HARVEST (FORWARD FORECAST) ═════════════════════════════════════
 elif t["nav"][8] in sec_name:
-    section_header("\U0001f326\ufe0f "+t["weather_title"], t["weather_sub"])
+    section_header(t["weather_title"], t["weather_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['weather_note']}</div>",unsafe_allow_html=True)
 
     # ── Generate 12-month forward weather forecast from today ─────────────────
@@ -1317,7 +1317,7 @@ elif t["nav"][8] in sec_name:
 
 # ══ EXPORT & TRADE (NEW) ═════════════════════════════════════════════════════
 elif t["nav"][9] in sec_name:
-    section_header("\U0001f4e6 "+t["export_title"], t["export_sub"])
+    section_header(t["export_title"], t["export_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['export_note']}</div>",unsafe_allow_html=True)
 
     # KPI row
@@ -1382,7 +1382,7 @@ elif t["nav"][9] in sec_name:
 
 # ══ FARMER PROFITABILITY (NEW) ═══════════════════════════════════════════════
 elif t["nav"][10] in sec_name:
-    section_header("\U0001f9d1\u200d\U0001f33e "+t["farmer_title"], t["farmer_sub"])
+    section_header(t["farmer_title"], t["farmer_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['farmer_note']}</div>",unsafe_allow_html=True)
 
     st.markdown("#### \u2699\ufe0f "+("Your Farm Parameters" if lang=="en" else "\u0d94\u0db6\u0dda \u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0daf\u0dad\u0dca\u0dad"))
@@ -1465,7 +1465,7 @@ elif t["nav"][10] in sec_name:
 
 # ══ AUCTION DETAILS ══════════════════════════════════════════════════════════
 elif t["nav"][11] in sec_name:
-    section_header("\U0001f6a9 "+t["auction_title"], t["auction_sub"])
+    section_header(t["auction_title"], t["auction_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['auction_note']}</div>", unsafe_allow_html=True)
 
     # ── KPI row ────────────────────────────────────────────────────────────────
@@ -2430,7 +2430,7 @@ st.markdown("""
   </div>
 
   <div style="text-align:center;font-size:.72rem;color:#86efac;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);opacity:.85;">
-    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
+    COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
   </div>
 
 </div>
