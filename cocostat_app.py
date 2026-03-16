@@ -369,8 +369,9 @@ with st.sidebar:
     section = st.radio("", nav_full, label_visibility="collapsed")
     st.markdown("---")
     st.markdown("### " + ("\u2699\ufe0f Settings" if lang=="en" else "\u2699\ufe0f \u0dc3\u0dd0\u0d9a\u0dc3\u0dd4\u0db8\u0dca"))
-    active_regime = st.selectbox(t["regime_select"], t["regime_options"], index=0)
-    regime_idx = t["regime_options"].index(active_regime)
+    regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
+    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
+    regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
@@ -2367,43 +2368,83 @@ elif t["nav"][12] in sec_name:
 # FOOTER
 # ─────────────────────────────────────────────
 divider()
-st.markdown("""
-<div style='text-align:center;padding:clamp(20px,4vw,36px) clamp(12px,5vw,48px) clamp(18px,3vw,32px);margin-bottom:28px;
-  background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-radius:14px;box-shadow:0 4px 20px rgba(13,43,13,.18);'>
-  <div style='font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.2);'>Sri Lanka Coconut Industry</div>
-  <div style='font-size:clamp(.78rem,2.5vw,.9rem);color:#bbf7d0;font-weight:500;opacity:.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
-</div>
-""",unsafe_allow_html=True)
 
-oc1,oc2,oc3,oc4=st.columns(4)
 orgs=[
     ("\U0001f3db","Primary Regulator","Coconut Development Authority","No.54, Nawam Mawatha<br>Colombo 02","+94 11 243 0610","www.cda.gov.lk","https://www.cda.gov.lk"),
     ("\U0001f52c","Research Institute","Coconut Research Institute (CRI)","Bandirippuwa Estate<br>Lunuwila 61150","+94 31 222 2481","www.cri.gov.lk","https://www.cri.gov.lk"),
     ("\U0001f4e6","Export Promoter","Sri Lanka Export Development Board","42 Nawam Mawatha<br>Colombo 02","+94 11 230 0705","www.srilankabusiness.com","https://www.srilankabusiness.com"),
     ("\U0001f6d2","Market & Auction","HARTI / Economic Centres","Narahenpita, Colombo 05<br>(Head Office)","+94 11 259 1919","www.harti.gov.lk","https://www.harti.gov.lk"),
 ]
-for col,(icon,badge,name,addr,phone,web,url) in zip([oc1,oc2,oc3,oc4],orgs):
-    with col:
-        st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-radius:10px;padding:16px 14px;height:240px;display:flex;flex-direction:column;'>
-            <div style='font-size:.58rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{icon} {badge}</div>
-            <div style='font-weight:800;font-size:.82rem;color:#0d2b0d;margin-bottom:10px;line-height:1.3;'>{name}</div>
-            <div style='font-size:.72rem;color:#374151;line-height:1.9;flex:1;'>\U0001f4cd {addr}<br>\U0001f4de {phone}<br>\U0001f310 <a href='{url}' target='_blank' style='color:#16a34a;font-weight:600;text-decoration:none;'>{web}</a></div>
-        </div>""",unsafe_allow_html=True)
-divider()
-st.markdown("<div style='text-align:center;font-size:.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;'>\U0001f4ca Sri Lanka Coconut Industry at a Glance</div>",unsafe_allow_html=True)
-s1,s2,s3,s4,s5,s6=st.columns(6)
-for col,(val,lbl) in zip([s1,s2,s3,s4,s5,s6],[("~2.7M","Hectares"),("~3B","Nuts/Year"),("450K+","Families"),("$350M+","Exports"),("3rd","World Rank"),("~2%","GDP Share")]):
-    with col:
-        st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-radius:10px;padding:12px 8px;text-align:center;height:90px;display:flex;flex-direction:column;justify-content:center;'>
-            <div style='font-size:1.4rem;font-weight:900;color:#0d2b0d;'>{val}</div>
-            <div style='font-size:.68rem;color:#4a7a4a;margin-top:4px;font-weight:600;text-transform:uppercase;'>{lbl}</div></div>""",unsafe_allow_html=True)
-divider()
-st.markdown("<div style='text-align:center;font-size:.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;'>\U0001f4cd The Coconut Triangle - Main Growing Districts</div>",unsafe_allow_html=True)
-dd1,dd2,dd3,dd4,dd5=st.columns(5)
-for col,dist in zip([dd1,dd2,dd3,dd4,dd5],["Kurunegala","Puttalam","Gampaha","Colombo","Kalutara"]):
-    with col:
-        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 8px;text-align:center;'>
-            <div style='font-size:1.4rem;'>🌴</div>
-            <div style='font-size:.85rem;font-weight:700;color:#0d2b0d;margin-top:6px;'>{dist}</div></div>""",unsafe_allow_html=True)
-st.markdown("<br>",unsafe_allow_html=True)
-st.markdown("<div style='text-align:center;font-size:.72rem;color:#4a7a4a;padding:16px 0;border-top:1px solid #d1e7d1;margin-top:8px;'>🥥 COCOStat \u00b7 Coconut Market Intelligence Dashboard \u00b7 Data from CDA &amp; CRI Sri Lanka</div>",unsafe_allow_html=True)
+
+org_cards_html = ""
+for (icon,badge,name,addr,phone,web,url) in orgs:
+    org_cards_html += f"""
+    <div style='background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;
+        padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;'>
+        <div style='font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{icon} {badge}</div>
+        <div style='font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;'>{name}</div>
+        <div style='font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;'>📍 {addr}<br>📞 {phone}<br>🌐 <a href='{url}' target='_blank' style='color:#4ade80;font-weight:600;text-decoration:none;'>{web}</a></div>
+    </div>"""
+
+stats_html = ""
+for (val,lbl) in [("~2.7M","Hectares"),("~3B","Nuts/Year"),("450K+","Families"),("$350M+","Exports"),("3rd","World Rank"),("~2%","GDP Share")]:
+    stats_html += f"""
+    <div style='flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);
+        border:1px solid rgba(255,255,255,0.12);'>
+        <div style='font-size:1.4rem;font-weight:900;color:#ffffff;'>{val}</div>
+        <div style='font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;'>{lbl}</div>
+    </div>"""
+
+triangle_html = ""
+for dist in ["Kurunegala","Puttalam","Gampaha"]:
+    triangle_html += f"""
+    <div style='flex:1;min-width:100px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);
+        border:1px solid rgba(255,255,255,0.12);'>
+        <div style='font-size:1.4rem;'>🌴</div>
+        <div style='font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;'>{dist}</div>
+    </div>"""
+
+st.markdown(f"""
+<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);
+    border-radius:0px;padding:clamp(24px,4vw,40px) clamp(16px,4vw,40px);
+    box-shadow:0 4px 24px rgba(13,43,13,.25);margin-bottom:28px;'>
+
+  <!-- Title -->
+  <div style='text-align:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:28px;'>
+    <div style='font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.2);'>Sri Lanka Coconut Industry</div>
+    <div style='font-size:clamp(.78rem,2.5vw,.9rem);color:#bbf7d0;font-weight:500;opacity:.9;'>Key Organisations, Contacts &amp; Industry Facts</div>
+  </div>
+
+  <!-- Org Cards -->
+  <div style='display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;'>
+    {org_cards_html}
+  </div>
+
+  <!-- At a Glance -->
+  <div style='border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:20px;'>
+    <div style='text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;'>
+      Sri Lanka Coconut Industry at a Glance
+    </div>
+    <div style='display:flex;gap:10px;flex-wrap:wrap;'>
+      {stats_html}
+    </div>
+  </div>
+
+  <!-- Coconut Triangle -->
+  <div style='border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-top:8px;'>
+    <div style='text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;'>
+      📍 The Coconut Triangle
+    </div>
+    <div style='display:flex;gap:10px;flex-wrap:wrap;justify-content:center;'>
+      {triangle_html}
+    </div>
+  </div>
+
+  <!-- Bottom credit -->
+  <div style='text-align:center;font-size:.72rem;color:#86efac;padding-top:20px;margin-top:20px;
+      border-top:1px solid rgba(255,255,255,0.15);opacity:.8;'>
+    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
