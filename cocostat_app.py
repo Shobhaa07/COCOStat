@@ -116,9 +116,9 @@ T = {
         "tagline": "Understanding Coconut Prices in Simple Terms",
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "nav": ["Overview","Market","Demand","Forecast","Policy","History","Compare","Method",
-                "Weather & Harvest","Export & Trade","Farmer Profitability","Auction Details"],
+                "Weather & Harvest","Export & Trade","Farmer Profitability","Auction Details","Recommendations"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9","\U0001f9e9"],
         "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
@@ -197,9 +197,9 @@ T = {
         "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0dc4\u0dd9\u0dc5\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
         "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2","\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
-                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
+                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb","\u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9","\U0001f9e9"],
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0da2\u0da9","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
@@ -1550,6 +1550,620 @@ elif t["nav"][11] in sec_name:
                 </div>
                 <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'>🎯 {purpose}</div>
             </div>""", unsafe_allow_html=True)
+
+
+# ══ RECOMMENDATIONS & DECISION SUPPORT ═══════════════════════════════════════
+elif t["nav"][12] in sec_name:
+    import plotly.graph_objects as go
+
+    # ── Hero banner ────────────────────────────────────────────────────────────
+    st.markdown("""
+    <div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
+        border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
+      <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
+        🧩 Strategic Decision Support Centre
+      </div>
+      <div style='font-size:.88rem;color:#bbf7d0;line-height:1.7;max-width:760px;'>
+        Combines market regime detection, demand analysis, weather forecasts and export data to generate
+        actionable recommendations for <strong style='color:#4ade80;'>Government policymakers</strong>,
+        <strong style='color:#86efac;'>Businesses & Traders</strong>, and
+        <strong style='color:#a7f3d0;'>Coconut Farmers</strong>.
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Live market snapshot ───────────────────────────────────────────────────
+    current_price   = history_df["price"].iloc[-1]
+    price_3m_ago    = history_df["price"].iloc[-4]
+    price_change_3m = ((current_price - price_3m_ago) / price_3m_ago) * 100
+    avg_12m         = history_df["price"].tail(12).mean()
+    volatility_12m  = history_df["price"].tail(12).std()
+    cv              = (volatility_12m / avg_12m) * 100
+    regime_now      = int(history_df["regime"].iloc[-1])
+    regime_labels   = ["🟢 Stable","🟡 Warning","🔴 Crisis"]
+    regime_colors   = ["#22c55e","#eab308","#ef4444"]
+    regime_bgs      = ["#dcfce7","#fef9c3","#fee2e2"]
+
+    st.markdown("#### 📊 " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
+    sn1,sn2,sn3,sn4,sn5 = st.columns(5)
+    snap_data = [
+        ("💰 Current Price",  f"Rs. {current_price:.2f}", "#16a34a"),
+        ("📈 3-Month Change", f"{price_change_3m:+.1f}%", "#22c55e" if price_change_3m<=0 else "#ef4444"),
+        ("📊 12M Average",    f"Rs. {avg_12m:.2f}",       "#3b82f6"),
+        ("⚡ Volatility",     f"{cv:.1f}% CV",            "#f59e0b"),
+        ("🏷️ Market Regime",  regime_labels[regime_now],  regime_colors[regime_now]),
+    ]
+    for col,(lbl,val,clr) in zip([sn1,sn2,sn3,sn4,sn5], snap_data):
+        with col: st.markdown(metric_card(lbl, val, clr, height=95), unsafe_allow_html=True)
+    divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 1 — STRATEGIC POLICY SIMULATOR
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+        🏛️ Strategic Policy Simulator
+      </div>
+      <div style='font-size:.78rem;color:#bfdbfe;margin-top:3px;'>
+        Test government intervention scenarios and see projected market outcomes before implementation
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    ps_col1, ps_col2 = st.columns([1.2, 1])
+    with ps_col1:
+        st.markdown("##### ⚙️ " + ("Configure Policy Levers" if lang=="en" else "ප්‍රතිපත්ති සකස් කරන්න"))
+
+        buffer_stock = st.slider(
+            "🏦 Buffer Stock Release (% of monthly supply)" if lang=="en" else "🏦 බෆර් තොග මුදාහැරීම (%)",
+            0, 30, 0, 1,
+            help="Government releases stored nuts into market to reduce price pressure")
+
+        import_duty  = st.slider(
+            "🚢 Import Duty Adjustment (%)" if lang=="en" else "🚢 ආනයන බද්ද (%)",
+            -20, 20, 0, 1,
+            help="Positive = increase duty (protect local farmers). Negative = reduce duty (lower consumer prices)")
+
+        subsidy_pct  = st.slider(
+            "💊 Farmer Input Subsidy (% cost reduction)" if lang=="en" else "💊 ගොවි ආදාන සහාය (%)",
+            0, 40, 0, 2,
+            help="Subsidising fertiliser, pesticide and transport costs for farmers")
+
+        price_floor  = st.slider(
+            "🛡️ Minimum Price Floor (Rs.)" if lang=="en" else "🛡️ අවම මිල (රු.)",
+            30, 80, int(current_price * 0.8), 1,
+            help="Government-guaranteed minimum purchase price for farmers")
+
+        export_quota = st.slider(
+            "📦 Export Quota Restriction (% reduction)" if lang=="en" else "📦 අපනයන සීමාව (% අඩු කිරීම)",
+            0, 50, 0, 5,
+            help="Restricting exports increases domestic supply and lowers local prices")
+
+    with ps_col2:
+        st.markdown("##### 📈 " + ("Projected Market Impact" if lang=="en" else "ඉදිරි වෙළඳ බලපෑම"))
+
+        # Simulate projected price based on levers
+        price_impact  = current_price
+        price_impact -= (buffer_stock * 0.12)          # buffer release reduces price
+        price_impact += (import_duty  * 0.08)          # higher duty = higher price
+        price_impact -= (export_quota * 0.06)          # export restriction lowers price
+        price_impact += (subsidy_pct  * 0.03)          # subsidy has slight upward effect (more demand)
+        price_impact  = max(price_floor, price_impact) # floor enforced
+
+        delta_price   = price_impact - current_price
+        delta_pct     = (delta_price / current_price) * 100
+        p_clr         = "#22c55e" if delta_price <= 0 else "#ef4444"
+
+        farmer_revenue_change = (price_impact - current_price) * 1000  # per 1000 nuts
+        consumer_impact       = delta_pct * 2.3  # household spend sensitivity
+        export_revenue_change = -export_quota * 1.2  # USD M approx
+
+        # Projected price gauge
+        fig_gauge = go.Figure(go.Indicator(
+            mode="gauge+number+delta",
+            value=round(price_impact, 2),
+            delta={"reference": current_price, "valueformat": ".2f",
+                   "increasing": {"color": "#ef4444"}, "decreasing": {"color": "#22c55e"}},
+            number={"prefix": "Rs.", "font": {"size": 28, "color": "#0d2b0d"}},
+            title={"text": "Projected Price (Rs.)", "font": {"size": 13}},
+            gauge={
+                "axis": {"range": [30, 120], "tickfont": {"size": 9}},
+                "bar":  {"color": p_clr},
+                "bgcolor": "#f8fafc",
+                "threshold": {"line": {"color": "#94a3b8", "width": 2}, "value": current_price},
+                "steps": [
+                    {"range": [30,  warn_threshold],    "color": "#dcfce7"},
+                    {"range": [warn_threshold,  crisis_threshold], "color": "#fef9c3"},
+                    {"range": [crisis_threshold, 120],  "color": "#fee2e2"},
+                ],
+            }))
+        fig_gauge.update_layout(height=220, margin=dict(l=20,r=20,t=40,b=10), paper_bgcolor="#fff")
+        st.plotly_chart(fig_gauge, use_container_width=True, config={"displayModeBar": False})
+
+        # Impact summary cards
+        ic1, ic2, ic3 = st.columns(3)
+        for col, (lbl, val, clr) in zip([ic1, ic2, ic3], [
+            ("👨‍🌾 Farmer\nRevenue /1000 nuts", f"{'+'if farmer_revenue_change>=0 else ''}{farmer_revenue_change:,.0f} Rs.", "#16a34a" if farmer_revenue_change>=0 else "#ef4444"),
+            ("🏠 Consumer\nSpend Impact",       f"{consumer_impact:+.1f}%",  "#22c55e" if consumer_impact<=0 else "#ef4444"),
+            ("📦 Export\nRevenue Est.",          f"{export_revenue_change:+.1f}M USD", "#3b82f6"),
+        ]):
+            with col:
+                st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {clr};
+                    border-radius:8px;padding:10px 10px;text-align:center;height:80px;display:flex;
+                    flex-direction:column;justify-content:center;'>
+                    <div style='font-size:.6rem;color:#64748b;font-weight:700;white-space:pre-line;margin-bottom:4px;'>{lbl}</div>
+                    <div style='font-size:1rem;font-weight:900;color:{clr};'>{val}</div>
+                </div>""", unsafe_allow_html=True)
+
+    divider()
+
+    # Policy scenario verdict
+    if delta_price < -5:
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟢","Strong Consumer Relief", \
+            f"This combination of policies is projected to reduce prices by Rs.{abs(delta_price):.1f}, providing significant relief to consumers. Monitor farmer income carefully.", "#16a34a"
+    elif delta_price < 0:
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟡","Mild Stabilisation", \
+            f"Policies project a modest Rs.{abs(delta_price):.1f} price reduction. A balanced approach — good for consumers with minimal farmer impact.", "#eab308"
+    elif delta_price == 0:
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "⚪","Market Neutral", \
+            "Current policy settings have no projected impact. Adjust levers above to test interventions.", "#64748b"
+    elif delta_price < 10:
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟡","Moderate Farmer Support", \
+            f"Policies project a Rs.{delta_price:.1f} price increase, benefiting farmers. Watch consumer affordability closely.", "#eab308"
+    else:
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🔴","High Price Risk", \
+            f"Policies project a Rs.{delta_price:.1f} price surge. Strong intervention may be needed to protect consumers.", "#ef4444"
+
+    st.markdown(f"""<div style='background:{verdict_clr}15;border:2px solid {verdict_clr};border-radius:12px;
+        padding:16px 20px;display:flex;align-items:flex-start;gap:14px;'>
+        <div style='font-size:1.8rem;line-height:1;'>{verdict_icon}</div>
+        <div>
+          <div style='font-size:.85rem;font-weight:900;color:{verdict_clr};margin-bottom:4px;'>{verdict_title}</div>
+          <div style='font-size:.78rem;color:#374151;line-height:1.6;'>{verdict_msg}</div>
+        </div>
+    </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ── Policy comparison bar chart ────────────────────────────────────────────
+    st.markdown("##### 📊 " + ("Compare All Policy Scenarios" if lang=="en" else "ප්‍රතිපත්ති සසඳා බලන්න"))
+    scenarios = {
+        "No Intervention":       current_price,
+        "Buffer Stock Only":     max(price_floor, current_price - 10*0.12),
+        "Import Duty Cut":       max(price_floor, current_price - 15*0.08),
+        "Farmer Subsidy":        max(price_floor, current_price + 20*0.03),
+        "Export Quota":          max(price_floor, current_price - 25*0.06),
+        "Combined (Optimal)":    max(price_floor, current_price - 10*0.12 - 10*0.08 - 20*0.06),
+        "Current Settings":      round(price_impact, 2),
+    }
+    s_names  = list(scenarios.keys())
+    s_prices = list(scenarios.values())
+    s_colors = ["#94a3b8" if n=="No Intervention" else
+                "#f59e0b" if n=="Current Settings" else
+                "#22c55e" if v <= current_price else "#ef4444"
+                for n, v in scenarios.items()]
+    fig_sc = go.Figure(go.Bar(
+        x=s_names, y=s_prices,
+        marker_color=s_colors,
+        text=[f"Rs.{v:.1f}" for v in s_prices],
+        textposition="outside", textfont=dict(size=10),
+        hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"))
+    fig_sc.add_hline(y=current_price, line_dash="dash", line_color="#64748b",
+        annotation_text=f"Current Rs.{current_price:.1f}", annotation_position="top right")
+    fig_sc.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+        annotation_text=f"⚠ Rs.{warn_threshold}")
+    fig_sc.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+        annotation_text=f"🔴 Rs.{crisis_threshold}")
+    fig_sc.update_layout(height=300, margin=dict(l=20,r=20,t=30,b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=10)),
+        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", range=[30, max(s_prices)*1.18]),
+        showlegend=False)
+    st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
+    divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 2 — STRATEGIC RECOMMENDATION ENGINE
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+        🎯 Strategic Recommendation Engine
+      </div>
+      <div style='font-size:.78rem;color:#ddd6fe;margin-top:3px;'>
+        AI-driven, regime-sensitive recommendations for all three market stakeholder groups
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Dynamic recommendations based on current regime
+    all_recommendations = {
+        0: {  # Stable Market
+            "government": [
+                ("🏦","Build Buffer Stocks","Stability window is ideal for building emergency grain reserves. Target: 3-month national supply.",
+                 "HIGH","Immediate","Min. Rs. 2.5B allocation from stabilisation fund"),
+                ("📊","Enhance Data Infrastructure","Invest in real-time price reporting systems at all 6 major auction centres.",
+                 "MEDIUM","3-6 months","Rs. 180M — HARTI digital upgrade programme"),
+                ("📋","Review Farmer Registration","Update CDA farmer database. Many smallholders lack formal registration limiting support access.",
+                 "MEDIUM","6-12 months","Administrative — no major budget required"),
+                ("🌿","Promote Value Addition","Stable prices allow investment in coconut oil, desiccated coconut, and coconut milk processing.",
+                 "HIGH","6-18 months","Rs. 500M industry development grant"),
+                ("🌍","Negotiate Trade Agreements","Use stable period to negotiate better export terms with EU, USA, and Middle East markets.",
+                 "MEDIUM","12-24 months","Ministry of Trade — diplomatic resources"),
+            ],
+            "business": [
+                ("📈","Expand Processing Capacity","Stable input costs make this the best time to invest in new processing lines and cold storage.",
+                 "HIGH","6-12 months","ROI: 18-24 months at current margins"),
+                ("🔒","Lock In Long-Term Supply Contracts","Negotiate 6-12 month fixed-price supply contracts with farmer cooperatives.",
+                 "HIGH","Immediate","Reduces raw material cost volatility by ~40%"),
+                ("🌐","Enter New Export Markets","Low price risk enables testing new export markets without margin compression.",
+                 "MEDIUM","3-9 months","Export development board support available"),
+                ("🏭","Invest in Automation","Stable period ideal for upgrading factory equipment without cashflow pressure.",
+                 "MEDIUM","6-18 months","Automation grants available through BOI"),
+                ("📦","Diversify Product Portfolio","Launch coconut water, activated carbon, or coir products to reduce commodity price risk.",
+                 "HIGH","12-24 months","Market studies show 35% margin premium on value-added"),
+            ],
+            "farmer": [
+                ("🌱","Replant Ageing Trees","15-25% of SL coconut palms are past peak yield. Stable income = best time to replant.",
+                 "HIGH","Now — 3yr ROI","CDA provides seedlings at Rs. 150 each — 60% subsidy available"),
+                ("💧","Install Irrigation","Drip irrigation reduces drought vulnerability by 60%. CDA subsidises 50% of installation cost.",
+                 "HIGH","Next dry season","Rs. 45,000-85,000 per acre — subsidy available"),
+                ("🤝","Join a Cooperative","Group selling at auctions achieves 12-18% higher prices than individual sellers.",
+                 "HIGH","Immediate","Contact CDA regional office for nearest co-op"),
+                ("📚","Access Training","CDA free training on integrated pest management and organic certification available.",
+                 "MEDIUM","Ongoing","Free — register at cda.gov.lk/training"),
+                ("💰","Open a Farm Savings Account","Bank of Ceylon Farmer Account offers 2% above normal savings rate for registered farmers.",
+                 "MEDIUM","Immediate","BOC branch — CDA registration card required"),
+            ],
+        },
+        1: {  # Warning Market
+            "government": [
+                ("🚨","Activate Price Monitoring Task Force","Deploy field officers to all 6 auction centres daily. Report unusual price movements within 24hrs.",
+                 "URGENT","Immediate","Rs. 8M — existing staff redeployment"),
+                ("📦","Partial Buffer Stock Release","Release 10-15% of buffer stocks to inject supply and moderate upward price pressure.",
+                 "HIGH","Within 1 week","Coordinate with HARTI auction management"),
+                ("📣","Public Price Transparency Campaign","Broadcast daily auction prices via radio, SMS (Dialog/Mobitel), and social media to prevent panic buying.",
+                 "HIGH","Within 3 days","Rs. 5M — public communications budget"),
+                ("🏦","Activate Price Stabilisation Fund","Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation.",
+                 "HIGH","Within 1 week","Rs. 500M fund — Cabinet authorisation required"),
+                ("🌾","Accelerate Harvest Support","Provide subsidised transport to bring stored farm produce to market quickly.",
+                 "MEDIUM","Within 2 weeks","Rs. 25M — transport subsidy scheme"),
+            ],
+            "business": [
+                ("⚠️","Hedge Raw Material Costs","Lock in forward contracts for next 3-6 months before prices escalate further.",
+                 "URGENT","This week","Contact commodity brokers — forward pricing available"),
+                ("📉","Reduce Inventory Holding","High price environment — sell finished goods inventory quickly to protect margins.",
+                 "HIGH","Immediate","Review distribution channel pricing"),
+                ("🔍","Diversify Input Sources","Explore coconut sourcing from Puttalam, Kurunegala simultaneously — don't rely on single auction.",
+                 "HIGH","Immediate","Register with 3+ auction centres"),
+                ("💡","Switch to Value Products","Shift production mix toward premium products (virgin coconut oil, organic) with higher margin buffer.",
+                 "MEDIUM","2-4 weeks","Requires product certification — SLSI contact"),
+                ("📊","Weekly Price Tracking","Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80.",
+                 "HIGH","Immediate","COCOStat dashboard — set custom thresholds"),
+            ],
+            "farmer": [
+                ("💰","Sell Now — Don't Hoard","Warning phase prices are already elevated. Sell at current auction prices rather than waiting.",
+                 "URGENT","This week","Colombo auction Monday, Wednesday, Friday"),
+                ("📋","Register for Emergency Support","Pre-register for government income support scheme before crisis is declared.",
+                 "HIGH","This week","CDA Regional Office — free registration"),
+                ("🧑‍🤝‍🧑","Coordinate with Neighbours","Pool harvests with nearby farmers for stronger auction bargaining position.",
+                 "HIGH","Immediate","Minimum 5,000 nuts for cooperative lot"),
+                ("💧","Accelerate Irrigation Use","If irrigation installed — increase watering frequency to maximise current yield.",
+                 "MEDIUM","Immediate","CDA agronomy helpline: 1920"),
+                ("📦","Explore Direct Buyer Contracts","Some processors will pay 5-8% above auction price for guaranteed supply contracts.",
+                 "MEDIUM","1-2 weeks","CDA Buyer Directory available on request"),
+            ],
+        },
+        2: {  # Crisis Market
+            "government": [
+                ("🆘","Emergency Price Control Activation","Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels.",
+                 "CRITICAL","Within 24hrs","Cabinet emergency session — Rs. 50M enforcement budget"),
+                ("🚛","Full Buffer Stock Emergency Release","Release 100% of available buffer stocks immediately. Coordinate HARTI emergency auction.",
+                 "CRITICAL","Within 48hrs","All regional centres — coordinate military logistics if needed"),
+                ("🌐","Emergency Import Authorisation","Fast-track import permits for coconut from India/Philippines to bridge supply gap.",
+                 "CRITICAL","Within 1 week","Ministry of Trade emergency order — waive normal 45-day process"),
+                ("💵","Cash Transfer to Vulnerable Households","Rs. 2,500 per household hardship payment via Samurdhi mechanism for bottom 30%.",
+                 "CRITICAL","Within 2 weeks","Rs. 12B — emergency supplementary estimate"),
+                ("📡","Daily National Price Broadcast","Daily 8PM TV/radio broadcast of official controlled prices and where to buy.",
+                 "HIGH","Immediate","SLRC coordination — Rs. 2M production budget"),
+                ("🔎","Anti-Hoarding Enforcement","CAA/Police joint teams to inspect large warehouses for hoarding. Penalties up to Rs. 5M.",
+                 "HIGH","Immediate","District secretariat coordination required"),
+            ],
+            "business": [
+                ("🆘","Activate Business Continuity Protocol","Implement pre-agreed crisis supply chain procedures. Identify alternative inputs immediately.",
+                 "CRITICAL","Immediate","Board-level decision required"),
+                ("🏦","Secure Emergency Credit Lines","Apply for SME Emergency Credit from NDB/BOC at 6% crisis rate before demand exceeds capacity.",
+                 "CRITICAL","Within 3 days","NDB/BOC — Rs. 50M facility available"),
+                ("📦","Reduce Production Volumes","Temporarily reduce production of commodity lines. Maintain only high-margin premium products.",
+                 "HIGH","Immediate","Protect working capital — prioritise cash flow"),
+                ("🔄","Source Alternative Raw Materials","Explore palm oil, sunflower — partial substitution in cooking oil lines until crisis passes.",
+                 "HIGH","Within 1 week","SLSI approval may be required for labelling change"),
+                ("📣","Customer Communication","Proactively communicate price increases to retail partners with written justification.",
+                 "HIGH","Within 2 days","Prevents channel conflict — protect long-term relationships"),
+                ("💼","Engage Industry Association","Coconut Industry Collective Action — joint lobbying for import duty relief and government support.",
+                 "MEDIUM","This week","CDA Industry Association: +94 11 243 0610"),
+            ],
+            "farmer": [
+                ("💰","Maximise Harvest Immediately","Rush all harvestable nuts to market before government price controls reduce ceiling.",
+                 "CRITICAL","Next 3-5 days","All 6 auction centres operating emergency sessions"),
+                ("📞","Call CDA Emergency Helpline","Register for emergency farmer support — income protection payments being processed.",
+                 "CRITICAL","Today","CDA Emergency: 1920 (toll-free 24/7)"),
+                ("🛡️","Document Your Costs","Keep all receipts for fertiliser, labour, transport — required for compensation claims.",
+                 "HIGH","Immediate","CDA compensation forms available at regional offices"),
+                ("🌱","Do Not Sell Seedlings/Young Trees","Crisis will pass. Do not liquidate productive assets for short-term cash.",
+                 "HIGH","Now","Long-term income protection — very important"),
+                ("🤝","Apply for Samurdhi Emergency Aid","Farming households affected by crisis can apply for Rs. 3,500/month emergency support.",
+                 "HIGH","Within 1 week","Divisional Secretariat — bring NIC and CDA registration"),
+                ("📋","Report Price Manipulation","If brokers or middlemen offering below-auction prices — report immediately.",
+                 "MEDIUM","If occurs","CAA hotline: 1977 (Consumer Affairs Authority)"),
+            ],
+        },
+    }
+
+    recs = all_recommendations[regime_now]
+    regime_bg   = regime_bgs[regime_now]
+    regime_clr  = regime_colors[regime_now]
+    regime_name = ["Stable Market","Warning Market","Crisis Market"][regime_now]
+
+    # Market status banner
+    st.markdown(f"""<div style='background:{regime_bg};border:2px solid {regime_clr};border-radius:12px;
+        padding:14px 20px;margin-bottom:18px;display:flex;align-items:center;gap:12px;'>
+        <div style='font-size:2rem;'>{["🟢","🟡","🔴"][regime_now]}</div>
+        <div>
+          <div style='font-size:.72rem;font-weight:800;color:{regime_clr};text-transform:uppercase;
+              letter-spacing:1.5px;'>Active Regime</div>
+          <div style='font-size:1rem;font-weight:900;color:#0d2b0d;'>{regime_name} — Recommendations Active</div>
+          <div style='font-size:.75rem;color:#374151;margin-top:2px;'>
+              Current price Rs.{current_price:.2f} | {len(recs["government"])+len(recs["business"])+len(recs["farmer"])} total recommendations across 3 stakeholder groups
+          </div>
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    # Priority badge helper
+    def priority_badge(p):
+        cfg = {"CRITICAL":("#7f1d1d","#fca5a5"),"URGENT":("#ef4444","#fee2e2"),
+               "HIGH":("#92400e","#fef3c7"),"MEDIUM":("#1e3a8a","#dbeafe")}
+        bg, txt = cfg.get(p, ("#374151","#f1f5f9"))
+        return f"<span style='background:{txt};color:{bg};font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;'>{p}</span>"
+
+    # ── Render all 3 stakeholder tabs ──────────────────────────────────────────
+    tab_gov, tab_biz, tab_farm = st.tabs([
+        "🏛️ Government & Policymakers",
+        "💼 Businesses & Traders",
+        "👨‍🌾 Coconut Farmers",
+    ])
+
+    def render_rec_cards(recs_list, accent):
+        for i, (icon, title, desc, priority, timing, resource) in enumerate(recs_list):
+            st.markdown(f"""
+            <div style='background:#fff;border:1px solid #e2e8f0;border-left:5px solid {accent};
+                border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;
+                box-shadow:0 1px 4px rgba(0,0,0,.06);'>
+              <div style='display:flex;align-items:flex-start;gap:12px;'>
+                <div style='font-size:1.5rem;line-height:1;margin-top:2px;'>{icon}</div>
+                <div style='flex:1;'>
+                  <div style='display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;'>
+                    <div style='font-size:.88rem;font-weight:800;color:#0d2b0d;'>{title}</div>
+                    {priority_badge(priority)}
+                  </div>
+                  <div style='font-size:.78rem;color:#374151;line-height:1.65;margin-bottom:8px;'>{desc}</div>
+                  <div style='display:flex;gap:12px;flex-wrap:wrap;'>
+                    <div style='font-size:.68rem;background:#f0fdf4;color:#166534;padding:3px 9px;
+                        border-radius:20px;font-weight:700;'>⏱ {timing}</div>
+                    <div style='font-size:.68rem;background:#eff6ff;color:#1e40af;padding:3px 9px;
+                        border-radius:20px;font-weight:700;'>💡 {resource}</div>
+                  </div>
+                </div>
+              </div>
+            </div>""", unsafe_allow_html=True)
+
+    with tab_gov:
+        st.markdown(f"""<div style='background:#eff6ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#1e3a8a;font-weight:700;'>
+            🏛️ These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong>
+            managing the coconut sector under <strong>{regime_name}</strong> conditions.
+            </div></div>""", unsafe_allow_html=True)
+        render_rec_cards(recs["government"], "#1d4ed8")
+
+    with tab_biz:
+        st.markdown(f"""<div style='background:#fdf4ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#6b21a8;font-weight:700;'>
+            💼 These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong>
+            operating under <strong>{regime_name}</strong> conditions.
+            </div></div>""", unsafe_allow_html=True)
+        render_rec_cards(recs["business"], "#7c3aed")
+
+    with tab_farm:
+        st.markdown(f"""<div style='background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#166534;font-weight:700;'>
+            👨‍🌾 These recommendations are tailored for <strong>Smallholder farmers, coconut growers and farming cooperatives</strong>
+            operating under <strong>{regime_name}</strong> conditions.
+            </div></div>""", unsafe_allow_html=True)
+        render_rec_cards(recs["farmer"], "#16a34a")
+
+    divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 3 — DECISION RISK MATRIX
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+        🗺️ Strategic Risk & Opportunity Matrix
+      </div>
+      <div style='font-size:.78rem;color:#ccfbf1;margin-top:3px;'>
+        Visual mapping of risks and opportunities across all market conditions
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    rm1, rm2 = st.columns(2)
+    with rm1:
+        st.markdown("##### ⚠️ " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
+        risks = [
+            ("🌧️","Drought / Low Rainfall","HIGH" if regime_now >= 1 else "MEDIUM",
+             "Yield drop in 3-6 months. Monitor CRI rainfall index monthly."),
+            ("📦","Export Demand Surge","HIGH" if regime_now >= 1 else "MEDIUM",
+             "Global demand spikes can drain domestic supply rapidly."),
+            ("⛽","Rising Input Costs","MEDIUM",
+             "Fuel, fertiliser prices affect farm-gate profitability directly."),
+            ("🌐","Exchange Rate Volatility","MEDIUM",
+             "LKR depreciation increases import cost of inputs."),
+            ("🐛","Pest/Disease Outbreak","HIGH" if regime_now == 2 else "MEDIUM",
+             "Rhinoceros beetle and bud rot remain significant threats."),
+            ("🏭","Processing Capacity Shortage","LOW" if regime_now == 0 else "MEDIUM",
+             "Value-addition bottlenecks limit export revenue growth."),
+        ]
+        for icon, risk, level, detail in risks:
+            lvl_clr = {"CRITICAL":"#ef4444","HIGH":"#f59e0b","MEDIUM":"#3b82f6","LOW":"#22c55e"}[level]
+            st.markdown(f"""<div style='display:flex;align-items:center;gap:10px;padding:9px 12px;
+                background:#f8fafc;border-radius:8px;margin-bottom:7px;border:1px solid #e2e8f0;'>
+                <div style='font-size:1.1rem;'>{icon}</div>
+                <div style='flex:1;'>
+                  <div style='display:flex;align-items:center;gap:7px;'>
+                    <div style='font-size:.75rem;font-weight:800;color:#0d2b0d;'>{risk}</div>
+                    {priority_badge(level)}
+                  </div>
+                  <div style='font-size:.68rem;color:#64748b;margin-top:2px;'>{detail}</div>
+                </div>
+            </div>""", unsafe_allow_html=True)
+
+    with rm2:
+        st.markdown("##### 🌟 " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
+        opportunities = [
+            ("🥥","Virgin Coconut Oil Export","HIGH","Global VCO market growing 8.5% YoY. SL quality commands 30% premium."),
+            ("🌱","Organic Certification","HIGH","EU organic coconut market worth $2.1B. Only 12% of SL farms certified."),
+            ("💧","Coconut Water Market","HIGH","Global market $6.8B by 2026. SL currently exports < 3% of potential."),
+            ("🔋","Activated Carbon","MEDIUM","High-value industrial product from coconut shell. Margins 4x raw nuts."),
+            ("🏝","Agro-Tourism","MEDIUM","Coconut triangle farm tourism growing 22% annually post-pandemic."),
+            ("🤖","Smart Farming Technology","MEDIUM","IoT sensors and drone spraying can increase yield by 15-20%."),
+        ]
+        for icon, opp, level, detail in opportunities:
+            lvl_clr = {"HIGH":"#16a34a","MEDIUM":"#3b82f6","LOW":"#94a3b8"}[level]
+            st.markdown(f"""<div style='display:flex;align-items:center;gap:10px;padding:9px 12px;
+                background:#f0fdf4;border-radius:8px;margin-bottom:7px;border:1px solid #d1e7d1;'>
+                <div style='font-size:1.1rem;'>{icon}</div>
+                <div style='flex:1;'>
+                  <div style='display:flex;align-items:center;gap:7px;'>
+                    <div style='font-size:.75rem;font-weight:800;color:#0d2b0d;'>{opp}</div>
+                    <span style='background:#dcfce7;color:#166534;font-size:.58rem;font-weight:800;
+                        padding:2px 7px;border-radius:20px;'>{level}</span>
+                  </div>
+                  <div style='font-size:.68rem;color:#374151;margin-top:2px;'>{detail}</div>
+                </div>
+            </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 4 — 90-DAY ACTION PLAN
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+        📅 90-Day Priority Action Plan
+      </div>
+      <div style='font-size:.78rem;color:#fde68a;margin-top:3px;'>
+        Immediate, short-term and medium-term actions based on current market regime
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    action_plan = {
+        0: [  # Stable
+            ("Week 1–2",  "#16a34a", "🏦 Initiate buffer stock procurement | 📊 Deploy CDA digital price reporting"),
+            ("Week 3–4",  "#3b82f6", "📋 Update farmer registration database | 🤝 Launch cooperative formation drive"),
+            ("Month 2",   "#f59e0b", "🌿 Value-addition investment roadshow | 🌍 Trade agreement preliminary talks"),
+            ("Month 3",   "#8b5cf6", "📈 Review export incentive schemes | 🌱 Replanting programme launch"),
+        ],
+        1: [  # Warning
+            ("Day 1–3",   "#ef4444", "🚨 Activate monitoring task force | 📣 Launch price transparency media campaign"),
+            ("Day 4–7",   "#f59e0b", "📦 Release 10-15% buffer stock | 🏦 Signal stabilisation fund readiness"),
+            ("Week 2–3",  "#3b82f6", "🌾 Accelerate harvest support transport | 📋 Emergency farmer registration"),
+            ("Month 2–3", "#8b5cf6", "⚖️ Review import duty schedule | 📊 Commission independent price audit"),
+        ],
+        2: [  # Crisis
+            ("Today",     "#7f1d1d", "🆘 Emergency Cabinet session | 🚛 Full buffer stock release authorisation"),
+            ("Day 2–3",   "#ef4444", "🌐 Gazette emergency import permits | 💵 Activate Samurdhi emergency payments"),
+            ("Week 1",    "#f59e0b", "🔎 Deploy anti-hoarding enforcement | 📡 Begin daily national price broadcast"),
+            ("Week 2–4",  "#3b82f6", "📊 Conduct supply chain audit | 🌱 Post-crisis recovery plan preparation"),
+        ],
+    }
+
+    ap_cols = st.columns(4)
+    for col, (period, clr, actions) in zip(ap_cols, action_plan[regime_now]):
+        action_items = [a.strip() for a in actions.split("|")]
+        items_html = "".join([f"<div style='font-size:.7rem;color:#374151;padding:5px 0;border-bottom:1px solid #f0fdf4;line-height:1.4;'>{a}</div>" for a in action_items])
+        with col:
+            st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;border-top:4px solid {clr};
+                border-radius:10px;padding:14px 12px;min-height:180px;'>
+                <div style='font-size:.7rem;font-weight:900;color:{clr};text-transform:uppercase;
+                    letter-spacing:1px;margin-bottom:10px;'>{period}</div>
+                {items_html}
+            </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ── Download summary report ────────────────────────────────────────────────
+    st.markdown("##### 📥 " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
+    from datetime import datetime
+    report_lines = [
+        f"COCOStat – Strategic Recommendation Report",
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        f"Current Market Regime: {regime_name}",
+        f"Current Price: Rs. {current_price:.2f}",
+        f"12-Month Average: Rs. {avg_12m:.2f}",
+        f"Price Volatility (CV): {cv:.1f}%",
+        "",
+        "=" * 60,
+        "POLICY SIMULATOR RESULTS",
+        "=" * 60,
+        f"Buffer Stock Release:  {buffer_stock}%",
+        f"Import Duty Change:    {import_duty:+}%",
+        f"Farmer Subsidy:        {subsidy_pct}%",
+        f"Price Floor:           Rs. {price_floor}",
+        f"Export Quota Cut:      {export_quota}%",
+        f"Projected Price:       Rs. {price_impact:.2f} ({delta_pct:+.1f}%)",
+        f"Policy Verdict:        {verdict_title}",
+        "",
+        "=" * 60,
+        f"GOVERNMENT RECOMMENDATIONS ({regime_name})",
+        "=" * 60,
+    ]
+    for icon, title, desc, priority, timing, resource in recs["government"]:
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
+    report_lines += ["", "=" * 60, f"BUSINESS RECOMMENDATIONS ({regime_name})", "=" * 60]
+    for icon, title, desc, priority, timing, resource in recs["business"]:
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
+    report_lines += ["", "=" * 60, f"FARMER RECOMMENDATIONS ({regime_name})", "=" * 60]
+    for icon, title, desc, priority, timing, resource in recs["farmer"]:
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
+    report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
+
+    dl1, dl2 = st.columns(2)
+    with dl1:
+        st.download_button(
+            label="📄 Download Full Recommendation Report (TXT)",
+            data="\n".join(report_lines),
+            file_name=f"cocostat_recommendations_{regime_name.replace(' ','_')}_{datetime.now().strftime('%Y%m%d')}.txt",
+            mime="text/plain", use_container_width=True)
+    with dl2:
+        import io
+        csv_rows = [["Stakeholder","Priority","Action","Description","Timing","Resource"]]
+        for stakeholder, recs_list in [("Government",recs["government"]),("Business",recs["business"]),("Farmer",recs["farmer"])]:
+            for icon, title, desc, priority, timing, resource in recs_list:
+                csv_rows.append([stakeholder, priority, title, desc, timing, resource])
+        csv_buf = io.StringIO()
+        import csv as csv_mod
+        writer = csv_mod.writer(csv_buf)
+        writer.writerows(csv_rows)
+        st.download_button(
+            label="📊 Download Action Items (CSV)",
+            data=csv_buf.getvalue(),
+            file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv", use_container_width=True)
 
 
 # ─────────────────────────────────────────────
