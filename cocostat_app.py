@@ -606,12 +606,14 @@ st.markdown(f"""
 # HELPERS
 # ─────────────────────────────────────────────
 def metric_card(label, value, clr="#16a34a", sub=None, height=110):
-    sub_html = f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;margin-top:4px;'>{sub}</div>" if sub else ""
-    return f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;
-        height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>
-        <div style='font-size:.65rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>
-        <div style='font-size:1.4rem;font-weight:900;color:{clr};line-height:1.2;'>{value}</div>
-        {sub_html}</div>"""
+    sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;margin-top:4px;'>{sub}</div>"
+                if sub else
+                "<span style='display:none;'></span>")
+    return (f"<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;"
+            f"height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>"
+            f"<div style='font-size:.65rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
+            f"<div style='font-size:1.4rem;font-weight:900;color:{clr};line-height:1.2;'>{value}</div>"
+            f"{sub_html}</div>")
 
 def section_header(title, sub=None):
     st.markdown(f'<div class="section-header">{title}</div>', unsafe_allow_html=True)
@@ -702,12 +704,17 @@ elif t["nav"][1] in sec_name:
         border=f"3px solid {REGIME_COLORS[i]}" if i==regime_idx else "2px solid #e2e8f0"
         bg=REGIME_BGS[i] if i==regime_idx else "#f8fafc"
         with col:
-            st.markdown(f"""<div style='background:{bg};border:{border};border-radius:16px;padding:24px;text-align:center;'>
-                <div style='font-size:2.5rem;margin-bottom:8px;'>{REGIME_EMOJI[i]}</div>
-                <div style='font-weight:800;color:{REGIME_COLORS[i]};margin-bottom:8px;'>{t["regime_options"][i]}</div>
-                <div style='font-size:.9rem;color:#475569;'>{t["regime_desc"][i]}</div>
-                {"<div style=\'margin-top:10px;font-size:.75rem;font-weight:800;color:"+REGIME_COLORS[i]+";'>✓ Selected</div>" if i==regime_idx else ""}
-            </div>""",unsafe_allow_html=True)
+            selected_badge = (f"<div style='margin-top:10px;font-size:.75rem;font-weight:800;color:{REGIME_COLORS[i]};'>&#10003; Selected</div>"
+                              if i == regime_idx else
+                              "<div style='margin-top:10px;height:22px;'></div>")
+            st.markdown(
+                f"<div style='background:{bg};border:{border};border-radius:16px;padding:24px;text-align:center;'>"
+                f"<div style='font-size:2.5rem;margin-bottom:8px;'>{REGIME_EMOJI[i]}</div>"
+                f"<div style='font-weight:800;color:{REGIME_COLORS[i]};margin-bottom:8px;'>{t['regime_options'][i]}</div>"
+                f"<div style='font-size:.9rem;color:#475569;'>{t['regime_desc'][i]}</div>"
+                f"{selected_badge}"
+                f"</div>",
+                unsafe_allow_html=True)
     st.markdown("<br>",unsafe_allow_html=True)
     rc_=REGIME_COLORS[regime_idx]; rb_=REGIME_BGS[regime_idx]
     x1,x2,x3=st.columns(3)
@@ -1064,12 +1071,18 @@ elif t["nav"][7] in sec_name:
     ac=st.columns(5)
     for i,(col,(num,title,sub)) in enumerate(zip(ac,[("01","Raw Data","Auction Records"),("02","Pre-processing","& Cleaning"),
             ("03","Model Training","Markov + ARIMA"),("04","Analysis","Elasticity"),("05","Dashboard","COCOStat")])):
-        arr=f"<div style='position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:1rem;color:#16a34a;font-weight:700;z-index:2;'>\u203a</div>" if i<4 else ""
+        arr = (f"<div style='position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:1rem;color:#16a34a;font-weight:700;z-index:2;'>\u203a</div>"
+               if i < 4 else
+               "<span style='display:none;'></span>")
         with col:
-            st.markdown(f"""<div style='position:relative;background:#f0fdf4;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-radius:8px;padding:16px 10px;text-align:center;height:110px;display:flex;flex-direction:column;justify-content:center;'>
-                <div style='font-size:.68rem;font-weight:800;color:#16a34a;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;'>{num}</div>
-                <div style='font-size:.9rem;font-weight:700;color:#0d2b0d;margin-bottom:3px;'>{title}</div>
-                <div style='font-size:.78rem;color:#4a7a4a;font-weight:500;'>{sub}</div>{arr}</div>""",unsafe_allow_html=True)
+            st.markdown(
+                f"<div style='position:relative;background:#f0fdf4;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-radius:8px;padding:16px 10px;text-align:center;height:110px;display:flex;flex-direction:column;justify-content:center;'>"
+                f"<div style='font-size:.68rem;font-weight:800;color:#16a34a;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;'>{num}</div>"
+                f"<div style='font-size:.9rem;font-weight:700;color:#0d2b0d;margin-bottom:3px;'>{title}</div>"
+                f"<div style='font-size:.78rem;color:#4a7a4a;font-weight:500;'>{sub}</div>"
+                f"{arr}"
+                f"</div>",
+                unsafe_allow_html=True)
     divider()
     with st.expander("\U0001f52c "+("Technical Details" if lang=="en" else "\u0dad\u0dcf\u0d9a\u0dca\u0DC2\u0dab\u0dd2\u0d9a \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb")):
         st.markdown("""
