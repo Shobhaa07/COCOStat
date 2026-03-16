@@ -605,14 +605,14 @@ st.markdown(f"""
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
-def metric_card(label, value, clr="#16a34a", sub=None, height=110):
+def metric_card(label, value, clr="#16a34a", sub=None, height=110, val_size="1.4rem"):
     sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;margin-top:4px;'>{sub}</div>"
                 if sub else
                 "<span style='display:none;'></span>")
     return (f"<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;"
             f"height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>"
             f"<div style='font-size:.65rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
-            f"<div style='font-size:1.4rem;font-weight:900;color:{clr};line-height:1.2;'>{value}</div>"
+            f"<div style='font-size:{val_size};font-weight:900;color:{clr};line-height:1.2;white-space:nowrap;'>{value}</div>"
             f"{sub_html}</div>")
 
 def section_header(title, sub=None):
@@ -1474,13 +1474,13 @@ elif t["nav"][11] in sec_name:
         ("🏛️ Primary Authority" if lang=="en" else "🏛️ ප්‍රධාන බලධාරිය",
          "CDA / HARTI", "#16a34a"),
         ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
-         "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
+         "Mon–Fri Weekly" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
         ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
-         "7:30 AM – 9:00 AM", "#f59e0b"),
+         "7:30 – 9:00 AM", "#f59e0b"),
         ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
-         "500 – 5,000 nuts" if lang=="en" else "ඇට 500 – 5,000", "#8b5cf6"),
+         "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#8b5cf6"),
     ]):
-        with col: st.markdown(metric_card(lbl, val, clr, height=110), unsafe_allow_html=True)
+        with col: st.markdown(metric_card(lbl, val, clr, height=110, val_size="1.1rem"), unsafe_allow_html=True)
     divider()
 
     # ── Main Auction Centres ───────────────────────────────────────────────────
@@ -2430,7 +2430,7 @@ st.markdown("""
   </div>
 
   <div style="text-align:center;font-size:.72rem;color:#86efac;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);opacity:.85;">
-    COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
+    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
   </div>
 
 </div>
