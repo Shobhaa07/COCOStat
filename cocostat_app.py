@@ -2385,23 +2385,23 @@ st.markdown("""
     <div style="font-size:.9rem;color:#bbf7d0;font-weight:500;">Key Organisations, Contacts &amp; Industry Facts</div>
   </div>
 
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
       <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🏛 Primary Regulator</div>
       <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Development Authority</div>
       <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 No.54, Nawam Mawatha<br>Colombo 02<br>📞 +94 11 243 0610<br>🌐 <a href="https://www.cda.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cda.gov.lk</a></div>
     </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;">
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
       <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔬 Research Institute</div>
       <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Research Institute (CRI)</div>
       <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Bandirippuwa Estate<br>Lunuwila 61150<br>📞 +94 31 222 2481<br>🌐 <a href="https://www.cri.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cri.gov.lk</a></div>
     </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;">
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
       <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">📦 Export Promoter</div>
       <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Sri Lanka Export Development Board</div>
       <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 42 Nawam Mawatha<br>Colombo 02<br>📞 +94 11 230 0705<br>🌐 <a href="https://www.srilankabusiness.com" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.srilankabusiness.com</a></div>
     </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;">
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
       <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🛒 Market &amp; Auction</div>
       <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">HARTI / Economic Centres</div>
       <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Narahenpita, Colombo 05<br>(Head Office)<br>📞 +94 11 259 1919<br>🌐 <a href="https://www.harti.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.harti.gov.lk</a></div>
