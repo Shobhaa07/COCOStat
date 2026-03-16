@@ -116,9 +116,9 @@ T = {
         "tagline": "Understanding Coconut Prices in Simple Terms",
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "nav": ["Overview","Market","Demand","Forecast","Policy","History","Compare","Method",
-                "Weather & Harvest","Export & Trade","Farmer Profitability","Global Comparison"],
+                "Weather & Harvest","Export & Trade","Farmer Profitability","Auction Details"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
         "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
@@ -178,6 +178,9 @@ T = {
         "global_title":"\U0001f30d Global Market Comparison",
         "global_sub":"Compare Sri Lanka coconut prices with major producers worldwide.",
         "global_note":"\U0001f4a1 Sri Lanka typically commands a price premium due to quality. But high prices hurt export competitiveness.",
+        "auction_title":"\U0001f6a9 Sri Lanka Coconut Auction Details",
+        "auction_sub":"Official auction schedules, venues, and key information for Sri Lanka coconut auctions managed by CDA & HARTI.",
+        "auction_note":"\U0001f4a1 Coconut auctions are the primary price-discovery mechanism in Sri Lanka. Prices set at auction directly affect farmers, traders, and consumers.",
         "kpi_title": "KPI Summary Dashboard",
         "kpi_sub": "All key performance indicators across price, market, demand, and exports in one view.",
         "trend_title": "Trend Analysis and Segmentation",
@@ -194,9 +197,9 @@ T = {
         "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0dc4\u0dd9\u0dc5\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
         "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2","\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
-                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba"],
+                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0da2\u0da9","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
@@ -254,6 +257,9 @@ T = {
         "global_title":"\U0001f30d \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba",
         "global_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0db8\u0d9f \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
         "global_note":"\U0001f4a1 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db8\u0dd2\u0dbd \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dbb\u0db8\u0dd2\u0db1\u0dca \u0daf \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0d86\u0dbb\u0d9a\u0dca\u0DC2\u0dcf \u0dc0\u0dda.",
+        "auction_title":"\U0001f6a9 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb",
+        "auction_sub":"\u0dc3\u0dd0\u0dba CDA \u0dc3\u0dc4 HARTI \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1\u0dba \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc3\u0dad\u0dd2 \u0dc0\u0dd9\u0dbd\u0dda\u0dc0\u0dbd\u0dca, \u0dc3\u0dca\u0dad\u0dcf\u0db1, \u0dc3\u0dc4 \u0d9c\u0ddc\u0dc0\u0dd2\u0db1\u0dca\u0da7 \u0dc0\u0dcf\u0dbb\u0dca\u0dad\u0dcf \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4.",
+        "auction_note":"\U0001f4a1 \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0db8\u0dd2\u0dbd \u0db1\u0dd2\u0dba\u0db8\u0dba \u0d9c\u0ddc\u0dc0\u0dd3\u0db1\u0dca\u0da7, \u0dc0\u0dca\u200d\u0dba\u0dcf\u0db4\u0dcf\u0dbb\u0dd2\u0d9a\u0dba\u0db1\u0dca\u0da7 \u0dc3\u0dc4 \u0db4\u0dbb\u0dd2\u0db4\u0dcf\u0dbd\u0d9a\u0dba\u0db1\u0dca\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u0dba\u0d9a\u0dca\u0DC1\u0dba\u0dba\u0dd9\u0db1\u0dca \u0db6\u0dbd\u0db4\u0dcf\u0db1\u0dcf\u0dc0\u0dba.",
         "kpi_title": "KPI සාරාංශ",
         "kpi_sub": "මිල, වෙළඳ දර්ශක, ඉල්ලුම සහ අපනයන ප්‍රධාන දර්ශක.",
         "trend_title": "ප්‍රවණතා සහ කාණ්ඩ විශ්ලේෂණය",
@@ -1253,91 +1259,297 @@ elif t["nav"][10] in sec_name:
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs."),showlegend=False)
     st.plotly_chart(fig_ps,use_container_width=True,config={"displayModeBar":"hover"})
 
-# ══ GLOBAL COMPARISON (NEW) ══════════════════════════════════════════════════
+# ══ AUCTION DETAILS ══════════════════════════════════════════════════════════
 elif t["nav"][11] in sec_name:
-    section_header("\U0001f30d "+t["global_title"], t["global_sub"])
-    st.markdown(f"<div class='info-box-blue'>{t['global_note']}</div>",unsafe_allow_html=True)
+    section_header("\U0001f6a9 "+t["auction_title"], t["auction_sub"])
+    st.markdown(f"<div class='info-box-blue'>{t['auction_note']}</div>", unsafe_allow_html=True)
 
-    # KPI row
-    sl_l=global_price_df["Sri Lanka"].iloc[-1]
-    w_avg=global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1].mean()
-    sl_vs=sl_l-w_avg; sv_clr="#f59e0b" if sl_vs>0 else "#22c55e"
-    gk1,gk2,gk3,gk4=st.columns(4)
-    for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
-        ("\U0001f1f1\U0001f1f0 SL Price (2024)" if lang=="en" else "\U0001f1f1\U0001f1f0 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db8\u0dd2\u0dbd 2024", f"Rs.{sl_l:.0f}","#16a34a"),
-        ("\U0001f30d World Avg Price" if lang=="en" else "\U0001f30d \u0dbd\u0ddc\u0d9a \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba", f"Rs.{w_avg:.0f}","#3b82f6"),
-        ("\U0001f4ca SL Premium" if lang=="en" else "\U0001f4ca \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0dc0\u0dd9\u0db1\u0dc3", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)",sv_clr),
-        ("\U0001f3ed World Rank" if lang=="en" else "\U0001f3ed \u0dbd\u0ddc\u0d9a \u0DC1\u0dca\u200d\u0dbb\u0dda\u0da4\u0dd2\u0dba","3rd Largest Producer" if lang=="en" else "3 \u0dc0\u0dd0\u0db1\u0dd2 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0d9a\u0dba\u0dcf","#8b5cf6")]):
-        with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
+    # ── KPI row ────────────────────────────────────────────────────────────────
+    ak1,ak2,ak3,ak4 = st.columns(4)
+    for col,(lbl,val,clr) in zip([ak1,ak2,ak3,ak4],[
+        ("🏛️ Primary Authority" if lang=="en" else "🏛️ ප්‍රධාන බලධාරිය",
+         "CDA / HARTI", "#16a34a"),
+        ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
+         "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
+        ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
+         "7:30 AM – 9:00 AM", "#f59e0b"),
+        ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
+         "500 – 5,000 nuts" if lang=="en" else "ඇට 500 – 5,000", "#8b5cf6"),
+    ]):
+        with col: st.markdown(metric_card(lbl, val, clr, height=110), unsafe_allow_html=True)
     divider()
 
-    # Multi-country trend
-    st.markdown("#### \U0001f4c8 "+("Coconut Price Comparison - Major Producers (LKR Equivalent)" if lang=="en" else "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba - \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0d9a\u0dba\u0dcf\u0db1\u0dca (LKR)"))
-    c_colors={"Sri Lanka":"#16a34a","Indonesia":"#3b82f6","Philippines":"#f59e0b","India":"#ef4444","Vietnam":"#8b5cf6"}
-    fig_gl=go.Figure()
-    for country,clr in c_colors.items():
-        is_sl=(country=="Sri Lanka")
-        fig_gl.add_trace(go.Scatter(x=global_price_df["year"].astype(str),y=global_price_df[country],
-            mode="lines+markers",name=("\U0001f1f1\U0001f1f0 " if is_sl else "")+country,
-            line=dict(color=clr,width=3.5 if is_sl else 1.8,dash="solid" if is_sl else "dot"),
-            marker=dict(size=8 if is_sl else 5),hovertemplate=f"<b>{country}</b> %{{x}}<br>Rs.%{{y:.1f}}<extra></extra>"))
-    fig_gl.update_layout(height=340,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs.",tickfont=dict(size=11)),
-        legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
-    st.plotly_chart(fig_gl,use_container_width=True,config={"displayModeBar":"hover"})
+    # ── Main Auction Centres ───────────────────────────────────────────────────
+    st.markdown("#### 🏢 "+("Official Coconut Auction Centres" if lang=="en" else "නිල පොල් වෙන්දේසි මධ්‍යස්ථාන"))
+    centres = [
+        {
+            "name": "Colombo Auction Centre",
+            "si_name": "කොළඹ වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "HARTI Economic Centre, Narahenpita, Colombo 05",
+            "days": "Monday, Wednesday, Friday",
+            "time": "7:30 AM – 10:00 AM",
+            "type": "Whole Nuts & Copra",
+            "authority": "HARTI / CDA",
+            "phone": "+94 11 259 1919",
+            "note": "Largest & most active auction. Sets the national benchmark price.",
+            "clr": "#16a34a",
+        },
+        {
+            "name": "Kurunegala Auction Centre",
+            "si_name": "කුරුණෑගල වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "CDA Regional Office, Kurunegala",
+            "days": "Tuesday, Thursday",
+            "time": "8:00 AM – 10:30 AM",
+            "type": "Whole Nuts",
+            "authority": "CDA",
+            "phone": "+94 37 222 2250",
+            "note": "Main centre for Kurunegala district — Sri Lanka's largest coconut belt.",
+            "clr": "#3b82f6",
+        },
+        {
+            "name": "Puttalam Auction Centre",
+            "si_name": "පුත්තලම වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "CDA Regional Office, Puttalam",
+            "days": "Monday, Friday",
+            "time": "8:00 AM – 10:00 AM",
+            "type": "Whole Nuts & Coconut Oil",
+            "authority": "CDA",
+            "phone": "+94 32 222 5120",
+            "note": "Covers northern coconut triangle; strong copra and oil trade.",
+            "clr": "#f59e0b",
+        },
+        {
+            "name": "Gampaha Auction Centre",
+            "si_name": "ගම්පහ වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "Economic Centre, Nittambuwa, Gampaha",
+            "days": "Tuesday, Thursday, Saturday",
+            "time": "7:00 AM – 9:30 AM",
+            "type": "Whole Nuts & Desiccated Coconut",
+            "authority": "HARTI",
+            "phone": "+94 33 222 3100",
+            "note": "Serves Western Province. High volume during peak harvest months.",
+            "clr": "#8b5cf6",
+        },
+        {
+            "name": "Matara Auction Centre",
+            "si_name": "මාතර වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "Economic Centre, Matara",
+            "days": "Wednesday, Saturday",
+            "time": "8:30 AM – 10:30 AM",
+            "type": "Whole Nuts",
+            "authority": "HARTI / CDA",
+            "phone": "+94 41 222 2440",
+            "note": "Key centre for Southern Province coconut growers.",
+            "clr": "#ef4444",
+        },
+        {
+            "name": "Kalutara Auction Centre",
+            "si_name": "කළුතර වෙන්දේසි මධ්‍යස්ථානය",
+            "venue": "Economic Centre, Kalutara South",
+            "days": "Monday, Thursday",
+            "time": "8:00 AM – 10:00 AM",
+            "type": "Whole Nuts & Coconut Milk",
+            "authority": "HARTI",
+            "phone": "+94 34 222 5300",
+            "note": "Significant trade in coconut milk products alongside whole nuts.",
+            "clr": "#06b6d4",
+        },
+    ]
+
+    # Display 3 per row
+    for row_start in range(0, len(centres), 3):
+        row_centres = centres[row_start:row_start+3]
+        cols = st.columns(3)
+        for col, c in zip(cols, row_centres):
+            name_display = c["si_name"] if lang == "si" else c["name"]
+            with col:
+                st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {c["clr"]};
+                    border-radius:12px;padding:18px 16px;margin-bottom:14px;height:280px;display:flex;flex-direction:column;justify-content:space-between;'>
+                    <div>
+                      <div style='font-size:.6rem;font-weight:800;color:{c["clr"]};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;'>{c["authority"]}</div>
+                      <div style='font-size:.9rem;font-weight:800;color:#0d2b0d;margin-bottom:10px;line-height:1.3;'>{name_display}</div>
+                      <div style='font-size:.72rem;color:#374151;line-height:1.85;'>
+                        📍 {c["venue"]}<br>
+                        📅 {c["days"]}<br>
+                        🕗 {c["time"]}<br>
+                        📦 {c["type"]}<br>
+                        📞 {c["phone"]}
+                      </div>
+                    </div>
+                    <div style='font-size:.68rem;color:{c["clr"]};font-weight:600;margin-top:8px;background:{c["clr"]}11;
+                        padding:6px 8px;border-radius:6px;line-height:1.4;'>💡 {c["note"]}</div>
+                </div>""", unsafe_allow_html=True)
     divider()
 
-    cp2,cr=st.columns(2)
-    with cp2:
-        st.markdown("#### \U0001f30d "+("Global Coconut Production Share" if lang=="en" else "\u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d9a\u0ddc\u0da7\u0dc3"))
-        fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
-            textinfo="label+percent",textfont=dict(size=10),
-            marker=dict(colors=["#3b82f6","#f59e0b","#ef4444","#16a34a","#8b5cf6","#06b6d4","#84cc16"]),
-            pull=[.08 if c=="Sri Lanka" else 0 for c in production_df["Country"]],
-            hovertemplate="<b>%{label}</b><br>%{value}B nuts/yr<br>%{percent}<extra></extra>"))
-        fig_pp.update_layout(height=320,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
-        st.plotly_chart(fig_pp,use_container_width=True,config={"displayModeBar":"hover"})
-    with cr:
-        st.markdown("#### \U0001f4ca "+("Country Competitiveness Radar" if lang=="en" else "\u0dbb\u0da7\u0dc0\u0dbd\u0dca \u0dad\u0dbb\u0d9c\u0d9a\u0dcf\u0dbb\u0dd2\u0dad\u0dca\u0dc0 \u0dbb\u0dda\u0daf\u0dcf\u0dbb\u0dca"))
-        ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
-        attrs=["Quality","Volume","Price Comp.","Export Infra.","Processing"]
-        scores={"Sri Lanka":[88,40,55,72,80],"Indonesia":[70,95,90,82,75],"Philippines":[75,85,80,78,70],"India":[80,88,72,80,82],"Vietnam":[65,50,88,60,55]}
-        clrs_r=["#16a34a","#3b82f6","#f59e0b","#ef4444","#8b5cf6"]
-        fig_rad=go.Figure()
-        for ct,clr in zip(ctries,clrs_r):
-            v=scores[ct]+[scores[ct][0]]; a=attrs+[attrs[0]]
-            c_int=int(clr[1:3],16); c_g=int(clr[3:5],16); c_b=int(clr[5:7],16)
-            fig_rad.add_trace(go.Scatterpolar(r=v,theta=a,fill="toself",fillcolor=f"rgba({c_int},{c_g},{c_b},.08)",
-                line=dict(color=clr,width=2),name=ct,hovertemplate=f"<b>{ct}</b><br>%{{theta}}: %{{r}}<extra></extra>"))
-        fig_rad.update_layout(polar=dict(radialaxis=dict(visible=True,range=[0,100],tickfont=dict(size=9)),
-            angularaxis=dict(tickfont=dict(size=10)),bgcolor="#fff"),
-            height=320,margin=dict(l=30,r=30,t=20,b=20),paper_bgcolor="#fff",
-            legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=9)))
-        st.plotly_chart(fig_rad,use_container_width=True,config={"displayModeBar":"hover"})
+    # ── Weekly Auction Schedule ────────────────────────────────────────────────
+    st.markdown("#### 📅 "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
+    days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    day_auctions = {
+        "Monday":    ["Colombo (7:30 AM)","Puttalam (8:00 AM)","Kalutara (8:00 AM)"],
+        "Tuesday":   ["Kurunegala (8:00 AM)","Gampaha (7:00 AM)"],
+        "Wednesday": ["Colombo (7:30 AM)","Matara (8:30 AM)"],
+        "Thursday":  ["Kurunegala (8:00 AM)","Gampaha (7:00 AM)","Kalutara (8:00 AM)"],
+        "Friday":    ["Colombo (7:30 AM)","Puttalam (8:00 AM)"],
+        "Saturday":  ["Gampaha (7:00 AM)","Matara (8:30 AM)"],
+    }
+    day_colors = {"Monday":"#16a34a","Tuesday":"#3b82f6","Wednesday":"#f59e0b",
+                  "Thursday":"#8b5cf6","Friday":"#ef4444","Saturday":"#06b6d4"}
+    sched_cols = st.columns(6)
+    for col, day in zip(sched_cols, days):
+        auctions = day_auctions[day]
+        clr = day_colors[day]
+        items_html = "".join([f"<div style='font-size:.68rem;color:#374151;padding:4px 0;border-bottom:1px solid #f0fdf4;line-height:1.4;'>🔔 {a}</div>" for a in auctions])
+        with col:
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};
+                border-radius:10px;padding:12px 10px;min-height:160px;'>
+                <div style='font-size:.72rem;font-weight:800;color:{clr};text-transform:uppercase;
+                    letter-spacing:1px;margin-bottom:8px;text-align:center;'>{day}</div>
+                {items_html}
+            </div>""", unsafe_allow_html=True)
     divider()
 
-    # Price gap table
-    st.markdown("#### \U0001f4cb "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "\u0db8\u0dd2\u0dbd \u0db4\u0dbb\u0dad\u0dbb \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba"))
-    lr=global_price_df.iloc[-1]; sl_p=lr["Sri Lanka"]
-    gdrows=[]
-    for ct in ["Indonesia","Philippines","India","Vietnam"]:
-        cp_=lr[ct]; gap=sl_p-cp_; gp=gap/cp_*100
-        gdrows.append({"Country":ct,"Price (Rs.)":round(cp_,1),"SL Price (Rs.)":round(sl_p,1),"Gap (Rs.)":round(gap,1),"Gap (%)":round(gp,1),"SL vs This":("Higher\u2191" if gap>0 else "Lower\u2193")})
-    st.dataframe(pd.DataFrame(gdrows),use_container_width=True,hide_index=True)
+    # ── Auction Process & Rules ────────────────────────────────────────────────
+    st.markdown("#### 📋 "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
+    proc_cols = st.columns(4)
+    steps = [
+        ("01","Registration","Sellers register with CDA/HARTI at least 24 hrs before auction. Lots are inspected and graded by officials.",
+         "Buyers must hold valid CDA buyer licence. Annual renewal required.","#16a34a"),
+        ("02","Grading & Lot Formation","Nuts are graded by size, freshness and quality. Standard lot = 1,000 nuts. Minimum 500 nuts per lot.",
+         "Grade A: ≥12cm dia. Grade B: 10–12cm. Grade C: <10cm.","#3b82f6"),
+        ("03","Bidding Process","Open outcry ascending bid auction. Auctioneer calls starting price. Highest bid wins. Buyer must pay within 24 hrs.",
+         "Electronic bidding being piloted at Colombo centre.","#f59e0b"),
+        ("04","Settlement & Transport","Payment via bank transfer or certified cheque. Seller receives funds within 2 working days.",
+         "CDA provides transport support for quantities >5,000 nuts.","#8b5cf6"),
+    ]
+    for col, (num, title, desc, note, clr) in zip(proc_cols, steps):
+        with col:
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {clr};
+                border-radius:10px;padding:16px 14px;height:240px;display:flex;flex-direction:column;'>
+                <div style='font-size:.6rem;font-weight:800;color:{clr};text-transform:uppercase;letter-spacing:2px;'>STEP {num}</div>
+                <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin:6px 0 8px;'>{title}</div>
+                <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
+                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:8px;background:{clr}11;
+                    padding:5px 7px;border-radius:5px;line-height:1.4;'>ℹ️ {note}</div>
+            </div>""", unsafe_allow_html=True)
     divider()
 
-    # Price divergence over time
-    st.markdown("#### \U0001f4c9 "+("SL Price Divergence from World Average" if lang=="en" else "\u0dbd\u0ddc\u0d9a \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba\u0dba\u0dd9\u0db1\u0dca \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0d85\u0db4\u0d9c\u0db8\u0db1\u0dba"))
-    wavg_s=global_price_df[["Indonesia","Philippines","India","Vietnam"]].mean(axis=1)
-    sldev=global_price_df["Sri Lanka"]-wavg_s
-    fig_dv=go.Figure(go.Bar(x=global_price_df["year"].astype(str),y=sldev,
-        marker_color=["#22c55e" if v>0 else "#ef4444" for v in sldev],
-        text=[f"Rs.{v:+.1f}" for v in sldev],textposition="outside",textfont=dict(size=10),
-        hovertemplate="<b>%{x}</b><br>SL Premium: Rs.%{y:.1f}<extra></extra>"))
-    fig_dv.add_hline(y=0,line_color="#94a3b8",line_width=1.5)
-    fig_dv.update_layout(height=280,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs.",title="Premium above World Avg"),showlegend=False)
-    st.plotly_chart(fig_dv,use_container_width=True,config={"displayModeBar":"hover"})
+    # ── Price Grades & Benchmarks ──────────────────────────────────────────────
+    st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
+    import plotly.graph_objects as go
+    grade_data = {
+        "Grade A\n(Premium Large)": (72, 85, 78),
+        "Grade B\n(Standard)":       (58, 72, 65),
+        "Grade C\n(Small)":           (42, 58, 50),
+        "Copra\n(per kg)":            (85, 110, 95),
+        "Coconut Oil\n(per litre)":   (380, 450, 415),
+    }
+    fig_grades = go.Figure()
+    gnames = list(grade_data.keys())
+    gmins  = [v[0] for v in grade_data.values()]
+    gmaxs  = [v[1] for v in grade_data.values()]
+    gavgs  = [v[2] for v in grade_data.values()]
+    fig_grades.add_trace(go.Bar(name="Min Price", x=gnames, y=gmins,
+        marker_color="rgba(22,163,74,0.3)", text=[f"Rs.{v}" for v in gmins],
+        textposition="inside", textfont=dict(size=10, color="#166534")))
+    fig_grades.add_trace(go.Bar(name="Max Price", x=gnames, y=gmaxs,
+        marker_color="rgba(22,163,74,0.7)", text=[f"Rs.{v}" for v in gmaxs],
+        textposition="inside", textfont=dict(size=10, color="#fff")))
+    fig_grades.add_trace(go.Scatter(name="Avg Price", x=gnames, y=gavgs,
+        mode="markers+text", marker=dict(color="#f59e0b", size=14, symbol="diamond"),
+        text=[f"Rs.{v}" for v in gavgs], textposition="top center",
+        textfont=dict(size=11, color="#92400e")))
+    fig_grades.update_layout(barmode="overlay", height=320,
+        margin=dict(l=20,r=20,t=20,b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", title="Price (Rs.)"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+    st.plotly_chart(fig_grades, use_container_width=True, config={"displayModeBar":"hover"})
+    divider()
+
+    # ── Key Rules & Regulations ────────────────────────────────────────────────
+    r1c, r2c = st.columns(2)
+    with r1c:
+        st.markdown("#### 📜 "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
+        seller_rules = [
+            ("✅","CDA Registration","All sellers must be registered with the Coconut Development Authority (CDA)."),
+            ("✅","Minimum Lot","Minimum 500 nuts per auction lot. Lots must be clean and free of husked nuts."),
+            ("✅","Pre-inspection","Lots must arrive at the centre at least 1 hour before auction for grading."),
+            ("✅","Transport","Seller arranges transport to the auction centre. CDA may assist for large volumes."),
+            ("✅","Payment","Sellers receive payment within 2 working days of auction settlement."),
+        ]
+        for icon, title, desc in seller_rules:
+            st.markdown(f"""<div style='background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;
+                padding:10px 14px;margin-bottom:8px;'>
+                <div style='font-size:.75rem;font-weight:800;color:#0d2b0d;'>{icon} {title}</div>
+                <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
+            </div>""", unsafe_allow_html=True)
+
+    with r2c:
+        st.markdown("#### 📜 "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
+        buyer_rules = [
+            ("✅","Buyer Licence","Valid CDA buyer licence required. Obtainable from CDA Head Office, Colombo 02."),
+            ("✅","Licence Fee","Annual buyer licence fee: Rs. 5,000 (Individual) / Rs. 15,000 (Company)."),
+            ("✅","Deposit","Registered buyers must maintain a security deposit with the auction centre."),
+            ("✅","Payment","Full payment within 24 hours of auction. Late payment attracts a 2% penalty per day."),
+            ("✅","Quantity Limit","Individual buyers limited to 50,000 nuts per auction session to prevent cornering."),
+        ]
+        for icon, title, desc in buyer_rules:
+            st.markdown(f"""<div style='background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;
+                padding:10px 14px;margin-bottom:8px;'>
+                <div style='font-size:.75rem;font-weight:800;color:#0d2b0d;'>{icon} {title}</div>
+                <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
+            </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ── Special Auctions ──────────────────────────────────────────────────────
+    st.markdown("#### 🌟 "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
+    spec_cols = st.columns(3)
+    specials = [
+        ("🌾 Peak Harvest Auctions",
+         "March–April / Aug–November",
+         "Extra auction sessions added during peak harvest. Colombo centre operates 5 days/week. Prices typically lower due to high supply.",
+         "#16a34a"),
+        ("🏆 Premium Quality Auction",
+         "Quarterly (Jan, Apr, Jul, Oct)",
+         "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
+         "#f59e0b"),
+        ("🌐 Export Auction",
+         "Every 2nd Friday of month",
+         "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
+         "#3b82f6"),
+    ]
+    for col, (title, schedule, desc, clr) in zip(spec_cols, specials):
+        with col:
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {clr};
+                border-radius:12px;padding:18px 14px;height:220px;display:flex;flex-direction:column;'>
+                <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;'>{title}</div>
+                <div style='font-size:.7rem;font-weight:700;color:{clr};margin-bottom:8px;'>📅 {schedule}</div>
+                <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
+            </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ── Contact & Registration ─────────────────────────────────────────────────
+    st.markdown("#### 📞 "+("Register & Contact" if lang=="en" else "ලියාපදිංචි සහ සම්බන්ධ වන්න"))
+    ct1, ct2, ct3 = st.columns(3)
+    contacts = [
+        ("🏛️","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk","Seller & Buyer Registration, Licence Applications","#16a34a"),
+        ("🏪","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk","Colombo & Gampaha Auction Operations","#3b82f6"),
+        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions","Auction schedule enquiries, lot registration","#f59e0b"),
+    ]
+    for col, (icon,org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
+        with col:
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};
+                border-radius:10px;padding:16px 14px;height:220px;display:flex;flex-direction:column;'>
+                <div style='font-size:.6rem;font-weight:700;color:{clr};text-transform:uppercase;
+                    letter-spacing:1px;margin-bottom:6px;'>{icon} Contact</div>
+                <div style='font-weight:800;font-size:.82rem;color:#0d2b0d;margin-bottom:8px;'>{org}</div>
+                <div style='font-size:.7rem;color:#374151;line-height:1.8;flex:1;'>
+                    📍 {addr}<br>📞 {phone}<br>✉️ {email}<br>
+                    🌐 <a href='https://{web}' target='_blank' style='color:{clr};font-weight:600;text-decoration:none;'>{web}</a>
+                </div>
+                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'>🎯 {purpose}</div>
+            </div>""", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────
