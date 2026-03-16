@@ -341,8 +341,7 @@ div[data-testid="stSidebar"] h3{color:#14532d!important;font-size:.72rem!importa
 # SIDEBAR
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
-    <div style='text-align:center;padding:22px 0 14px;border-bottom:2px solid #d1e7d1;margin-bottom:4px;'>
+    st.markdown("""<div style='text-align:center;padding:22px 0 14px;border-bottom:2px solid #d1e7d1;margin-bottom:4px;'>
       <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 8px;display:block;">
         <circle cx="32" cy="32" r="30" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
         <circle cx="32" cy="32" r="23" fill="#166534"/>
@@ -480,8 +479,7 @@ with st.sidebar:
     bar_w   = min(int(risk_score), 100)
     bar_clr = ("#ef4444" if risk_score >= 70 else "#f59e0b" if risk_score >= 45
                else "#eab308" if risk_score >= 25 else "#22c55e")
-    st.markdown(f"""
-    <div style='background:{rl_bg};border:2px solid {rl_border};border-radius:10px;
+    st.markdown(f"""<div style='background:{rl_bg};border:2px solid {rl_border};border-radius:10px;
         padding:12px 12px 10px;margin-bottom:8px;'>
       <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>
         <div style='font-size:.72rem;font-weight:900;color:{rl_clr};'>{rl_label}</div>
@@ -497,94 +495,89 @@ with st.sidebar:
     </div>""", unsafe_allow_html=True)
 
     # ── Risk Factor Breakdown ─────────────
-    st.markdown(f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;"
-                f"letter-spacing:1px;margin-bottom:5px;'>{'Risk Factors' if lang=='en' else 'අවදානම් සාධක'}</div>",
-                unsafe_allow_html=True)
+    rf_label = "Risk Factors" if lang=="en" else "අවදානම් සාධක"
+    rf_rows_html = ""
     for dot, label, pts in risk_factors:
-        pt_html = (f"<span style='font-size:.56rem;color:#ef4444;font-weight:700;'>+{pts}</span>"
-                   if pts > 0 else "")
-        st.markdown(f"""<div style='display:flex;align-items:center;gap:5px;padding:3px 0;
-            border-bottom:1px solid #f0fdf4;'>
-          <span style='font-size:.7rem;'>{dot}</span>
-          <span style='font-size:.63rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>
-          {pt_html}
-        </div>""", unsafe_allow_html=True)
+        pt_span = (f"<span style='font-size:.56rem;color:#ef4444;font-weight:700;min-width:18px;text-align:right;'>+{pts}</span>"
+                   if pts > 0 else
+                   "<span style='min-width:18px;'></span>")
+        rf_rows_html += (
+            f"<div style='display:flex;align-items:center;gap:5px;padding:3px 0;"
+            f"border-bottom:1px solid #f0fdf4;'>"
+            f"<span style='font-size:.7rem;'>{dot}</span>"
+            f"<span style='font-size:.63rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>"
+            f"{pt_span}"
+            f"</div>"
+        )
+    st.markdown(
+        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;"
+        f"letter-spacing:1px;margin-bottom:5px;'>{rf_label}</div>"
+        f"<div>{rf_rows_html}</div>",
+        unsafe_allow_html=True
+    )
 
-    # ── Price Zones ───────────────────────
-    st.markdown(f"""<div style='margin-top:10px;'>
-      <div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;
-          letter-spacing:1px;margin-bottom:6px;'>{'Price Zones' if lang=='en' else 'මිල කලාප'}</div>
-      <div style='display:flex;flex-direction:column;gap:4px;'>
-        <div style='background:#fee2e2;border-left:3px solid #ef4444;border-radius:0 5px 5px 0;
-            padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>
-          <span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'>🔴 {'Crisis' if lang=='en' else 'අර්බුද'}</span>
-          <span style='font-size:.63rem;font-weight:800;color:#7f1d1d;'>Rs.{crisis_threshold}+</span>
-        </div>
-        <div style='background:#fef9c3;border-left:3px solid #eab308;border-radius:0 5px 5px 0;
-            padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>
-          <span style='font-size:.63rem;font-weight:700;color:#713f12;'>🟡 {'Warning' if lang=='en' else 'අවවාද'}</span>
-          <span style='font-size:.63rem;font-weight:800;color:#713f12;'>Rs.{warn_threshold}–{crisis_threshold-1}</span>
-        </div>
-        <div style='background:#dcfce7;border-left:3px solid #22c55e;border-radius:0 5px 5px 0;
-            padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>
-          <span style='font-size:.63rem;font-weight:700;color:#14532d;'>🟢 {'Safe' if lang=='en' else 'ආරක්ෂිත'}</span>
-          <span style='font-size:.63rem;font-weight:800;color:#14532d;'>Rs.&lt;{warn_threshold}</span>
-        </div>
-      </div>
-    </div>""", unsafe_allow_html=True)
+    # ── Price Zones + Current Price + Quick Actions (all one call) ────────────
+    pz_crisis_lbl  = "Crisis"  if lang=="en" else "අර්බුද"
+    pz_warn_lbl    = "Warning" if lang=="en" else "අවවාද"
+    pz_safe_lbl    = "Safe"    if lang=="en" else "ආරක්ෂිත"
+    cp_lbl         = "Current Auction Price" if lang=="en" else "දැනට වෙන්දේසි මිල"
+    mom_lbl        = "vs 3 months ago"       if lang=="en" else "මාස 3 ට සාපේක්ෂව"
+    qa_label       = "Quick Actions"         if lang=="en" else "ක්ෂණික ක්‍රියා"
 
-    # ── Current Price Position ────────────
-    st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-radius:8px;
-        padding:8px 10px;margin-top:8px;text-align:center;'>
-      <div style='font-size:.58rem;color:#4a7a4a;font-weight:700;text-transform:uppercase;letter-spacing:1px;'>
-        {'Current Auction Price' if lang=='en' else 'දැනට වෙන්දේසි මිල'}
-      </div>
-      <div style='font-size:1.35rem;font-weight:900;color:{rl_clr};margin:2px 0;'>Rs. {current_price:.2f}</div>
-      <div style='font-size:.6rem;color:#64748b;'>
-        {momentum_3m:+.1f}% {'vs 3 months ago' if lang=='en' else 'මාස 3 ට සාපේක්ෂව'}
-      </div>
-    </div>""", unsafe_allow_html=True)
-
-    # ── Quick Actions ─────────────────────
     if risk_score >= 70:
-        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
-                        "🏛️ Alert CDA/HARTI officials<br>"
-                        "📦 Activate buffer stocks<br>"
-                        "📣 Broadcast price warnings<br>"
-                        "💰 Farmers: sell immediately<br>"
-                        "🏭 Businesses: hedge now</div>")
+        actions_inner = ("🏛️ Alert CDA/HARTI officials<br>"
+                         "📦 Activate buffer stocks<br>"
+                         "📣 Broadcast price warnings<br>"
+                         "💰 Farmers: sell immediately<br>"
+                         "🏭 Businesses: hedge now")
     elif risk_score >= 45:
-        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
-                        "📊 Monitor daily auction prices<br>"
-                        "📦 Prepare buffer stock release<br>"
-                        "💰 Farmers: consider selling<br>"
-                        "🏭 Businesses: review contracts<br>"
-                        "🔍 Watch export demand</div>")
+        actions_inner = ("📊 Monitor daily auction prices<br>"
+                         "📦 Prepare buffer stock release<br>"
+                         "💰 Farmers: consider selling<br>"
+                         "🏭 Businesses: review contracts<br>"
+                         "🔍 Watch export demand")
     elif risk_score >= 25:
-        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
-                        "📋 Weekly price check sufficient<br>"
-                        "🌱 Farmers: continue normal ops<br>"
-                        "🏭 Businesses: plan ahead<br>"
-                        "📈 Consider forward contracts<br>"
-                        "🌍 Explore export opportunities</div>")
+        actions_inner = ("📋 Weekly price check sufficient<br>"
+                         "🌱 Farmers: continue normal ops<br>"
+                         "🏭 Businesses: plan ahead<br>"
+                         "📈 Consider forward contracts<br>"
+                         "🌍 Explore export opportunities")
     else:
-        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
-                        "✅ No immediate action needed<br>"
-                        "🌱 Good time to invest/expand<br>"
-                        "📋 Monthly monitoring sufficient<br>"
-                        "🏦 Build buffer stocks now<br>"
-                        "🌿 Explore value-added products</div>")
+        actions_inner = ("✅ No immediate action needed<br>"
+                         "🌱 Good time to invest/expand<br>"
+                         "📋 Monthly monitoring sufficient<br>"
+                         "🏦 Build buffer stocks now<br>"
+                         "🌿 Explore value-added products")
 
-    qa_label = "Quick Actions" if lang=="en" else "ක්ෂණික ක්‍රියා"
-    st.markdown(f"""<div style='margin-top:10px;'>
-      <div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;
-          letter-spacing:1px;margin-bottom:6px;'>{qa_label}</div>
-      <div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;
-          padding:8px 10px;'>{actions_html}</div>
-    </div>""", unsafe_allow_html=True)
+    pz_zones_label = "Price Zones" if lang=="en" else "මිල කලාප"
+    st.markdown(
+        f"<div style='margin-top:10px;'>"
+        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{pz_zones_label}</div>"
+        f"<div style='display:flex;flex-direction:column;gap:4px;'>"
+        f"<div style='background:#fee2e2;border-left:3px solid #ef4444;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'>🔴 {pz_crisis_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:800;color:#7f1d1d;'>Rs.{crisis_threshold}+</span></div>"
+        f"<div style='background:#fef9c3;border-left:3px solid #eab308;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#713f12;'>🟡 {pz_warn_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:800;color:#713f12;'>Rs.{warn_threshold}&#8211;{crisis_threshold-1}</span></div>"
+        f"<div style='background:#dcfce7;border-left:3px solid #22c55e;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#14532d;'>🟢 {pz_safe_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:800;color:#14532d;'>Rs.&lt;{warn_threshold}</span></div>"
+        f"</div></div>"
+        f"<div style='background:#fff;border:1px solid #d1e7d1;border-radius:8px;padding:8px 10px;margin-top:8px;text-align:center;'>"
+        f"<div style='font-size:.58rem;color:#4a7a4a;font-weight:700;text-transform:uppercase;letter-spacing:1px;'>{cp_lbl}</div>"
+        f"<div style='font-size:1.35rem;font-weight:900;color:{rl_clr};margin:2px 0;'>Rs. {current_price:.2f}</div>"
+        f"<div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {mom_lbl}</div>"
+        f"</div>"
+        f"<div style='margin-top:10px;'>"
+        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{qa_label}</div>"
+        f"<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;'>"
+        f"<div style='font-size:.63rem;line-height:1.7;color:#374151;'>{actions_inner}</div>"
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
     st.markdown("---")
-    st.markdown(f"""
-    <div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:10px;padding:14px 12px;text-align:center;'>
+    st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:10px;padding:14px 12px;text-align:center;'>
       <div style='font-size:.6rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;'>\U0001f464 {t['footer_researcher']}</div>
       <div style='font-weight:800;font-size:.88rem;color:#0d2b0d;margin-bottom:8px;'>M A C S RATHNAYAKE</div>
       <div style='font-size:.6rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;'>{t['footer_ids']}</div>
@@ -1755,8 +1748,7 @@ elif t["nav"][12] in sec_name:
     import plotly.graph_objects as go
 
     # ── Hero banner ────────────────────────────────────────────────────────────
-    st.markdown("""
-    <div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
+    st.markdown("""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
         border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
       <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
         🧩 Strategic Decision Support Centre
@@ -1798,8 +1790,7 @@ elif t["nav"][12] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 1 — STRATEGIC POLICY SIMULATOR
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
+    st.markdown("""<div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🏛️ Strategic Policy Simulator
@@ -1964,8 +1955,7 @@ elif t["nav"][12] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 2 — STRATEGIC RECOMMENDATION ENGINE
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
+    st.markdown("""<div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🎯 Strategic Recommendation Engine
@@ -2135,8 +2125,7 @@ elif t["nav"][12] in sec_name:
 
     def render_rec_cards(recs_list, accent):
         for i, (icon, title, desc, priority, timing, resource) in enumerate(recs_list):
-            st.markdown(f"""
-            <div style='background:#fff;border:1px solid #e2e8f0;border-left:5px solid {accent};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;border-left:5px solid {accent};
                 border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;
                 box-shadow:0 1px 4px rgba(0,0,0,.06);'>
               <div style='display:flex;align-items:flex-start;gap:12px;'>
@@ -2186,8 +2175,7 @@ elif t["nav"][12] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 3 — DECISION RISK MATRIX
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
+    st.markdown("""<div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🗺️ Strategic Risk & Opportunity Matrix
@@ -2258,8 +2246,7 @@ elif t["nav"][12] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 4 — 90-DAY ACTION PLAN
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
+    st.markdown("""<div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         📅 90-Day Priority Action Plan
