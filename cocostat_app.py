@@ -369,9 +369,8 @@ with st.sidebar:
     section = st.radio("", nav_full, label_visibility="collapsed")
     st.markdown("---")
     st.markdown("### " + ("\u2699\ufe0f Settings" if lang=="en" else "\u2699\ufe0f \u0dc3\u0dd0\u0d9a\u0dc3\u0dd4\u0db8\u0dca"))
-    regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
-    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
-    regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
+    active_regime = st.selectbox(t["regime_select"], t["regime_options"], index=0)
+    regime_idx = t["regime_options"].index(active_regime)
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
