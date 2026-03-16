@@ -1589,12 +1589,12 @@ elif t["nav"][11] in sec_name:
     st.markdown("#### 📅 "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
     days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     day_auctions = {
-        "Monday":    ["Colombo (7:30 AM)","Puttalam (8:00 AM)","Kalutara (8:00 AM)"],
-        "Tuesday":   ["Kurunegala (8:00 AM)","Gampaha (7:00 AM)"],
-        "Wednesday": ["Colombo (7:30 AM)","Matara (8:30 AM)"],
-        "Thursday":  ["Kurunegala (8:00 AM)","Gampaha (7:00 AM)","Kalutara (8:00 AM)"],
-        "Friday":    ["Colombo (7:30 AM)","Puttalam (8:00 AM)"],
-        "Saturday":  ["Gampaha (7:00 AM)","Matara (8:30 AM)"],
+        "Monday":    [("Colombo","7:30 AM"),("Puttalam","8:00 AM"),("Kalutara","8:00 AM")],
+        "Tuesday":   [("Kurunegala","8:00 AM"),("Gampaha","7:00 AM")],
+        "Wednesday": [("Colombo","7:30 AM"),("Matara","8:30 AM")],
+        "Thursday":  [("Kurunegala","8:00 AM"),("Gampaha","7:00 AM"),("Kalutara","8:00 AM")],
+        "Friday":    [("Colombo","7:30 AM"),("Puttalam","8:00 AM")],
+        "Saturday":  [("Gampaha","7:00 AM"),("Matara","8:30 AM")],
     }
     day_colors = {"Monday":"#16a34a","Tuesday":"#3b82f6","Wednesday":"#f59e0b",
                   "Thursday":"#8b5cf6","Friday":"#ef4444","Saturday":"#06b6d4"}
@@ -1602,7 +1602,13 @@ elif t["nav"][11] in sec_name:
     for col, day in zip(sched_cols, days):
         auctions = day_auctions[day]
         clr = day_colors[day]
-        items_html = "".join([f"<div style='font-size:.68rem;color:#374151;padding:4px 0;border-bottom:1px solid #f0fdf4;line-height:1.4;'>🔔 {a}</div>" for a in auctions])
+        items_html = "".join([
+            f"<div style='padding:4px 0;border-bottom:1px solid #f0fdf4;'>"
+            f"<div style='font-size:.7rem;font-weight:700;color:#1e293b;white-space:nowrap;'>🔔 {name}</div>"
+            f"<div style='font-size:.63rem;color:#64748b;margin-left:18px;white-space:nowrap;'>{time}</div>"
+            f"</div>"
+            for name, time in auctions
+        ])
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};
                 border-radius:10px;padding:12px 10px;min-height:160px;'>
@@ -1640,34 +1646,48 @@ elif t["nav"][11] in sec_name:
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
     st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
-    grade_data = {
-        "Grade A\n(Premium Large)": (72, 85, 78),
-        "Grade B\n(Standard)":       (58, 72, 65),
-        "Grade C\n(Small)":           (42, 58, 50),
-        "Copra\n(per kg)":            (85, 110, 95),
-        "Coconut Oil\n(per litre)":   (380, 450, 415),
-    }
+    grade_labels = ["Grade A<br>(Premium Large)", "Grade B<br>(Standard)", "Grade C<br>(Small)", "Copra<br>(per kg)", "Coconut Oil<br>(per litre)"]
+    gmins  = [72,  58,  42,  85,  380]
+    gmaxs  = [85,  72,  58,  110, 450]
+    gavgs  = [78,  65,  50,  95,  415]
+    bar_colors   = ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"]
+    range_colors = ["rgba(34,197,94,0.18)","rgba(22,163,74,0.18)","rgba(21,128,61,0.18)","rgba(13,148,136,0.18)","rgba(8,145,178,0.18)"]
     fig_grades = go.Figure()
-    gnames = list(grade_data.keys())
-    gmins  = [v[0] for v in grade_data.values()]
-    gmaxs  = [v[1] for v in grade_data.values()]
-    gavgs  = [v[2] for v in grade_data.values()]
-    fig_grades.add_trace(go.Bar(name="Min Price", x=gnames, y=gmins,
-        marker_color="rgba(22,163,74,0.3)", text=[f"Rs.{v}" for v in gmins],
-        textposition="inside", textfont=dict(size=10, color="#166534")))
-    fig_grades.add_trace(go.Bar(name="Max Price", x=gnames, y=gmaxs,
-        marker_color="rgba(22,163,74,0.7)", text=[f"Rs.{v}" for v in gmaxs],
-        textposition="inside", textfont=dict(size=10, color="#fff")))
-    fig_grades.add_trace(go.Scatter(name="Avg Price", x=gnames, y=gavgs,
-        mode="markers+text", marker=dict(color="#f59e0b", size=14, symbol="diamond"),
-        text=[f"Rs.{v}" for v in gavgs], textposition="top center",
-        textfont=dict(size=11, color="#92400e")))
-    fig_grades.update_layout(barmode="overlay", height=320,
-        margin=dict(l=20,r=20,t=20,b=20),
+    # Range bars (max - min) stacked on transparent base
+    fig_grades.add_trace(go.Bar(
+        name="Min (base)", x=grade_labels, y=gmins,
+        marker_color="rgba(0,0,0,0)", showlegend=False,
+        hoverinfo="skip"))
+    fig_grades.add_trace(go.Bar(
+        name="Price Range", x=grade_labels,
+        y=[mx - mn for mx, mn in zip(gmaxs, gmins)],
+        marker_color=bar_colors,
+        marker_line=dict(width=0),
+        opacity=0.85,
+        text=[f"Rs.{mn} – Rs.{mx}" for mn, mx in zip(gmins, gmaxs)],
+        textposition="inside",
+        textfont=dict(size=10, color="#fff", family="Arial Black"),
+        hovertemplate="<b>%{x}</b><br>Min: Rs.%{base}<br>Max: Rs.%{base+y}<extra></extra>"))
+    # Avg markers
+    fig_grades.add_trace(go.Scatter(
+        name="Avg Price", x=grade_labels, y=gavgs,
+        mode="markers+text",
+        marker=dict(color="#f59e0b", size=16, symbol="diamond",
+                    line=dict(color="#fff", width=2)),
+        text=[f"Avg: Rs.{v}" for v in gavgs],
+        textposition="top center",
+        textfont=dict(size=11, color="#92400e", family="Arial Black"),
+        hovertemplate="<b>%{x}</b><br>Avg: Rs.%{y}<extra></extra>"))
+    fig_grades.update_layout(
+        barmode="stack", height=380,
+        margin=dict(l=60,r=20,t=40,b=20),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
         xaxis=dict(showgrid=False, tickfont=dict(size=11)),
-        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", title="Price (Rs.)"),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+        yaxis=dict(gridcolor="#f0fdf4", tickprefix="Rs.", title="Price (Rs.)",
+                   zeroline=True, zerolinecolor="#e2e8f0"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
+                    font=dict(size=11)),
+        bargap=0.35)
     st.plotly_chart(fig_grades, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
@@ -1941,26 +1961,49 @@ elif t["nav"][12] in sec_name:
     }
     s_names  = list(scenarios.keys())
     s_prices = list(scenarios.values())
+    s_deltas = [v - current_price for v in s_prices]
     s_colors = ["#94a3b8" if n=="No Intervention" else
                 "#f59e0b" if n=="Current Settings" else
                 "#22c55e" if v <= current_price else "#ef4444"
                 for n, v in scenarios.items()]
+    s_labels = [
+        f"<b>Rs.{v:.1f}</b>  ({'+' if d>0 else ''}{d:.1f})"
+        for v, d in zip(s_prices, s_deltas)
+    ]
+    # Horizontal bar chart — much easier to read, no label overlap
     fig_sc = go.Figure(go.Bar(
-        x=s_names, y=s_prices,
+        y=s_names, x=s_prices,
+        orientation="h",
         marker_color=s_colors,
-        text=[f"Rs.{v:.1f}" for v in s_prices],
-        textposition="outside", textfont=dict(size=10),
-        hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_sc.add_hline(y=current_price, line_dash="dash", line_color="#64748b",
-        annotation_text=f"Current Rs.{current_price:.1f}", annotation_position="top right")
-    fig_sc.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
-        annotation_text=f"⚠ Rs.{warn_threshold}")
-    fig_sc.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
-        annotation_text=f"🔴 Rs.{crisis_threshold}")
-    fig_sc.update_layout(height=300, margin=dict(l=20,r=20,t=30,b=20),
+        marker_line=dict(width=0),
+        text=s_labels,
+        textposition="outside",
+        textfont=dict(size=11, color="#1e293b"),
+        hovertemplate="<b>%{y}</b><br>Price: Rs.%{x:.2f}<extra></extra>",
+        cliponaxis=False))
+    # Reference lines as vertical lines on horizontal chart
+    fig_sc.add_vline(x=current_price, line_dash="dash", line_color="#64748b", line_width=2,
+        annotation=dict(text=f"Baseline<br>Rs.{current_price:.1f}",
+                        font=dict(size=10, color="#64748b"), bgcolor="rgba(255,255,255,0.85)",
+                        bordercolor="#64748b", borderwidth=1, y=1.08, yref="paper"))
+    fig_sc.add_vline(x=warn_threshold, line_dash="dot", line_color="#eab308", line_width=1.5,
+        annotation=dict(text=f"⚠ Rs.{warn_threshold}",
+                        font=dict(size=9, color="#b45309"), bgcolor="rgba(255,255,255,0.85)",
+                        y=0.0, yref="paper"))
+    fig_sc.add_vline(x=crisis_threshold, line_dash="dot", line_color="#ef4444", line_width=1.5,
+        annotation=dict(text=f"Crisis Rs.{crisis_threshold}",
+                        font=dict(size=9, color="#ef4444"), bgcolor="rgba(255,255,255,0.85)",
+                        y=0.12, yref="paper"))
+    p_min = min(s_prices); p_max = max(s_prices)
+    x_min = max(0, p_min - (p_max - p_min) * 0.05)
+    x_max = p_max + (p_max - p_min) * 0.55   # extra space for outside labels
+    fig_sc.update_layout(
+        height=340,
+        margin=dict(l=10, r=20, t=50, b=20),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False, tickfont=dict(size=10)),
-        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", range=[30, max(s_prices)*1.18]),
+        xaxis=dict(gridcolor="#f1f5f9", tickprefix="Rs.", tickfont=dict(size=10),
+                   range=[x_min, x_max], zeroline=False),
+        yaxis=dict(showgrid=False, tickfont=dict(size=11), autorange="reversed"),
         showlegend=False)
     st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
