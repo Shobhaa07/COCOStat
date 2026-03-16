@@ -546,52 +546,42 @@ with st.sidebar:
     </div>""", unsafe_allow_html=True)
 
     # ── Quick Actions ─────────────────────
+    if risk_score >= 70:
+        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
+                        "🏛️ Alert CDA/HARTI officials<br>"
+                        "📦 Activate buffer stocks<br>"
+                        "📣 Broadcast price warnings<br>"
+                        "💰 Farmers: sell immediately<br>"
+                        "🏭 Businesses: hedge now</div>")
+    elif risk_score >= 45:
+        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
+                        "📊 Monitor daily auction prices<br>"
+                        "📦 Prepare buffer stock release<br>"
+                        "💰 Farmers: consider selling<br>"
+                        "🏭 Businesses: review contracts<br>"
+                        "🔍 Watch export demand</div>")
+    elif risk_score >= 25:
+        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
+                        "📋 Weekly price check sufficient<br>"
+                        "🌱 Farmers: continue normal ops<br>"
+                        "🏭 Businesses: plan ahead<br>"
+                        "📈 Consider forward contracts<br>"
+                        "🌍 Explore export opportunities</div>")
+    else:
+        actions_html = ("<div style='font-size:.63rem;line-height:1.7;color:#374151;'>"
+                        "✅ No immediate action needed<br>"
+                        "🌱 Good time to invest/expand<br>"
+                        "📋 Monthly monitoring sufficient<br>"
+                        "🏦 Build buffer stocks now<br>"
+                        "🌿 Explore value-added products</div>")
+
+    qa_label = "Quick Actions" if lang=="en" else "ක්ෂණික ක්‍රියා"
     st.markdown(f"""<div style='margin-top:10px;'>
       <div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;
-          letter-spacing:1px;margin-bottom:6px;'>{'Quick Actions' if lang=='en' else 'ක්ෂණික ක්‍රියා'}</div>""",
-        unsafe_allow_html=True)
-
-    if risk_score >= 70:
-        actions_html = """
-        <div style='font-size:.63rem;line-height:1.7;color:#374151;'>
-          🏛️ Alert CDA/HARTI officials<br>
-          📦 Activate buffer stocks<br>
-          📣 Broadcast price warnings<br>
-          💰 Farmers: sell immediately<br>
-          🏭 Businesses: hedge now
-        </div>"""
-    elif risk_score >= 45:
-        actions_html = """
-        <div style='font-size:.63rem;line-height:1.7;color:#374151;'>
-          📊 Monitor daily auction prices<br>
-          📦 Prepare buffer stock release<br>
-          💰 Farmers: consider selling<br>
-          🏭 Businesses: review contracts<br>
-          🔍 Watch export demand
-        </div>"""
-    elif risk_score >= 25:
-        actions_html = """
-        <div style='font-size:.63rem;line-height:1.7;color:#374151;'>
-          📋 Weekly price check sufficient<br>
-          🌱 Farmers: continue normal ops<br>
-          🏭 Businesses: plan ahead<br>
-          📈 Consider forward contracts<br>
-          🌍 Explore export opportunities
-        </div>"""
-    else:
-        actions_html = """
-        <div style='font-size:.63rem;line-height:1.7;color:#374151;'>
-          ✅ No immediate action needed<br>
-          🌱 Good time to invest/expand<br>
-          📋 Monthly monitoring sufficient<br>
-          🏦 Build buffer stocks now<br>
-          🌿 Explore value-added products
-        </div>"""
-
-    st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;
-        padding:8px 10px;'>{actions_html}</div>""", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
+          letter-spacing:1px;margin-bottom:6px;'>{qa_label}</div>
+      <div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;
+          padding:8px 10px;'>{actions_html}</div>
+    </div>""", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown(f"""
     <div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:10px;padding:14px 12px;text-align:center;'>
