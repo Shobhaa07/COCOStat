@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
+import io
 
 st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
@@ -115,9 +116,11 @@ T = {
         "tagline": "Understanding Coconut Prices in Simple Terms",
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "nav": ["Overview","Market","Demand","Forecast","Policy","History","Compare","Method",
-                "Weather & Harvest","Export & Trade","Farmer Profitability","Global Comparison"],
+                "Weather & Harvest","Export & Trade","Farmer Profitability","Global Comparison",
+                "KPI Summary","Trend Analysis"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d",
+                     "\U0001f3af","\U0001f4c5"],
         "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
@@ -177,15 +180,27 @@ T = {
         "global_title":"\U0001f30d Global Market Comparison",
         "global_sub":"Compare Sri Lanka coconut prices with major producers worldwide.",
         "global_note":"\U0001f4a1 Sri Lanka typically commands a price premium due to quality. But high prices hurt export competitiveness.",
+        "kpi_title": "KPI Summary Dashboard",
+        "kpi_sub": "All key performance indicators across price, market, demand, and exports in one view.",
+        "trend_title": "Trend Analysis and Segmentation",
+        "trend_sub": "Deep-dive into price trends, market segmentation, and comparative analysis with interactive filters.",
+        "filter_year_range": "Select Year Range",
+        "filter_regime": "Filter by Regime",
+        "filter_product": "Select Export Product",
+        "seg_by": "Segment by",
+        "seg_options": ["Year", "Month", "Regime", "Season"],
+        "all_regimes": "All Regimes",
     },
     "si": {
         "subtitle": "\u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0db3\u0db1 \u0db4\u0daf\u0dca\u0daa\u0dad\u0dd2\u0dba",
         "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0daa\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8\u0dca \u0dc4\u0dd9\u0dc3\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0d9f\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
         "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba","\u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca","\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0d9f\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2","\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
-                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dad & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd0\u0dc7\u0dad\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0dbb\u0dca\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0d9c\u0ddc\u0dbd\u0dd3\u0dba \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba"],
+                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dad & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd0\u0dc7\u0dad\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0dbb\u0dca\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0d9c\u0ddc\u0dbd\u0dd3\u0dba \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba",
+                "KPI \u0dc3\u0dcf\u0dbb\u0dcf\u0d82\u0DC1\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0db3\u0db1\u0dba"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f4c9","\U0001f52e","\U0001f3db","\U0001f4c8",
-                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d"],
+                     "\U0001f50d","\U0001f9e0","\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f30d",
+                     "\U0001f3af","\U0001f4c5"],
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0da5\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0da2\u0da9","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
@@ -243,6 +258,16 @@ T = {
         "global_title":"\U0001f30d \u0d9c\u0ddc\u0dbd\u0dd3\u0dba \u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba",
         "global_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0daf\u0dcf\u0db1 \u0d9c\u0ddc\u0dbd\u0dd3\u0dba \u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca \u0dc3\u0db8\u0d9f \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
         "global_note":"\U0001f4a1 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db8\u0dd2\u0dbd \u0d9c\u0ddc\u0dbd\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dbb\u0db8\u0dd2\u0db1\u0dca \u0daf \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0d86\u0dbb\u0d9a\u0dca\u0DC2\u0dcf \u0dc0\u0dda.",
+        "kpi_title": "KPI සාරාංශ විශ්ලේෂඳනය",
+        "kpi_sub": "මිල, වැ෇තපොොල්, ඉල්ලුම සහ අපනයන කර්මාන්ත ප්‍රදාන දර්ශක.",
+        "trend_title": "ප්‍රවණතා සහ කාණ්ඩ විශ්ලේෂඳනය",
+        "trend_sub": "මිල ප්‍රවණතා, වැ෇ත කාය සහ සංසන්දන විශ්ලේෂඳනය.",
+        "filter_year_range": "වසර් පරාසය තොරන්න",
+        "filter_regime": "තත්ත්වය අනුව ගලා කරන්න",
+        "filter_product": "අපනයන නිෂ්පාදනය තොරන්න",
+        "seg_by": "කාය අනුව කාණ්ඩ කරන්න",
+        "seg_options": ["වර්ෂය", "මාසය", "තත්ත්වය", "උතු"],
+        "all_regimes": "සමස්ත තත්ත්ව",
     }
 }
 
@@ -1093,6 +1118,507 @@ elif t["nav"][11] in sec_name:
     fig_dv.update_layout(height=280,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs.",title="Premium above World Avg"),showlegend=False)
     st.plotly_chart(fig_dv,use_container_width=True,config={"displayModeBar":"hover"})
+
+
+# ══ KPI SUMMARY DASHBOARD (NEW) ══════════════════════════════════════════════
+elif t["nav"][12] in sec_name:
+    section_header("\U0001f3af " + t["kpi_title"], t["kpi_sub"])
+
+    # ── Interactive Filters ──────────────────────────────────────────────────
+    st.markdown("#### \u2699\ufe0f " + ("Interactive Filters" if lang == "en" else "\u0d89\u0daf\u0dd2\u0dbb\u0dd2\u0dba\u0d9a\u0dca \u0d9c\u0dbd\u0dcf \u0d9a\u0dbb\u0dd4"))
+    fc1, fc2, fc3 = st.columns(3)
+    with fc1:
+        avail_years = sorted(history_df["year"].unique().tolist())
+        yr_range = st.select_slider(
+            t["filter_year_range"],
+            options=avail_years,
+            value=(avail_years[0], avail_years[-1])
+        )
+    with fc2:
+        all_label = t.get("all_regimes", "All Regimes")
+        regime_filter = st.selectbox(
+            t["filter_regime"],
+            [all_label] + t["regime_options"]
+        )
+    with fc3:
+        product_filter = st.selectbox(
+            t["filter_product"],
+            ["All Products"] + PRODUCT_COLS
+        )
+
+    # Apply filters
+    hdf = history_df[(history_df["year"] >= yr_range[0]) & (history_df["year"] <= yr_range[1])].copy()
+    if regime_filter != all_label:
+        ridx = t["regime_options"].index(regime_filter)
+        hdf = hdf[hdf["regime"] == ridx]
+
+    edf = export_df[(export_df["year"] >= yr_range[0]) & (export_df["year"] <= yr_range[1])].copy()
+
+    if len(hdf) == 0:
+        st.warning("No data for selected filters." if lang == "en" else "\u0dad\u0ddc\u0dbb\u0dba\u0dcf \u0d9c\u0dbd\u0dcf \u0d9a\u0dbb\u0dd4\u0db8\u0dca \u0dc0\u0dbd \u0daf\u0dad\u0dca\u0dad \u0db1\u0dd0\u0dad.")
+    else:
+        divider()
+        # ── KPI Cards Row 1: Price ────────────────────────────────────────────
+        st.markdown("#### \U0001f4b0 " + ("Price KPIs" if lang == "en" else "\u0db8\u0dd2\u0dbd KPI"))
+        k1, k2, k3, k4, k5, k6 = st.columns(6)
+        avg_p = hdf["price"].mean()
+        max_p = hdf["price"].max()
+        min_p = hdf["price"].min()
+        std_p = hdf["price"].std()
+        cv_p  = (std_p / avg_p * 100) if avg_p > 0 else 0
+        months_crisis = int((hdf["price"] >= crisis_threshold).sum())
+        months_warn   = int(((hdf["price"] >= warn_threshold) & (hdf["price"] < crisis_threshold)).sum())
+        months_stable = int((hdf["price"] < warn_threshold).sum())
+        for col, (lbl, val, clr) in zip([k1, k2, k3, k4, k5, k6], [
+            ("Avg Price",      f"Rs. {avg_p:.2f}",  "#16a34a"),
+            ("Peak Price",     f"Rs. {max_p:.2f}",  "#ef4444"),
+            ("Low Price",      f"Rs. {min_p:.2f}",  "#3b82f6"),
+            ("Std Deviation",  f"Rs. {std_p:.2f}",  "#f59e0b"),
+            ("Coeff. Var.",    f"{cv_p:.1f}%",       "#8b5cf6"),
+            ("Months Sampled", str(len(hdf)),         "#06b6d4"),
+        ]):
+            with col:
+                st.markdown(metric_card(lbl, val, clr, height=90), unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # ── KPI Cards Row 2: Market Health ────────────────────────────────────
+        st.markdown("#### \U0001f6a6 " + ("Market Health KPIs" if lang == "en" else "\u0dc0\u0dd0\u0dc7\u0dad \u0d86\u0dbb\u0dda\u0d9a\u0dca\u200d\u0dba KPI"))
+        mh1, mh2, mh3, mh4, mh5, mh6 = st.columns(6)
+        stable_pct  = months_stable / len(hdf) * 100 if len(hdf) > 0 else 0
+        warn_pct    = months_warn   / len(hdf) * 100 if len(hdf) > 0 else 0
+        crisis_pct  = months_crisis / len(hdf) * 100 if len(hdf) > 0 else 0
+        # Price trend (last 6 vs first 6 in filtered range)
+        if len(hdf) >= 12:
+            first6 = hdf.head(6)["price"].mean()
+            last6  = hdf.tail(6)["price"].mean()
+            trend_pct = (last6 - first6) / first6 * 100
+        else:
+            trend_pct = 0.0
+        trend_clr = "#22c55e" if trend_pct < 0 else "#ef4444"
+        for col, (lbl, val, clr) in zip([mh1, mh2, mh3, mh4, mh5, mh6], [
+            ("\U0001f7e2 Stable Months",  f"{months_stable} ({stable_pct:.0f}%)",  "#22c55e"),
+            ("\U0001f7e1 Warning Months", f"{months_warn} ({warn_pct:.0f}%)",      "#eab308"),
+            ("\U0001f534 Crisis Months",  f"{months_crisis} ({crisis_pct:.0f}%)",  "#ef4444"),
+            ("Price Trend",               f"{'+' if trend_pct >= 0 else ''}{trend_pct:.1f}%", trend_clr),
+            ("Warn Threshold",            f"Rs. {warn_threshold}",                 "#eab308"),
+            ("Crisis Threshold",          f"Rs. {crisis_threshold}",               "#ef4444"),
+        ]):
+            with col:
+                st.markdown(metric_card(lbl, val, clr, height=90), unsafe_allow_html=True)
+
+        divider()
+
+        # ── KPI Cards Row 3: Export ───────────────────────────────────────────
+        st.markdown("#### \U0001f4e6 " + ("Export KPIs" if lang == "en" else "\u0d85\u0db4\u0db1\u0dba\u0db1 KPI"))
+        if len(edf) > 0:
+            total_exp_sum = edf["Total"].sum()
+            avg_exp       = edf["Total"].mean()
+            max_exp_yr    = edf.loc[edf["Total"].idxmax(), "year"]
+            max_exp_val   = edf["Total"].max()
+            top_prod      = edf[PRODUCT_COLS].mean().idxmax()
+            top_prod_avg  = edf[PRODUCT_COLS].mean().max()
+            if product_filter != "All Products" and product_filter in edf.columns:
+                prod_total = edf[product_filter].sum()
+                prod_share = prod_total / edf[PRODUCT_COLS].sum().sum() * 100
+            else:
+                prod_total = total_exp_sum
+                prod_share = 100.0
+            ek1, ek2, ek3, ek4, ek5, ek6 = st.columns(6)
+            for col, (lbl, val, clr) in zip([ek1, ek2, ek3, ek4, ek5, ek6], [
+                ("Total Period Exports", f"${total_exp_sum}M",               "#16a34a"),
+                ("Avg Annual Export",    f"${avg_exp:.0f}M",                 "#3b82f6"),
+                ("Best Export Year",     f"{max_exp_yr} (${max_exp_val}M)",  "#f59e0b"),
+                ("Top Product",          top_prod[:14],                       "#8b5cf6"),
+                ("Top Prod Avg",         f"${top_prod_avg:.0f}M/yr",         "#06b6d4"),
+                ("Selected Share",       f"{prod_share:.1f}%",               "#16a34a"),
+            ]):
+                with col:
+                    st.markdown(metric_card(lbl, val, clr, height=90), unsafe_allow_html=True)
+        else:
+            st.info("No export data for selected year range." if lang == "en" else "\u0dad\u0ddc\u0dbb\u0dcf \u0d9c\u0db1\u0dca \u0dc0\u0dc3\u0dbb\u0dca \u0db4\u0dbb\u0dcf\u0dc3\u0dba\u0da7 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0daf\u0dad\u0dca\u0dad \u0db1\u0dd0\u0dad.")
+
+        divider()
+
+        # ── Gauge Row: market health scores ───────────────────────────────────
+        st.markdown("#### \U0001f4ca " + ("Market Health Gauges" if lang == "en" else "\u0dc0\u0dd0\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca \u0d86\u0dbb\u0dda\u0d9a\u0dca\u200d\u0dba \u0daf\u0dbb\u0dca\u0DC1\u0d9a"))
+        gi1, gi2, gi3, gi4 = st.columns(4)
+        stability_score = stable_pct
+        vol_score = max(0, 100 - cv_p * 2)
+        safe_score = max(0, 100 - crisis_pct * 2)
+        pred_score = max(0, 100 - abs(trend_pct) * 2)
+        gauge_data = [
+            ("Price Stability" if lang == "en" else "\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0da5\u0dcf\u0dc0\u0dbb\u0dad\u0dcf",    stability_score, "#22c55e"),
+            ("Low Volatility"  if lang == "en" else "\u0d85\u0dc3\u0dca\u0da5\u0dcf\u0dc0\u0dbb\u0dad\u0dcf \u0d85\u0da9\u0dd4", vol_score, "#3b82f6"),
+            ("Crisis Safety"   if lang == "en" else "\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d86\u0dbb\u0d9a\u0dca\u0DC2\u0dcf",  safe_score, "#f59e0b"),
+            ("Price Trend Score" if lang == "en" else "\u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0dbd\u0d9a\u0dd4\u0dab\u0dd4", pred_score, "#8b5cf6"),
+        ]
+        for col, (lbl, sc, clr) in zip([gi1, gi2, gi3, gi4], gauge_data):
+            with col:
+                fg = go.Figure(go.Indicator(
+                    mode="gauge+number",
+                    value=round(sc, 1),
+                    domain={"x": [0, 1], "y": [0, 1]},
+                    title={"text": lbl, "font": {"size": 11}},
+                    gauge={
+                        "axis": {"range": [0, 100], "tickfont": {"size": 9}},
+                        "bar": {"color": clr},
+                        "bgcolor": "#f8fafc",
+                        "steps": [
+                            {"range": [0, 40],  "color": "#fee2e2"},
+                            {"range": [40, 70], "color": "#fef9c3"},
+                            {"range": [70, 100],"color": "#dcfce7"},
+                        ],
+                    },
+                    number={"suffix": "/100", "font": {"size": 18}},
+                ))
+                fg.update_layout(height=180, margin=dict(l=10, r=10, t=30, b=10), paper_bgcolor="#fff")
+                col.plotly_chart(fg, use_container_width=True)
+
+        divider()
+
+        # ── Regime distribution donut + price distribution histogram ──────────
+        dc1, dc2 = st.columns(2)
+        with dc1:
+            st.markdown("#### \U0001f967 " + ("Regime Distribution (Filtered)" if lang == "en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0 \u0db6\u0daf\u0dcf \u0dc4\u0dd0\u0dbb\u0dd3\u0db8 (\u0d9c\u0dbd\u0dcf)"))
+            rc_f = hdf["regime"].value_counts().sort_index()
+            rc_labels = [t["regime_options"][i] for i in rc_f.index]
+            fig_pie2 = go.Figure(go.Pie(
+                labels=rc_labels,
+                values=rc_f.values,
+                hole=0.5,
+                marker=dict(colors=[REGIME_COLORS[i] for i in rc_f.index]),
+                textinfo="label+percent",
+                textfont=dict(size=11),
+                hovertemplate="<b>%{label}</b><br>%{value} months (%{percent})<extra></extra>",
+            ))
+            fig_pie2.update_layout(height=280, margin=dict(l=10, r=10, t=10, b=10),
+                                   paper_bgcolor="#fff", showlegend=False)
+            st.plotly_chart(fig_pie2, use_container_width=True, config={"displayModeBar": "hover"})
+
+        with dc2:
+            st.markdown("#### \U0001f4ca " + ("Price Distribution Histogram" if lang == "en" else "\u0db8\u0dd2\u0dbd \u0db6\u0daf\u0dcf \u0dc4\u0dd0\u0dbb\u0dd3\u0db8 \u0dc4\u0dd2\u0dc3\u0dca\u0da7\u0dda\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dba"))
+            fig_hist2 = go.Figure()
+            fig_hist2.add_trace(go.Histogram(
+                x=hdf["price"],
+                nbinsx=20,
+                marker=dict(color="#16a34a", opacity=0.75, line=dict(color="#fff", width=1)),
+                name="Price",
+                hovertemplate="Price: Rs.%{x:.1f}<br>Count: %{y}<extra></extra>",
+            ))
+            fig_hist2.add_vline(x=avg_p,            line_dash="dash", line_color="#0d2b0d",   annotation_text=f"Avg Rs.{avg_p:.1f}")
+            fig_hist2.add_vline(x=warn_threshold,   line_dash="dot",  line_color="#eab308",  annotation_text=f"Warn Rs.{warn_threshold}")
+            fig_hist2.add_vline(x=crisis_threshold, line_dash="dot",  line_color="#ef4444",  annotation_text=f"Crisis Rs.{crisis_threshold}")
+            fig_hist2.update_layout(
+                height=280, margin=dict(l=20, r=20, t=10, b=20),
+                plot_bgcolor="#fff", paper_bgcolor="#fff",
+                xaxis=dict(title="Price (Rs.)", showgrid=False),
+                yaxis=dict(title="Months", gridcolor="#e8f5e9"),
+                showlegend=False,
+            )
+            st.plotly_chart(fig_hist2, use_container_width=True, config={"displayModeBar": "hover"})
+
+        divider()
+
+        # ── Export Report Buttons ─────────────────────────────────────────────
+        st.markdown("#### \U0001f4e5 " + ("Export Reports" if lang == "en" else "\u0dc0\u0dcf\u0dbb\u0dca\u0dad\u0dcf\u0dc0 \u0dbd\u0db6\u0dcf \u0d9c\u0db1\u0dca\u0db1"))
+        ec1, ec2, ec3 = st.columns(3)
+
+        # CSV export: price history (filtered)
+        with ec1:
+            csv_buf = io.StringIO()
+            hdf[["date", "price", "regime", "year", "month"]].to_csv(csv_buf, index=False)
+            st.download_button(
+                label="\U0001f4ca " + ("Price History CSV" if lang == "en" else "\u0db8\u0dd2\u0dbd \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3 CSV"),
+                data=csv_buf.getvalue(),
+                file_name=f"cocostat_price_{yr_range[0]}_{yr_range[1]}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+
+        # CSV export: export data
+        with ec2:
+            csv_buf2 = io.StringIO()
+            edf.to_csv(csv_buf2, index=False)
+            st.download_button(
+                label="\U0001f4e6 " + ("Export Trade CSV" if lang == "en" else "\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc0\u0dd0\u0dc7\u0dad CSV"),
+                data=csv_buf2.getvalue(),
+                file_name=f"cocostat_exports_{yr_range[0]}_{yr_range[1]}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+
+        # Text summary report
+        with ec3:
+            summary_text = f"""COCOStat Market Intelligence Report
+Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+Year Range: {yr_range[0]} - {yr_range[1]}
+Regime Filter: {regime_filter}
+Product Filter: {product_filter}
+
+=== PRICE SUMMARY ===
+Average Price:   Rs. {avg_p:.2f}
+Peak Price:      Rs. {max_p:.2f}
+Lowest Price:    Rs. {min_p:.2f}
+Std Deviation:   Rs. {std_p:.2f}
+Coeff. of Var:   {cv_p:.1f}%
+Months Sampled:  {len(hdf)}
+
+=== MARKET HEALTH ===
+Stable Months:   {months_stable} ({stable_pct:.1f}%)
+Warning Months:  {months_warn} ({warn_pct:.1f}%)
+Crisis Months:   {months_crisis} ({crisis_pct:.1f}%)
+Price Trend:     {'+' if trend_pct >= 0 else ''}{trend_pct:.1f}%
+
+=== THRESHOLDS ===
+Warning Level:   Rs. {warn_threshold}
+Crisis Level:    Rs. {crisis_threshold}
+
+=== MARKET HEALTH SCORES ===
+Price Stability: {stability_score:.1f}/100
+Low Volatility:  {vol_score:.1f}/100
+Crisis Safety:   {safe_score:.1f}/100
+Trend Score:     {pred_score:.1f}/100
+
+Data Source: COCOStat - Sri Lanka Coconut Market Intelligence
+"""
+            st.download_button(
+                label="\U0001f4dd " + ("Summary Report TXT" if lang == "en" else "\u0dc3\u0dcf\u0dbb\u0dcf\u0d82\u0DC1 TXT"),
+                data=summary_text,
+                file_name=f"cocostat_report_{yr_range[0]}_{yr_range[1]}.txt",
+                mime="text/plain",
+                use_container_width=True,
+            )
+
+
+# ══ TREND ANALYSIS & SEGMENTATION (NEW) ══════════════════════════════════════
+elif t["nav"][13] in sec_name:
+    section_header("\U0001f4c5 " + t["trend_title"], t["trend_sub"])
+
+    # ── Interactive Filters ──────────────────────────────────────────────────
+    st.markdown("#### \u2699\ufe0f " + ("Interactive Filters" if lang == "en" else "\u0d89\u0daf\u0dd2\u0dbb\u0dd2\u0dba\u0d9a\u0dca \u0d9c\u0dbd\u0dcf \u0d9a\u0dbb\u0dd4"))
+    tf1, tf2, tf3 = st.columns(3)
+    with tf1:
+        avail_years_t = sorted(history_df["year"].unique().tolist())
+        yr_range_t = st.select_slider(
+            t["filter_year_range"],
+            options=avail_years_t,
+            value=(avail_years_t[0], avail_years_t[-1]),
+            key="trend_yr_slider"
+        )
+    with tf2:
+        seg_choice = st.selectbox(
+            t["seg_by"],
+            t["seg_options"],
+            key="seg_choice"
+        )
+    with tf3:
+        ma_window = st.slider(
+            "Moving Avg Window (months)" if lang == "en" else "\u0d9c\u0ddc\u0dc0\u0db1\u0dca \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0d9a\u0dc3 (\u0db8\u0dcf\u0dc3)",
+            3, 24, 6, 1, key="ma_window"
+        )
+
+    hdf_t = history_df[(history_df["year"] >= yr_range_t[0]) & (history_df["year"] <= yr_range_t[1])].copy()
+    hdf_t = hdf_t.sort_values("date").reset_index(drop=True)
+    hdf_t["MA"] = hdf_t["price"].rolling(window=ma_window, min_periods=1).mean()
+    hdf_t["YoY_change"] = hdf_t.groupby("month")["price"].pct_change(periods=1) * 100
+
+    divider()
+
+    # ── 1. Main trend chart with moving average ───────────────────────────────
+    st.markdown("#### \U0001f4c8 " + (f"Price Trend with {ma_window}-Month Moving Average" if lang == "en" else f"\u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf ({ma_window} \u0db8\u0dcf\u0dc3 \u0d9c\u0ddc\u0dc0\u0db1\u0dca \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba)"))
+    fig_trend = go.Figure()
+    # Coloured background bands
+    fig_trend.add_hrect(y0=0,               y1=warn_threshold,    fillcolor="rgba(34,197,94,.06)",  layer="below", line_width=0)
+    fig_trend.add_hrect(y0=warn_threshold,  y1=crisis_threshold,  fillcolor="rgba(234,179,8,.06)",  layer="below", line_width=0)
+    fig_trend.add_hrect(y0=crisis_threshold,y1=200,               fillcolor="rgba(239,68,68,.06)",  layer="below", line_width=0)
+    # Actual price
+    fig_trend.add_trace(go.Scatter(
+        x=hdf_t["date"], y=hdf_t["price"],
+        mode="lines", name="Actual Price",
+        line=dict(color="#93c5fd", width=1.5),
+        hovertemplate="<b>%{x|%b %Y}</b><br>Rs. %{y:.2f}<extra></extra>",
+    ))
+    # Moving average
+    fig_trend.add_trace(go.Scatter(
+        x=hdf_t["date"], y=hdf_t["MA"],
+        mode="lines", name=f"{ma_window}M Moving Avg",
+        line=dict(color="#16a34a", width=2.5),
+        hovertemplate="<b>%{x|%b %Y}</b><br>MA Rs. %{y:.2f}<extra></extra>",
+    ))
+    fig_trend.add_hline(y=warn_threshold,   line_dash="dash", line_color="#eab308", annotation_text=f"Warn Rs.{warn_threshold}",   annotation_position="top left")
+    fig_trend.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444", annotation_text=f"Crisis Rs.{crisis_threshold}", annotation_position="top left")
+    fig_trend.update_layout(
+        height=320, margin=dict(l=80, r=20, t=20, b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", tickfont=dict(size=11)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    )
+    st.plotly_chart(fig_trend, use_container_width=True, config={"displayModeBar": "hover"})
+
+    divider()
+
+    # ── 2. Segmentation comparison ────────────────────────────────────────────
+    st.markdown("#### \U0001f4ca " + (f"Price Segmentation by {seg_choice}" if lang == "en" else f"{seg_choice} \u0d85\u0db1\u0dd4\u0dc0 \u0db8\u0dd2\u0dbd \u0d9a\u0dcf\u0dba"))
+
+    if seg_choice in ["Year", t["seg_options"][0]]:
+        seg_data = hdf_t.groupby("year")["price"].agg(["mean", "min", "max", "std"]).reset_index()
+        seg_data.columns = ["Segment", "Mean", "Min", "Max", "Std"]
+        x_labels = seg_data["Segment"].astype(str).tolist()
+        seg_clrs = [REGIME_COLORS[0]] * len(x_labels)
+    elif seg_choice in ["Month", t["seg_options"][1]]:
+        mnames_seg = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        seg_data = hdf_t.groupby("month")["price"].agg(["mean","min","max","std"]).reset_index()
+        seg_data.columns = ["Segment", "Mean", "Min", "Max", "Std"]
+        x_labels = [mnames_seg[int(m)-1] for m in seg_data["Segment"]]
+        seg_clrs = [REGIME_COLORS[0]] * len(x_labels)
+    elif seg_choice in ["Regime", t["seg_options"][2]]:
+        seg_data = hdf_t.groupby("regime")["price"].agg(["mean","min","max","std"]).reset_index()
+        seg_data.columns = ["Segment", "Mean", "Min", "Max", "Std"]
+        x_labels = [t["regime_options"][int(r)] for r in seg_data["Segment"]]
+        seg_clrs = [REGIME_COLORS[int(r)] for r in seg_data["Segment"]]
+    else:  # Season
+        def get_season(m):
+            if m in [3,4]:   return "Inter 1 (Mar-Apr)"
+            elif m in [5,6,7,8,9]: return "SW Monsoon (May-Sep)"
+            elif m in [10]:  return "Inter 2 (Oct)"
+            else:            return "NE Monsoon (Nov-Jan)"
+        hdf_t["season"] = hdf_t["month"].apply(get_season)
+        seg_data = hdf_t.groupby("season")["price"].agg(["mean","min","max","std"]).reset_index()
+        seg_data.columns = ["Segment", "Mean", "Min", "Max", "Std"]
+        x_labels = seg_data["Segment"].tolist()
+        s_clrs = ["#3b82f6","#22c55e","#f59e0b","#8b5cf6"]
+        seg_clrs = s_clrs[:len(x_labels)]
+
+    fig_seg = go.Figure()
+    # Range bars
+    fig_seg.add_trace(go.Bar(
+        x=x_labels, y=[mx - mn for mx, mn in zip(seg_data["Max"], seg_data["Min"])],
+        base=seg_data["Min"].tolist(),
+        name="Min-Max Range",
+        marker=dict(color=[c.replace(")", ", 0.2)").replace("rgb", "rgba") if c.startswith("rgb") else c + "33" for c in seg_clrs], line=dict(width=0)),
+        hovertemplate="<b>%{x}</b><br>Range: Rs.%{base:.1f} - Rs.%{y:.1f}<extra></extra>",
+        width=0.6,
+    ))
+    # Mean line dots
+    fig_seg.add_trace(go.Scatter(
+        x=x_labels, y=seg_data["Mean"].tolist(),
+        mode="markers+lines",
+        name="Mean Price",
+        marker=dict(color=seg_clrs, size=12, line=dict(color="#fff", width=2)),
+        line=dict(color="#0d2b0d", width=1.5, dash="dot"),
+        hovertemplate="<b>%{x}</b><br>Mean: Rs.%{y:.2f}<extra></extra>",
+    ))
+    fig_seg.add_hline(y=warn_threshold,   line_dash="dash", line_color="#eab308", annotation_text=f"Warn Rs.{warn_threshold}")
+    fig_seg.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444", annotation_text=f"Crisis Rs.{crisis_threshold}")
+    fig_seg.update_layout(
+        height=320, margin=dict(l=80, r=20, t=20, b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+        yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", tickfont=dict(size=11)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        barmode="overlay",
+    )
+    st.plotly_chart(fig_seg, use_container_width=True, config={"displayModeBar": "hover"})
+
+    # Segmentation table
+    st.markdown("#### \U0001f4cb " + ("Segmentation Summary Table" if lang == "en" else "\u0d9a\u0dcf\u0dba \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1 \u0dc0\u0d9c\u0dd4\u0dc0"))
+    disp_data = seg_data.copy()
+    disp_data.columns = ["Segment", "Mean (Rs.)", "Min (Rs.)", "Max (Rs.)", "Std Dev (Rs.)"]
+    for col in ["Mean (Rs.)", "Min (Rs.)", "Max (Rs.)", "Std Dev (Rs.)"]:
+        disp_data[col] = disp_data[col].round(2)
+    st.dataframe(disp_data, use_container_width=True, hide_index=True)
+
+    divider()
+
+    # ── 3. Year-on-Year change analysis ───────────────────────────────────────
+    st.markdown("#### \U0001f4c9 " + ("Year-on-Year Price Change (%)" if lang == "en" else "\u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3 (%)"))
+    yoy_df = hdf_t.groupby("year")["price"].mean().pct_change() * 100
+    yoy_df = yoy_df.dropna().reset_index()
+    yoy_df.columns = ["year", "pct_change"]
+    if len(yoy_df) > 0:
+        fig_yoy = go.Figure(go.Bar(
+            x=yoy_df["year"].astype(str),
+            y=yoy_df["pct_change"].round(2),
+            marker=dict(
+                color=["#22c55e" if v <= 0 else "#ef4444" for v in yoy_df["pct_change"]],
+                line=dict(width=0),
+            ),
+            text=[f"{v:+.1f}%" for v in yoy_df["pct_change"]],
+            textposition="outside",
+            textfont=dict(size=10),
+            hovertemplate="<b>%{x}</b><br>YoY Change: %{y:+.2f}%<extra></extra>",
+        ))
+        fig_yoy.add_hline(y=0, line_color="#94a3b8", line_width=1.5)
+        fig_yoy.update_layout(
+            height=260, margin=dict(l=20, r=20, t=20, b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+            yaxis=dict(gridcolor="#e8f5e9", ticksuffix="%", title="YoY Change (%)"),
+            showlegend=False,
+        )
+        st.plotly_chart(fig_yoy, use_container_width=True, config={"displayModeBar": "hover"})
+    else:
+        st.info("Not enough data for YoY analysis." if lang == "en" else "\u0dba\u0ddc\u0dba\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0db3\u0db1\u0dba\u0da7 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab\u0dc0\u0dad\u0dca \u0daf\u0dad\u0dca\u0dad \u0db1\u0dd0\u0dad.")
+
+    divider()
+
+    # ── 4. Candlestick-style quarterly view ───────────────────────────────────
+    st.markdown("#### \U0001f56f\ufe0f " + ("Quarterly Price Range (Candlestick View)" if lang == "en" else "\u0dad\u0dca\u200d\u0dbb\u0daf\u0dd0\u0dc4\u0dd2\u0d9a \u0db8\u0dd2\u0dbd \u0db4\u0dbb\u0dcf\u0dc3\u0dba"))
+    hdf_t["quarter"] = hdf_t["date"].dt.to_period("Q").astype(str)
+    q_data = hdf_t.groupby("quarter").agg(
+        open=("price", "first"),
+        high=("price", "max"),
+        low=("price", "min"),
+        close=("price", "last"),
+    ).reset_index()
+    if len(q_data) > 0:
+        fig_candle = go.Figure(go.Candlestick(
+            x=q_data["quarter"],
+            open=q_data["open"], high=q_data["high"],
+            low=q_data["low"],   close=q_data["close"],
+            increasing=dict(line=dict(color="#16a34a"), fillcolor="#dcfce7"),
+            decreasing=dict(line=dict(color="#ef4444"), fillcolor="#fee2e2"),
+            hovertext=q_data["quarter"],
+        ))
+        fig_candle.add_hline(y=warn_threshold,   line_dash="dash", line_color="#eab308")
+        fig_candle.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444")
+        fig_candle.update_layout(
+            height=300, margin=dict(l=80, r=20, t=20, b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            xaxis=dict(showgrid=False, tickfont=dict(size=9), rangeslider=dict(visible=False)),
+            yaxis=dict(gridcolor="#e8f5e9", tickprefix="Rs.", tickfont=dict(size=11)),
+            showlegend=False,
+        )
+        st.plotly_chart(fig_candle, use_container_width=True, config={"displayModeBar": "hover"})
+
+    divider()
+
+    # ── 5. Export filtered data ────────────────────────────────────────────────
+    st.markdown("#### \U0001f4e5 " + ("Export Filtered Data" if lang == "en" else "\u0d9c\u0dbd\u0dcf \u0d9a\u0dbb\u0db1\u0dca \u0dbd\u0db4 \u0daf\u0dad\u0dca\u0dad \u0dbd\u0db6\u0dcf \u0d9c\u0db1\u0dca\u0db1"))
+    dl1, dl2 = st.columns(2)
+    with dl1:
+        buf_t = io.StringIO()
+        export_cols = ["date", "price", "MA", "regime", "year", "month", "quarter"]
+        hdf_t[[c for c in export_cols if c in hdf_t.columns]].to_csv(buf_t, index=False)
+        st.download_button(
+            label="\U0001f4ca " + ("Trend Data CSV" if lang == "en" else "\u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0daf\u0dad\u0dca\u0dad CSV"),
+            data=buf_t.getvalue(),
+            file_name=f"cocostat_trend_{yr_range_t[0]}_{yr_range_t[1]}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with dl2:
+        buf_seg = io.StringIO()
+        disp_data.to_csv(buf_seg, index=False)
+        st.download_button(
+            label="\U0001f4cb " + ("Segmentation CSV" if lang == "en" else "\u0d9a\u0dcf\u0dba \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1 CSV"),
+            data=buf_seg.getvalue(),
+            file_name=f"cocostat_segmentation_{seg_choice}_{yr_range_t[0]}_{yr_range_t[1]}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
 
 # ─────────────────────────────────────────────
 # FOOTER
