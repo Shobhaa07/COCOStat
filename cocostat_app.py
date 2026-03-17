@@ -374,9 +374,9 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
-        padding:10px 12px;margin-bottom:10px;text-align:center;'>
-      <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
+    st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
+        padding:8px 12px;margin-bottom:10px;'>
+      <div style='font-size:.72rem;font-weight:900;color:#14532d;text-transform:uppercase;letter-spacing:1px;'>
         🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
       </div>
     </div>""", unsafe_allow_html=True)
@@ -583,7 +583,7 @@ with st.sidebar:
       <div style='font-size:.78rem;color:#1a3a1a;'>UOW: w1999714</div>
       <div style='font-size:.78rem;color:#1a3a1a;margin-bottom:8px;'>IIT: 20220508</div>
       <div style='font-size:.6rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;'>{t['footer_programme']}</div>
-      <div style='font-size:.75rem;color:#1a3a1a;line-height:1.6;'>BSc (Hons) Data Science<br>&amp; Analytics<br>University of Westminster</div>
+      <div style='font-size:.75rem;color:#1a3a1a;line-height:1.6;'>BSc (Hons) Business Data Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -921,16 +921,16 @@ elif t["nav"][3] in sec_name:
     import plotly.graph_objects as go
 
     # ── Hero banner ────────────────────────────────────────────────────────────
-    st.markdown("""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
-        border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
-      <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
+    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;
+        border-radius:10px;padding:18px 22px;margin-bottom:20px;'>
+      <div style='font-size:1.1rem;font-weight:900;color:#0d2b0d;margin-bottom:6px;'>
         🧩 Strategic Decision Support Centre
       </div>
-      <div style='font-size:.88rem;color:#bbf7d0;line-height:1.7;max-width:760px;'>
+      <div style='font-size:.85rem;color:#374151;line-height:1.7;max-width:760px;'>
         Combines market regime detection, demand analysis, weather forecasts and export data to generate
-        actionable recommendations for <strong style='color:#4ade80;'>Government policymakers</strong>,
-        <strong style='color:#86efac;'>Businesses & Traders</strong>, and
-        <strong style='color:#a7f3d0;'>Coconut Farmers</strong>.
+        actionable recommendations for <strong style='color:#16a34a;'>Government policymakers</strong>,
+        <strong style='color:#14532d;'>Businesses & Traders</strong>, and
+        <strong style='color:#166534;'>Coconut Farmers</strong>.
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -963,12 +963,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 1 — STRATEGIC POLICY SIMULATOR
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
-        padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
+        padding:12px 18px;margin-bottom:16px;'>
+      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
         🏛️ Strategic Policy Simulator
       </div>
-      <div style='font-size:.78rem;color:#bfdbfe;margin-top:3px;'>
+      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
         Test government intervention scenarios and see projected market outcomes before implementation
       </div>
     </div>
@@ -1143,12 +1143,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 2 — STRATEGIC RECOMMENDATION ENGINE
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
-        padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
+        padding:12px 18px;margin-bottom:16px;'>
+      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
         🎯 Strategic Recommendation Engine
       </div>
-      <div style='font-size:.78rem;color:#ddd6fe;margin-top:3px;'>
+      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
         AI-driven, regime-sensitive recommendations for all three market stakeholder groups
       </div>
     </div>
@@ -1335,20 +1335,20 @@ elif t["nav"][3] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with tab_gov:
-        st.markdown(f"""<div style='background:#eff6ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#1e3a8a;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#14532d;font-weight:700;'>
             🏛️ These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong>
             managing the coconut sector under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
-        render_rec_cards(recs["government"], "#1d4ed8")
+        render_rec_cards(recs["government"], "#16a34a")
 
     with tab_biz:
-        st.markdown(f"""<div style='background:#fdf4ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#6b21a8;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#14532d;font-weight:700;'>
             💼 These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong>
             operating under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
-        render_rec_cards(recs["business"], "#7c3aed")
+        render_rec_cards(recs["business"], "#16a34a")
 
     with tab_farm:
         st.markdown(f"""<div style='background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
@@ -1363,12 +1363,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 3 — DECISION RISK MATRIX
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
-        padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
+        padding:12px 18px;margin-bottom:16px;'>
+      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
         🗺️ Strategic Risk & Opportunity Matrix
       </div>
-      <div style='font-size:.78rem;color:#ccfbf1;margin-top:3px;'>
+      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
         Visual mapping of risks and opportunities across all market conditions
       </div>
     </div>
@@ -1434,12 +1434,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 4 — 90-DAY ACTION PLAN
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
-        padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
+        padding:12px 18px;margin-bottom:16px;'>
+      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
         📅 90-Day Priority Action Plan
       </div>
-      <div style='font-size:.78rem;color:#fde68a;margin-top:3px;'>
+      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
         Immediate, short-term and medium-term actions based on current market regime
       </div>
     </div>
@@ -1578,9 +1578,9 @@ elif t["nav"][4] in sec_name:
 
         # ── GLOBAL COMPARISON (embedded) ──────────────────────────────────────
         divider()
-        st.markdown(f"""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;padding:12px 20px;margin-bottom:12px;'>
-            <div style='font-size:1.05rem;font-weight:900;color:#fff;'>🌍 {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
-            <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්‍රී ලංකා හා ප්‍රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
+        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;padding:10px 16px;margin-bottom:12px;'>
+            <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>🌍 {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
+            <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්‍රී ලංකා හා ප්‍රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
         </div>""", unsafe_allow_html=True)
         st.markdown(f"<div class='info-box-blue'>{t['global_note']}</div>", unsafe_allow_html=True)
 
@@ -2324,7 +2324,7 @@ elif t["nav"][9] in sec_name:
             ("✅","Quantity Limit","Individual buyers limited to 50,000 nuts per auction session to prevent cornering."),
         ]
         for icon, title, desc in buyer_rules:
-            st.markdown(f"""<div style='background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;
+            st.markdown(f"""<div style='background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;
                 padding:10px 14px;margin-bottom:8px;'>
                 <div style='font-size:.75rem;font-weight:800;color:#0d2b0d;'>{icon} {title}</div>
                 <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
