@@ -9,7 +9,7 @@ import io
 
 st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
-    page_icon="",
+    page_icon="🥥",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -105,7 +105,7 @@ weather_df  = generate_weather_data()
 export_df, destinations_df = generate_export_data()
 global_price_df, production_df = generate_global_data()
 PRODUCT_COLS = ["Desiccated Coconut","Coconut Oil","Coconut Milk","Coir Products","Fresh Nuts","Activated Carbon"]
-PRODUCT_COLORS = ["#15803d","#166534","#14532d","#16a34a","#4ade80","#86efac"]
+PRODUCT_COLORS = ["#16a34a","#3b82f6","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
 
 # ─────────────────────────────────────────────
 # TRANSLATIONS
@@ -117,7 +117,8 @@ T = {
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
         "nav": ["Overview & History","Market & Demand","Forecast","Policy & Recommendations","Compare","Method",
                 "Weather & Harvest","Export & Trade","Farmer Profitability","Auction Details"],
-        "nav_icons":["01","02","03","04","05","06","07","08","09","10"],
+        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f52e","\U0001f3db","\U0001f50d","\U0001f9e0",
+                     "\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
         "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
@@ -129,7 +130,7 @@ T = {
         "regime_avg":["Rs. 52-65","Rs. 65-80","Rs. 80+"],
         "regime_vol":["Low","Medium","High"],
         "regime_avg_label":"Average Price","regime_vol_label":"Volatility","regime_status_label":"Status",
-        "regime_status":["OK","Watch","\U0001f6a8 Alert"],
+        "regime_status":["\u2705 OK","\u26a0\ufe0f Watch","\U0001f6a8 Alert"],
         "demand_title":"Do People Reduce Buying When Prices Increase?",
         "demand_note":"\U0001f4a1 Demand is mostly inelastic \u2014 people must buy coconuts because it is an essential food.",
         "demand_bar_title":"Price Sensitivity Level (%)","demand_periods":["Stable Period","Warning Period","Crisis Period"],
@@ -165,13 +166,13 @@ T = {
         "weekly_impact":"Weekly Cost Change","monthly_impact":"Monthly Cost Change","annual_impact":"Annual Cost Change",
         "alert_warn":"Warning alert at (Rs.)","alert_crisis":"Crisis alert at (Rs.)",
         # NEW SECTIONS
-        "weather_title":"\U0001f326 Weather & Harvest Impact Analysis",
+        "weather_title":"\U0001f326\ufe0f Weather & Harvest Impact Analysis",
         "weather_sub":"How rainfall, temperature, and drought affect coconut yields and prices.",
         "weather_note":"\U0001f4a1 Coconut yields are highly sensitive to rainfall. Drought pushes prices up within 3-6 months.",
         "export_title":"\U0001f4e6 Export & Trade Analysis",
         "export_sub":"Sri Lanka coconut export volumes, product categories, and revenue trends (2015-2024).",
         "export_note":"\U0001f4a1 Export demand creates upward price pressure domestically. Strong export seasons often coincide with local price spikes.",
-        "farmer_title":"\U0001f9d1\U0001f33e Farmer Profitability Calculator",
+        "farmer_title":"\U0001f9d1\u200d\U0001f33e Farmer Profitability Calculator",
         "farmer_sub":"Estimate net farm income based on your land size, yield, costs, and current market price.",
         "farmer_note":"\U0001f4a1 At current prices, the average smallholder earns a thin margin. Any cost increase quickly erodes profit.",
         "global_title":"\U0001f30d Global Market Comparison",
@@ -192,82 +193,83 @@ T = {
         "all_regimes": "All Regimes",
     },
     "si": {
-        "subtitle": "පොල් වෙළඳ දර්ශක පද්ධතිය",
-        "tagline": "පොල් මිල පහසුවෙන් තේරුම් ගනිමු",
-        "desc": "මෙම පද්ධතිය පොල් මිල වෙනස්වීම්, ඉල්ලුම හැසිරීම සහ අනාගත මිල අනාවැකි සරළව පෙන්වයි.",
-        "nav": ["දළ විශ්ලේෂණය හා ඉතිහාසය","වෙළඳ තත්ත්වය හා ඉල්ලුම","අනාවැකිය","ප්‍රතිපත්තිය හා නිර්දේශ","සංසන්දනය","ක්‍රමවේදය",
-                "කාලගුණය හා අස්වැන්න","අපනයනය හා වෙළඳාම","ගොවි ලාභදායිතාව","වෙන්දේසි විස්තර"],
-        "nav_icons":["01","02","03","04","05","06","07","08","09","10"],
-        "card_price_label":"වත්මන් මිල","card_price_value":"රු. 68.50","card_price_sub":"පොල් ගෙඩියකට (වෙන්දේසිය)",
-        "card_market_label":"වෙළඳ තත්ත්වය","card_market_value":"ස්ථාවරයි","card_market_sub":"සාමාන්‍ය තත්ත්වය",
-        "card_demand_label":"ඉල්ලුම ප්‍රතිචාරය","card_demand_value":"අජූස්ත","card_demand_sub":"ඉල්ලුම අඩු නොවේ",
-        "card_forecast_label":"අනාගත ප්‍රවණතාව","card_forecast_value":"සුළු ඉහළ යාමක්","card_forecast_sub":"ඉදිරි සති 12",
-        "regime_title":"දැනට වෙළඳ තත්ත්වය කුමක්ද?",
-        "regime_select":"වෙළඳ වර්ගය තෝරන්න",
-        "regime_options":["ස්ථාවර වෙළඳ තත්ත්වය","අවවාද වෙළඳ තත්ත්වය","අර්බුද වෙළඳ තත්ත්වය"],
-        "regime_desc":["මිල සාමාන්‍ය ස්ථාවරයි.","මිල මධ්‍යස්ථ ලෙස වෙනස් වේ.","මිල අස්ථාවරයි."],
-        "regime_avg":["රු. 52-65","රු. 65-80","රු. 80+"],
-        "regime_vol":["අඩු","මධ්‍යස්ථ","ඉහළ"],
-        "regime_avg_label":"සාමාන්‍ය මිල","regime_vol_label":"අස්ථාවරතාව","regime_status_label":"තත්ත්වය",
-        "regime_status":["හොඳයි","නිරීක්ෂණය","අවදානම"],
-        "demand_title":"මිල ඉහළ ගිය විට ජනතාව මිලදී ගැනීම අඩු කරයිද?",
-        "demand_note":"පොල් අත්‍යවශ්‍ය ආහාරයක් නිසා, මිල ඉහළ ගියත් ඉල්ලුම බොහෝ දුරට අඩු නොවේ.",
-        "demand_bar_title":"මිල සංවේදීතා මට්ටම (%)","demand_periods":["ස්ථාවර කාලය","අවවාද කාලය","අර්බුද කාලය"],
+        "subtitle": "\u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0db6\u0dd4\u0daf\u0dca\u0db0\u0dd2\u0db8\u0dad\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
+        "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
+        "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0dc4\u0dd9\u0dc5\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
+        "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba & \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 & \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 & \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
+                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
+        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f52e","\U0001f3db","\U0001f50d","\U0001f9e0",
+                     "\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
+        "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
+        "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
+        "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0da2\u0da9","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
+        "card_forecast_label":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0","card_forecast_value":"\u2191 \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dbd","card_forecast_sub":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12",
+        "regime_title":"\u0daf\u0dd0\u0db1\u0da7 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5\u0dda \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca\u0daf?",
+        "regime_select":"\u0d9c\u0dc0\u0dda\u0DC2\u0dab\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0dd9\u0dc5\u0db3 \u0dc0\u0dbb\u0dca\u0d9c\u0dba\u0d9a\u0dca \u0dad\u0ddc\u0dbb\u0db1\u0dca\u0db1",
+        "regime_options":["\U0001f7e2 \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","\U0001f7e1 \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","\U0001f534 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"],
+        "regime_desc":["\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2, \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba.","\u0db8\u0dd2\u0dbd \u0db8\u0daf\u0dca\u0dba\u0db8 \u0dbd\u0dd9\u0dc3 \u0dc0\u0dd9\u0db1\u0dc3\u0dca \u0dc0\u0dda.","\u0db8\u0dd2\u0dbd \u0d85\u0dad\u0dd2\u0DC1\u0dba\u0dd2\u0db1\u0dca \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2."],
+        "regime_avg":["\u0dbb\u0dd4. 52-65","\u0dbb\u0dd4. 65-80","\u0dbb\u0dd4. 80+"],
+        "regime_vol":["\u0d85\u0da9\u0dd4","\u0db8\u0daf\u0dca\u0dba\u0db8","\u0d89\u0dc4\u0dbd"],
+        "regime_avg_label":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0db8\u0dd2\u0dbd","regime_vol_label":"\u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0","regime_status_label":"\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
+        "regime_status":["\u2705 \u0dc4\u0ddc\u0db3\u0dba\u0dd2","\u26a0\ufe0f \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba","\U0001f6a8 \u0d85\u0dc0\u0daf\u0dcf\u0db1\u0db8"],
+        "demand_title":"\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0dd9\u0db1\u0dd3\u0db8 \u0d85\u0da9\u0dd4 \u0d9a\u0dbb\u0dba\u0dd2\u0daf?",
+        "demand_note":"\U0001f4a1 \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dad\u0dca\u0dba\u0dc0\u0DC1\u0dca\u0dba \u0d86\u0dc4\u0dcf\u0dbb\u0dba\u0d9a\u0dca \u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0db1\u0dca\u0db1\u0dda \u0db1\u0dd0\u0dad.",
+        "demand_bar_title":"\u0db8\u0dd2\u0dbd \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf \u0db8\u0da7\u0dca\u0da7\u0db8 (%)","demand_periods":["\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb","\u0d85\u0dc0\u0dc0\u0dcf\u0daf","\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf"],
         "demand_sens":[35,22,12],
         "demand_cards":[
-            ("ස්ථාවර කාලය","මිල වෙනස්වීමට සුළු ප්‍රතිචාරයක් දක්වයි."),
-            ("අවවාද කාලය","මිල අස්ථාවරතාවට මධ්‍යස්ථ ප්‍රතිචාරයක්."),
-            ("අර්බුද කාලය","මිල ඉහළ ගියත් ජනතාව පොල් මිලදී ගනී."),
+            ("\U0001f7e2 \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca \u0dc0\u0dbd\u0da7 \u0da7\u0dd2\u0d9a\u0d9a\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb \u0daf\u0d9a\u0dca\u0dc0\u0dba\u0dd2."),
+            ("\U0001f7e1 \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0\u0da7 \u0db8\u0daf\u0dca\u0dba\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba\u0d9a\u0dca."),
+            ("\U0001f534 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0db1\u0dd3."),
         ],
-        "forecast_title":"ඉදිරි සති 12 තුළ මිලට කුමක් සිදුවේද?",
-        "forecast_summary":"මිල සෙමෙන් ඉහළ යාමක් අපේක්ෂා කෙරේ. ළඟදී අර්බුදයක් අනාවැකි නොකෙරේ.",
-        "forecast_week":"සතිය","forecast_hist_label":"ඉතිහාසය","forecast_pred_label":"අනාවැකිය",
-        "forecast_range_label":"අවිනිශ්චිත පරාසය",
-        "policy_title":"දැනට රජය කළ යුත්තේ කුමක්ද?",
-        "policy_sub":"වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ප්‍රතිපත්ති නිර්දේශ.",
-        "policy_markets":["ස්ථාවර තත්ත්වයේ නම්","අවවාද තත්ත්වයේ නම්","අර්බුද තත්ත්වයේ නම්"],
-        "policy_actions":["ගොවීන්ට සහය ලබා දී සැපයුම් පද්ධතිය වැඩිදියුණු කරන්න.",
-                          "මිල විනිවිදභාවය ඉහළ නංවා නිරීක්ෂණය වැඩි කරන්න.",
-                          "බෆර් තොග භාවිත කර තාවකාලික මිල පාලනයක් කරන්න."],
-        "policy_priorities":["අඩු","මධ්‍යස්ථ","ඉහළ"],
-        "policy_active":"දැනට ක්‍රියාත්මකයි","policy_priority_label":"ප්‍රමුඛතාව:",
-        "history_title":"වෙළඳ ඉතිහාසය (2015-2024)","history_sub":"සම්පූර්ණ වසර 10ක වෙන්දේසි මිල ඉතිහාසය.",
-        "method_title":"මෙම පද්ධතිය ක්‍රියා කරන ආකාරය",
-        "method_steps":["වසර 10ක වෙන්දේසි දත්ත අධ්‍යයනය කළෙමු.","වෙළඳ තත්ත්ව 3ක් හඳුනාගත්තෙමු.",
-                        "ඉල්ලුම් සංවේදීතාව මැන බැලුවෙමු.","අනාගත මිල අනාවැකි කළෙමු."],
-        "footer_researcher":"පර්යේෂක","footer_ids":"ශිෂ්‍ය හැඳුනුම්","footer_programme":"පාඨමාලාව",
-        "compare_title":"වාර්ෂික මිල සංසන්දනය",
-        "compare_sub":"ඍතු රටා හඳුනා ගැනීමට විවිධ වසරවල පොල් මිල සංසන්දනය කරන්න.",
-        "price_calc_title":"මිල බලපෑම් ගණකය",
-        "price_calc_sub":"මිල වෙනස්වීම් ගෘහ වියදමට කෙසේ බලපාදැයි ගණනය කරන්න.",
-        "nuts_per_week":"සතියකට මිලදී ගන්නා පොල් ගෙඩි","current_price_input":"දැනට ගෙඩියකට මිල (රු.)","new_price_input":"නව ගෙඩියකට මිල (රු.)",
-        "weekly_impact":"සතිපතා වියදම් වෙනස","monthly_impact":"මාසිකව වියදම් වෙනස","annual_impact":"වාර්ෂිකව වියදම් වෙනස",
-        "alert_warn":"අවවාද සීමාව (රු.)","alert_crisis":"අර්බුද සීමාව (රු.)",
-        "weather_title":"කාලගුණය හා අස්වැන්න බලපෑම් විශ්ලේෂණය",
-        "weather_sub":"වර්ෂාව සහ උෂ්ණත්වය පොල් අස්වැන්නට සහ මිලට බලපාන ආකාරය.",
-        "weather_note":"පොල් අස්වැන්න වර්ෂාපතනයට ඉතා සංවේදී වේ. නියඟ කාලය මාස 3-6 ඇතුළත මිල ඉහළ නංවයි.",
-        "export_title":"අපනයන හා වෙළඳ විශ්ලේෂණය",
-        "export_sub":"ශ්‍රී ලංකා පොල් අපනයන ප්‍රමාණය, නිෂ්පාදන කාණ්ඩ සහ ආදායම් ප්‍රවණතා (2015-2024).",
-        "export_note":"අපනයන ඉල්ලුම දේශීය මිල ඉහළ නංවයි. ශක්තිමත් අපනයන කාලවලදී දේශීය මිල ඉහළ යයි.",
-        "farmer_title":"ගොවි ලාභදායිතා ගණකය",
-        "farmer_sub":"ඉඩම් ප්‍රමාණය, අස්වැන්න, පිරිවැය සහ වත්මන් මිල මත ගොවියාගේ ශුද්ධ ආදායම ගණනය කරන්න.",
-        "farmer_note":"වත්මන් මිලේදී, සාමාන්‍ය කුඩා ගොවියාට ලාභ ලැබෙන්නේ ස්වල්පයකි. ඕනෑම පිරිවැය වැඩිවීමක් ලාභය ඉක්මනින් මකා දමයි.",
-        "global_title":"ගෝලීය වෙළඳ සංසන්දනය",
-        "global_sub":"ශ්‍රී ලංකා පොල් මිල ප්‍රධාන ගෝලීය නිෂ්පාදකයන් සමඟ සංසන්දනය කරන්න.",
-        "global_note":"ශ්‍රී ලංකා මිල ගෝලීය ප්‍රවණතා අනුගමනය කරමින් දේශීය ප්‍රතිපත්තිවලින් ආරක්ෂා වේ.",
-        "auction_title":"ශ්‍රී ලංකා පොල් වෙන්දේසි විස්තර",
-        "auction_sub":"CDA සහ HARTI මඟින් පවත්වන වෙන්දේසි වේලාවල්, ස්ථාන සහ ගොවීන්ට වාර්තා.",
-        "auction_note":"වෙන්දේසි මිල ගොවීන්ට, ව්‍යාපාරිකයන්ට සහ පාරිභෝගිකයන්ට ප්‍රත්‍යක්ෂයෙන් බලපාන්නාවය.",
-        "kpi_title":"KPI සාරාංශය",
-        "kpi_sub":"මිල, වෙළඳ, ඉල්ලුම සහ අපනයන ප්‍රධාන කාර්යසාධන දර්ශක.",
-        "trend_title":"ප්‍රවණතා සහ කාණ්ඩ විශ්ලේෂණය",
-        "trend_sub":"මිල ප්‍රවණතා, වෙළඳ කාණ්ඩ සහ සංසන්දන විශ්ලේෂණය.",
-        "filter_year_range":"වසර පරාසය තෝරන්න",
-        "filter_regime":"තත්ත්වය අනුව පෙරහන් කරන්න",
-        "filter_product":"අපනයන නිෂ්පාදනය තෝරන්න",
-        "seg_by":"කාලය අනුව කාණ්ඩ කරන්න",
-        "seg_options":["වර්ෂය","මාසය","තත්ත්වය","ඍතුව"],
-        "all_regimes":"සියලු තත්ත්ව",
+        "forecast_title":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12 \u0dad\u0dd4\u0dbd \u0db8\u0dd2\u0dbd\u0da7 \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0dc3\u0dd2\u0daf\u0dc0\u0dda\u0daf?",
+        "forecast_summary":"\U0001f52e \u0db8\u0dd2\u0dbd \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dbd \u0dba\u0dcf \u0dc4\u0dd0\u0d9a. \u0dc0\u0dc4\u0dcf\u0db8 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf\u0dba\u0d9a\u0dca \u0d85\u0db4\u0dda\u0d9a\u0dca\u0DC2\u0dcf \u0db1\u0ddc\u0d9a\u0dd9\u0dbb\u0dda.",
+        "forecast_week":"\u0dc3\u0dad\u0dd2","forecast_hist_label":"\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","forecast_pred_label":"\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba",
+        "forecast_range_label":"\u0d85\u0dc0\u0dd2\u0db1\u0dd2\u0DC1\u0da0\u0dd2\u0dad \u0db4\u0dbb\u0dcf\u0dc3\u0dba",
+        "policy_title":"\u0daf\u0dd0\u0db1\u0da7 \u0dbb\u0da2\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0d9a\u0dbd \u0dba\u0dd4\u0dad\u0dd4\u0daf?",
+        "policy_sub":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0dc0\u0dd9\u0dc5\u0db3 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0db8\u0dad \u0db4\u0daf\u0db1\u0db8\u0dca \u0dc0\u0dd6 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1.",
+        "policy_markets":["\U0001f7e2 \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2 \u0db1\u0db8\u0dca","\U0001f7e1 \u0d85\u0dc0\u0dc0\u0dcf\u0daf\u0dba\u0dd2 \u0db1\u0db8\u0dca","\U0001f534 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf\u0dba\u0dd2 \u0db1\u0db8\u0dca"],
+        "policy_actions":["\u0d9c\u0ddc\u0dc0\u0dd3\u0db1\u0dca\u0da7 \u0dc3\u0dc4\u0dba \u0dbd\u0db6\u0dcf \u0daf\u0dd3 \u0dc3\u0dd0\u0db4\u0dba\u0dd4\u0db8\u0dca \u0db4\u0daf\u0dca\u0daf\u0dad\u0dd2\u0dba \u0dc0\u0dd0\u0da9\u0dd2\u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
+                          "\u0db8\u0dd2\u0dbd \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba \u0dc0\u0dd0\u0daf\u0dd2 \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
+                          "\u0db6\u0dc6\u0dbb\u0dca \u0dad\u0ddc\u0d9c \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb \u0dad\u0dcf\u0dc0\u0d9a\u0dcf\u0dbd\u0dd2\u0d9a \u0db8\u0dd2\u0dbd \u0db4\u0dcf\u0dbd\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1."],
+        "policy_priorities":["\U0001f535 \u0d85\u0da9\u0dd4","\U0001f7e1 \u0db8\u0daf\u0dca\u0dba\u0db8","\U0001f534 \u0d89\u0dc4\u0dbd"],
+        "policy_active":"\u2190 \u0daf\u0dd0\u0db1\u0da7 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a\u0dba\u0dd2","policy_priority_label":"\u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a\u0dad\u0dcf\u0dc0:",
+        "history_title":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba (2015-2024)","history_sub":"\u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0dc0\u0dc3\u0dbb 10 \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0db8\u0dd2\u0dbd \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba.",
+        "method_title":"\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf \u0d9a\u0dbb\u0db1\u0dca \u0d86\u0d9a\u0dcf\u0dbb\u0dba",
+        "method_steps":["\u0dc0\u0dc3\u0dbb 10\u0d9a \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0daf\u0dad\u0dca\u0dad \u0d85\u0daf\u0dca\u0dba\u0dba\u0db1\u0dba \u0d9a\u0dbd\u0dcf.","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0 3\u0d9a\u0dca \u0dc4\u0db3\u0dd4\u0db1\u0dcf\u0d9c\u0dad\u0dca\u0dad\u0dcf.","\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba \u0db8\u0dd0\u0db1 \u0db6\u0dd0\u0dbd\u0dd4\u0dc0\u0dcf.","\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0d9a\u0dbd\u0dcf."],
+        "footer_researcher":"\u0db4\u0dbb\u0dca\u0dba\u0dda\u0DC1\u0d9a","footer_ids":"\u0DC1\u0dd2\u0DC2\u0dca\u0dba \u0d8a\u0daf\u0dca","footer_programme":"\u0db4\u0dcf\u0da7\u0db8\u0dcf\u0dbd\u0dcf\u0dc0",
+        "compare_title":"\u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0db8\u0dd2\u0dbd \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba",
+        "compare_sub":"\u0dc3\u0dd8\u0dad\u0dd4\u0db8\u0dba \u0dbb\u0da7\u0dcf \u0dc4\u0db3\u0dd4\u0db1\u0dcf \u0d9c\u0dd9\u0db1\u0dd3\u0db8\u0da7.",
+        "price_calc_title":"\U0001f4b0 \u0db8\u0dd2\u0dbd \u0db6\u0dbd\u0db4\u0dcf\u0db8\u0dca \u0d9a\u0dd0\u0dbd\u0dca\u0d9a\u0dd2\u0dba\u0dd4\u0dbd\u0dda\u0da7\u0dbb\u0dba",
+        "price_calc_sub":"\u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca \u0d9c\u0dd0\u0dc4\u0dc3\u0dca\u0dad \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0d9a\u0dd9\u0dc3\u0dda \u0db6\u0dbd\u0db4\u0dcf\u0daf\u0dd0\u0dba\u0dd2 \u0d9c\u0dab\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
+        "nuts_per_week":"\u0dc3\u0dad\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0db1\u0dca\u0db1 \u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2","current_price_input":"\u0daf\u0dd0\u0db1\u0da7 \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)","new_price_input":"\u0db1\u0dc0 \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)",
+        "weekly_impact":"\u0dc3\u0dad\u0dd2\u0db4\u0dad\u0dcf \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3","monthly_impact":"\u0db8\u0dcf\u0dc3\u0dd2\u0d9a\u0dc0 \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3","annual_impact":"\u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a\u0dc0 \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3",
+        "alert_warn":"\u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d87\u0d9f\u0dc5\u0dd3\u0db8 (\u0dbb\u0dd4.)","alert_crisis":"\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d87\u0d9f\u0dc5\u0dd3\u0db8 (\u0dbb\u0dd4.)",
+        # NEW
+        "weather_title":"\U0001f326\ufe0f \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4 \u0db6\u0dbd\u0db4\u0dcf\u0db8\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
+        "weather_sub":"\u0dc0\u0dbb\u0dca\u0DC2\u0dcf\u0dc0 \u0dc3\u0dc4 \u0d8b\u0DC2\u0dca\u0da4\u0dad\u0dca\u0dc0\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1\u0da7 \u0dc3\u0dc4 \u0db8\u0dd2\u0dbd\u0da7 \u0db6\u0dbd\u0db4\u0dcf\u0db1 \u0d86\u0d9a\u0dcf\u0dbb\u0dba.",
+        "weather_note":"\U0001f4a1 \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1 \u0dc0\u0dbb\u0dca\u0DC2\u0dcf\u0db4\u0dad\u0db1\u0dba\u0da7 \u0d89\u0dad\u0dcf \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dba\u0dd2. \u0db1\u0dd2\u0dba\u0d82 \u0d9a\u0dcf\u0dbd\u0dba \u0db8\u0dcf\u0dc3 3-6 \u0d87\u0dad\u0dd4\u0dbd\u0dad \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0db1\u0d82\u0dc0\u0dba\u0dd2.",
+        "export_title":"\U0001f4e6 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3 \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
+        "export_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab, \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d9a\u0dcf\u0dab\u0dca\u0da9 \u0dc3\u0dc4 \u0d86\u0daf\u0dcf\u0dba\u0db8\u0dca \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf (2015-2024).",
+        "export_note":"\U0001f4a1 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0db1\u0d82\u0dc0\u0dba\u0dd2.",
+        "farmer_title":"\U0001f9d1\u200d\U0001f33e \u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0d9a\u0dd0\u0dbd\u0dca\u0d9a\u0dd2\u0dba\u0dd4\u0dbd\u0dda\u0da7\u0dbb\u0dba",
+        "farmer_sub":"\u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1, \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba \u0dc3\u0dc4 \u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd \u0db8\u0dad \u0d9c\u0ddc\u0dc0\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0d86\u0daf\u0dcf\u0dba\u0db8 \u0d9c\u0dab\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
+        "farmer_note":"\U0001f4a1 \u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd\u0dda\u0daf\u0dd3, \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0d9a\u0dd4\u0da9\u0dcf \u0d9c\u0ddc\u0dc0\u0dd2\u0dba\u0dcf\u0da7 \u0dbd\u0dcf\u0dbb\u0dca \u0dbd\u0dd0\u0db6\u0dd9\u0db1\u0dca\u0db1\u0dda \u0dc3\u0dca\u0dc0\u0dbd\u0dca\u0db4\u0dba\u0d9a\u0dd2.",
+        "global_title":"\U0001f30d \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba",
+        "global_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0db8\u0d9f \u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
+        "global_note":"\U0001f4a1 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db8\u0dd2\u0dbd \u0d9c\u0ddd\u0dbd\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dbb\u0db8\u0dd2\u0db1\u0dca \u0daf \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0d86\u0dbb\u0d9a\u0dca\u0DC2\u0dcf \u0dc0\u0dda.",
+        "auction_title":"\U0001f6a9 \u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb",
+        "auction_sub":"\u0dc3\u0dd0\u0dba CDA \u0dc3\u0dc4 HARTI \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1\u0dba \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc3\u0dad\u0dd2 \u0dc0\u0dd9\u0dbd\u0dda\u0dc0\u0dbd\u0dca, \u0dc3\u0dca\u0dad\u0dcf\u0db1, \u0dc3\u0dc4 \u0d9c\u0ddc\u0dc0\u0dd2\u0db1\u0dca\u0da7 \u0dc0\u0dcf\u0dbb\u0dca\u0dad\u0dcf \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4.",
+        "auction_note":"\U0001f4a1 \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0db8\u0dd2\u0dbd \u0db1\u0dd2\u0dba\u0db8\u0dba \u0d9c\u0ddc\u0dc0\u0dd3\u0db1\u0dca\u0da7, \u0dc0\u0dca\u200d\u0dba\u0dcf\u0db4\u0dcf\u0dbb\u0dd2\u0d9a\u0dba\u0db1\u0dca\u0da7 \u0dc3\u0dc4 \u0db4\u0dbb\u0dd2\u0db4\u0dcf\u0dbd\u0d9a\u0dba\u0db1\u0dca\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u0dba\u0d9a\u0dca\u0DC1\u0dba\u0dba\u0dd9\u0db1\u0dca \u0db6\u0dbd\u0db4\u0dcf\u0db1\u0dcf\u0dc0\u0dba.",
+        "kpi_title": "KPI සාරාංශ",
+        "kpi_sub": "මිල, වෙළඳ දර්ශක, ඉල්ලුම සහ අපනයන ප්‍රධාන දර්ශක.",
+        "trend_title": "ප්‍රවණතා සහ කාණ්ඩ විශ්ලේෂණය",
+        "trend_sub": "මිල ප්‍රවණතා, වෙළඳ කාණ්ඩ සහ සංසන්දන විශ්ලේෂණය.",
+        "filter_year_range": "වසර පරාසය තොරන්න",
+        "filter_regime": "තත්ත්වය අනුව පෙරහන් කරන්න",
+        "filter_product": "අපනයන නිෂ්පාදනය තොරන්න",
+        "seg_by": "කාලය අනුව කාණ්ඩ කරන්න",
+        "seg_options": ["වර්ෂය", "මාසය", "තත්ත්වය", "ඍතුව"],
+        "all_regimes": "සියලු තත්ත්ව",
     }
 }
 
@@ -276,40 +278,63 @@ T = {
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
-html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#f9fafb;color:#111827}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
+html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a2e1a}
 #MainMenu,footer,header{visibility:hidden}
-.main .block-container{background:#f9fafb;padding-top:0!important;padding-bottom:2rem;padding-left:1.5rem!important;padding-right:1.5rem!important}
+.main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
-  section[data-testid="stSidebar"]{min-width:260px!important;max-width:260px!important;width:260px!important}
-  section[data-testid="stSidebar"]>div{width:260px!important}
+  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important;transform:none!important}
+  section[data-testid="stSidebar"]>div{width:270px!important;transform:none!important}
 }
 @media(max-width:767px){
-  section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;z-index:9998!important}
-  [data-testid="stAppViewContainer"]>.main{margin-left:0!important;width:100vw!important}
-  .main .block-container{padding-left:.5rem!important;padding-right:.5rem!important}
-  [data-testid="column"]{min-width:100%!important;flex:0 0 100%!important}
-  [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important}
+  section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
+  section[data-testid="stSidebar"]>div{width:82vw!important}
+  [data-testid="collapsedControl"]{display:flex!important;z-index:9999!important;position:fixed!important}
+  [data-testid="stAppViewContainer"]>.main{margin-left:0!important;padding-left:0!important;width:100vw!important;max-width:100vw!important}
+  .main .block-container{padding-left:.5rem!important;padding-right:.5rem!important;max-width:100vw!important;margin-left:0!important}
+  html,body,.main,.block-container,[data-testid="stAppViewContainer"]{overflow-x:hidden!important;max-width:100vw!important}
+  [data-testid="column"],div[data-testid="column"]{min-width:100%!important;width:100%!important;flex:0 0 100%!important;max-width:100%!important}
+  [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
+  .js-plotly-plot,.plotly,.plot-container{width:100%!important;overflow-x:hidden!important}
 }
-div[data-testid="stSidebar"]{background:#ffffff!important;border-right:1px solid #d1fae5!important}
-div[data-testid="stSidebar"] *{color:#1a2e1a!important}
-div[data-testid="stSidebar"] .stRadio label{padding:6px 10px;border-radius:4px;font-size:.84rem;font-weight:500}
-div[data-testid="stSidebar"] .stRadio label:hover{background:#f0fdf4;color:#15803d!important}
-div[data-testid="stSidebar"] hr{border-color:#d1fae5!important;border-top:1px solid #d1fae5!important}
-div[data-testid="stSidebar"] h3{color:#15803d!important;font-size:.68rem!important;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
-.section-header{font-size:1.3rem;font-weight:700;color:#14532d;margin-bottom:4px;letter-spacing:-.2px;border-left:3px solid #16a34a;padding-left:10px}
-.section-sub{color:#6b7280;font-size:.87rem;margin-bottom:18px;padding-left:13px}
-.info-box-green,.info-box-blue{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 6px 6px 0;padding:11px 14px;color:#14532d;font-weight:500;font-size:.88rem;margin-bottom:14px}
-.info-box-yellow{background:#fefce8;border-left:3px solid #ca8a04;border-radius:0 6px 6px 0;padding:11px 14px;color:#713f12;font-weight:500;font-size:.88rem;margin-bottom:14px}
-.info-box-red{background:#fef2f2;border-left:3px solid #dc2626;border-radius:0 6px 6px 0;padding:11px 14px;color:#7f1d1d;font-weight:500;font-size:.88rem;margin-bottom:14px}
-.styled-divider{height:1px;background:#e5e7eb;margin:22px 0}
 [data-testid="stHorizontalBlock"]{align-items:stretch!important}
 [data-testid="stHorizontalBlock"]>[data-testid="column"]{display:flex!important;flex-direction:column!important}
 [data-testid="stHorizontalBlock"]>[data-testid="column"]>div:first-child{flex:1!important;display:flex!important;flex-direction:column!important}
-@media(max-width:767px){.section-header{font-size:1.05rem!important}.section-sub{font-size:.8rem!important}}
+div[data-testid="stSidebar"]{background:#f7faf7!important;border-right:2px solid #d1e7d1!important}
+div[data-testid="stSidebar"] *{color:#1a3a1a!important}
+div[data-testid="stSidebar"] .stRadio label{padding:7px 12px;border-radius:8px;font-size:.85rem;font-weight:500}
+div[data-testid="stSidebar"] .stRadio label:hover{background:#dcfce7;color:#14532d!important}
+div[data-testid="stSidebar"] hr{border-color:#d1e7d1!important}
+div[data-testid="stSidebar"] h3{color:#14532d!important;font-size:.72rem!important;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.section-header{font-size:1.45rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;letter-spacing:-.2px}
+.section-sub{color:#6b7280;font-size:.87rem;margin-bottom:18px}
+.info-box-green,.info-box-blue{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 10px 10px 0;padding:12px 16px;color:#14532d;font-weight:600;font-size:.9rem;margin-bottom:16px}
+.info-box-yellow{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;color:#78350f;font-weight:600;font-size:.9rem;margin-bottom:16px}
+.info-box-red{background:#fff1f2;border-left:4px solid #ef4444;border-radius:0 10px 10px 0;padding:12px 16px;color:#7f1d1d;font-weight:600;font-size:.9rem;margin-bottom:16px}
+.styled-divider{height:1px;background:#d1e7d1;margin:28px 0}
+@media(max-width:767px){.section-header{font-size:1.15rem!important}.section-sub{font-size:.8rem!important}}
 </style>
+<script>
+(function(){
+  function fix(){
+    var m=window.innerWidth<=767;
+    document.querySelectorAll('[data-testid="stHorizontalBlock"]').forEach(function(r){
+      if(m){r.style.setProperty('flex-wrap','wrap','important');r.style.setProperty('gap','.5rem','important')}
+      r.style.setProperty('align-items','stretch','important');
+    });
+    document.querySelectorAll('[data-testid="column"]').forEach(function(c){
+      c.style.setProperty('display','flex','important');c.style.setProperty('flex-direction','column','important');
+      if(m){c.style.setProperty('min-width','100%','important');c.style.setProperty('width','100%','important');c.style.setProperty('flex','0 0 100%','important');}
+    });
+  }
+  fix();window.addEventListener('resize',fix);
+  var ob=new MutationObserver(fix);
+  function start(){if(document.body)ob.observe(document.body,{childList:true,subtree:true});else setTimeout(start,100);}
+  start();[500,1500,3000].forEach(function(d){setTimeout(fix,d);});
+})();
+</script>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
@@ -335,25 +360,24 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
+    st.markdown("### \u2699\ufe0f Settings")
     lang_choice = st.radio("\U0001f310 Language / \u0db7\u0dcf\u0DC2\u0dcf\u0dc0", ["English", "\u0dc3\u0dd2\u0d82\u0dc4\u0dbd"], index=0)
     lang = "en" if lang_choice == "English" else "si"
     t = T[lang]
-    st.markdown("---")
-    st.markdown("### " + ("\U0001f4cd Navigation" if lang=="en" else "\U0001f4cd \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
-    nav_full = t["nav"]
-    section = st.radio("", nav_full, label_visibility="collapsed")
-    st.markdown("---")
-    st.markdown("### " + (" Settings" if lang=="en" else " \u0dc3\u0dd0\u0d9a\u0dc3\u0dd4\u0db8\u0dca"))
     regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
     active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
     regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
+    st.markdown("---")
+    st.markdown("### " + ("\U0001f4cd Navigation" if lang=="en" else "\U0001f4cd \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
+    nav_full = [f"{icon} {name}" for icon, name in zip(t["nav_icons"], t["nav"])]
+    section = st.radio("", nav_full, label_visibility="collapsed")
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
     st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
         padding:10px 12px;margin-bottom:10px;text-align:center;'>
       <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
-         {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
+        🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
       </div>
     </div>""", unsafe_allow_html=True)
 
@@ -369,10 +393,10 @@ with st.sidebar:
 
     # Thresholds (user-configurable)
     warn_threshold   = st.slider(
-        " Warning Level (Rs.)" if lang=="en" else " අවවාද සීමාව (රු.)",
+        "⚠️ Warning Level (Rs.)" if lang=="en" else "⚠️ අවවාද සීමාව (රු.)",
         min_value=50, max_value=90, value=65, step=1)
     crisis_threshold = st.slider(
-        " Crisis Level (Rs.)" if lang=="en" else " අර්බුද සීමාව (රු.)",
+        "🔴 Crisis Level (Rs.)" if lang=="en" else "🔴 අර්බුද සීමාව (රු.)",
         min_value=60, max_value=120, value=80, step=1)
 
     # ── Risk Score Engine ──────────────────
@@ -382,70 +406,70 @@ with st.sidebar:
     # Factor 1: Current price vs thresholds
     if current_price >= crisis_threshold:
         risk_score += 40
-        risk_factors.append(("", f"Price Rs.{current_price:.0f} above crisis level", 40))
+        risk_factors.append(("🔴", f"Price Rs.{current_price:.0f} above crisis level", 40))
     elif current_price >= warn_threshold:
         risk_score += 25
-        risk_factors.append(("", f"Price Rs.{current_price:.0f} above warning level", 25))
+        risk_factors.append(("🟡", f"Price Rs.{current_price:.0f} above warning level", 25))
     else:
-        risk_factors.append(("", f"Price Rs.{current_price:.0f} within safe range", 0))
+        risk_factors.append(("🟢", f"Price Rs.{current_price:.0f} within safe range", 0))
 
     # Factor 2: 3-month momentum
     if momentum_3m > 15:
         risk_score += 20
-        risk_factors.append(("", f"Rapid 3M rise: +{momentum_3m:.1f}%", 20))
+        risk_factors.append(("🔴", f"Rapid 3M rise: +{momentum_3m:.1f}%", 20))
     elif momentum_3m > 8:
         risk_score += 12
-        risk_factors.append(("", f"Moderate 3M rise: +{momentum_3m:.1f}%", 12))
+        risk_factors.append(("🟡", f"Moderate 3M rise: +{momentum_3m:.1f}%", 12))
     elif momentum_3m < -10:
         risk_score += 5
-        risk_factors.append(("", f"Sharp 3M drop: {momentum_3m:.1f}%", 5))
+        risk_factors.append(("🔵", f"Sharp 3M drop: {momentum_3m:.1f}%", 5))
     else:
-        risk_factors.append(("", f"3M change stable: {momentum_3m:+.1f}%", 0))
+        risk_factors.append(("🟢", f"3M change stable: {momentum_3m:+.1f}%", 0))
 
     # Factor 3: Volatility
     cv_sb = (volatility_sb / avg_12m_sb) * 100
     if cv_sb > 18:
         risk_score += 20
-        risk_factors.append(("", f"High volatility: CV {cv_sb:.1f}%", 20))
+        risk_factors.append(("🔴", f"High volatility: CV {cv_sb:.1f}%", 20))
     elif cv_sb > 10:
         risk_score += 10
-        risk_factors.append(("", f"Moderate volatility: CV {cv_sb:.1f}%", 10))
+        risk_factors.append(("🟡", f"Moderate volatility: CV {cv_sb:.1f}%", 10))
     else:
-        risk_factors.append(("", f"Low volatility: CV {cv_sb:.1f}%", 0))
+        risk_factors.append(("🟢", f"Low volatility: CV {cv_sb:.1f}%", 0))
 
     # Factor 4: Distance to crisis threshold
     gap_to_crisis = crisis_threshold - current_price
     if gap_to_crisis <= 5:
         risk_score += 15
-        risk_factors.append(("", f"Only Rs.{gap_to_crisis:.0f} below crisis level", 15))
+        risk_factors.append(("🔴", f"Only Rs.{gap_to_crisis:.0f} below crisis level", 15))
     elif gap_to_crisis <= 12:
         risk_score += 8
-        risk_factors.append(("", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 8))
+        risk_factors.append(("🟡", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 8))
     else:
-        risk_factors.append(("", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 0))
+        risk_factors.append(("🟢", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 0))
 
     # Factor 5: Recent crisis months
     if crisis_months_sb >= 4:
         risk_score += 5
-        risk_factors.append(("", f"{crisis_months_sb} crisis months (last 12)", 5))
+        risk_factors.append(("🟡", f"{crisis_months_sb} crisis months (last 12)", 5))
 
     risk_score = min(risk_score, 100)
 
     # Risk level classification
     if risk_score >= 70:
-        rl_label = " CRISIS RISK" if lang=="en" else " අර්බුද අවදානම"
+        rl_label = "🔴 CRISIS RISK" if lang=="en" else "🔴 අර්බුද අවදානම"
         rl_clr   = "#ef4444"; rl_bg = "#fef2f2"; rl_border = "#fca5a5"
-        rl_action = "Immediate action required" if lang=="en" else "ක්ෂණික පියවර අවශ්යයි"
+        rl_action = "Immediate action required" if lang=="en" else "ක්ෂණික පියවර අවශ්‍යයි"
     elif risk_score >= 45:
-        rl_label = " ELEVATED RISK" if lang=="en" else " ඉහළ අවදානම"
+        rl_label = "🟡 ELEVATED RISK" if lang=="en" else "🟡 ඉහළ අවදානම"
         rl_clr   = "#d97706"; rl_bg = "#fffbeb"; rl_border = "#fcd34d"
         rl_action = "Close monitoring needed" if lang=="en" else "සමීප නිරීක්ෂණය කරන්න"
     elif risk_score >= 25:
-        rl_label = " WATCH" if lang=="en" else " නිරීක්ෂණය"
+        rl_label = "🟡 WATCH" if lang=="en" else "🟡 නිරීක්ෂණය"
         rl_clr   = "#ca8a04"; rl_bg = "#fefce8"; rl_border = "#fde68a"
         rl_action = "Monitor weekly" if lang=="en" else "සතිපතා නිරීක්ෂණය"
     else:
-        rl_label = " LOW RISK" if lang=="en" else " අඩු අවදානම"
+        rl_label = "🟢 LOW RISK" if lang=="en" else "🟢 අඩු අවදානම"
         rl_clr   = "#16a34a"; rl_bg = "#f0fdf4"; rl_border = "#86efac"
         rl_action = "Market is stable" if lang=="en" else "වෙළඳ ස්ථාවරයි"
 
@@ -497,32 +521,32 @@ with st.sidebar:
     pz_safe_lbl    = "Safe"    if lang=="en" else "ආරක්ෂිත"
     cp_lbl         = "Current Auction Price" if lang=="en" else "දැනට වෙන්දේසි මිල"
     mom_lbl        = "vs 3 months ago"       if lang=="en" else "මාස 3 ට සාපේක්ෂව"
-    qa_label       = "Quick Actions"         if lang=="en" else "ක්ෂණික ක්රියා"
+    qa_label       = "Quick Actions"         if lang=="en" else "ක්ෂණික ක්‍රියා"
 
     if risk_score >= 70:
-        actions_inner = (" Alert CDA/HARTI officials<br>"
-                         " Activate buffer stocks<br>"
-                         " Broadcast price warnings<br>"
-                         " Farmers: sell immediately<br>"
-                         " Businesses: hedge now")
+        actions_inner = ("🏛️ Alert CDA/HARTI officials<br>"
+                         "📦 Activate buffer stocks<br>"
+                         "📣 Broadcast price warnings<br>"
+                         "💰 Farmers: sell immediately<br>"
+                         "🏭 Businesses: hedge now")
     elif risk_score >= 45:
-        actions_inner = (" Monitor daily auction prices<br>"
-                         " Prepare buffer stock release<br>"
-                         " Farmers: consider selling<br>"
-                         " Businesses: review contracts<br>"
-                         " Watch export demand")
+        actions_inner = ("📊 Monitor daily auction prices<br>"
+                         "📦 Prepare buffer stock release<br>"
+                         "💰 Farmers: consider selling<br>"
+                         "🏭 Businesses: review contracts<br>"
+                         "🔍 Watch export demand")
     elif risk_score >= 25:
-        actions_inner = (" Weekly price check sufficient<br>"
-                         " Farmers: continue normal ops<br>"
-                         " Businesses: plan ahead<br>"
-                         " Consider forward contracts<br>"
-                         " Explore export opportunities")
+        actions_inner = ("📋 Weekly price check sufficient<br>"
+                         "🌱 Farmers: continue normal ops<br>"
+                         "🏭 Businesses: plan ahead<br>"
+                         "📈 Consider forward contracts<br>"
+                         "🌍 Explore export opportunities")
     else:
-        actions_inner = (" No immediate action needed<br>"
-                         " Good time to invest/expand<br>"
-                         " Monthly monitoring sufficient<br>"
-                         " Build buffer stocks now<br>"
-                         " Explore value-added products")
+        actions_inner = ("✅ No immediate action needed<br>"
+                         "🌱 Good time to invest/expand<br>"
+                         "📋 Monthly monitoring sufficient<br>"
+                         "🏦 Build buffer stocks now<br>"
+                         "🌿 Explore value-added products")
 
     pz_zones_label = "Price Zones" if lang=="en" else "මිල කලාප"
     st.markdown(
@@ -530,13 +554,13 @@ with st.sidebar:
         f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{pz_zones_label}</div>"
         f"<div style='display:flex;flex-direction:column;gap:4px;'>"
         f"<div style='background:#fee2e2;border-left:3px solid #ef4444;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'> {pz_crisis_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'>🔴 {pz_crisis_lbl}</span>"
         f"<span style='font-size:.63rem;font-weight:800;color:#7f1d1d;'>Rs.{crisis_threshold}+</span></div>"
         f"<div style='background:#fef9c3;border-left:3px solid #eab308;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#713f12;'> {pz_warn_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#713f12;'>🟡 {pz_warn_lbl}</span>"
         f"<span style='font-size:.63rem;font-weight:800;color:#713f12;'>Rs.{warn_threshold}&#8211;{crisis_threshold-1}</span></div>"
         f"<div style='background:#dcfce7;border-left:3px solid #22c55e;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#14532d;'> {pz_safe_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#14532d;'>🟢 {pz_safe_lbl}</span>"
         f"<span style='font-size:.63rem;font-weight:800;color:#14532d;'>Rs.&lt;{warn_threshold}</span></div>"
         f"</div></div>"
         f"<div style='background:#fff;border:1px solid #d1e7d1;border-radius:8px;padding:8px 10px;margin-top:8px;text-align:center;'>"
@@ -566,25 +590,28 @@ with st.sidebar:
 # ─────────────────────────────────────────────
 # HERO BANNER
 # ─────────────────────────────────────────────
-st.markdown(f'''
-<div style="background:#14532d;padding:28px 40px 22px;border-bottom:2px solid #16a34a;">
-  <div style="display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:3px 12px;font-size:.64rem;font-weight:700;color:#bbf7d0;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">COCOStat — {t["subtitle"]}</div>
-  <h1 style="font-size:clamp(1.1rem,3.5vw,1.75rem);font-weight:700;color:#ffffff;margin:0 0 8px;line-height:1.3;">{t["tagline"]}</h1>
-  <p style="color:#bbf7d0;font-size:.88rem;max-width:620px;margin:0;line-height:1.7;opacity:.9;">{t["desc"]}</p>
+st.markdown(f"""
+<div id='coco-hero' style='text-align:center;padding:clamp(16px,4vw,36px) clamp(12px,5vw,48px) clamp(14px,3vw,32px);margin-bottom:0;
+  background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-bottom:3px solid #16a34a;box-shadow:0 4px 20px rgba(13,43,13,.18);'>
+  <div style='display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 18px;
+      font-size:clamp(.62rem,2vw,.78rem);font-weight:700;color:#bbf7d0;letter-spacing:1px;margin-bottom:10px;'>🥥 {t["subtitle"]}</div>
+  <h1 style='font-size:clamp(1.3rem,5vw,2.2rem);font-weight:900;color:#fff;margin:0 0 10px;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.2);'>{t["tagline"]}</h1>
+  <p style='color:#bbf7d0;font-size:clamp(.78rem,2.5vw,.9rem);max-width:580px;margin:0 auto;line-height:1.7;font-weight:500;opacity:.9;'>{t["desc"]}</p>
 </div>
-<div style="margin-bottom:20px;"></div>
-''', unsafe_allow_html=True)
+<div style='margin-bottom:24px;'></div>
+""", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
 def metric_card(label, value, clr="#16a34a", sub=None, height=110, val_size="1.4rem"):
-    sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.68rem;font-weight:600;padding:2px 10px;border-radius:3px;border:1px solid #d1fae5;margin-top:4px;'>{sub}</div>"
-                if sub else "<span></span>")
-    return (f"<div style='background:#ffffff;border:1px solid #e5e7eb;border-top:3px solid {clr};border-radius:6px;padding:14px 16px;"
+    sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;margin-top:4px;'>{sub}</div>"
+                if sub else
+                "<span style='display:none;'></span>")
+    return (f"<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;"
             f"height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>"
-            f"<div style='font-size:.62rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
-            f"<div style='font-size:{val_size};font-weight:700;color:{clr};line-height:1.2;white-space:nowrap;'>{value}</div>"
+            f"<div style='font-size:.65rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
+            f"<div style='font-size:{val_size};font-weight:900;color:{clr};line-height:1.2;white-space:nowrap;'>{value}</div>"
             f"{sub_html}</div>")
 
 def section_header(title, sub=None):
@@ -594,9 +621,9 @@ def section_header(title, sub=None):
 def divider():
     st.markdown('<div class="styled-divider"></div>', unsafe_allow_html=True)
 
-REGIME_COLORS = ["#16a34a","#ca8a04","#dc2626"]
-REGIME_BGS    = ["#f0fdf4","#fefce8","#fef2f2"]
-REGIME_EMOJI  = ["","",""]
+REGIME_COLORS = ["#22c55e","#eab308","#ef4444"]
+REGIME_BGS    = ["#dcfce7","#fef9c3","#fee2e2"]
+REGIME_EMOJI  = ["🟢","🟡","🔴"]
 
 # ─────────────────────────────────────────────
 # PAGE ROUTING
@@ -622,14 +649,14 @@ if t["nav"][0] in sec_name:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=recent["date"],y=recent["price"],fill="tozeroy",fillcolor="rgba(22,163,74,.1)",
             line=dict(color="#16a34a",width=2.5),hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}",annotation_position="top left")
         fig.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}",annotation_position="top left")
-        fig.update_layout(title=dict(text="\U0001f4c8 "+("Recent 3-Year Price Trend" if lang=="en" else "\u0db8\u0dd0\u0dad \u0d9a\u0dcf\u0dbd \u0db8\u0dd2\u0dbd \u0db4\u0dca\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"),font=dict(size=14,color="#0f172a")),
+        fig.update_layout(title=dict(text="\U0001f4c8 "+("Recent 3-Year Price Trend" if lang=="en" else "\u0db8\u0dd0\u0dad \u0d9a\u0dcf\u0dbd \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"),font=dict(size=14,color="#0f172a")),
             height=280,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":"hover"})
     with col_stats:
-        st.markdown("#### \U0001f4ca "+("Quick Stats" if lang=="en" else "\u0d89\u0d9a\u0dca\u0db8\u0db1\u0dca \u0dc3\u0d82\u0d9a\u0dca\u0dba\u0dcf\u0db1"))
+        st.markdown("#### \U0001f4ca "+("Quick Stats" if lang=="en" else "\u0d89\u0d9a\u0dca\u0db8\u0db1\u0dca \u0dc3\u0d82\u0d9a\u0dca\u200d\u0dba\u0dcf\u0db1"))
         last36 = history_df.tail(36)
         for lbl,val in [("3yr Avg",f"Rs.{last36['price'].mean():.1f}"),("3yr High",f"Rs.{last36['price'].max():.1f}"),
                         ("3yr Low",f"Rs.{last36['price'].min():.1f}"),("Volatility",f"Rs.{last36['price'].std():.1f}")]:
@@ -639,7 +666,7 @@ if t["nav"][0] in sec_name:
     divider()
 
     # Seasonality heatmap
-    st.markdown("#### \U0001f5d3 "+("Monthly Avg Price by Year" if lang=="en" else "\u0dc0\u0dbb\u0dca\u0DC2\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0db8\u0dcf\u0dc3\u0dd2\u0d9a \u0db8\u0dd2\u0dbd"))
+    st.markdown("#### \U0001f5d3\ufe0f "+("Monthly Avg Price by Year" if lang=="en" else "\u0dc0\u0dbb\u0dca\u0DC2\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0db8\u0dcf\u0dc3\u0dd2\u0d9a \u0db8\u0dd2\u0dbd"))
     mnames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
     piv = history_df.pivot_table(index="year",columns="month",values="price",aggfunc="mean").reindex(columns=range(1,13))
     piv.columns=mnames
@@ -673,13 +700,13 @@ if t["nav"][0] in sec_name:
     fig_hist=go.Figure()
     fig_hist.add_trace(go.Scatter(x=history_df["date"],y=history_df["price"],fill="tozeroy",fillcolor="rgba(22,163,74,.08)",
         line=dict(color="#16a34a",width=1.8),mode="lines",hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left",annotation_font_color="#eab308")
+    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}",annotation_position="top left",annotation_font_color="#eab308")
     fig_hist.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}",annotation_position="bottom left",annotation_font_color="#ef4444")
     fig_hist.update_layout(height=360,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False,rangeslider=dict(visible=True),tickfont=dict(size=11)),
         yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
     st.plotly_chart(fig_hist,use_container_width=True,config={"displayModeBar":"hover"})
-    st.markdown("#### \U0001f4ca "+("Summary Statistics" if lang=="en" else "\u0dc3\u0dcf\u0dbb\u0dcf\u0d82\u0DC1 \u0dc3\u0d82\u0d9a\u0dca\u0dba\u0dcf\u0db1"))
+    st.markdown("#### \U0001f4ca "+("Summary Statistics" if lang=="en" else "\u0dc3\u0dcf\u0dbb\u0dcf\u0d82\u0DC1 \u0dc3\u0d82\u0d9a\u0dca\u200d\u0dba\u0dcf\u0db1"))
     hs1,hs2,hs3,hs4,hs5=st.columns(5)
     hdata=[("\U0001f4c8 Max",f"Rs.{history_df['price'].max():.2f}"),("\U0001f4c9 Min",f"Rs.{history_df['price'].min():.2f}"),
            ("\U0001f4ca Avg",f"Rs.{history_df['price'].mean():.2f}"),("\U0001f4d0 Std",f"Rs.{history_df['price'].std():.2f}"),
@@ -740,7 +767,7 @@ elif t["nav"][1] in sec_name:
         if not sub.empty:
             fig_r.add_trace(go.Scatter(x=sub["date"],y=sub["price"],mode="markers",
                 marker=dict(color=rc,size=5,opacity=.8),name=rn,hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}",annotation_position="top left")
     fig_r.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}",annotation_position="top left")
     fig_r.update_layout(title=dict(text="\U0001f4ca "+("Price History by Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0db8\u0dd2\u0dbd"),font=dict(size=14)),
         height=320,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
@@ -748,7 +775,7 @@ elif t["nav"][1] in sec_name:
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_r,use_container_width=True,config={"displayModeBar":"hover"})
     divider()
-    st.markdown("#### \U0001f4ca "+("Regime Statistics" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0 \u0dc3\u0d82\u0d9a\u0dca\u0dba\u0dcf\u0db1"))
+    st.markdown("#### \U0001f4ca "+("Regime Statistics" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0 \u0dc3\u0d82\u0d9a\u0dca\u200d\u0dba\u0dcf\u0db1"))
     rc_counts=history_df["regime"].value_counts().sort_index()
     sc1,sc2,sc3=st.columns(3)
     for i,col in enumerate([sc1,sc2,sc3]):
@@ -789,7 +816,7 @@ elif t["nav"][1] in sec_name:
                 <div style='font-size:1.9rem;font-weight:900;color:{ec};'>{ev}</div>
                 <div style='font-size:.78rem;color:#64748b;margin-top:2px;'>{"Inelastic" if lang=="en" else "\u0d85\u0da2\u0da9"}</div></div>""",unsafe_allow_html=True)
     divider()
-    st.markdown("#### \U0001f4c9 "+("Demand Curve by Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8\u0dca \u0dc0\u0d9a\u0dca\u0dbb\u0dba"))
+    st.markdown("#### \U0001f4c9 "+("Demand Curve by Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8\u0dca \u0dc0\u0d9a\u0dca\u200d\u0dbb\u0dba"))
     pr=np.linspace(40,100,60); bq=1000; bp=60
     fig_dc=go.Figure()
     for (lbl,el),clr in zip({"Stable":-0.35,"Warning":-0.22,"Crisis":-0.12}.items(),REGIME_COLORS):
@@ -814,7 +841,7 @@ elif t["nav"][2] in sec_name:
     fig_f.add_trace(go.Scatter(x=forecast_df["date"],y=forecast_df["price"],line=dict(color="#f59e0b",width=2.5,dash="dash"),
         name=t["forecast_pred_label"],mode="lines+markers",marker=dict(size=6,color="#f59e0b"),
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}",annotation_position="top left")
     fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}",annotation_position="top left")
     fig_f.add_vline(x=forecast_df["date"].iloc[0].timestamp()*1000,line_dash="dot",line_color="#94a3b8",
         annotation_text="Forecast \u2192" if lang=="en" else "\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba \u2192",annotation_position="top left")
@@ -862,11 +889,11 @@ elif t["nav"][3] in sec_name:
                   <span style='background:{REGIME_COLORS[i]};color:#fff;font-size:.76rem;font-weight:800;padding:3px 10px;border-radius:12px;margin-left:6px;'>{t["policy_priorities"][i]}</span>
                   {badge}</div></div></div>""",unsafe_allow_html=True)
     divider()
-    st.markdown("#### \U0001f4cb "+("Policy Decision Framework" if lang=="en" else "\u0db4\u0dca\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dad\u0dd3\u0dbb\u0dab \u0dbb\u0dcf\u0db8\u0dd4\u0dc0"))
-    stps=[("1\u20e3","Detect Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0dc4\u0dde\u0daf\u0dd4\u0db1\u0db1\u0dca\u0db1","#3b82f6"),
-          ("2\u20e3","Assess Priority" if lang=="en" else "\u0db4\u0dca\u0dbb\u0db8\u0dd4\u0d9a\u0dad\u0dcf\u0dc0 \u0dad\u0dd3\u0dbb\u0dab\u0dba","#8b5cf6"),
-          ("3\u20e3","Implement Policy" if lang=="en" else "\u0db4\u0dca\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dba \u0d9a\u0dca\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a","#16a34a"),
-          ("4\u20e3","Monitor & Review" if lang=="en" else "\u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1","#f59e0b")]
+    st.markdown("#### \U0001f4cb "+("Policy Decision Framework" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dad\u0dd3\u0dbb\u0dab \u0dbb\u0dcf\u0db8\u0dd4\u0dc0"))
+    stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0dc4\u0dde\u0daf\u0dd4\u0db1\u0db1\u0dca\u0db1","#3b82f6"),
+          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a\u0dad\u0dcf\u0dc0 \u0dad\u0dd3\u0dbb\u0dab\u0dba","#8b5cf6"),
+          ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dba \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a","#16a34a"),
+          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "\u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1","#f59e0b")]
     sc=st.columns(4)
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
@@ -874,7 +901,7 @@ elif t["nav"][3] in sec_name:
                 <div style='font-size:1.8rem;margin-bottom:6px;'>{em}</div>
                 <div style='font-weight:700;font-size:.85rem;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
-    st.markdown("#### \U0001f4c8 "+("Policy Effectiveness Indicators" if lang=="en" else "\u0db4\u0dca\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc2\u0dbd\u0dad\u0dcf \u0daf\u0dbb\u0dca\u0DC1\u0d9a"))
+    st.markdown("#### \U0001f4c8 "+("Policy Effectiveness Indicators" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc2\u0dbd\u0dad\u0dcf \u0daf\u0dbb\u0dca\u0DC1\u0d9a"))
     indics=[("Price Stability" if lang=="en" else "\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf",72,"#3b82f6"),
             ("Supply Chain" if lang=="en" else "\u0dc3\u0dd0\u0db4\u0dba\u0dd4\u0db8\u0dca \u0daf\u0dcf\u0db8",58,"#22c55e"),
             ("Farmer Support" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2 \u0dc3\u0dc4\u0dba",64,"#f59e0b"),
@@ -897,7 +924,7 @@ elif t["nav"][3] in sec_name:
     st.markdown("""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
         border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
       <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
-         Strategic Decision Support Centre
+        🧩 Strategic Decision Support Centre
       </div>
       <div style='font-size:.88rem;color:#bbf7d0;line-height:1.7;max-width:760px;'>
         Combines market regime detection, demand analysis, weather forecasts and export data to generate
@@ -916,18 +943,18 @@ elif t["nav"][3] in sec_name:
     volatility_12m  = history_df["price"].tail(12).std()
     cv              = (volatility_12m / avg_12m) * 100
     regime_now      = int(history_df["regime"].iloc[-1])
-    regime_labels   = [" Stable"," Warning"," Crisis"]
+    regime_labels   = ["🟢 Stable","🟡 Warning","🔴 Crisis"]
     regime_colors   = ["#22c55e","#eab308","#ef4444"]
     regime_bgs      = ["#dcfce7","#fef9c3","#fee2e2"]
 
-    st.markdown("####  " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
+    st.markdown("#### 📊 " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
     sn1,sn2,sn3,sn4,sn5 = st.columns(5)
     snap_data = [
-        (" Current Price",  f"Rs. {current_price:.2f}", "#16a34a"),
-        (" 3-Month Change", f"{price_change_3m:+.1f}%", "#22c55e" if price_change_3m<=0 else "#ef4444"),
-        (" 12M Average",    f"Rs. {avg_12m:.2f}",       "#3b82f6"),
-        (" Volatility",     f"{cv:.1f}% CV",            "#f59e0b"),
-        (" Market Regime",  regime_labels[regime_now],  regime_colors[regime_now]),
+        ("💰 Current Price",  f"Rs. {current_price:.2f}", "#16a34a"),
+        ("📈 3-Month Change", f"{price_change_3m:+.1f}%", "#22c55e" if price_change_3m<=0 else "#ef4444"),
+        ("📊 12M Average",    f"Rs. {avg_12m:.2f}",       "#3b82f6"),
+        ("⚡ Volatility",     f"{cv:.1f}% CV",            "#f59e0b"),
+        ("🏷️ Market Regime",  regime_labels[regime_now],  regime_colors[regime_now]),
     ]
     for col,(lbl,val,clr) in zip([sn1,sn2,sn3,sn4,sn5], snap_data):
         with col: st.markdown(metric_card(lbl, val, clr, height=95), unsafe_allow_html=True)
@@ -939,7 +966,7 @@ elif t["nav"][3] in sec_name:
     st.markdown("""<div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
-         Strategic Policy Simulator
+        🏛️ Strategic Policy Simulator
       </div>
       <div style='font-size:.78rem;color:#bfdbfe;margin-top:3px;'>
         Test government intervention scenarios and see projected market outcomes before implementation
@@ -949,35 +976,35 @@ elif t["nav"][3] in sec_name:
 
     ps_col1, ps_col2 = st.columns([1.2, 1])
     with ps_col1:
-        st.markdown("#####  " + ("Configure Policy Levers" if lang=="en" else "ප්රතිපත්ති සකස් කරන්න"))
+        st.markdown("##### ⚙️ " + ("Configure Policy Levers" if lang=="en" else "ප්‍රතිපත්ති සකස් කරන්න"))
 
         buffer_stock = st.slider(
-            " Buffer Stock Release (% of monthly supply)" if lang=="en" else " බෆර් තොග මුදාහැරීම (%)",
+            "🏦 Buffer Stock Release (% of monthly supply)" if lang=="en" else "🏦 බෆර් තොග මුදාහැරීම (%)",
             0, 30, 0, 1,
             help="Government releases stored nuts into market to reduce price pressure")
 
         import_duty  = st.slider(
-            " Import Duty Adjustment (%)" if lang=="en" else " ආනයන බද්ද (%)",
+            "🚢 Import Duty Adjustment (%)" if lang=="en" else "🚢 ආනයන බද්ද (%)",
             -20, 20, 0, 1,
             help="Positive = increase duty (protect local farmers). Negative = reduce duty (lower consumer prices)")
 
         subsidy_pct  = st.slider(
-            " Farmer Input Subsidy (% cost reduction)" if lang=="en" else " ගොවි ආදාන සහාය (%)",
+            "💊 Farmer Input Subsidy (% cost reduction)" if lang=="en" else "💊 ගොවි ආදාන සහාය (%)",
             0, 40, 0, 2,
             help="Subsidising fertiliser, pesticide and transport costs for farmers")
 
         price_floor  = st.slider(
-            " Minimum Price Floor (Rs.)" if lang=="en" else " අවම මිල (රු.)",
+            "🛡️ Minimum Price Floor (Rs.)" if lang=="en" else "🛡️ අවම මිල (රු.)",
             30, 80, int(current_price * 0.8), 1,
             help="Government-guaranteed minimum purchase price for farmers")
 
         export_quota = st.slider(
-            " Export Quota Restriction (% reduction)" if lang=="en" else " අපනයන සීමාව (% අඩු කිරීම)",
+            "📦 Export Quota Restriction (% reduction)" if lang=="en" else "📦 අපනයන සීමාව (% අඩු කිරීම)",
             0, 50, 0, 5,
             help="Restricting exports increases domestic supply and lowers local prices")
 
     with ps_col2:
-        st.markdown("#####  " + ("Projected Market Impact" if lang=="en" else "ඉදිරි වෙළඳ බලපෑම"))
+        st.markdown("##### 📈 " + ("Projected Market Impact" if lang=="en" else "ඉදිරි වෙළඳ බලපෑම"))
 
         # Simulate projected price based on levers
         price_impact  = current_price
@@ -1020,9 +1047,9 @@ elif t["nav"][3] in sec_name:
         # Impact summary cards
         ic1, ic2, ic3 = st.columns(3)
         for col, (lbl, val, clr) in zip([ic1, ic2, ic3], [
-            (" Farmer\nRevenue /1000 nuts", f"{'+'if farmer_revenue_change>=0 else ''}{farmer_revenue_change:,.0f} Rs.", "#16a34a" if farmer_revenue_change>=0 else "#ef4444"),
-            (" Consumer\nSpend Impact",       f"{consumer_impact:+.1f}%",  "#22c55e" if consumer_impact<=0 else "#ef4444"),
-            (" Export\nRevenue Est.",          f"{export_revenue_change:+.1f}M USD", "#3b82f6"),
+            ("👨‍🌾 Farmer\nRevenue /1000 nuts", f"{'+'if farmer_revenue_change>=0 else ''}{farmer_revenue_change:,.0f} Rs.", "#16a34a" if farmer_revenue_change>=0 else "#ef4444"),
+            ("🏠 Consumer\nSpend Impact",       f"{consumer_impact:+.1f}%",  "#22c55e" if consumer_impact<=0 else "#ef4444"),
+            ("📦 Export\nRevenue Est.",          f"{export_revenue_change:+.1f}M USD", "#3b82f6"),
         ]):
             with col:
                 st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {clr};
@@ -1036,19 +1063,19 @@ elif t["nav"][3] in sec_name:
 
     # Policy scenario verdict
     if delta_price < -5:
-        verdict_icon, verdict_title, verdict_msg, verdict_clr = "","Strong Consumer Relief", \
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟢","Strong Consumer Relief", \
             f"This combination of policies is projected to reduce prices by Rs.{abs(delta_price):.1f}, providing significant relief to consumers. Monitor farmer income carefully.", "#16a34a"
     elif delta_price < 0:
-        verdict_icon, verdict_title, verdict_msg, verdict_clr = "","Mild Stabilisation", \
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟡","Mild Stabilisation", \
             f"Policies project a modest Rs.{abs(delta_price):.1f} price reduction. A balanced approach — good for consumers with minimal farmer impact.", "#eab308"
     elif delta_price == 0:
-        verdict_icon, verdict_title, verdict_msg, verdict_clr = "","Market Neutral", \
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "⚪","Market Neutral", \
             "Current policy settings have no projected impact. Adjust levers above to test interventions.", "#64748b"
     elif delta_price < 10:
-        verdict_icon, verdict_title, verdict_msg, verdict_clr = "","Moderate Farmer Support", \
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🟡","Moderate Farmer Support", \
             f"Policies project a Rs.{delta_price:.1f} price increase, benefiting farmers. Watch consumer affordability closely.", "#eab308"
     else:
-        verdict_icon, verdict_title, verdict_msg, verdict_clr = "","High Price Risk", \
+        verdict_icon, verdict_title, verdict_msg, verdict_clr = "🔴","High Price Risk", \
             f"Policies project a Rs.{delta_price:.1f} price surge. Strong intervention may be needed to protect consumers.", "#ef4444"
 
     st.markdown(f"""<div style='background:{verdict_clr}15;border:2px solid {verdict_clr};border-radius:12px;
@@ -1062,7 +1089,7 @@ elif t["nav"][3] in sec_name:
     divider()
 
     # ── Policy comparison bar chart ────────────────────────────────────────────
-    st.markdown("#####  " + ("Compare All Policy Scenarios" if lang=="en" else "ප්රතිපත්ති සසඳා බලන්න"))
+    st.markdown("##### 📊 " + ("Compare All Policy Scenarios" if lang=="en" else "ප්‍රතිපත්ති සසඳා බලන්න"))
     scenarios = {
         "No Intervention":       current_price,
         "Buffer Stock Only":     max(price_floor, current_price - 10*0.12),
@@ -1093,7 +1120,7 @@ elif t["nav"][3] in sec_name:
                         font=dict(size=10, color="#64748b"), bgcolor="rgba(255,255,255,0.85)",
                         bordercolor="#64748b", borderwidth=1, y=1.08, yref="paper"))
     fig_sc.add_vline(x=warn_threshold, line_dash="dot", line_color="#eab308", line_width=1.5,
-        annotation=dict(text=f" Rs.{warn_threshold}",
+        annotation=dict(text=f"⚠ Rs.{warn_threshold}",
                         font=dict(size=9, color="#b45309"), bgcolor="rgba(255,255,255,0.85)",
                         y=0.0, yref="paper"))
     fig_sc.add_vline(x=crisis_threshold, line_dash="dot", line_color="#ef4444", line_width=1.5,
@@ -1119,7 +1146,7 @@ elif t["nav"][3] in sec_name:
     st.markdown("""<div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
-         Strategic Recommendation Engine
+        🎯 Strategic Recommendation Engine
       </div>
       <div style='font-size:.78rem;color:#ddd6fe;margin-top:3px;'>
         AI-driven, regime-sensitive recommendations for all three market stakeholder groups
@@ -1131,121 +1158,121 @@ elif t["nav"][3] in sec_name:
     all_recommendations = {
         0: {  # Stable Market
             "government": [
-                ("","Build Buffer Stocks","Stability window is ideal for building emergency grain reserves. Target: 3-month national supply.",
+                ("🏦","Build Buffer Stocks","Stability window is ideal for building emergency grain reserves. Target: 3-month national supply.",
                  "HIGH","Immediate","Min. Rs. 2.5B allocation from stabilisation fund"),
-                ("","Enhance Data Infrastructure","Invest in real-time price reporting systems at all 6 major auction centres.",
+                ("📊","Enhance Data Infrastructure","Invest in real-time price reporting systems at all 6 major auction centres.",
                  "MEDIUM","3-6 months","Rs. 180M — HARTI digital upgrade programme"),
-                ("","Review Farmer Registration","Update CDA farmer database. Many smallholders lack formal registration limiting support access.",
+                ("📋","Review Farmer Registration","Update CDA farmer database. Many smallholders lack formal registration limiting support access.",
                  "MEDIUM","6-12 months","Administrative — no major budget required"),
-                ("","Promote Value Addition","Stable prices allow investment in coconut oil, desiccated coconut, and coconut milk processing.",
+                ("🌿","Promote Value Addition","Stable prices allow investment in coconut oil, desiccated coconut, and coconut milk processing.",
                  "HIGH","6-18 months","Rs. 500M industry development grant"),
-                ("","Negotiate Trade Agreements","Use stable period to negotiate better export terms with EU, USA, and Middle East markets.",
+                ("🌍","Negotiate Trade Agreements","Use stable period to negotiate better export terms with EU, USA, and Middle East markets.",
                  "MEDIUM","12-24 months","Ministry of Trade — diplomatic resources"),
             ],
             "business": [
-                ("","Expand Processing Capacity","Stable input costs make this the best time to invest in new processing lines and cold storage.",
+                ("📈","Expand Processing Capacity","Stable input costs make this the best time to invest in new processing lines and cold storage.",
                  "HIGH","6-12 months","ROI: 18-24 months at current margins"),
-                ("","Lock In Long-Term Supply Contracts","Negotiate 6-12 month fixed-price supply contracts with farmer cooperatives.",
+                ("🔒","Lock In Long-Term Supply Contracts","Negotiate 6-12 month fixed-price supply contracts with farmer cooperatives.",
                  "HIGH","Immediate","Reduces raw material cost volatility by ~40%"),
-                ("","Enter New Export Markets","Low price risk enables testing new export markets without margin compression.",
+                ("🌐","Enter New Export Markets","Low price risk enables testing new export markets without margin compression.",
                  "MEDIUM","3-9 months","Export development board support available"),
-                ("","Invest in Automation","Stable period ideal for upgrading factory equipment without cashflow pressure.",
+                ("🏭","Invest in Automation","Stable period ideal for upgrading factory equipment without cashflow pressure.",
                  "MEDIUM","6-18 months","Automation grants available through BOI"),
-                ("","Diversify Product Portfolio","Launch coconut water, activated carbon, or coir products to reduce commodity price risk.",
+                ("📦","Diversify Product Portfolio","Launch coconut water, activated carbon, or coir products to reduce commodity price risk.",
                  "HIGH","12-24 months","Market studies show 35% margin premium on value-added"),
             ],
             "farmer": [
-                ("","Replant Ageing Trees","15-25% of SL coconut palms are past peak yield. Stable income = best time to replant.",
+                ("🌱","Replant Ageing Trees","15-25% of SL coconut palms are past peak yield. Stable income = best time to replant.",
                  "HIGH","Now — 3yr ROI","CDA provides seedlings at Rs. 150 each — 60% subsidy available"),
-                ("","Install Irrigation","Drip irrigation reduces drought vulnerability by 60%. CDA subsidises 50% of installation cost.",
+                ("💧","Install Irrigation","Drip irrigation reduces drought vulnerability by 60%. CDA subsidises 50% of installation cost.",
                  "HIGH","Next dry season","Rs. 45,000-85,000 per acre — subsidy available"),
-                ("","Join a Cooperative","Group selling at auctions achieves 12-18% higher prices than individual sellers.",
+                ("🤝","Join a Cooperative","Group selling at auctions achieves 12-18% higher prices than individual sellers.",
                  "HIGH","Immediate","Contact CDA regional office for nearest co-op"),
-                ("","Access Training","CDA free training on integrated pest management and organic certification available.",
+                ("📚","Access Training","CDA free training on integrated pest management and organic certification available.",
                  "MEDIUM","Ongoing","Free — register at cda.gov.lk/training"),
-                ("","Open a Farm Savings Account","Bank of Ceylon Farmer Account offers 2% above normal savings rate for registered farmers.",
+                ("💰","Open a Farm Savings Account","Bank of Ceylon Farmer Account offers 2% above normal savings rate for registered farmers.",
                  "MEDIUM","Immediate","BOC branch — CDA registration card required"),
             ],
         },
         1: {  # Warning Market
             "government": [
-                ("","Activate Price Monitoring Task Force","Deploy field officers to all 6 auction centres daily. Report unusual price movements within 24hrs.",
+                ("🚨","Activate Price Monitoring Task Force","Deploy field officers to all 6 auction centres daily. Report unusual price movements within 24hrs.",
                  "URGENT","Immediate","Rs. 8M — existing staff redeployment"),
-                ("","Partial Buffer Stock Release","Release 10-15% of buffer stocks to inject supply and moderate upward price pressure.",
+                ("📦","Partial Buffer Stock Release","Release 10-15% of buffer stocks to inject supply and moderate upward price pressure.",
                  "HIGH","Within 1 week","Coordinate with HARTI auction management"),
-                ("","Public Price Transparency Campaign","Broadcast daily auction prices via radio, SMS (Dialog/Mobitel), and social media to prevent panic buying.",
+                ("📣","Public Price Transparency Campaign","Broadcast daily auction prices via radio, SMS (Dialog/Mobitel), and social media to prevent panic buying.",
                  "HIGH","Within 3 days","Rs. 5M — public communications budget"),
-                ("","Activate Price Stabilisation Fund","Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation.",
+                ("🏦","Activate Price Stabilisation Fund","Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation.",
                  "HIGH","Within 1 week","Rs. 500M fund — Cabinet authorisation required"),
-                ("","Accelerate Harvest Support","Provide subsidised transport to bring stored farm produce to market quickly.",
+                ("🌾","Accelerate Harvest Support","Provide subsidised transport to bring stored farm produce to market quickly.",
                  "MEDIUM","Within 2 weeks","Rs. 25M — transport subsidy scheme"),
             ],
             "business": [
-                ("","Hedge Raw Material Costs","Lock in forward contracts for next 3-6 months before prices escalate further.",
+                ("⚠️","Hedge Raw Material Costs","Lock in forward contracts for next 3-6 months before prices escalate further.",
                  "URGENT","This week","Contact commodity brokers — forward pricing available"),
-                ("","Reduce Inventory Holding","High price environment — sell finished goods inventory quickly to protect margins.",
+                ("📉","Reduce Inventory Holding","High price environment — sell finished goods inventory quickly to protect margins.",
                  "HIGH","Immediate","Review distribution channel pricing"),
-                ("","Diversify Input Sources","Explore coconut sourcing from Puttalam, Kurunegala simultaneously — don't rely on single auction.",
+                ("🔍","Diversify Input Sources","Explore coconut sourcing from Puttalam, Kurunegala simultaneously — don't rely on single auction.",
                  "HIGH","Immediate","Register with 3+ auction centres"),
-                ("","Switch to Value Products","Shift production mix toward premium products (virgin coconut oil, organic) with higher margin buffer.",
+                ("💡","Switch to Value Products","Shift production mix toward premium products (virgin coconut oil, organic) with higher margin buffer.",
                  "MEDIUM","2-4 weeks","Requires product certification — SLSI contact"),
-                ("","Weekly Price Tracking","Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80.",
+                ("📊","Weekly Price Tracking","Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80.",
                  "HIGH","Immediate","COCOStat dashboard — set custom thresholds"),
             ],
             "farmer": [
-                ("","Sell Now — Don't Hoard","Warning phase prices are already elevated. Sell at current auction prices rather than waiting.",
+                ("💰","Sell Now — Don't Hoard","Warning phase prices are already elevated. Sell at current auction prices rather than waiting.",
                  "URGENT","This week","Colombo auction Monday, Wednesday, Friday"),
-                ("","Register for Emergency Support","Pre-register for government income support scheme before crisis is declared.",
+                ("📋","Register for Emergency Support","Pre-register for government income support scheme before crisis is declared.",
                  "HIGH","This week","CDA Regional Office — free registration"),
-                ("","Coordinate with Neighbours","Pool harvests with nearby farmers for stronger auction bargaining position.",
+                ("🧑‍🤝‍🧑","Coordinate with Neighbours","Pool harvests with nearby farmers for stronger auction bargaining position.",
                  "HIGH","Immediate","Minimum 5,000 nuts for cooperative lot"),
-                ("","Accelerate Irrigation Use","If irrigation installed — increase watering frequency to maximise current yield.",
+                ("💧","Accelerate Irrigation Use","If irrigation installed — increase watering frequency to maximise current yield.",
                  "MEDIUM","Immediate","CDA agronomy helpline: 1920"),
-                ("","Explore Direct Buyer Contracts","Some processors will pay 5-8% above auction price for guaranteed supply contracts.",
+                ("📦","Explore Direct Buyer Contracts","Some processors will pay 5-8% above auction price for guaranteed supply contracts.",
                  "MEDIUM","1-2 weeks","CDA Buyer Directory available on request"),
             ],
         },
         2: {  # Crisis Market
             "government": [
-                ("","Emergency Price Control Activation","Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels.",
+                ("🆘","Emergency Price Control Activation","Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels.",
                  "CRITICAL","Within 24hrs","Cabinet emergency session — Rs. 50M enforcement budget"),
-                ("","Full Buffer Stock Emergency Release","Release 100% of available buffer stocks immediately. Coordinate HARTI emergency auction.",
+                ("🚛","Full Buffer Stock Emergency Release","Release 100% of available buffer stocks immediately. Coordinate HARTI emergency auction.",
                  "CRITICAL","Within 48hrs","All regional centres — coordinate military logistics if needed"),
-                ("","Emergency Import Authorisation","Fast-track import permits for coconut from India/Philippines to bridge supply gap.",
+                ("🌐","Emergency Import Authorisation","Fast-track import permits for coconut from India/Philippines to bridge supply gap.",
                  "CRITICAL","Within 1 week","Ministry of Trade emergency order — waive normal 45-day process"),
-                ("","Cash Transfer to Vulnerable Households","Rs. 2,500 per household hardship payment via Samurdhi mechanism for bottom 30%.",
+                ("💵","Cash Transfer to Vulnerable Households","Rs. 2,500 per household hardship payment via Samurdhi mechanism for bottom 30%.",
                  "CRITICAL","Within 2 weeks","Rs. 12B — emergency supplementary estimate"),
-                ("","Daily National Price Broadcast","Daily 8PM TV/radio broadcast of official controlled prices and where to buy.",
+                ("📡","Daily National Price Broadcast","Daily 8PM TV/radio broadcast of official controlled prices and where to buy.",
                  "HIGH","Immediate","SLRC coordination — Rs. 2M production budget"),
-                ("","Anti-Hoarding Enforcement","CAA/Police joint teams to inspect large warehouses for hoarding. Penalties up to Rs. 5M.",
+                ("🔎","Anti-Hoarding Enforcement","CAA/Police joint teams to inspect large warehouses for hoarding. Penalties up to Rs. 5M.",
                  "HIGH","Immediate","District secretariat coordination required"),
             ],
             "business": [
-                ("","Activate Business Continuity Protocol","Implement pre-agreed crisis supply chain procedures. Identify alternative inputs immediately.",
+                ("🆘","Activate Business Continuity Protocol","Implement pre-agreed crisis supply chain procedures. Identify alternative inputs immediately.",
                  "CRITICAL","Immediate","Board-level decision required"),
-                ("","Secure Emergency Credit Lines","Apply for SME Emergency Credit from NDB/BOC at 6% crisis rate before demand exceeds capacity.",
+                ("🏦","Secure Emergency Credit Lines","Apply for SME Emergency Credit from NDB/BOC at 6% crisis rate before demand exceeds capacity.",
                  "CRITICAL","Within 3 days","NDB/BOC — Rs. 50M facility available"),
-                ("","Reduce Production Volumes","Temporarily reduce production of commodity lines. Maintain only high-margin premium products.",
+                ("📦","Reduce Production Volumes","Temporarily reduce production of commodity lines. Maintain only high-margin premium products.",
                  "HIGH","Immediate","Protect working capital — prioritise cash flow"),
-                ("","Source Alternative Raw Materials","Explore palm oil, sunflower — partial substitution in cooking oil lines until crisis passes.",
+                ("🔄","Source Alternative Raw Materials","Explore palm oil, sunflower — partial substitution in cooking oil lines until crisis passes.",
                  "HIGH","Within 1 week","SLSI approval may be required for labelling change"),
-                ("","Customer Communication","Proactively communicate price increases to retail partners with written justification.",
+                ("📣","Customer Communication","Proactively communicate price increases to retail partners with written justification.",
                  "HIGH","Within 2 days","Prevents channel conflict — protect long-term relationships"),
-                ("","Engage Industry Association","Coconut Industry Collective Action — joint lobbying for import duty relief and government support.",
+                ("💼","Engage Industry Association","Coconut Industry Collective Action — joint lobbying for import duty relief and government support.",
                  "MEDIUM","This week","CDA Industry Association: +94 11 243 0610"),
             ],
             "farmer": [
-                ("","Maximise Harvest Immediately","Rush all harvestable nuts to market before government price controls reduce ceiling.",
+                ("💰","Maximise Harvest Immediately","Rush all harvestable nuts to market before government price controls reduce ceiling.",
                  "CRITICAL","Next 3-5 days","All 6 auction centres operating emergency sessions"),
-                ("","Call CDA Emergency Helpline","Register for emergency farmer support — income protection payments being processed.",
+                ("📞","Call CDA Emergency Helpline","Register for emergency farmer support — income protection payments being processed.",
                  "CRITICAL","Today","CDA Emergency: 1920 (toll-free 24/7)"),
-                ("","Document Your Costs","Keep all receipts for fertiliser, labour, transport — required for compensation claims.",
+                ("🛡️","Document Your Costs","Keep all receipts for fertiliser, labour, transport — required for compensation claims.",
                  "HIGH","Immediate","CDA compensation forms available at regional offices"),
-                ("","Do Not Sell Seedlings/Young Trees","Crisis will pass. Do not liquidate productive assets for short-term cash.",
+                ("🌱","Do Not Sell Seedlings/Young Trees","Crisis will pass. Do not liquidate productive assets for short-term cash.",
                  "HIGH","Now","Long-term income protection — very important"),
-                ("","Apply for Samurdhi Emergency Aid","Farming households affected by crisis can apply for Rs. 3,500/month emergency support.",
+                ("🤝","Apply for Samurdhi Emergency Aid","Farming households affected by crisis can apply for Rs. 3,500/month emergency support.",
                  "HIGH","Within 1 week","Divisional Secretariat — bring NIC and CDA registration"),
-                ("","Report Price Manipulation","If brokers or middlemen offering below-auction prices — report immediately.",
+                ("📋","Report Price Manipulation","If brokers or middlemen offering below-auction prices — report immediately.",
                  "MEDIUM","If occurs","CAA hotline: 1977 (Consumer Affairs Authority)"),
             ],
         },
@@ -1259,7 +1286,7 @@ elif t["nav"][3] in sec_name:
     # Market status banner
     st.markdown(f"""<div style='background:{regime_bg};border:2px solid {regime_clr};border-radius:12px;
         padding:14px 20px;margin-bottom:18px;display:flex;align-items:center;gap:12px;'>
-        <div style='font-size:2rem;'>{["","",""][regime_now]}</div>
+        <div style='font-size:2rem;'>{["🟢","🟡","🔴"][regime_now]}</div>
         <div>
           <div style='font-size:.72rem;font-weight:800;color:{regime_clr};text-transform:uppercase;
               letter-spacing:1.5px;'>Active Regime</div>
@@ -1279,9 +1306,9 @@ elif t["nav"][3] in sec_name:
 
     # ── Render all 3 stakeholder tabs ──────────────────────────────────────────
     tab_gov, tab_biz, tab_farm = st.tabs([
-        " Government & Policymakers",
-        " Businesses & Traders",
-        " Coconut Farmers",
+        "🏛️ Government & Policymakers",
+        "💼 Businesses & Traders",
+        "👨‍🌾 Coconut Farmers",
     ])
 
     def render_rec_cards(recs_list, accent):
@@ -1301,7 +1328,7 @@ elif t["nav"][3] in sec_name:
                     <div style='font-size:.68rem;background:#f0fdf4;color:#166534;padding:3px 9px;
                         border-radius:20px;font-weight:700;'>⏱ {timing}</div>
                     <div style='font-size:.68rem;background:#eff6ff;color:#1e40af;padding:3px 9px;
-                        border-radius:20px;font-weight:700;'> {resource}</div>
+                        border-radius:20px;font-weight:700;'>💡 {resource}</div>
                   </div>
                 </div>
               </div>
@@ -1310,7 +1337,7 @@ elif t["nav"][3] in sec_name:
     with tab_gov:
         st.markdown(f"""<div style='background:#eff6ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
             <div style='font-size:.78rem;color:#1e3a8a;font-weight:700;'>
-             These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong>
+            🏛️ These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong>
             managing the coconut sector under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["government"], "#1d4ed8")
@@ -1318,7 +1345,7 @@ elif t["nav"][3] in sec_name:
     with tab_biz:
         st.markdown(f"""<div style='background:#fdf4ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
             <div style='font-size:.78rem;color:#6b21a8;font-weight:700;'>
-             These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong>
+            💼 These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong>
             operating under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["business"], "#7c3aed")
@@ -1326,7 +1353,7 @@ elif t["nav"][3] in sec_name:
     with tab_farm:
         st.markdown(f"""<div style='background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
             <div style='font-size:.78rem;color:#166534;font-weight:700;'>
-             These recommendations are tailored for <strong>Smallholder farmers, coconut growers and farming cooperatives</strong>
+            👨‍🌾 These recommendations are tailored for <strong>Smallholder farmers, coconut growers and farming cooperatives</strong>
             operating under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["farmer"], "#16a34a")
@@ -1339,7 +1366,7 @@ elif t["nav"][3] in sec_name:
     st.markdown("""<div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
-         Strategic Risk & Opportunity Matrix
+        🗺️ Strategic Risk & Opportunity Matrix
       </div>
       <div style='font-size:.78rem;color:#ccfbf1;margin-top:3px;'>
         Visual mapping of risks and opportunities across all market conditions
@@ -1349,19 +1376,19 @@ elif t["nav"][3] in sec_name:
 
     rm1, rm2 = st.columns(2)
     with rm1:
-        st.markdown("#####  " + ("Key Risks to Monitor" if lang=="en" else "ප්රධාන අවදානම්"))
+        st.markdown("##### ⚠️ " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
         risks = [
-            ("","Drought / Low Rainfall","HIGH" if regime_now >= 1 else "MEDIUM",
+            ("🌧️","Drought / Low Rainfall","HIGH" if regime_now >= 1 else "MEDIUM",
              "Yield drop in 3-6 months. Monitor CRI rainfall index monthly."),
-            ("","Export Demand Surge","HIGH" if regime_now >= 1 else "MEDIUM",
+            ("📦","Export Demand Surge","HIGH" if regime_now >= 1 else "MEDIUM",
              "Global demand spikes can drain domestic supply rapidly."),
-            ("","Rising Input Costs","MEDIUM",
+            ("⛽","Rising Input Costs","MEDIUM",
              "Fuel, fertiliser prices affect farm-gate profitability directly."),
-            ("","Exchange Rate Volatility","MEDIUM",
+            ("🌐","Exchange Rate Volatility","MEDIUM",
              "LKR depreciation increases import cost of inputs."),
-            ("","Pest/Disease Outbreak","HIGH" if regime_now == 2 else "MEDIUM",
+            ("🐛","Pest/Disease Outbreak","HIGH" if regime_now == 2 else "MEDIUM",
              "Rhinoceros beetle and bud rot remain significant threats."),
-            ("","Processing Capacity Shortage","LOW" if regime_now == 0 else "MEDIUM",
+            ("🏭","Processing Capacity Shortage","LOW" if regime_now == 0 else "MEDIUM",
              "Value-addition bottlenecks limit export revenue growth."),
         ]
         for icon, risk, level, detail in risks:
@@ -1379,14 +1406,14 @@ elif t["nav"][3] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with rm2:
-        st.markdown("#####  " + ("Key Opportunities" if lang=="en" else "ප්රධාන අවස්ථා"))
+        st.markdown("##### 🌟 " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
         opportunities = [
-            ("","Virgin Coconut Oil Export","HIGH","Global VCO market growing 8.5% YoY. SL quality commands 30% premium."),
-            ("","Organic Certification","HIGH","EU organic coconut market worth $2.1B. Only 12% of SL farms certified."),
-            ("","Coconut Water Market","HIGH","Global market $6.8B by 2026. SL currently exports < 3% of potential."),
-            ("","Activated Carbon","MEDIUM","High-value industrial product from coconut shell. Margins 4x raw nuts."),
-            ("","Agro-Tourism","MEDIUM","Coconut triangle farm tourism growing 22% annually post-pandemic."),
-            ("","Smart Farming Technology","MEDIUM","IoT sensors and drone spraying can increase yield by 15-20%."),
+            ("🥥","Virgin Coconut Oil Export","HIGH","Global VCO market growing 8.5% YoY. SL quality commands 30% premium."),
+            ("🌱","Organic Certification","HIGH","EU organic coconut market worth $2.1B. Only 12% of SL farms certified."),
+            ("💧","Coconut Water Market","HIGH","Global market $6.8B by 2026. SL currently exports < 3% of potential."),
+            ("🔋","Activated Carbon","MEDIUM","High-value industrial product from coconut shell. Margins 4x raw nuts."),
+            ("🏝","Agro-Tourism","MEDIUM","Coconut triangle farm tourism growing 22% annually post-pandemic."),
+            ("🤖","Smart Farming Technology","MEDIUM","IoT sensors and drone spraying can increase yield by 15-20%."),
         ]
         for icon, opp, level, detail in opportunities:
             lvl_clr = {"HIGH":"#16a34a","MEDIUM":"#3b82f6","LOW":"#94a3b8"}[level]
@@ -1410,7 +1437,7 @@ elif t["nav"][3] in sec_name:
     st.markdown("""<div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
-         90-Day Priority Action Plan
+        📅 90-Day Priority Action Plan
       </div>
       <div style='font-size:.78rem;color:#fde68a;margin-top:3px;'>
         Immediate, short-term and medium-term actions based on current market regime
@@ -1420,22 +1447,22 @@ elif t["nav"][3] in sec_name:
 
     action_plan = {
         0: [  # Stable
-            ("Week 1–2",  "#16a34a", " Initiate buffer stock procurement |  Deploy CDA digital price reporting"),
-            ("Week 3–4",  "#3b82f6", " Update farmer registration database |  Launch cooperative formation drive"),
-            ("Month 2",   "#f59e0b", " Value-addition investment roadshow |  Trade agreement preliminary talks"),
-            ("Month 3",   "#8b5cf6", " Review export incentive schemes |  Replanting programme launch"),
+            ("Week 1–2",  "#16a34a", "🏦 Initiate buffer stock procurement | 📊 Deploy CDA digital price reporting"),
+            ("Week 3–4",  "#3b82f6", "📋 Update farmer registration database | 🤝 Launch cooperative formation drive"),
+            ("Month 2",   "#f59e0b", "🌿 Value-addition investment roadshow | 🌍 Trade agreement preliminary talks"),
+            ("Month 3",   "#8b5cf6", "📈 Review export incentive schemes | 🌱 Replanting programme launch"),
         ],
         1: [  # Warning
-            ("Day 1–3",   "#ef4444", " Activate monitoring task force |  Launch price transparency media campaign"),
-            ("Day 4–7",   "#f59e0b", " Release 10-15% buffer stock |  Signal stabilisation fund readiness"),
-            ("Week 2–3",  "#3b82f6", " Accelerate harvest support transport |  Emergency farmer registration"),
-            ("Month 2–3", "#8b5cf6", " Review import duty schedule |  Commission independent price audit"),
+            ("Day 1–3",   "#ef4444", "🚨 Activate monitoring task force | 📣 Launch price transparency media campaign"),
+            ("Day 4–7",   "#f59e0b", "📦 Release 10-15% buffer stock | 🏦 Signal stabilisation fund readiness"),
+            ("Week 2–3",  "#3b82f6", "🌾 Accelerate harvest support transport | 📋 Emergency farmer registration"),
+            ("Month 2–3", "#8b5cf6", "⚖️ Review import duty schedule | 📊 Commission independent price audit"),
         ],
         2: [  # Crisis
-            ("Today",     "#7f1d1d", " Emergency Cabinet session |  Full buffer stock release authorisation"),
-            ("Day 2–3",   "#ef4444", " Gazette emergency import permits |  Activate Samurdhi emergency payments"),
-            ("Week 1",    "#f59e0b", " Deploy anti-hoarding enforcement |  Begin daily national price broadcast"),
-            ("Week 2–4",  "#3b82f6", " Conduct supply chain audit |  Post-crisis recovery plan preparation"),
+            ("Today",     "#7f1d1d", "🆘 Emergency Cabinet session | 🚛 Full buffer stock release authorisation"),
+            ("Day 2–3",   "#ef4444", "🌐 Gazette emergency import permits | 💵 Activate Samurdhi emergency payments"),
+            ("Week 1",    "#f59e0b", "🔎 Deploy anti-hoarding enforcement | 📡 Begin daily national price broadcast"),
+            ("Week 2–4",  "#3b82f6", "📊 Conduct supply chain audit | 🌱 Post-crisis recovery plan preparation"),
         ],
     }
 
@@ -1453,7 +1480,7 @@ elif t["nav"][3] in sec_name:
     divider()
 
     # ── Download summary report ────────────────────────────────────────────────
-    st.markdown("#####  " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
+    st.markdown("##### 📥 " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
     from datetime import datetime
     report_lines = [
         f"COCOStat – Strategic Recommendation Report",
@@ -1479,19 +1506,19 @@ elif t["nav"][3] in sec_name:
         "=" * 60,
     ]
     for icon, title, desc, priority, timing, resource in recs["government"]:
-        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} |  {resource}"]
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
     report_lines += ["", "=" * 60, f"BUSINESS RECOMMENDATIONS ({regime_name})", "=" * 60]
     for icon, title, desc, priority, timing, resource in recs["business"]:
-        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} |  {resource}"]
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
     report_lines += ["", "=" * 60, f"FARMER RECOMMENDATIONS ({regime_name})", "=" * 60]
     for icon, title, desc, priority, timing, resource in recs["farmer"]:
-        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} |  {resource}"]
+        report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
     report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
 
     dl1, dl2 = st.columns(2)
     with dl1:
         st.download_button(
-            label=" Download Full Recommendation Report (TXT)",
+            label="📄 Download Full Recommendation Report (TXT)",
             data="\n".join(report_lines),
             file_name=f"cocostat_recommendations_{regime_name.replace(' ','_')}_{datetime.now().strftime('%Y%m%d')}.txt",
             mime="text/plain", use_container_width=True)
@@ -1506,7 +1533,7 @@ elif t["nav"][3] in sec_name:
         writer = csv_mod.writer(csv_buf)
         writer.writerows(csv_rows)
         st.download_button(
-            label=" Download Action Items (CSV)",
+            label="📊 Download Action Items (CSV)",
             data=csv_buf.getvalue(),
             file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv", use_container_width=True)
@@ -1525,7 +1552,7 @@ elif t["nav"][4] in sec_name:
             fig_y.add_trace(go.Scatter(x=[mn[m-1] for m in yd["month"]],y=yd["price"],mode="lines+markers",name=str(yr),
                 line=dict(color=yc[idx%len(yc)],width=2.5),marker=dict(size=7),
                 hovertemplate=f"<b>{yr}</b> %{{x}}<br>Rs.%{{y:.2f}}<extra></extra>"))
-        fig_y.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}")
+        fig_y.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}")
         fig_y.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}")
         fig_y.update_layout(height=360,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs."),
@@ -1552,8 +1579,8 @@ elif t["nav"][4] in sec_name:
         # ── GLOBAL COMPARISON (embedded) ──────────────────────────────────────
         divider()
         st.markdown(f"""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;padding:12px 20px;margin-bottom:12px;'>
-            <div style='font-size:1.05rem;font-weight:900;color:#fff;'> {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
-            <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්රී ලංකා හා ප්රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
+            <div style='font-size:1.05rem;font-weight:900;color:#fff;'>🌍 {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
+            <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්‍රී ලංකා හා ප්‍රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
         </div>""", unsafe_allow_html=True)
         st.markdown(f"<div class='info-box-blue'>{t['global_note']}</div>", unsafe_allow_html=True)
 
@@ -1563,22 +1590,22 @@ elif t["nav"][4] in sec_name:
         sl_vs = sl_l - w_avg; sv_clr = "#f59e0b" if sl_vs > 0 else "#22c55e"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
-            (" SL Price (2024)" if lang=="en" else " ශ්රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
-            (" World Avg Price" if lang=="en" else " ලෝක සාමාන්ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
-            (" SL Premium" if lang=="en" else " ශ්රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
-            (" World Rank" if lang=="en" else " ලෝක ශ්රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
+            ("🇱🇰 SL Price (2024)" if lang=="en" else "🇱🇰 ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
+            ("🌍 World Avg Price" if lang=="en" else "🌍 ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
+            ("📊 SL Premium" if lang=="en" else "📊 ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
+            ("🏭 World Rank" if lang=="en" else "🏭 ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
             with col: st.markdown(metric_card(lbl,val,clr,height=100), unsafe_allow_html=True)
 
         divider()
 
         # Multi-country price trend
-        st.markdown("####  "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්රවණතාව — ශ්රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
+        st.markdown("#### 📈 "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
         c_colors={"Sri Lanka":"#16a34a","Indonesia":"#3b82f6","Philippines":"#f59e0b","India":"#ef4444","Vietnam":"#8b5cf6"}
         fig_gl=go.Figure()
         for country,clr in c_colors.items():
             is_sl=(country=="Sri Lanka")
             fig_gl.add_trace(go.Scatter(x=global_price_df["year"].astype(str),y=global_price_df[country],
-                mode="lines+markers",name=(" " if is_sl else "")+country,
+                mode="lines+markers",name=("🇱🇰 " if is_sl else "")+country,
                 line=dict(color=clr,width=3.5 if is_sl else 1.8,dash="solid" if is_sl else "dot"),
                 marker=dict(size=8 if is_sl else 5),
                 hovertemplate=f"<b>{country}</b> %{{x}}<br>Rs.%{{y:.1f}}<extra></extra>"))
@@ -1591,7 +1618,7 @@ elif t["nav"][4] in sec_name:
         # Production share + radar
         cp2,cr=st.columns(2)
         with cp2:
-            st.markdown("####  "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
+            st.markdown("#### 🌍 "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
             fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
                 textinfo="label+percent",textfont=dict(size=10),
                 marker=dict(colors=["#3b82f6","#f59e0b","#ef4444","#16a34a","#8b5cf6","#06b6d4","#84cc16"]),
@@ -1600,7 +1627,7 @@ elif t["nav"][4] in sec_name:
             fig_pp.update_layout(height=300,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
             st.plotly_chart(fig_pp,use_container_width=True,config={"displayModeBar":"hover"})
         with cr:
-            st.markdown("####  "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
+            st.markdown("#### 📊 "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
             ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
             attrs=["Quality","Volume","Price Comp.","Export Infra.","Processing"]
             scores={"Sri Lanka":[88,40,55,72,80],"Indonesia":[70,95,90,82,75],"Philippines":[75,85,80,78,70],"India":[80,88,72,80,82],"Vietnam":[65,50,88,60,55]}
@@ -1619,7 +1646,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # Price gap table
-        st.markdown("####  "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
+        st.markdown("#### 📋 "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
         lr=global_price_df.iloc[-1]; sl_p=lr["Sri Lanka"]
         gdrows=[]
         for ct in ["Indonesia","Philippines","India","Vietnam"]:
@@ -1629,7 +1656,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # SL price divergence bar chart
-        st.markdown("####  "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්යයෙන් ශ්රී ලංකා අපගමනය"))
+        st.markdown("#### 📉 "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්‍යයෙන් ශ්‍රී ලංකා අපගමනය"))
         wavg_s=global_price_df[["Indonesia","Philippines","India","Vietnam"]].mean(axis=1)
         sldev=global_price_df["Sri Lanka"]-wavg_s
         fig_dv=go.Figure(go.Bar(x=global_price_df["year"].astype(str),y=sldev,
@@ -1692,7 +1719,7 @@ elif t["nav"][5] in sec_name:
 
 # ══ WEATHER & HARVEST (FORWARD FORECAST) ═════════════════════════════════════
 elif t["nav"][6] in sec_name:
-    section_header("\U0001f326 "+t["weather_title"], t["weather_sub"])
+    section_header("\U0001f326\ufe0f "+t["weather_title"], t["weather_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['weather_note']}</div>",unsafe_allow_html=True)
 
     # ── Generate 12-month forward weather forecast from today ─────────────────
@@ -1740,15 +1767,15 @@ elif t["nav"][6] in sec_name:
 
     wk1,wk2,wk3,wk4 = st.columns(4)
     for col,(lbl,val,clr) in zip([wk1,wk2,wk3,wk4],[
-        (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්ය වර්ෂාව", f"{avg_frain:.0f} mm", "#3b82f6"),
-        (" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#f59e0b"),
-        (" Forecast Yield Index" if lang=="en" else " අනාවැකි අස්වැන්න දර්ශකය", f"{avg_fyield:.0f}/100", "#16a34a"),
-        (" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", f"{harvest_months_count} months", "#8b5cf6")]):
+        ("🌧 Forecast Avg Rainfall" if lang=="en" else "🌧 අනාවැකි සාමාන්‍ය වර්ෂාව", f"{avg_frain:.0f} mm", "#3b82f6"),
+        ("🌡 Forecast Avg Temp" if lang=="en" else "🌡 අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#f59e0b"),
+        ("🌴 Forecast Yield Index" if lang=="en" else "🌴 අනාවැකි අස්වැන්න දර්ශකය", f"{avg_fyield:.0f}/100", "#16a34a"),
+        ("🌾 Harvest Months (12m)" if lang=="en" else "🌾 අස්වනු මාස (12m)", f"{harvest_months_count} months", "#8b5cf6")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
     # ── Main chart: Rainfall forecast + harvest overlay + yield + price ────────
-    st.markdown("####  "+("12-Month Forward Rainfall Forecast, Yield & Price Impact" if lang=="en" else "ඉදිරි මාස 12 වර්ෂාව, අස්වැන්න සහ මිල අනාවැකිය"))
+    st.markdown("#### 🌧 "+("12-Month Forward Rainfall Forecast, Yield & Price Impact" if lang=="en" else "ඉදිරි මාස 12 වර්ෂාව, අස්වැන්න සහ මිල අනාවැකිය"))
 
     mn_labels = [m.strftime("%b %Y") for m in future_months]
 
@@ -1795,9 +1822,9 @@ elif t["nav"][6] in sec_name:
         secondary_y=True)
 
     fig_fw.add_hline(y=warn_threshold, line_dash="dash", line_color="#eab308",
-        annotation_text=f" Rs.{warn_threshold}", secondary_y=True)
+        annotation_text=f"⚠ Rs.{warn_threshold}", secondary_y=True)
     fig_fw.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
-        annotation_text=f" Rs.{crisis_threshold}", secondary_y=True)
+        annotation_text=f"🔴 Rs.{crisis_threshold}", secondary_y=True)
 
     fig_fw.update_layout(
         height=380, margin=dict(l=60,r=60,t=20,b=20),
@@ -1809,17 +1836,17 @@ elif t["nav"][6] in sec_name:
 
     # Harvest period annotation
     st.markdown("""<div style='font-size:.75rem;color:#16a34a;font-weight:700;margin-bottom:6px;'>
-         <span style='background:#dcfce7;padding:2px 8px;border-radius:4px;'>Green shading = Harvest months (Mar–Apr, Aug–Nov)</span>
-        &nbsp;&nbsp; Star markers = Harvest month yield points
+        🌴 <span style='background:#dcfce7;padding:2px 8px;border-radius:4px;'>Green shading = Harvest months (Mar–Apr, Aug–Nov)</span>
+        &nbsp;&nbsp;⭐ Star markers = Harvest month yield points
     </div>""", unsafe_allow_html=True)
     st.plotly_chart(fig_fw, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
     # ── Month-by-month forward table ──────────────────────────────────────────
-    st.markdown("####  "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
+    st.markdown("#### 📋 "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
     table_df = fwd_df[["date","rainfall_mm","temp_c","yield_index","price_impact","harvest_period","monsoon"]].copy()
     table_df["date"] = table_df["date"].dt.strftime("%b %Y")
-    table_df["harvest_period"] = table_df["harvest_period"].apply(lambda x: " Harvest" if x else "—")
+    table_df["harvest_period"] = table_df["harvest_period"].apply(lambda x: "🌾 Harvest" if x else "—")
     table_df.columns = ["Month","Rainfall (mm)","Temp (°C)","Yield Index","Est. Price (Rs.)","Harvest","Season"]
     st.dataframe(table_df, use_container_width=True, hide_index=True)
     divider()
@@ -1827,7 +1854,7 @@ elif t["nav"][6] in sec_name:
     # ── Monthly rainfall pattern (forward) ───────────────────────────────────
     c_heat, c_corr = st.columns([3,2])
     with c_heat:
-        st.markdown("####  "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
+        st.markdown("#### 🗓 "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
         mnames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         # Build a single-row heatmap for next 12 months
         rain_by_month = {mnames[m-1]: [] for m in range(1,13)}
@@ -1854,7 +1881,7 @@ elif t["nav"][6] in sec_name:
         st.plotly_chart(fig_rh, use_container_width=True, config={"displayModeBar":"hover"})
 
     with c_corr:
-        st.markdown("####  "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
+        st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
         fig_sc = go.Figure()
         fig_sc.add_trace(go.Scatter(
             x=fwd_df["yield_index"], y=fwd_df["price_impact"],
@@ -1876,7 +1903,7 @@ elif t["nav"][6] in sec_name:
     divider()
 
     # ── Monsoon & Harvest season summary ──────────────────────────────────────
-    st.markdown("####  "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
+    st.markdown("#### 🌀 "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
     seasons_fwd = {
         "SW Monsoon (May–Sep)":     [5,6,7,8,9],
         "NE Monsoon (Nov–Jan)":     [11,12,1],
@@ -1891,16 +1918,16 @@ elif t["nav"][6] in sec_name:
             ar = fwd_df.loc[msk,"rainfall_mm"].mean()
             ay = fwd_df.loc[msk,"yield_index"].mean()
             ap = fwd_df.loc[msk,"price_impact"].mean()
-            harv = " Harvest Season" if any(m in [3,4,8,9,10,11] for m in months_s) else "—"
+            harv = "✅ Harvest Season" if any(m in [3,4,8,9,10,11] for m in months_s) else "—"
         else:
             ar, ay, ap, harv = 0, 0, 0, "—"
         with col:
             st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-top:3px solid {clr};border-radius:10px;padding:14px 10px;text-align:center;height:180px;display:flex;flex-direction:column;justify-content:space-between;'>
                 <div style='font-size:.72rem;font-weight:800;color:{clr};'>{season}</div>
                 <div>
-                  <div style='font-size:.75rem;color:#3b82f6;font-weight:600;'> {ar:.0f} mm forecast</div>
-                  <div style='font-size:.75rem;color:#16a34a;font-weight:600;'> Yield: {ay:.0f}/100</div>
-                  <div style='font-size:.75rem;color:#f59e0b;font-weight:600;'> Est. Rs.{ap:.1f}</div>
+                  <div style='font-size:.75rem;color:#3b82f6;font-weight:600;'>🌧 {ar:.0f} mm forecast</div>
+                  <div style='font-size:.75rem;color:#16a34a;font-weight:600;'>🌴 Yield: {ay:.0f}/100</div>
+                  <div style='font-size:.75rem;color:#f59e0b;font-weight:600;'>💰 Est. Rs.{ap:.1f}</div>
                   <div style='font-size:.72rem;color:#166534;font-weight:700;margin-top:4px;'>{harv}</div>
                 </div></div>""", unsafe_allow_html=True)
 
@@ -1916,8 +1943,8 @@ elif t["nav"][7] in sec_name:
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
         ("\U0001f4e6 Total Exports (Latest Yr)" if lang=="en" else "\U0001f4e6 \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#16a34a"),
         ("\U0001f4c8 YoY Growth" if lang=="en" else "\U0001f4c8 \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0daf\u0dc4\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
-        ("\U0001f3c6 Top Product" if lang=="en" else "\U0001f3c6 \u0db4\u0dca\u0dbb\u0db8\u0dd4\u0d9a \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba","Desiccated Coconut","#3b82f6"),
-        ("\U0001f30d Top Market" if lang=="en" else "\U0001f30d \u0db4\u0dca\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca","USA (22%)","#8b5cf6")]):
+        ("\U0001f3c6 Top Product" if lang=="en" else "\U0001f3c6 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba","Desiccated Coconut","#3b82f6"),
+        ("\U0001f30d Top Market" if lang=="en" else "\U0001f30d \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca","USA (22%)","#8b5cf6")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
@@ -1942,7 +1969,7 @@ elif t["nav"][7] in sec_name:
     divider()
 
     # Export vs domestic price
-    st.markdown("#### \U0001f4c8 "+("Export Growth vs Domestic Price" if lang=="en" else "\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc0\u0dbb\u0dca\u0daf\u0dc4\u0db1\u0dba \u0dc4\u0dcf \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db8\u0dd2\u0dbd \u0db4\u0dca\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"))
+    st.markdown("#### \U0001f4c8 "+("Export Growth vs Domestic Price" if lang=="en" else "\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc0\u0dbb\u0dca\u0daf\u0dc4\u0db1\u0dba \u0dc4\u0dcf \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"))
     ap=history_df.groupby("year")["price"].mean().reset_index()
     me=export_df.merge(ap,on="year",how="inner")
     fig_ep=make_subplots(specs=[[{"secondary_y":True}]])
@@ -1959,7 +1986,7 @@ elif t["nav"][7] in sec_name:
     divider()
 
     # Individual product trends
-    st.markdown("#### \U0001f4c9 "+("Individual Product Export Trends" if lang=="en" else "\u0dad\u0db1\u0dd2 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u0dbb\u0dc0\u0dab\u0dad\u0dcf"))
+    st.markdown("#### \U0001f4c9 "+("Individual Product Export Trends" if lang=="en" else "\u0dad\u0db1\u0dd2 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf"))
     fig_pt=go.Figure()
     for pc,pcl in zip(PRODUCT_COLS,PRODUCT_COLORS):
         fig_pt.add_trace(go.Scatter(x=export_df["year"].astype(str),y=export_df[pc],mode="lines+markers",name=pc,
@@ -1971,10 +1998,10 @@ elif t["nav"][7] in sec_name:
 
 # ══ FARMER PROFITABILITY (NEW) ═══════════════════════════════════════════════
 elif t["nav"][8] in sec_name:
-    section_header("\U0001f9d1\U0001f33e "+t["farmer_title"], t["farmer_sub"])
+    section_header("\U0001f9d1\u200d\U0001f33e "+t["farmer_title"], t["farmer_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['farmer_note']}</div>",unsafe_allow_html=True)
 
-    st.markdown("####  "+("Your Farm Parameters" if lang=="en" else "\u0d94\u0db6\u0dda \u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0daf\u0dad\u0dca\u0dad"))
+    st.markdown("#### \u2699\ufe0f "+("Your Farm Parameters" if lang=="en" else "\u0d94\u0db6\u0dda \u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0daf\u0dad\u0dca\u0dad"))
     fi1,fi2,fi3=st.columns(3)
     with fi1:
         farm_acres=st.slider("\U0001f334 "+("Farm Size (acres)" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0dc0\u0dd2\u0DC1\u0dcf\u0dbd\u0dad\u0dca\u0dc0\u0dba (\u0d85\u0d9a\u0dca\u0d9a\u0dbb)"),1,50,5,1)
@@ -1996,13 +2023,13 @@ elif t["nav"][8] in sec_name:
     be_price=total_cost/total_nuts if total_nuts>0 else 0
     pc_=("#22c55e" if net_profit>0 else "#ef4444")
     divider()
-    st.markdown("#### \U0001f4ca "+("Profitability Results" if lang=="en" else "\u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0db4\u0dca\u0dbb\u0dad\u0dd2\u0dc2\u0dbd"))
+    st.markdown("#### \U0001f4ca "+("Profitability Results" if lang=="en" else "\u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dc2\u0dbd"))
     r1,r2,r3,r4,r5=st.columns(5)
     for col,(lbl,val,clr) in zip([r1,r2,r3,r4,r5],[
         ("\U0001f965 Total Nuts/Year" if lang=="en" else "\U0001f965 \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d9c\u0dd0\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba", f"{total_nuts:,}","#16a34a"),
         ("\U0001f4b5 Gross Revenue" if lang=="en" else "\U0001f4b5 \u0daf\u0dbc \u0d86\u0daf\u0dcf\u0dba\u0db8", f"Rs.{gross_rev:,.0f}","#3b82f6"),
         ("\U0001f4c9 Total Costs" if lang=="en" else "\U0001f4c9 \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba", f"Rs.{total_cost:,.0f}","#ef4444"),
-        ((" Net Profit" if net_profit>0 else " Net Loss") if lang=="en" else (" \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0dbd\u0dcf\u0dbb\u0dca\u0dba\u0dba" if net_profit>0 else " \u0dbd\u0dcf\u0dbb\u0dca \u0d85\u0dc0"),
+        (("\u2705 Net Profit" if net_profit>0 else "\u274c Net Loss") if lang=="en" else ("\u2705 \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0dbd\u0dcf\u0dbb\u0dca\u0dba\u0dba" if net_profit>0 else "\u274c \u0dbd\u0dcf\u0dbb\u0dca \u0d85\u0dc0"),
          f"Rs.{net_profit:,.0f}",pc_),
         ("\U0001f4d0 Profit Margin" if lang=="en" else "\U0001f4d0 \u0dbd\u0dcf\u0dbb\u0dca \u0db8\u0dcf\u0daf\u0dd2\u0dbd\u0dd2\u0dba",f"{margin:.1f}%",pc_)]):
         with col: st.markdown(metric_card(lbl,val,clr,height=90),unsafe_allow_html=True)
@@ -2060,24 +2087,24 @@ elif t["nav"][9] in sec_name:
     # ── KPI row ────────────────────────────────────────────────────────────────
     ak1,ak2,ak3,ak4 = st.columns(4)
     for col,(lbl,val,clr) in zip([ak1,ak2,ak3,ak4],[
-        (" Primary Authority" if lang=="en" else " ප්රධාන බලධාරිය",
+        ("🏛️ Primary Authority" if lang=="en" else "🏛️ ප්‍රධාන බලධාරිය",
          "CDA / HARTI", "#16a34a"),
-        (" Auction Frequency" if lang=="en" else " වෙන්දේසි නිතිය",
+        ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
          "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
-        (" Typical Start Time" if lang=="en" else " ආරම්භ වේලාව",
+        ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
          "7:30 – 9:00 AM", "#f59e0b"),
-        (" Lot Size" if lang=="en" else " ලොට් ප්රමාණය",
+        ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
          "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#8b5cf6"),
     ]):
         with col: st.markdown(metric_card(lbl, val, clr, height=110, val_size="1.1rem"), unsafe_allow_html=True)
     divider()
 
     # ── Main Auction Centres ───────────────────────────────────────────────────
-    st.markdown("####  "+("Official Coconut Auction Centres" if lang=="en" else "නිල පොල් වෙන්දේසි මධ්යස්ථාන"))
+    st.markdown("#### 🏢 "+("Official Coconut Auction Centres" if lang=="en" else "නිල පොල් වෙන්දේසි මධ්‍යස්ථාන"))
     centres = [
         {
             "name": "Colombo Auction Centre",
-            "si_name": "කොළඹ වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "කොළඹ වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "HARTI Economic Centre, Narahenpita, Colombo 05",
             "days": "Monday, Wednesday, Friday",
             "time": "7:30 AM – 10:00 AM",
@@ -2089,7 +2116,7 @@ elif t["nav"][9] in sec_name:
         },
         {
             "name": "Kurunegala Auction Centre",
-            "si_name": "කුරුණෑගල වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "කුරුණෑගල වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "CDA Regional Office, Kurunegala",
             "days": "Tuesday, Thursday",
             "time": "8:00 AM – 10:30 AM",
@@ -2101,7 +2128,7 @@ elif t["nav"][9] in sec_name:
         },
         {
             "name": "Puttalam Auction Centre",
-            "si_name": "පුත්තලම වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "පුත්තලම වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "CDA Regional Office, Puttalam",
             "days": "Monday, Friday",
             "time": "8:00 AM – 10:00 AM",
@@ -2113,7 +2140,7 @@ elif t["nav"][9] in sec_name:
         },
         {
             "name": "Gampaha Auction Centre",
-            "si_name": "ගම්පහ වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "ගම්පහ වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "Economic Centre, Nittambuwa, Gampaha",
             "days": "Tuesday, Thursday, Saturday",
             "time": "7:00 AM – 9:30 AM",
@@ -2125,7 +2152,7 @@ elif t["nav"][9] in sec_name:
         },
         {
             "name": "Matara Auction Centre",
-            "si_name": "මාතර වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "මාතර වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "Economic Centre, Matara",
             "days": "Wednesday, Saturday",
             "time": "8:30 AM – 10:30 AM",
@@ -2137,7 +2164,7 @@ elif t["nav"][9] in sec_name:
         },
         {
             "name": "Kalutara Auction Centre",
-            "si_name": "කළුතර වෙන්දේසි මධ්යස්ථානය",
+            "si_name": "කළුතර වෙන්දේසි මධ්‍යස්ථානය",
             "venue": "Economic Centre, Kalutara South",
             "days": "Monday, Thursday",
             "time": "8:00 AM – 10:00 AM",
@@ -2162,20 +2189,20 @@ elif t["nav"][9] in sec_name:
                       <div style='font-size:.6rem;font-weight:800;color:{c["clr"]};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;'>{c["authority"]}</div>
                       <div style='font-size:.9rem;font-weight:800;color:#0d2b0d;margin-bottom:10px;line-height:1.3;'>{name_display}</div>
                       <div style='font-size:.72rem;color:#374151;line-height:1.85;'>
-                         {c["venue"]}<br>
-                         {c["days"]}<br>
-                         {c["time"]}<br>
-                         {c["type"]}<br>
-                         {c["phone"]}
+                        📍 {c["venue"]}<br>
+                        📅 {c["days"]}<br>
+                        🕗 {c["time"]}<br>
+                        📦 {c["type"]}<br>
+                        📞 {c["phone"]}
                       </div>
                     </div>
                     <div style='font-size:.68rem;color:{c["clr"]};font-weight:600;margin-top:8px;background:{c["clr"]}11;
-                        padding:6px 8px;border-radius:6px;line-height:1.4;'> {c["note"]}</div>
+                        padding:6px 8px;border-radius:6px;line-height:1.4;'>💡 {c["note"]}</div>
                 </div>""", unsafe_allow_html=True)
     divider()
 
     # ── Weekly Auction Schedule ────────────────────────────────────────────────
-    st.markdown("####  "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
+    st.markdown("#### 📅 "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
     days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     day_auctions = {
         "Monday":    [("Colombo","7:30 AM"),("Puttalam","8:00 AM"),("Kalutara","8:00 AM")],
@@ -2193,7 +2220,7 @@ elif t["nav"][9] in sec_name:
         clr = day_colors[day]
         items_html = "".join([
             f"<div style='padding:4px 0;border-bottom:1px solid #f0fdf4;'>"
-            f"<div style='font-size:.7rem;font-weight:700;color:#1e293b;white-space:nowrap;'> {name}</div>"
+            f"<div style='font-size:.7rem;font-weight:700;color:#1e293b;white-space:nowrap;'>🔔 {name}</div>"
             f"<div style='font-size:.63rem;color:#64748b;margin-left:18px;white-space:nowrap;'>{time}</div>"
             f"</div>"
             for name, time in auctions
@@ -2208,7 +2235,7 @@ elif t["nav"][9] in sec_name:
     divider()
 
     # ── Auction Process & Rules ────────────────────────────────────────────────
-    st.markdown("####  "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්රියාකාරිත්වය"))
+    st.markdown("#### 📋 "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
     proc_cols = st.columns(4)
     steps = [
         ("01","Registration","Sellers register with CDA/HARTI at least 24 hrs before auction. Lots are inspected and graded by officials.",
@@ -2228,12 +2255,12 @@ elif t["nav"][9] in sec_name:
                 <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin:6px 0 8px;'>{title}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
                 <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:8px;background:{clr}11;
-                    padding:5px 7px;border-radius:5px;line-height:1.4;'>ℹ {note}</div>
+                    padding:5px 7px;border-radius:5px;line-height:1.4;'>ℹ️ {note}</div>
             </div>""", unsafe_allow_html=True)
     divider()
 
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
-    st.markdown("####  "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
+    st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
     grade_labels = ["Grade A<br>(Premium Large)", "Grade B<br>(Standard)", "Grade C<br>(Small)", "Copra<br>(per kg)", "Coconut Oil<br>(per litre)"]
     gmins  = [72,  58,  42,  85,  380]
@@ -2272,13 +2299,13 @@ elif t["nav"][9] in sec_name:
     # ── Key Rules & Regulations ────────────────────────────────────────────────
     r1c, r2c = st.columns(2)
     with r1c:
-        st.markdown("####  "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්යතා"))
+        st.markdown("#### 📜 "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
         seller_rules = [
-            ("","CDA Registration","All sellers must be registered with the Coconut Development Authority (CDA)."),
-            ("","Minimum Lot","Minimum 500 nuts per auction lot. Lots must be clean and free of husked nuts."),
-            ("","Pre-inspection","Lots must arrive at the centre at least 1 hour before auction for grading."),
-            ("","Transport","Seller arranges transport to the auction centre. CDA may assist for large volumes."),
-            ("","Payment","Sellers receive payment within 2 working days of auction settlement."),
+            ("✅","CDA Registration","All sellers must be registered with the Coconut Development Authority (CDA)."),
+            ("✅","Minimum Lot","Minimum 500 nuts per auction lot. Lots must be clean and free of husked nuts."),
+            ("✅","Pre-inspection","Lots must arrive at the centre at least 1 hour before auction for grading."),
+            ("✅","Transport","Seller arranges transport to the auction centre. CDA may assist for large volumes."),
+            ("✅","Payment","Sellers receive payment within 2 working days of auction settlement."),
         ]
         for icon, title, desc in seller_rules:
             st.markdown(f"""<div style='background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;
@@ -2288,13 +2315,13 @@ elif t["nav"][9] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with r2c:
-        st.markdown("####  "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්යතා"))
+        st.markdown("#### 📜 "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
         buyer_rules = [
-            ("","Buyer Licence","Valid CDA buyer licence required. Obtainable from CDA Head Office, Colombo 02."),
-            ("","Licence Fee","Annual buyer licence fee: Rs. 5,000 (Individual) / Rs. 15,000 (Company)."),
-            ("","Deposit","Registered buyers must maintain a security deposit with the auction centre."),
-            ("","Payment","Full payment within 24 hours of auction. Late payment attracts a 2% penalty per day."),
-            ("","Quantity Limit","Individual buyers limited to 50,000 nuts per auction session to prevent cornering."),
+            ("✅","Buyer Licence","Valid CDA buyer licence required. Obtainable from CDA Head Office, Colombo 02."),
+            ("✅","Licence Fee","Annual buyer licence fee: Rs. 5,000 (Individual) / Rs. 15,000 (Company)."),
+            ("✅","Deposit","Registered buyers must maintain a security deposit with the auction centre."),
+            ("✅","Payment","Full payment within 24 hours of auction. Late payment attracts a 2% penalty per day."),
+            ("✅","Quantity Limit","Individual buyers limited to 50,000 nuts per auction session to prevent cornering."),
         ]
         for icon, title, desc in buyer_rules:
             st.markdown(f"""<div style='background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;
@@ -2305,18 +2332,18 @@ elif t["nav"][9] in sec_name:
     divider()
 
     # ── Special Auctions ──────────────────────────────────────────────────────
-    st.markdown("####  "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
+    st.markdown("#### 🌟 "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
     spec_cols = st.columns(3)
     specials = [
-        (" Peak Harvest Auctions",
+        ("🌾 Peak Harvest Auctions",
          "March–April / Aug–November",
          "Extra auction sessions added during peak harvest. Colombo centre operates 5 days/week. Prices typically lower due to high supply.",
          "#16a34a"),
-        (" Premium Quality Auction",
+        ("🏆 Premium Quality Auction",
          "Quarterly (Jan, Apr, Jul, Oct)",
          "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
          "#f59e0b"),
-        (" Export Auction",
+        ("🌐 Export Auction",
          "Every 2nd Friday of month",
          "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
          "#3b82f6"),
@@ -2326,18 +2353,18 @@ elif t["nav"][9] in sec_name:
             st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {clr};
                 border-radius:12px;padding:18px 14px;height:220px;display:flex;flex-direction:column;'>
                 <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;'>{title}</div>
-                <div style='font-size:.7rem;font-weight:700;color:{clr};margin-bottom:8px;'> {schedule}</div>
+                <div style='font-size:.7rem;font-weight:700;color:{clr};margin-bottom:8px;'>📅 {schedule}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
             </div>""", unsafe_allow_html=True)
     divider()
 
     # ── Contact & Registration ─────────────────────────────────────────────────
-    st.markdown("####  "+("Register & Contact" if lang=="en" else "ලියාපදිංචි සහ සම්බන්ධ වන්න"))
+    st.markdown("#### 📞 "+("Register & Contact" if lang=="en" else "ලියාපදිංචි සහ සම්බන්ධ වන්න"))
     ct1, ct2, ct3 = st.columns(3)
     contacts = [
-        ("","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk","Seller & Buyer Registration, Licence Applications","#16a34a"),
-        ("","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk","Colombo & Gampaha Auction Operations","#3b82f6"),
-        ("","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions","Auction schedule enquiries, lot registration","#f59e0b"),
+        ("🏛️","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk","Seller & Buyer Registration, Licence Applications","#16a34a"),
+        ("🏪","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk","Colombo & Gampaha Auction Operations","#3b82f6"),
+        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions","Auction schedule enquiries, lot registration","#f59e0b"),
     ]
     for col, (icon,org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
         with col:
@@ -2347,10 +2374,10 @@ elif t["nav"][9] in sec_name:
                     letter-spacing:1px;margin-bottom:6px;'>{icon} Contact</div>
                 <div style='font-weight:800;font-size:.82rem;color:#0d2b0d;margin-bottom:8px;'>{org}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.8;flex:1;'>
-                     {addr}<br> {phone}<br> {email}<br>
-                     <a href='https://{web}' target='_blank' style='color:{clr};font-weight:600;text-decoration:none;'>{web}</a>
+                    📍 {addr}<br>📞 {phone}<br>✉️ {email}<br>
+                    🌐 <a href='https://{web}' target='_blank' style='color:{clr};font-weight:600;text-decoration:none;'>{web}</a>
                 </div>
-                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'> {purpose}</div>
+                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'>🎯 {purpose}</div>
             </div>""", unsafe_allow_html=True)
 
 
@@ -2358,55 +2385,70 @@ elif t["nav"][9] in sec_name:
 # FOOTER
 # ─────────────────────────────────────────────
 divider()
+
+_CARD_STYLE = "background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;flex:1;min-width:200px;display:flex;flex-direction:column;"
+_BADGE_STYLE = "font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"
+_NAME_STYLE  = "font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;"
+_INFO_STYLE  = "font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;"
+_LINK_STYLE  = "color:#4ade80;font-weight:600;text-decoration:none;"
+_STAT_STYLE  = "flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"
+_DIST_STYLE  = "flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"
+
 st.markdown("""
-<div style="background:#14532d;border-radius:6px;padding:28px 32px;margin-bottom:24px;">
-  <div style="text-align:center;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:22px;">
-    <div style="font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:4px;">Sri Lanka Coconut Industry</div>
-    <div style="font-size:.8rem;color:#bbf7d0;">Key Organisations, Contacts &amp; Industry Facts</div>
+<div style="background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-radius:0;padding:36px 32px;box-shadow:0 4px 24px rgba(13,43,13,.25);margin-bottom:28px;">
+
+  <div style="text-align:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:28px;">
+    <div style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.2);">Sri Lanka Coconut Industry</div>
+    <div style="font-size:.9rem;color:#bbf7d0;font-weight:500;">Key Organisations, Contacts &amp; Industry Facts</div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;">
-    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-top:2px solid #4ade80;padding:12px;">
-      <div style="font-size:.55rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Primary Regulator</div>
-      <div style="font-weight:700;font-size:.78rem;color:#fff;margin-bottom:6px;line-height:1.3;">Coconut Development Authority</div>
-      <div style="font-size:.68rem;color:#bbf7d0;line-height:1.8;">No.54, Nawam Mawatha, Colombo 02<br>+94 11 243 0610<br><a href="https://www.cda.gov.lk" target="_blank" style="color:#4ade80;text-decoration:none;">www.cda.gov.lk</a></div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
+      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🏛 Primary Regulator</div>
+      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Development Authority</div>
+      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 No.54, Nawam Mawatha<br>Colombo 02<br>📞 +94 11 243 0610<br>🌐 <a href="https://www.cda.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cda.gov.lk</a></div>
     </div>
-    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-top:2px solid #4ade80;padding:12px;">
-      <div style="font-size:.55rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Research Institute</div>
-      <div style="font-weight:700;font-size:.78rem;color:#fff;margin-bottom:6px;line-height:1.3;">Coconut Research Institute (CRI)</div>
-      <div style="font-size:.68rem;color:#bbf7d0;line-height:1.8;">Bandirippuwa Estate, Lunuwila<br>+94 31 222 2481<br><a href="https://www.cri.gov.lk" target="_blank" style="color:#4ade80;text-decoration:none;">www.cri.gov.lk</a></div>
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
+      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔬 Research Institute</div>
+      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Research Institute (CRI)</div>
+      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Bandirippuwa Estate<br>Lunuwila 61150<br>📞 +94 31 222 2481<br>🌐 <a href="https://www.cri.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cri.gov.lk</a></div>
     </div>
-    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-top:2px solid #4ade80;padding:12px;">
-      <div style="font-size:.55rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Export Promoter</div>
-      <div style="font-weight:700;font-size:.78rem;color:#fff;margin-bottom:6px;line-height:1.3;">Sri Lanka Export Development Board</div>
-      <div style="font-size:.68rem;color:#bbf7d0;line-height:1.8;">42 Nawam Mawatha, Colombo 02<br>+94 11 230 0705<br><a href="https://www.srilankabusiness.com" target="_blank" style="color:#4ade80;text-decoration:none;">www.srilankabusiness.com</a></div>
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
+      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">📦 Export Promoter</div>
+      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Sri Lanka Export Development Board</div>
+      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 42 Nawam Mawatha<br>Colombo 02<br>📞 +94 11 230 0705<br>🌐 <a href="https://www.srilankabusiness.com" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.srilankabusiness.com</a></div>
     </div>
-    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-top:2px solid #4ade80;padding:12px;">
-      <div style="font-size:.55rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Market &amp; Auction</div>
-      <div style="font-weight:700;font-size:.78rem;color:#fff;margin-bottom:6px;line-height:1.3;">HARTI / Economic Centres</div>
-      <div style="font-size:.68rem;color:#bbf7d0;line-height:1.8;">Narahenpita, Colombo 05<br>+94 11 259 1919<br><a href="https://www.harti.gov.lk" target="_blank" style="color:#4ade80;text-decoration:none;">www.harti.gov.lk</a></div>
-    </div>
-  </div>
-  <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:16px;margin-bottom:16px;">
-    <div style="text-align:center;font-size:.65rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">Sri Lanka Coconut Industry at a Glance</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">~2.7M</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">Hectares</div></div>
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">~3B</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">Nuts/Year</div></div>
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">450K+</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">Families</div></div>
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">$350M+</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">Exports</div></div>
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">3rd</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">World Rank</div></div>
-      <div style="flex:1;min-width:70px;text-align:center;padding:10px 6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);"><div style="font-size:1.2rem;font-weight:800;color:#fff;">~2%</div><div style="font-size:.58rem;color:#86efac;margin-top:2px;font-weight:600;text-transform:uppercase;">GDP Share</div></div>
+    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
+      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🛒 Market &amp; Auction</div>
+      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">HARTI / Economic Centres</div>
+      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Narahenpita, Colombo 05<br>(Head Office)<br>📞 +94 11 259 1919<br>🌐 <a href="https://www.harti.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.harti.gov.lk</a></div>
     </div>
   </div>
-  <div style="border-top:1px solid rgba(255,255,255,.15);padding-top:14px;margin-bottom:14px;">
-    <div style="text-align:center;font-size:.65rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">The Coconut Triangle</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
-      <div style="flex:1;min-width:90px;max-width:180px;text-align:center;padding:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.82rem;font-weight:700;color:#fff;">Kurunegala</div>
-      <div style="flex:1;min-width:90px;max-width:180px;text-align:center;padding:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.82rem;font-weight:700;color:#fff;">Puttalam</div>
-      <div style="flex:1;min-width:90px;max-width:180px;text-align:center;padding:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.82rem;font-weight:700;color:#fff;">Gampaha</div>
+
+  <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:24px;">
+    <div style="text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">Sri Lanka Coconut Industry at a Glance</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~2.7M</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">Hectares</div></div>
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~3B</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">Nuts/Year</div></div>
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">450K+</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">Families</div></div>
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">$350M+</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">Exports</div></div>
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">3rd</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">World Rank</div></div>
+      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~2%</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">GDP Share</div></div>
     </div>
   </div>
-  <div style="text-align:center;font-size:.65rem;color:#86efac;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);">
-    COCOStat &middot; Coconut Market Intelligence &middot; Data: CDA &amp; CRI Sri Lanka
+
+  <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:24px;">
+    <div style="text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">📍 The Coconut Triangle</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Kurunegala</div></div>
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Puttalam</div></div>
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Gampaha</div></div>
+    </div>
   </div>
+
+  <div style="text-align:center;font-size:.72rem;color:#86efac;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);opacity:.85;">
+    🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka
+  </div>
+
 </div>
 """, unsafe_allow_html=True)
