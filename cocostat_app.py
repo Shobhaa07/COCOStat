@@ -360,18 +360,17 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
+    st.markdown("### \u2699\ufe0f Settings")
     lang_choice = st.radio("\U0001f310 Language / \u0db7\u0dcf\u0DC2\u0dcf\u0dc0", ["English", "\u0dc3\u0dd2\u0d82\u0dc4\u0dbd"], index=0)
     lang = "en" if lang_choice == "English" else "si"
     t = T[lang]
+    regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
+    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
+    regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
     st.markdown("---")
     st.markdown("### " + ("\U0001f4cd Navigation" if lang=="en" else "\U0001f4cd \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
     nav_full = [f"{icon} {name}" for icon, name in zip(t["nav_icons"], t["nav"])]
     section = st.radio("", nav_full, label_visibility="collapsed")
-    st.markdown("---")
-    st.markdown("### " + ("\u2699\ufe0f Settings" if lang=="en" else "\u2699\ufe0f \u0dc3\u0dd0\u0d9a\u0dc3\u0dd4\u0db8\u0dca"))
-    regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
-    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
-    regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
