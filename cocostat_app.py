@@ -105,7 +105,7 @@ weather_df  = generate_weather_data()
 export_df, destinations_df = generate_export_data()
 global_price_df, production_df = generate_global_data()
 PRODUCT_COLS = ["Desiccated Coconut","Coconut Oil","Coconut Milk","Coir Products","Fresh Nuts","Activated Carbon"]
-PRODUCT_COLORS = ["#16a34a","#3b82f6","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
+PRODUCT_COLORS = ["#16a34a","#4a7a4a","#166534","#14532d","#22c55e","#86efac"]
 
 # ─────────────────────────────────────────────
 # TRANSLATIONS
@@ -374,9 +374,9 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
-        padding:8px 12px;margin-bottom:10px;'>
-      <div style='font-size:.72rem;font-weight:900;color:#14532d;text-transform:uppercase;letter-spacing:1px;'>
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
+        padding:10px 12px;margin-bottom:10px;text-align:center;'>
+      <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
         🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
       </div>
     </div>""", unsafe_allow_html=True)
@@ -583,7 +583,7 @@ with st.sidebar:
       <div style='font-size:.78rem;color:#1a3a1a;'>UOW: w1999714</div>
       <div style='font-size:.78rem;color:#1a3a1a;margin-bottom:8px;'>IIT: 20220508</div>
       <div style='font-size:.6rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;'>{t['footer_programme']}</div>
-      <div style='font-size:.75rem;color:#1a3a1a;line-height:1.6;'>BSc (Hons) Business Data Analytics<br>University of Westminster</div>
+      <div style='font-size:.75rem;color:#1a3a1a;line-height:1.6;'>BSc (Hons) Data Science<br>&amp; Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -636,8 +636,8 @@ if t["nav"][0] in sec_name:
     cards = [
         ("\U0001f4b0 "+t["card_price_label"], t["card_price_value"], "#16a34a", t["card_price_sub"]),
         ("\U0001f4ca "+t["card_market_label"], "\U0001f7e2 "+t["card_market_value"], "#22c55e", t["card_market_sub"]),
-        ("\U0001f4c9 "+t["card_demand_label"], t["card_demand_value"], "#3b82f6", t["card_demand_sub"]),
-        ("\U0001f52e "+t["card_forecast_label"], t["card_forecast_value"], "#f59e0b", t["card_forecast_sub"]),
+        ("\U0001f4c9 "+t["card_demand_label"], t["card_demand_value"], "#16a34a", t["card_demand_sub"]),
+        ("\U0001f52e "+t["card_forecast_label"], t["card_forecast_value"], "#16a34a", t["card_forecast_sub"]),
     ]
     for col,(label,value,clr,sub) in zip([c1,c2,c3,c4], cards):
         with col: st.markdown(metric_card(label,value,clr,sub,130), unsafe_allow_html=True)
@@ -834,12 +834,12 @@ elif t["nav"][2] in sec_name:
     hist_r=history_df.tail(16)
     fig_f=go.Figure()
     fig_f.add_trace(go.Scatter(x=pd.concat([forecast_df["date"],forecast_df["date"][::-1]]),
-        y=pd.concat([forecast_df["upper"],forecast_df["lower"][::-1]]),fill="toself",fillcolor="rgba(245,158,11,.15)",
+        y=pd.concat([forecast_df["upper"],forecast_df["lower"][::-1]]),fill="toself",fillcolor="rgba(22,163,74,.15)",
         line=dict(color="rgba(0,0,0,0)"),name=t["forecast_range_label"],hoverinfo="skip"))
-    fig_f.add_trace(go.Scatter(x=hist_r["date"],y=hist_r["price"],line=dict(color="#3b82f6",width=2.5),
+    fig_f.add_trace(go.Scatter(x=hist_r["date"],y=hist_r["price"],line=dict(color="#16a34a",width=2.5),
         name=t["forecast_hist_label"],mode="lines",hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_f.add_trace(go.Scatter(x=forecast_df["date"],y=forecast_df["price"],line=dict(color="#f59e0b",width=2.5,dash="dash"),
-        name=t["forecast_pred_label"],mode="lines+markers",marker=dict(size=6,color="#f59e0b"),
+    fig_f.add_trace(go.Scatter(x=forecast_df["date"],y=forecast_df["price"],line=dict(color="#4a7a4a",width=2.5,dash="dash"),
+        name=t["forecast_pred_label"],mode="lines+markers",marker=dict(size=6,color="#4a7a4a"),
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
     fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f"\u26a0 Rs.{warn_threshold}",annotation_position="top left")
     fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f"\U0001f534 Rs.{crisis_threshold}",annotation_position="top left")
@@ -869,7 +869,7 @@ elif t["nav"][2] in sec_name:
     for col,lbl,val,clr in zip([s1,s2,s3,s4,s5],
         ["Avg Forecast","Peak Price","Low Price","Weeks >= Warning","Weeks >= Crisis"],
         [f"Rs.{fa:.1f}",f"Rs.{fmax:.1f}",f"Rs.{fmin:.1f}",f"{ww} wks",f"{wc} wks"],
-        ["#16a34a","#16a34a","#16a34a","#f59e0b","#ef4444"]):
+        ["#16a34a","#16a34a","#16a34a","#eab308","#ef4444"]):
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
@@ -891,21 +891,21 @@ elif t["nav"][3] in sec_name:
     divider()
     st.markdown("#### \U0001f4cb "+("Policy Decision Framework" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dad\u0dd3\u0dbb\u0dab \u0dbb\u0dcf\u0db8\u0dd4\u0dc0"))
     stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0dc4\u0dde\u0daf\u0dd4\u0db1\u0db1\u0dca\u0db1","#16a34a"),
-          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a\u0dad\u0dcf\u0dc0 \u0dad\u0dd3\u0dbb\u0dab\u0dba","#15803d"),
-          ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dba \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a","#166534"),
-          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "\u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1","#14532d")]
+          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a\u0dad\u0dcf\u0dc0 \u0dad\u0dd3\u0dbb\u0dab\u0dba","#16a34a"),
+          ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2\u0dba \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a","#16a34a"),
+          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "\u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1","#16a34a")]
     sc=st.columns(4)
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
-            st.markdown(f"""<div style='text-align:center;background:#f0fdf4;border-radius:14px;padding:14px 10px;border:1px solid #d1e7d1;height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
+            st.markdown(f"""<div style='text-align:center;background:#f8fafc;border-radius:14px;padding:14px 10px;border:1px solid #e2e8f0;height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
                 <div style='font-size:1.8rem;margin-bottom:6px;'>{em}</div>
                 <div style='font-weight:700;font-size:.85rem;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### \U0001f4c8 "+("Policy Effectiveness Indicators" if lang=="en" else "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc2\u0dbd\u0dad\u0dcf \u0daf\u0dbb\u0dca\u0DC1\u0d9a"))
     indics=[("Price Stability" if lang=="en" else "\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf",72,"#16a34a"),
-            ("Supply Chain" if lang=="en" else "\u0dc3\u0dd0\u0db4\u0dba\u0dd4\u0db8\u0dca \u0daf\u0dcf\u0db8",58,"#15803d"),
-            ("Farmer Support" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2 \u0dc3\u0dc4\u0dba",64,"#166534"),
-            ("Market Transparency" if lang=="en" else "\u0dc0\u0dd9\u0dc7\u0dad \u0dc0\u0dd2\u0db1\u0dd2\u0dc0\u0dd2\u0daf",80,"#14532d")]
+            ("Supply Chain" if lang=="en" else "\u0dc3\u0dd0\u0db4\u0dba\u0dd4\u0db8\u0dca \u0daf\u0dcf\u0db8",58,"#16a34a"),
+            ("Farmer Support" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2 \u0dc3\u0dc4\u0dba",64,"#16a34a"),
+            ("Market Transparency" if lang=="en" else "\u0dc0\u0dd9\u0dc7\u0dad \u0dc0\u0dd2\u0db1\u0dd2\u0dc0\u0dd2\u0daf",80,"#16a34a")]
     ic=st.columns(4)
     for col,(lbl,sc_,clr) in zip(ic,indics):
         with col:
@@ -921,16 +921,16 @@ elif t["nav"][3] in sec_name:
     import plotly.graph_objects as go
 
     # ── Hero banner ────────────────────────────────────────────────────────────
-    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;
-        border-radius:10px;padding:18px 22px;margin-bottom:20px;'>
-      <div style='font-size:1.1rem;font-weight:900;color:#0d2b0d;margin-bottom:6px;'>
+    st.markdown("""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
+        border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
+      <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
         🧩 Strategic Decision Support Centre
       </div>
-      <div style='font-size:.85rem;color:#374151;line-height:1.7;max-width:760px;'>
+      <div style='font-size:.88rem;color:#bbf7d0;line-height:1.7;max-width:760px;'>
         Combines market regime detection, demand analysis, weather forecasts and export data to generate
-        actionable recommendations for <strong style='color:#16a34a;'>Government policymakers</strong>,
-        <strong style='color:#14532d;'>Businesses & Traders</strong>, and
-        <strong style='color:#166534;'>Coconut Farmers</strong>.
+        actionable recommendations for <strong style='color:#4ade80;'>Government policymakers</strong>,
+        <strong style='color:#86efac;'>Businesses & Traders</strong>, and
+        <strong style='color:#a7f3d0;'>Coconut Farmers</strong>.
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -953,7 +953,7 @@ elif t["nav"][3] in sec_name:
         ("💰 Current Price",  f"Rs. {current_price:.2f}", "#16a34a"),
         ("📈 3-Month Change", f"{price_change_3m:+.1f}%", "#22c55e" if price_change_3m<=0 else "#ef4444"),
         ("📊 12M Average",    f"Rs. {avg_12m:.2f}",       "#16a34a"),
-        ("⚡ Volatility",     f"{cv:.1f}% CV",            "#f59e0b"),
+        ("⚡ Volatility",     f"{cv:.1f}% CV",            "#16a34a"),
         ("🏷️ Market Regime",  regime_labels[regime_now],  regime_colors[regime_now]),
     ]
     for col,(lbl,val,clr) in zip([sn1,sn2,sn3,sn4,sn5], snap_data):
@@ -963,12 +963,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 1 — STRATEGIC POLICY SIMULATOR
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
-        padding:12px 18px;margin-bottom:16px;'>
-      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
+    st.markdown("""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🏛️ Strategic Policy Simulator
       </div>
-      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>
         Test government intervention scenarios and see projected market outcomes before implementation
       </div>
     </div>
@@ -1052,7 +1052,7 @@ elif t["nav"][3] in sec_name:
             ("📦 Export\nRevenue Est.",          f"{export_revenue_change:+.1f}M USD", "#16a34a"),
         ]):
             with col:
-                st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid {clr};
+                st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {clr};
                     border-radius:8px;padding:10px 10px;text-align:center;height:80px;display:flex;
                     flex-direction:column;justify-content:center;'>
                     <div style='font-size:.6rem;color:#64748b;font-weight:700;white-space:pre-line;margin-bottom:4px;'>{lbl}</div>
@@ -1103,7 +1103,7 @@ elif t["nav"][3] in sec_name:
     s_prices = list(scenarios.values())
     s_deltas = [v - current_price for v in s_prices]
     s_colors = ["#94a3b8" if n=="No Intervention" else
-                "#f59e0b" if n=="Current Settings" else
+                "#16a34a" if n=="Current Settings" else
                 "#22c55e" if v <= current_price else "#ef4444"
                 for n, v in scenarios.items()]
     s_labels = [f"<b>Rs.{v:.1f}</b>  ({'+' if d>0 else ''}{d:.1f})"
@@ -1121,7 +1121,7 @@ elif t["nav"][3] in sec_name:
                         bordercolor="#64748b", borderwidth=1, y=1.08, yref="paper"))
     fig_sc.add_vline(x=warn_threshold, line_dash="dot", line_color="#eab308", line_width=1.5,
         annotation=dict(text=f"⚠ Rs.{warn_threshold}",
-                        font=dict(size=9, color="#15803d"), bgcolor="rgba(255,255,255,0.85)",
+                        font=dict(size=9, color="#b45309"), bgcolor="rgba(255,255,255,0.85)",
                         y=0.0, yref="paper"))
     fig_sc.add_vline(x=crisis_threshold, line_dash="dot", line_color="#ef4444", line_width=1.5,
         annotation=dict(text=f"Crisis Rs.{crisis_threshold}",
@@ -1143,12 +1143,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 2 — STRATEGIC RECOMMENDATION ENGINE
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
-        padding:12px 18px;margin-bottom:16px;'>
-      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
+    st.markdown("""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🎯 Strategic Recommendation Engine
       </div>
-      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>
         AI-driven, regime-sensitive recommendations for all three market stakeholder groups
       </div>
     </div>
@@ -1300,7 +1300,7 @@ elif t["nav"][3] in sec_name:
     # Priority badge helper
     def priority_badge(p):
         cfg = {"CRITICAL":("#7f1d1d","#fca5a5"),"URGENT":("#ef4444","#fee2e2"),
-               "HIGH":("#14532d","#dcfce7"),"MEDIUM":("#14532d","#dcfce7")}
+               "HIGH":("#92400e","#fef3c7"),"MEDIUM":("#166534","#dcfce7")}
         bg, txt = cfg.get(p, ("#374151","#f1f5f9"))
         return f"<span style='background:{txt};color:{bg};font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;'>{p}</span>"
 
@@ -1313,7 +1313,7 @@ elif t["nav"][3] in sec_name:
 
     def render_rec_cards(recs_list, accent):
         for i, (icon, title, desc, priority, timing, resource) in enumerate(recs_list):
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-left:5px solid {accent};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;border-left:5px solid {accent};
                 border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;
                 box-shadow:0 1px 4px rgba(0,0,0,.06);'>
               <div style='display:flex;align-items:flex-start;gap:12px;'>
@@ -1335,16 +1335,16 @@ elif t["nav"][3] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with tab_gov:
-        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#14532d;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#166534;font-weight:700;'>
             🏛️ These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong>
             managing the coconut sector under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["government"], "#16a34a")
 
     with tab_biz:
-        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#14532d;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#166534;font-weight:700;'>
             💼 These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong>
             operating under <strong>{regime_name}</strong> conditions.
             </div></div>""", unsafe_allow_html=True)
@@ -1363,12 +1363,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 3 — DECISION RISK MATRIX
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
-        padding:12px 18px;margin-bottom:16px;'>
-      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
+    st.markdown("""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         🗺️ Strategic Risk & Opportunity Matrix
       </div>
-      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>
         Visual mapping of risks and opportunities across all market conditions
       </div>
     </div>
@@ -1392,9 +1392,9 @@ elif t["nav"][3] in sec_name:
              "Value-addition bottlenecks limit export revenue growth."),
         ]
         for icon, risk, level, detail in risks:
-            lvl_clr = {"CRITICAL":"#ef4444","HIGH":"#f59e0b","MEDIUM":"#16a34a","LOW":"#22c55e"}[level]
+            lvl_clr = {"CRITICAL":"#ef4444","HIGH":"#eab308","MEDIUM":"#16a34a","LOW":"#16a34a"}[level]
             st.markdown(f"""<div style='display:flex;align-items:center;gap:10px;padding:9px 12px;
-                background:#f0fdf4;border-radius:8px;margin-bottom:7px;border:1px solid #d1e7d1;'>
+                background:#f8fafc;border-radius:8px;margin-bottom:7px;border:1px solid #e2e8f0;'>
                 <div style='font-size:1.1rem;'>{icon}</div>
                 <div style='flex:1;'>
                   <div style='display:flex;align-items:center;gap:7px;'>
@@ -1434,12 +1434,12 @@ elif t["nav"][3] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 4 — 90-DAY ACTION PLAN
     # ══════════════════════════════════════════════════════════════════════════
-    st.markdown("""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;
-        padding:12px 18px;margin-bottom:16px;'>
-      <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>
+    st.markdown("""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;
+        padding:14px 22px;margin-bottom:16px;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         📅 90-Day Priority Action Plan
       </div>
-      <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>
         Immediate, short-term and medium-term actions based on current market regime
       </div>
     </div>
@@ -1449,19 +1449,19 @@ elif t["nav"][3] in sec_name:
         0: [  # Stable
             ("Week 1–2",  "#16a34a", "🏦 Initiate buffer stock procurement | 📊 Deploy CDA digital price reporting"),
             ("Week 3–4",  "#16a34a", "📋 Update farmer registration database | 🤝 Launch cooperative formation drive"),
-            ("Month 2",   "#f59e0b", "🌿 Value-addition investment roadshow | 🌍 Trade agreement preliminary talks"),
+            ("Month 2",   "#16a34a", "🌿 Value-addition investment roadshow | 🌍 Trade agreement preliminary talks"),
             ("Month 3",   "#16a34a", "📈 Review export incentive schemes | 🌱 Replanting programme launch"),
         ],
         1: [  # Warning
             ("Day 1–3",   "#ef4444", "🚨 Activate monitoring task force | 📣 Launch price transparency media campaign"),
-            ("Day 4–7",   "#f59e0b", "📦 Release 10-15% buffer stock | 🏦 Signal stabilisation fund readiness"),
+            ("Day 4–7",   "#eab308", "📦 Release 10-15% buffer stock | 🏦 Signal stabilisation fund readiness"),
             ("Week 2–3",  "#16a34a", "🌾 Accelerate harvest support transport | 📋 Emergency farmer registration"),
             ("Month 2–3", "#16a34a", "⚖️ Review import duty schedule | 📊 Commission independent price audit"),
         ],
         2: [  # Crisis
             ("Today",     "#7f1d1d", "🆘 Emergency Cabinet session | 🚛 Full buffer stock release authorisation"),
             ("Day 2–3",   "#ef4444", "🌐 Gazette emergency import permits | 💵 Activate Samurdhi emergency payments"),
-            ("Week 1",    "#f59e0b", "🔎 Deploy anti-hoarding enforcement | 📡 Begin daily national price broadcast"),
+            ("Week 1",    "#eab308", "🔎 Deploy anti-hoarding enforcement | 📡 Begin daily national price broadcast"),
             ("Week 2–4",  "#16a34a", "📊 Conduct supply chain audit | 🌱 Post-crisis recovery plan preparation"),
         ],
     }
@@ -1471,7 +1471,7 @@ elif t["nav"][3] in sec_name:
         action_items = [a.strip() for a in actions.split("|")]
         items_html = "".join([f"<div style='font-size:.7rem;color:#374151;padding:5px 0;border-bottom:1px solid #f0fdf4;line-height:1.4;'>{a}</div>" for a in action_items])
         with col:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-left:3px solid {clr};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;border-top:4px solid {clr};
                 border-radius:10px;padding:14px 12px;min-height:180px;'>
                 <div style='font-size:.7rem;font-weight:900;color:{clr};text-transform:uppercase;
                     letter-spacing:1px;margin-bottom:10px;'>{period}</div>
@@ -1578,16 +1578,16 @@ elif t["nav"][4] in sec_name:
 
         # ── GLOBAL COMPARISON (embedded) ──────────────────────────────────────
         divider()
-        st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #d1e7d1;border-left:4px solid #16a34a;border-radius:8px;padding:10px 16px;margin-bottom:12px;'>
-            <div style='font-size:.95rem;font-weight:900;color:#0d2b0d;'>🌍 {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
-            <div style='font-size:.75rem;color:#4a7a4a;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්‍රී ලංකා හා ප්‍රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
+        st.markdown(f"""<div style='background:linear-gradient(90deg,#0d2b0d,#14532d);border-radius:10px;padding:12px 20px;margin-bottom:12px;'>
+            <div style='font-size:1.05rem;font-weight:900;color:#fff;'>🌍 {"Global Market Comparison" if lang=="en" else "ගෝලීය වෙළඳපොළ සංසන්දනය"}</div>
+            <div style='font-size:.78rem;color:#bbf7d0;margin-top:3px;'>{"Sri Lanka vs. Major Coconut Producing Nations" if lang=="en" else "ශ්‍රී ලංකා හා ප්‍රධාන නිෂ්පාදක රටවල් සංසන්දනය"}</div>
         </div>""", unsafe_allow_html=True)
         st.markdown(f"<div class='info-box-blue'>{t['global_note']}</div>", unsafe_allow_html=True)
 
         # Global KPI row
         sl_l = global_price_df["Sri Lanka"].iloc[-1]
         w_avg = global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1].mean()
-        sl_vs = sl_l - w_avg; sv_clr = "#f59e0b" if sl_vs > 0 else "#22c55e"
+        sl_vs = sl_l - w_avg; sv_clr = "#16a34a" if sl_vs > 0 else "#16a34a"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
             ("🇱🇰 SL Price (2024)" if lang=="en" else "🇱🇰 ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
@@ -1600,7 +1600,7 @@ elif t["nav"][4] in sec_name:
 
         # Multi-country price trend
         st.markdown("#### 📈 "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
-        c_colors={"Sri Lanka":"#16a34a","Indonesia":"#16a34a","Philippines":"#f59e0b","India":"#ef4444","Vietnam":"#16a34a"}
+        c_colors={"Sri Lanka":"#16a34a","Indonesia":"#4a7a4a","Philippines":"#166534","India":"#14532d","Vietnam":"#22c55e"}
         fig_gl=go.Figure()
         for country,clr in c_colors.items():
             is_sl=(country=="Sri Lanka")
@@ -1621,7 +1621,7 @@ elif t["nav"][4] in sec_name:
             st.markdown("#### 🌍 "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
             fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
                 textinfo="label+percent",textfont=dict(size=10),
-                marker=dict(colors=["#16a34a","#f59e0b","#ef4444","#16a34a","#16a34a","#06b6d4","#84cc16"]),
+                marker=dict(colors=["#14532d","#166534","#16a34a","#22c55e","#4a7a4a","#86efac","#bbf7d0"]),
                 pull=[.08 if c=="Sri Lanka" else 0 for c in production_df["Country"]],
                 hovertemplate="<b>%{label}</b><br>%{value}B nuts/yr<br>%{percent}<extra></extra>"))
             fig_pp.update_layout(height=300,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
@@ -1631,7 +1631,7 @@ elif t["nav"][4] in sec_name:
             ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
             attrs=["Quality","Volume","Price Comp.","Export Infra.","Processing"]
             scores={"Sri Lanka":[88,40,55,72,80],"Indonesia":[70,95,90,82,75],"Philippines":[75,85,80,78,70],"India":[80,88,72,80,82],"Vietnam":[65,50,88,60,55]}
-            clrs_r=["#16a34a","#16a34a","#f59e0b","#ef4444","#16a34a"]
+            clrs_r=["#16a34a","#4a7a4a","#166534","#14532d","#22c55e"]
             fig_rad=go.Figure()
             for ct,clr in zip(ctries,clrs_r):
                 v=scores[ct]+[scores[ct][0]]; a=attrs+[attrs[0]]
@@ -1768,7 +1768,7 @@ elif t["nav"][6] in sec_name:
     wk1,wk2,wk3,wk4 = st.columns(4)
     for col,(lbl,val,clr) in zip([wk1,wk2,wk3,wk4],[
         ("🌧 Forecast Avg Rainfall" if lang=="en" else "🌧 අනාවැකි සාමාන්‍ය වර්ෂාව", f"{avg_frain:.0f} mm", "#16a34a"),
-        ("🌡 Forecast Avg Temp" if lang=="en" else "🌡 අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#f59e0b"),
+        ("🌡 Forecast Avg Temp" if lang=="en" else "🌡 අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#16a34a"),
         ("🌴 Forecast Yield Index" if lang=="en" else "🌴 අනාවැකි අස්වැන්න දර්ශකය", f"{avg_fyield:.0f}/100", "#16a34a"),
         ("🌾 Harvest Months (12m)" if lang=="en" else "🌾 අස්වනු මාස (12m)", f"{harvest_months_count} months", "#16a34a")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
@@ -1794,14 +1794,14 @@ elif t["nav"][6] in sec_name:
     fig_fw.add_trace(go.Scatter(
         x=list(fwd_df["date"])+list(fwd_df["date"][::-1]),
         y=list(fwd_df["rain_upper"])+list(fwd_df["rain_lower"][::-1]),
-        fill="toself", fillcolor="rgba(59,130,246,0.12)", line=dict(color="rgba(0,0,0,0)"),
+        fill="toself", fillcolor="rgba(22,163,74,0.12)", line=dict(color="rgba(0,0,0,0)"),
         showlegend=True, name="Rainfall Range",
         hoverinfo="skip"), secondary_y=False)
 
     # Rainfall bars
     fig_fw.add_trace(go.Bar(
         x=fwd_df["date"], y=fwd_df["rainfall_mm"], name="Forecast Rainfall (mm)",
-        marker_color="rgba(59,130,246,.55)",
+        marker_color="rgba(22,163,74,.55)",
         hovertemplate="<b>%{x|%b %Y}</b><br>Rain: %{y:.0f} mm<extra></extra>"),
         secondary_y=False)
 
@@ -1816,7 +1816,7 @@ elif t["nav"][6] in sec_name:
     # Price impact line
     fig_fw.add_trace(go.Scatter(
         x=fwd_df["date"], y=fwd_df["price_impact"], name="Est. Price (Rs.)",
-        mode="lines+markers", line=dict(color="#f59e0b", width=2, dash="dot"),
+        mode="lines+markers", line=dict(color="#4a7a4a", width=2, dash="dot"),
         marker=dict(size=6),
         hovertemplate="<b>%{x|%b %Y}</b><br>Est. Rs.%{y:.2f}<extra></extra>"),
         secondary_y=True)
@@ -1865,7 +1865,7 @@ elif t["nav"][6] in sec_name:
             x=mnames, y=rain_vals,
             marker=dict(
                 color=rain_vals,
-                colorscale=[[0,"#fef9c3"],[.5,"#bbf7d0"],[1,"#166534"]],
+                colorscale=[[0,"#f0fdf4"],[.5,"#86efac"],[1,"#14532d"]],
                 showscale=True,
                 colorbar=dict(title="mm", tickfont=dict(size=10))),
             text=[f"{v:.0f}mm" if v else "" for v in rain_vals],
@@ -1886,7 +1886,7 @@ elif t["nav"][6] in sec_name:
         fig_sc.add_trace(go.Scatter(
             x=fwd_df["yield_index"], y=fwd_df["price_impact"],
             mode="markers+text",
-            marker=dict(color=["#16a34a" if h else "#16a34a" for h in fwd_df["harvest_period"]],
+            marker=dict(color=["#16a34a" if h else "#4a7a4a" for h in fwd_df["harvest_period"]],
                 size=10, symbol=["star" if h else "circle" for h in fwd_df["harvest_period"]]),
             text=[m.strftime("%b") for m in fwd_df["date"]],
             textposition="top center", textfont=dict(size=9),
@@ -1910,7 +1910,7 @@ elif t["nav"][6] in sec_name:
         "Inter-Monsoon 1 (Mar–Apr)":[3,4],
         "Inter-Monsoon 2 (Oct)":    [10],
     }
-    seas_clrs = ["#16a34a","#16a34a","#f59e0b","#22c55e"]
+    seas_clrs = ["#16a34a","#16a34a","#16a34a","#16a34a"]
     sc2 = st.columns(4)
     for col,(season,months_s),clr in zip(sc2,seasons_fwd.items(),seas_clrs):
         msk = fwd_df["month"].isin(months_s)
@@ -1922,12 +1922,12 @@ elif t["nav"][6] in sec_name:
         else:
             ar, ay, ap, harv = 0, 0, 0, "—"
         with col:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 10px;text-align:center;height:180px;display:flex;flex-direction:column;justify-content:space-between;'>
+            st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-top:3px solid {clr};border-radius:10px;padding:14px 10px;text-align:center;height:180px;display:flex;flex-direction:column;justify-content:space-between;'>
                 <div style='font-size:.72rem;font-weight:800;color:{clr};'>{season}</div>
                 <div>
                   <div style='font-size:.75rem;color:#16a34a;font-weight:600;'>🌧 {ar:.0f} mm forecast</div>
                   <div style='font-size:.75rem;color:#16a34a;font-weight:600;'>🌴 Yield: {ay:.0f}/100</div>
-                  <div style='font-size:.75rem;color:#f59e0b;font-weight:600;'>💰 Est. Rs.{ap:.1f}</div>
+                  <div style='font-size:.75rem;color:#16a34a;font-weight:600;'>💰 Est. Rs.{ap:.1f}</div>
                   <div style='font-size:.72rem;color:#166534;font-weight:700;margin-top:4px;'>{harv}</div>
                 </div></div>""", unsafe_allow_html=True)
 
@@ -1976,7 +1976,7 @@ elif t["nav"][7] in sec_name:
     fig_ep.add_trace(go.Bar(x=me["year"].astype(str),y=me["Total"],name="Export Revenue ($M)",
         marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>$%{y}M<extra></extra>"),secondary_y=False)
     fig_ep.add_trace(go.Scatter(x=me["year"].astype(str),y=me["price"],name="Domestic Price (Rs.)",
-        line=dict(color="#f59e0b",width=2.5),mode="lines+markers",marker=dict(size=7),
+        line=dict(color="#16a34a",width=2.5),mode="lines+markers",marker=dict(size=7),
         hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"),secondary_y=True)
     fig_ep.update_layout(height=300,margin=dict(l=20,r=60,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
@@ -2056,13 +2056,13 @@ elif t["nav"][8] in sec_name:
         fig_be.add_trace(go.Scatter(x=pr_be,y=pr_be*total_nuts-total_cost,mode="lines",line=dict(color="#16a34a",width=2.5),showlegend=False,
             hovertemplate="Price: Rs.%{x:.1f}<br>Profit: Rs.%{y:,.0f}<extra></extra>"))
         fig_be.add_hline(y=0,line_dash="dash",line_color="#ef4444",annotation_text="Break-even" if lang=="en" else "\u0DC1\u0dda\u0DC2 \u0dc3\u0dca\u0da5\u0dcf\u0db1\u0dba")
-        fig_be.add_vline(x=sell_price,line_dash="dot",line_color="#f59e0b",annotation_text=f"Current Rs.{sell_price}",annotation_position="top right")
+        fig_be.add_vline(x=sell_price,line_dash="dot",line_color="#16a34a",annotation_text=f"Current Rs.{sell_price}",annotation_position="top right")
         fig_be.add_vline(x=be_price,line_dash="dash",line_color="#ef4444",annotation_text=f"BE Rs.{be_price:.1f}",annotation_position="bottom right")
         fig_be.update_layout(height=260,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(title="Price per Nut (Rs.)",showgrid=False),yaxis=dict(title="Net Profit (Rs.)",gridcolor="#e8f5e9"),showlegend=False)
         st.plotly_chart(fig_be,use_container_width=True,config={"displayModeBar":"hover"})
         bev=sell_price-be_price; bec="#22c55e" if bev>0 else "#ef4444"
-        st.markdown(f"""<div style='background:#f0fdf4;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
+        st.markdown(f"""<div style='background:#f8fafc;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
             <div style='font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:4px;'>{"Break-Even Price" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0da5\u0dcf\u0db1 \u0db8\u0dd2\u0dbd"}</div>
             <div style='font-size:1.4rem;font-weight:900;color:{bec};'>Rs.{be_price:.2f}</div>
             <div style=\'font-size:.78rem;color:{bec};margin-top:4px;\'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} current</div></div>""",unsafe_allow_html=True)
@@ -2092,7 +2092,7 @@ elif t["nav"][9] in sec_name:
         ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
          "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#16a34a"),
         ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
-         "7:30 – 9:00 AM", "#f59e0b"),
+         "7:30 – 9:00 AM", "#16a34a"),
         ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
          "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#16a34a"),
     ]):
@@ -2136,7 +2136,7 @@ elif t["nav"][9] in sec_name:
             "authority": "CDA",
             "phone": "+94 32 222 5120",
             "note": "Covers northern coconut triangle; strong copra and oil trade.",
-            "clr": "#f59e0b",
+            "clr": "#16a34a",
         },
         {
             "name": "Gampaha Auction Centre",
@@ -2160,7 +2160,7 @@ elif t["nav"][9] in sec_name:
             "authority": "HARTI / CDA",
             "phone": "+94 41 222 2440",
             "note": "Key centre for Southern Province coconut growers.",
-            "clr": "#ef4444",
+            "clr": "#16a34a",
         },
         {
             "name": "Kalutara Auction Centre",
@@ -2172,7 +2172,7 @@ elif t["nav"][9] in sec_name:
             "authority": "HARTI",
             "phone": "+94 34 222 5300",
             "note": "Significant trade in coconut milk products alongside whole nuts.",
-            "clr": "#06b6d4",
+            "clr": "#16a34a",
         },
     ]
 
@@ -2183,7 +2183,7 @@ elif t["nav"][9] in sec_name:
         for col, c in zip(cols, row_centres):
             name_display = c["si_name"] if lang == "si" else c["name"]
             with col:
-                st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-left:3px solid {c["clr"]};
+                st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {c["clr"]};
                     border-radius:12px;padding:18px 16px;margin-bottom:14px;height:280px;display:flex;flex-direction:column;justify-content:space-between;'>
                     <div>
                       <div style='font-size:.6rem;font-weight:800;color:{c["clr"]};text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;'>{c["authority"]}</div>
@@ -2212,8 +2212,8 @@ elif t["nav"][9] in sec_name:
         "Friday":    [("Colombo","7:30 AM"),("Puttalam","8:00 AM")],
         "Saturday":  [("Gampaha","7:00 AM"),("Matara","8:30 AM")],
     }
-    day_colors = {"Monday":"#16a34a","Tuesday":"#16a34a","Wednesday":"#f59e0b",
-                  "Thursday":"#16a34a","Friday":"#ef4444","Saturday":"#06b6d4"}
+    day_colors = {"Monday":"#16a34a","Tuesday":"#16a34a","Wednesday":"#16a34a",
+                  "Thursday":"#16a34a","Friday":"#16a34a","Saturday":"#16a34a"}
     sched_cols = st.columns(6)
     for col, day in zip(sched_cols, days):
         auctions = day_auctions[day]
@@ -2243,13 +2243,13 @@ elif t["nav"][9] in sec_name:
         ("02","Grading & Lot Formation","Nuts are graded by size, freshness and quality. Standard lot = 1,000 nuts. Minimum 500 nuts per lot.",
          "Grade A: ≥12cm dia. Grade B: 10–12cm. Grade C: <10cm.","#16a34a"),
         ("03","Bidding Process","Open outcry ascending bid auction. Auctioneer calls starting price. Highest bid wins. Buyer must pay within 24 hrs.",
-         "Electronic bidding being piloted at Colombo centre.","#f59e0b"),
+         "Electronic bidding being piloted at Colombo centre.","#16a34a"),
         ("04","Settlement & Transport","Payment via bank transfer or certified cheque. Seller receives funds within 2 working days.",
          "CDA provides transport support for quantities >5,000 nuts.","#16a34a"),
     ]
     for col, (num, title, desc, note, clr) in zip(proc_cols, steps):
         with col:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-left:3px solid {clr};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {clr};
                 border-radius:10px;padding:16px 14px;height:240px;display:flex;flex-direction:column;'>
                 <div style='font-size:.6rem;font-weight:800;color:{clr};text-transform:uppercase;letter-spacing:2px;'>STEP {num}</div>
                 <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin:6px 0 8px;'>{title}</div>
@@ -2266,7 +2266,7 @@ elif t["nav"][9] in sec_name:
     gmins  = [72,  58,  42,  85,  380]
     gmaxs  = [85,  72,  58,  110, 450]
     gavgs  = [78,  65,  50,  95,  415]
-    bar_colors = ["#22c55e","#16a34a","#15803d","#16a34a","#0891b2"]
+    bar_colors = ["#16a34a","#22c55e","#4a7a4a","#166534","#14532d"]
     fig_grades = go.Figure()
     fig_grades.add_trace(go.Bar(
         name="Min (base)", x=grade_labels, y=gmins,
@@ -2281,7 +2281,7 @@ elif t["nav"][9] in sec_name:
     fig_grades.add_trace(go.Scatter(
         name="Avg Price", x=grade_labels, y=gavgs,
         mode="markers+text",
-        marker=dict(color="#f59e0b", size=16, symbol="diamond", line=dict(color="#fff", width=2)),
+        marker=dict(color="#16a34a", size=16, symbol="diamond", line=dict(color="#fff", width=2)),
         text=[f"Avg: Rs.{v}" for v in gavgs], textposition="top center",
         textfont=dict(size=11, color="#14532d", family="Arial Black"),
         hovertemplate="<b>%{x}</b><br>Avg: Rs.%{y}<extra></extra>"))
@@ -2342,7 +2342,7 @@ elif t["nav"][9] in sec_name:
         ("🏆 Premium Quality Auction",
          "Quarterly (Jan, Apr, Jul, Oct)",
          "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
-         "#f59e0b"),
+         "#16a34a"),
         ("🌐 Export Auction",
          "Every 2nd Friday of month",
          "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
@@ -2350,7 +2350,7 @@ elif t["nav"][9] in sec_name:
     ]
     for col, (title, schedule, desc, clr) in zip(spec_cols, specials):
         with col:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-left:3px solid {clr};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {clr};
                 border-radius:12px;padding:18px 14px;height:220px;display:flex;flex-direction:column;'>
                 <div style='font-size:.85rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;'>{title}</div>
                 <div style='font-size:.7rem;font-weight:700;color:{clr};margin-bottom:8px;'>📅 {schedule}</div>
@@ -2364,7 +2364,7 @@ elif t["nav"][9] in sec_name:
     contacts = [
         ("🏛️","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk","Seller & Buyer Registration, Licence Applications","#16a34a"),
         ("🏪","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk","Colombo & Gampaha Auction Operations","#16a34a"),
-        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions","Auction schedule enquiries, lot registration","#f59e0b"),
+        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions","Auction schedule enquiries, lot registration","#16a34a"),
     ]
     for col, (icon,org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
         with col:
