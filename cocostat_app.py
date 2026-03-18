@@ -407,52 +407,52 @@ with st.sidebar:
     # Factor 1: Current price vs thresholds
     if current_price >= crisis_threshold:
         risk_score += 40
-        risk_factors.append(("🔴", f"Price Rs.{current_price:.0f} above crisis level", 40))
+        risk_factors.append(("🔴", f"Price Rs.{current_price:.0f} " + ("above crisis level" if lang=="en" else "අර්බුද සීමාව ඉක්මවා"), 40))
     elif current_price >= warn_threshold:
         risk_score += 25
-        risk_factors.append(("🟡", f"Price Rs.{current_price:.0f} above warning level", 25))
+        risk_factors.append(("🟡", f"Price Rs.{current_price:.0f} " + ("above warning level" if lang=="en" else "අවවාද සීමාව ඉක්මවා"), 25))
     else:
-        risk_factors.append(("🟢", f"Price Rs.{current_price:.0f} within safe range", 0))
+        risk_factors.append(("🟢", f"Price Rs.{current_price:.0f} " + ("within safe range" if lang=="en" else "ආරක්ෂිත පරාසය තුළ"), 0))
 
     # Factor 2: 3-month momentum
     if momentum_3m > 15:
         risk_score += 20
-        risk_factors.append(("🔴", f"Rapid 3M rise: +{momentum_3m:.1f}%", 20))
+        risk_factors.append(("🔴", ("Rapid 3M rise" if lang=="en" else "ඉක්මන් මාස 3 ඉහළ යාම") + f": +{momentum_3m:.1f}%", 20))
     elif momentum_3m > 8:
         risk_score += 12
-        risk_factors.append(("🟡", f"Moderate 3M rise: +{momentum_3m:.1f}%", 12))
+        risk_factors.append(("🟡", ("Moderate 3M rise" if lang=="en" else "මධ්‍යස්ථ මාස 3 ඉහළ යාම") + f": +{momentum_3m:.1f}%", 12))
     elif momentum_3m < -10:
         risk_score += 5
-        risk_factors.append(("🔵", f"Sharp 3M drop: {momentum_3m:.1f}%", 5))
+        risk_factors.append(("🔵", ("Sharp 3M drop" if lang=="en" else "තීව්‍ර මාස 3 පහත වැටීම") + f": {momentum_3m:.1f}%", 5))
     else:
-        risk_factors.append(("🟢", f"3M change stable: {momentum_3m:+.1f}%", 0))
+        risk_factors.append(("🟢", ("3M change stable" if lang=="en" else "මාස 3 ස්ථාවරයි") + f": {momentum_3m:+.1f}%", 0))
 
     # Factor 3: Volatility
     cv_sb = (volatility_sb / avg_12m_sb) * 100
     if cv_sb > 18:
         risk_score += 20
-        risk_factors.append(("🔴", f"High volatility: CV {cv_sb:.1f}%", 20))
+        risk_factors.append(("🔴", ("High volatility" if lang=="en" else "ඉහළ අස්ථාවරතාව") + f": CV {cv_sb:.1f}%", 20))
     elif cv_sb > 10:
         risk_score += 10
-        risk_factors.append(("🟡", f"Moderate volatility: CV {cv_sb:.1f}%", 10))
+        risk_factors.append(("🟡", ("Moderate volatility" if lang=="en" else "මධ්‍යස්ථ අස්ථාවරතාව") + f": CV {cv_sb:.1f}%", 10))
     else:
-        risk_factors.append(("🟢", f"Low volatility: CV {cv_sb:.1f}%", 0))
+        risk_factors.append(("🟢", ("Low volatility" if lang=="en" else "අඩු අස්ථාවරතාව") + f": CV {cv_sb:.1f}%", 0))
 
     # Factor 4: Distance to crisis threshold
     gap_to_crisis = crisis_threshold - current_price
     if gap_to_crisis <= 5:
         risk_score += 15
-        risk_factors.append(("🔴", f"Only Rs.{gap_to_crisis:.0f} below crisis level", 15))
+        risk_factors.append(("🔴", ("Only" if lang=="en" else "අර්බුද සීමාවට") + f" Rs.{gap_to_crisis:.0f} " + ("below crisis level" if lang=="en" else "පමණයි"), 15))
     elif gap_to_crisis <= 12:
         risk_score += 8
-        risk_factors.append(("🟡", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 8))
+        risk_factors.append(("🟡", f"Rs.{gap_to_crisis:.0f} " + ("buffer to crisis level" if lang=="en" else "අර්බුද සීමාවට"), 8))
     else:
-        risk_factors.append(("🟢", f"Rs.{gap_to_crisis:.0f} buffer to crisis level", 0))
+        risk_factors.append(("🟢", f"Rs.{gap_to_crisis:.0f} " + ("buffer to crisis level" if lang=="en" else "අර්බුද සීමාවට"), 0))
 
     # Factor 5: Recent crisis months
     if crisis_months_sb >= 4:
         risk_score += 5
-        risk_factors.append(("🟡", f"{crisis_months_sb} crisis months (last 12)", 5))
+        risk_factors.append(("🟡", f"{crisis_months_sb} " + ("crisis months (last 12)" if lang=="en" else "අර්බුද මාස (අවසාන 12)"), 5))
 
     risk_score = min(risk_score, 100)
 
@@ -825,7 +825,8 @@ elif t["nav"][1] in sec_name:
         fig_dc.add_trace(go.Scatter(x=q,y=pr,mode="lines",name=lbl,line=dict(color=clr,width=2.5),
             hovertemplate=f"<b>{lbl}</b><br>Price: Rs.%{{y:.1f}}<br>Qty: %{{x:.0f}}<extra></extra>"))
     fig_dc.update_layout(height=300,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(title="Quantity Demanded",showgrid=False),yaxis=dict(title="Price (Rs.)",gridcolor="#e8f5e9",tickprefix="Rs."),
+        xaxis=dict(title=("Quantity Demanded" if lang=="en" else "ඉල්ලුම් ප්‍රමාණය"),showgrid=False),
+        yaxis=dict(title=("Price (Rs.)" if lang=="en" else "මිල (රු.)"),gridcolor="#e8f5e9",tickprefix="Rs."),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_dc,use_container_width=True,config={"displayModeBar":"hover"})
 # ══ FORECAST ════════════════════════════════════════════════════════════════
@@ -935,7 +936,7 @@ elif t["nav"][3] in sec_name:
                    "<strong style='color:#a7f3d0;'>Coconut Farmers</strong>."
                    if lang=="en" else
                    "වෙළඳ තත්ත්ව හඳුනාගැනීම, ඉල්ලුම් විශ්ලේෂණය, කාලගුණ අනාවැකි සහ අපනයන දත්ත ඒකාබද්ධ කොට "
-                   "<strong style='color:#4ade80;'>රජයේ ප්‍රතිපත්ති立案 කරන්නන්</strong>, "
+                   "<strong style='color:#4ade80;'>රජයේ ප්‍රතිපත්ති සම්පාදකයන්</strong>, "
                    "<strong style='color:#86efac;'>ව්‍යාපාරිකයන් සහ වෙළෙන්දන්</strong> සහ "
                    "<strong style='color:#a7f3d0;'>පොල් ගොවීන්</strong> වෙනුවෙන් ක්‍රියාශීලී නිර්දේශ ලබා දේ.")
     st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
@@ -1049,7 +1050,7 @@ elif t["nav"][3] in sec_name:
             delta={"reference": current_price, "valueformat": ".2f",
                    "increasing": {"color": "#ef4444"}, "decreasing": {"color": "#22c55e"}},
             number={"prefix": "Rs.", "font": {"size": 28, "color": "#0d2b0d"}},
-            title={"text": "Projected Price (Rs.)", "font": {"size": 13}},
+            title={"text": ("Projected Price (Rs.)" if lang=="en" else "ඉදිරි මිල (රු.)"), "font": {"size": 13}},
             gauge={
                 "axis": {"range": [30, 120], "tickfont": {"size": 9}},
                 "bar":  {"color": p_clr},
@@ -1067,9 +1068,15 @@ elif t["nav"][3] in sec_name:
         # Impact summary cards
         ic1, ic2, ic3 = st.columns(3)
         for col, (lbl, val, clr) in zip([ic1, ic2, ic3], [
-            ("👨‍🌾 Farmer\nRevenue /1000 nuts", f"{'+'if farmer_revenue_change>=0 else ''}{farmer_revenue_change:,.0f} Rs.", "#16a34a" if farmer_revenue_change>=0 else "#ef4444"),
-            ("🏠 Consumer\nSpend Impact",       f"{consumer_impact:+.1f}%",  "#22c55e" if consumer_impact<=0 else "#ef4444"),
-            ("📦 Export\nRevenue Est.",          f"{export_revenue_change:+.1f}M USD", "#3b82f6"),
+            ("👨‍🌾 " + ("Farmer Revenue /1000 nuts" if lang=="en" else "ගොවි ආදායම /ගෙඩි 1000"),
+             f"{'+'if farmer_revenue_change>=0 else ''}{farmer_revenue_change:,.0f} Rs.",
+             "#16a34a" if farmer_revenue_change>=0 else "#ef4444"),
+            ("🏠 " + ("Consumer Spend Impact" if lang=="en" else "පාරිභෝගික වියදම් බලපෑම"),
+             f"{consumer_impact:+.1f}%",
+             "#22c55e" if consumer_impact<=0 else "#ef4444"),
+            ("📦 " + ("Export Revenue Est." if lang=="en" else "අපනයන ආදායම ඇ."),
+             f"{export_revenue_change:+.1f}M USD",
+             "#3b82f6"),
         ]):
             with col:
                 st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {clr};
@@ -1197,125 +1204,222 @@ elif t["nav"][3] in sec_name:
     """, unsafe_allow_html=True)
 
     # Dynamic recommendations based on current regime
+    _R = lang  # shorthand
     all_recommendations = {
         0: {  # Stable Market
             "government": [
-                ("🏦","Build Buffer Stocks","Stability window is ideal for building emergency grain reserves. Target: 3-month national supply.",
-                 "HIGH","Immediate","Min. Rs. 2.5B allocation from stabilisation fund"),
-                ("📊","Enhance Data Infrastructure","Invest in real-time price reporting systems at all 6 major auction centres.",
-                 "MEDIUM","3-6 months","Rs. 180M — HARTI digital upgrade programme"),
-                ("📋","Review Farmer Registration","Update CDA farmer database. Many smallholders lack formal registration limiting support access.",
-                 "MEDIUM","6-12 months","Administrative — no major budget required"),
-                ("🌿","Promote Value Addition","Stable prices allow investment in coconut oil, desiccated coconut, and coconut milk processing.",
-                 "HIGH","6-18 months","Rs. 500M industry development grant"),
-                ("🌍","Negotiate Trade Agreements","Use stable period to negotiate better export terms with EU, USA, and Middle East markets.",
-                 "MEDIUM","12-24 months","Ministry of Trade — diplomatic resources"),
+                ("🏦",
+                 "Build Buffer Stocks" if _R=="en" else "බෆර් තොග ගොඩ නගා ගන්න",
+                 "Stability window is ideal for building emergency grain reserves. Target: 3-month national supply." if _R=="en" else "ස්ථාවර කාලය හදිසි ගබඩා ගොඩ නැගීමට ආදර්ශ අවස්ථාවකි. ඉලක්කය: මාස 3ක ජාතික සැපයුම.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Min. Rs. 2.5B allocation from stabilisation fund" if _R=="en" else "ස්ථාවරීකරණ අරමුදලෙන් අවම රු. 2.5B"),
+                ("📊",
+                 "Enhance Data Infrastructure" if _R=="en" else "දත්ත යටිතල ශක්තිමත් කරන්න",
+                 "Invest in real-time price reporting systems at all 6 major auction centres." if _R=="en" else "ප්‍රධාන වෙන්දේසි මධ්‍යස්ථාන 6 හි තත්‍යකාලීන මිල වාර්තාකරණ පද්ධති සඳහා ආයෝජනය කරන්න.",
+                 "MEDIUM","3-6 months" if _R=="en" else "මාස 3-6","Rs. 180M — HARTI digital upgrade programme" if _R=="en" else "රු. 180M — HARTI ඩිජිටල් උසස්කිරීමේ වැඩසටහන"),
+                ("📋",
+                 "Review Farmer Registration" if _R=="en" else "ගොවි ලියාපදිංචිය සමාලෝචනය",
+                 "Update CDA farmer database. Many smallholders lack formal registration limiting support access." if _R=="en" else "CDA ගොවි දත්ත ගබඩාව යාවත්කාලීන කරන්න. කුඩා ගොවීන් රාශියකට සහාය ලබා ගැනීම සීමා කරන සන්නද්ධ ලියාපදිංචියක් නොමැත.",
+                 "MEDIUM","6-12 months" if _R=="en" else "මාස 6-12","Administrative — no major budget required" if _R=="en" else "පරිපාලනමය — ප්‍රධාන අයවැයක් අවශ්‍ය නැත"),
+                ("🌿",
+                 "Promote Value Addition" if _R=="en" else "අගය-එකතු කිරීම ප්‍රවර්ධනය",
+                 "Stable prices allow investment in coconut oil, desiccated coconut, and coconut milk processing." if _R=="en" else "ස්ථාවර මිල පොල් තෙල්, ගම්මිරිස් කළ පොල් සහ පොල් කිරි සැකසීම සඳහා ආයෝජනය ඉඩ දේ.",
+                 "HIGH","6-18 months" if _R=="en" else "මාස 6-18","Rs. 500M industry development grant" if _R=="en" else "රු. 500M කර්මාන්ත සංවර්ධන ප්‍රදානය"),
+                ("🌍",
+                 "Negotiate Trade Agreements" if _R=="en" else "වෙළඳ ගිවිසුම් සාකච්ඡා කරන්න",
+                 "Use stable period to negotiate better export terms with EU, USA, and Middle East markets." if _R=="en" else "EU, USA සහ මැදපෙරදිග වෙළඳපොළවල් සමග වඩා හොඳ අපනයන කොන්දේසි සාකච්ඡා කිරීමට ස්ථාවර කාලය භාවිත කරන්න.",
+                 "MEDIUM","12-24 months" if _R=="en" else "මාස 12-24","Ministry of Trade — diplomatic resources" if _R=="en" else "වෙළඳ අමාත්‍යාංශය — රාජ්‍යතාන්ත්‍රික සම්පත්"),
             ],
             "business": [
-                ("📈","Expand Processing Capacity","Stable input costs make this the best time to invest in new processing lines and cold storage.",
-                 "HIGH","6-12 months","ROI: 18-24 months at current margins"),
-                ("🔒","Lock In Long-Term Supply Contracts","Negotiate 6-12 month fixed-price supply contracts with farmer cooperatives.",
-                 "HIGH","Immediate","Reduces raw material cost volatility by ~40%"),
-                ("🌐","Enter New Export Markets","Low price risk enables testing new export markets without margin compression.",
-                 "MEDIUM","3-9 months","Export development board support available"),
-                ("🏭","Invest in Automation","Stable period ideal for upgrading factory equipment without cashflow pressure.",
-                 "MEDIUM","6-18 months","Automation grants available through BOI"),
-                ("📦","Diversify Product Portfolio","Launch coconut water, activated carbon, or coir products to reduce commodity price risk.",
-                 "HIGH","12-24 months","Market studies show 35% margin premium on value-added"),
+                ("📈",
+                 "Expand Processing Capacity" if _R=="en" else "සැකසුම් ධාරිතාව ව්‍යාප්ත කරන්න",
+                 "Stable input costs make this the best time to invest in new processing lines and cold storage." if _R=="en" else "ස්ථාවර ආදාන පිරිවැය නව සැකසුම් රේඛා සහ ශීතල ගබඩාවලට ආයෝජනය කිරීමට හොඳම කාලය කරයි.",
+                 "HIGH","6-12 months" if _R=="en" else "මාස 6-12","ROI: 18-24 months at current margins" if _R=="en" else "ROI: වත්මන් ආන්තිකවලදී මාස 18-24"),
+                ("🔒",
+                 "Lock In Long-Term Supply Contracts" if _R=="en" else "දිගු කාලීන සැපයුම් ගිවිසුම් ගන්න",
+                 "Negotiate 6-12 month fixed-price supply contracts with farmer cooperatives." if _R=="en" else "ගොවි සමිති සමග මාස 6-12 ස්ථාවර-මිල සැපයුම් ගිවිසුම් සාකච්ඡා කරන්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Reduces raw material cost volatility by ~40%" if _R=="en" else "අමු ද්‍රව්‍ය පිරිවැය අස්ථාවරතාව ~40%කින් අඩු කරයි"),
+                ("🌐",
+                 "Enter New Export Markets" if _R=="en" else "නව අපනයන වෙළඳපොළවලට ඇතුල් වන්න",
+                 "Low price risk enables testing new export markets without margin compression." if _R=="en" else "අඩු මිල අවදානම ආන්තික සම්පීඩනයකින් තොරව නව අපනයන වෙළඳපොළ පරීක්ෂා කිරීමට ඉඩ දේ.",
+                 "MEDIUM","3-9 months" if _R=="en" else "මාස 3-9","Export development board support available" if _R=="en" else "අපනයන සංවර්ධන මණ්ඩල සහාය ලබා ගත හැකිය"),
+                ("🏭",
+                 "Invest in Automation" if _R=="en" else "ස්වයංක්‍රීයකරණයට ආයෝජනය",
+                 "Stable period ideal for upgrading factory equipment without cashflow pressure." if _R=="en" else "මුදල් ප්‍රවාහ පීඩනයකින් තොරව කර්මාන්ත ශාලා උපකරණ උසස් කිරීමට ස්ථාවර කාලය ආදර්ශ.",
+                 "MEDIUM","6-18 months" if _R=="en" else "මාස 6-18","Automation grants available through BOI" if _R=="en" else "BOI හරහා ස්වයංක්‍රීයකරණ ප්‍රදාන ලබා ගත හැකිය"),
+                ("📦",
+                 "Diversify Product Portfolio" if _R=="en" else "නිෂ්පාදන ශ්‍රේණිය විවිධාංගීකරණය",
+                 "Launch coconut water, activated carbon, or coir products to reduce commodity price risk." if _R=="en" else "ගොවිතැන් මිල අවදානම අඩු කිරීමට පොල් වතුර, සක්‍රිය කාබන් හෝ කොයිර් නිෂ්පාදන දියත් කරන්න.",
+                 "HIGH","12-24 months" if _R=="en" else "මාස 12-24","Market studies show 35% margin premium on value-added" if _R=="en" else "වෙළඳ අධ්‍යයන අගය-එකතු කළ නිෂ්පාදනවල 35% ආන්තික වාසිය පෙන්වයි"),
             ],
             "farmer": [
-                ("🌱","Replant Ageing Trees","15-25% of SL coconut palms are past peak yield. Stable income = best time to replant.",
-                 "HIGH","Now — 3yr ROI","CDA provides seedlings at Rs. 150 each — 60% subsidy available"),
-                ("💧","Install Irrigation","Drip irrigation reduces drought vulnerability by 60%. CDA subsidises 50% of installation cost.",
-                 "HIGH","Next dry season","Rs. 45,000-85,000 per acre — subsidy available"),
-                ("🤝","Join a Cooperative","Group selling at auctions achieves 12-18% higher prices than individual sellers.",
-                 "HIGH","Immediate","Contact CDA regional office for nearest co-op"),
-                ("📚","Access Training","CDA free training on integrated pest management and organic certification available.",
-                 "MEDIUM","Ongoing","Free — register at cda.gov.lk/training"),
-                ("💰","Open a Farm Savings Account","Bank of Ceylon Farmer Account offers 2% above normal savings rate for registered farmers.",
-                 "MEDIUM","Immediate","BOC branch — CDA registration card required"),
+                ("🌱",
+                 "Replant Ageing Trees" if _R=="en" else "වයෝවෘද්ධ ගස් නැවත සිටුවන්න",
+                 "15-25% of SL coconut palms are past peak yield. Stable income = best time to replant." if _R=="en" else "ශ්‍රී ලංකා පොල් ගස්වලින් 15-25% උච්ච අස්වැන්නෙන් ඔබ්බට ගොස් ඇත. ස්ථාවර ආදායම = නැවත සිටුවීමට හොඳ කාලය.",
+                 "HIGH","Now — 3yr ROI" if _R=="en" else "දැන් — ROI වසර 3","CDA provides seedlings at Rs. 150 each — 60% subsidy available" if _R=="en" else "CDA රු. 150 බැගින් පැළ සපයයි — 60% සහනාධාරය ලබා ගත හැකිය"),
+                ("💧",
+                 "Install Irrigation" if _R=="en" else "වාරිමාර්ග ස්ථාපිත කරන්න",
+                 "Drip irrigation reduces drought vulnerability by 60%. CDA subsidises 50% of installation cost." if _R=="en" else "බිංදු වාරිමාර්ගය නියඟ අවදානම 60%කින් අඩු කරයි. CDA ස්ථාපනය පිරිවැයෙන් 50% සහාය දක්වයි.",
+                 "HIGH","Next dry season" if _R=="en" else "ඊළඟ වියළි කාලය","Rs. 45,000-85,000 per acre — subsidy available" if _R=="en" else "රු. 45,000-85,000 අක්කරයකට — සහනාධාරය ලබා ගත හැකිය"),
+                ("🤝",
+                 "Join a Cooperative" if _R=="en" else "සමිතියකට එකතු වන්න",
+                 "Group selling at auctions achieves 12-18% higher prices than individual sellers." if _R=="en" else "වෙන්දේසිවලදී කණ්ඩායම් විකිණීම තනි විකුණුම්කරුවන්ට වඩා 12-18% ඉහළ මිල ලබා ගනී.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Contact CDA regional office for nearest co-op" if _R=="en" else "ළඟම සමිතිය සඳහා CDA කලාපීය කාර්යාලය අමතන්න"),
+                ("📚",
+                 "Access Training" if _R=="en" else "පුහුණුවට ප්‍රවේශ වන්න",
+                 "CDA free training on integrated pest management and organic certification available." if _R=="en" else "ඒකාබද්ධ පළිබෝධ කළමනාකරණය සහ කාබනික සහතිකය පිළිබඳ CDA නොමිලේ පුහුණු ලබා ගත හැකිය.",
+                 "MEDIUM","Ongoing" if _R=="en" else "අඛණ්ඩ","Free — register at cda.gov.lk/training" if _R=="en" else "නොමිලේ — cda.gov.lk/training හිදී ලියාපදිංචි වන්න"),
+                ("💰",
+                 "Open a Farm Savings Account" if _R=="en" else "ගොවි ඉතිරිකිරීමේ ගිණුමක් විවෘත කරන්න",
+                 "Bank of Ceylon Farmer Account offers 2% above normal savings rate for registered farmers." if _R=="en" else "ලංකා බැංකු ගොවි ගිණුම ලියාපදිංචි ගොවීන්ට සාමාන්‍ය ඉතිරිකිරීම් අනුපාතයට වඩා 2% ඉහළ ලබා දේ.",
+                 "MEDIUM","Immediate" if _R=="en" else "ක්ෂණිකව","BOC branch — CDA registration card required" if _R=="en" else "BOC ශාඛාව — CDA ලියාපදිංචි කාඩ්පත් අවශ්‍ය"),
             ],
         },
         1: {  # Warning Market
             "government": [
-                ("🚨","Activate Price Monitoring Task Force","Deploy field officers to all 6 auction centres daily. Report unusual price movements within 24hrs.",
-                 "URGENT","Immediate","Rs. 8M — existing staff redeployment"),
-                ("📦","Partial Buffer Stock Release","Release 10-15% of buffer stocks to inject supply and moderate upward price pressure.",
-                 "HIGH","Within 1 week","Coordinate with HARTI auction management"),
-                ("📣","Public Price Transparency Campaign","Broadcast daily auction prices via radio, SMS (Dialog/Mobitel), and social media to prevent panic buying.",
-                 "HIGH","Within 3 days","Rs. 5M — public communications budget"),
-                ("🏦","Activate Price Stabilisation Fund","Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation.",
-                 "HIGH","Within 1 week","Rs. 500M fund — Cabinet authorisation required"),
-                ("🌾","Accelerate Harvest Support","Provide subsidised transport to bring stored farm produce to market quickly.",
-                 "MEDIUM","Within 2 weeks","Rs. 25M — transport subsidy scheme"),
+                ("🚨",
+                 "Activate Price Monitoring Task Force" if _R=="en" else "මිල නිරීක්ෂණ කාර්ය සාධක බලකාය සක්‍රිය කරන්න",
+                 "Deploy field officers to all 6 auction centres daily. Report unusual price movements within 24hrs." if _R=="en" else "වෙන්දේසි මධ්‍යස්ථාන 6 හි දිනපතා ක්ෂේත්‍ර නිලධාරීන් යොදවන්න. අසාමාන්‍ය මිල ව්‍යාප්තිය පැය 24 ඇතුළත වාර්තා කරන්න.",
+                 "URGENT","Immediate" if _R=="en" else "ක්ෂණිකව","Rs. 8M — existing staff redeployment" if _R=="en" else "රු. 8M — දැනට සිටින කාර්ය මණ්ඩල නැවත යොදවීම"),
+                ("📦",
+                 "Partial Buffer Stock Release" if _R=="en" else "අර්ධ බෆර් තොග මුදා හැරීම",
+                 "Release 10-15% of buffer stocks to inject supply and moderate upward price pressure." if _R=="en" else "සැපයුම ඉහළ නංවා ඉහළ මිල පීඩනය මධ්‍යස්ථ කිරීමට බෆර් තොගවලින් 10-15% මුදා හරින්න.",
+                 "HIGH","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","Coordinate with HARTI auction management" if _R=="en" else "HARTI වෙන්දේසි කළමනාකරණය සමග සම්බන්ධ කරගන්න"),
+                ("📣",
+                 "Public Price Transparency Campaign" if _R=="en" else "මහජන මිල විනිවිදභාව ව්‍යාපාරය",
+                 "Broadcast daily auction prices via radio, SMS (Dialog/Mobitel), and social media to prevent panic buying." if _R=="en" else "අසංවිධිත ගැනුම් වළක්වා ගැනීමට ගුවන් විදුලිය, SMS (Dialog/Mobitel) සහ සමාජ මාධ්‍ය හරහා දෛනික වෙන්දේසි මිල විකාශය කරන්න.",
+                 "HIGH","Within 3 days" if _R=="en" else "දින 3 ඇතුළත","Rs. 5M — public communications budget" if _R=="en" else "රු. 5M — මහජන සන්නිවේදන අයවැය"),
+                ("🏦",
+                 "Activate Price Stabilisation Fund" if _R=="en" else "මිල ස්ථාවරීකරණ අරමුදල සක්‍රිය කරන්න",
+                 "Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation." if _R=="en" else "ස්ථාවරීකරණ අරමුදල යෙදවීමට සූදානම සංඥා කරන්න. වෙළඳ දැනුවත්කම පමණින් 투機ය අඩු කළ හැකිය.",
+                 "HIGH","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","Rs. 500M fund — Cabinet authorisation required" if _R=="en" else "රු. 500M අරමුදල — කැබිනට් අනුමැතිය අවශ්‍ය"),
+                ("🌾",
+                 "Accelerate Harvest Support" if _R=="en" else "අස්වනු සහාය ත්වරාන්විත කරන්න",
+                 "Provide subsidised transport to bring stored farm produce to market quickly." if _R=="en" else "ගබඩා ගොවිතැන් නිෂ්පාදන ඉක්මනින් වෙළඳපොළට ගෙන ඒමට සහනාධාර ප්‍රවාහනය ලබා දෙන්න.",
+                 "MEDIUM","Within 2 weeks" if _R=="en" else "සති 2 ඇතුළත","Rs. 25M — transport subsidy scheme" if _R=="en" else "රු. 25M — ප්‍රවාහන සහනාධාර යෝජනා ක්‍රමය"),
             ],
             "business": [
-                ("⚠️","Hedge Raw Material Costs","Lock in forward contracts for next 3-6 months before prices escalate further.",
-                 "URGENT","This week","Contact commodity brokers — forward pricing available"),
-                ("📉","Reduce Inventory Holding","High price environment — sell finished goods inventory quickly to protect margins.",
-                 "HIGH","Immediate","Review distribution channel pricing"),
-                ("🔍","Diversify Input Sources","Explore coconut sourcing from Puttalam, Kurunegala simultaneously — don't rely on single auction.",
-                 "HIGH","Immediate","Register with 3+ auction centres"),
-                ("💡","Switch to Value Products","Shift production mix toward premium products (virgin coconut oil, organic) with higher margin buffer.",
-                 "MEDIUM","2-4 weeks","Requires product certification — SLSI contact"),
-                ("📊","Weekly Price Tracking","Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80.",
-                 "HIGH","Immediate","COCOStat dashboard — set custom thresholds"),
+                ("⚠️",
+                 "Hedge Raw Material Costs" if _R=="en" else "අමු ද්‍රව්‍ය පිරිවැය ආරක්ෂා කරගන්න",
+                 "Lock in forward contracts for next 3-6 months before prices escalate further." if _R=="en" else "මිල තවදුරටත් ඉහළ යාමට පෙර ඉදිරි මාස 3-6 සඳහා ඉදිරි ගිවිසුම් සාකච්ඡා කරන්න.",
+                 "URGENT","This week" if _R=="en" else "මෙම සතිය","Contact commodity brokers — forward pricing available" if _R=="en" else "ගොවිතැන් තැරැව්කරුවන් අමතන්න — ඉදිරි මිල ගණනය ලබා ගත හැකිය"),
+                ("📉",
+                 "Reduce Inventory Holding" if _R=="en" else "තොග රඳවා ගැනීම අඩු කරන්න",
+                 "High price environment — sell finished goods inventory quickly to protect margins." if _R=="en" else "ඉහළ මිල පරිසරය — ආන්තික ආරක්ෂා කිරීමට නිමි භාණ්ඩ තොග ඉක්මනින් විකුණන්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Review distribution channel pricing" if _R=="en" else "බෙදාහැරීමේ නාලිකා මිල ගණනය සමාලෝචනය කරන්න"),
+                ("🔍",
+                 "Diversify Input Sources" if _R=="en" else "ආදාන මූලාශ්‍ර විවිධාංගීකරණය",
+                 "Explore coconut sourcing from Puttalam, Kurunegala simultaneously — don't rely on single auction." if _R=="en" else "එකවර පුත්තලම, කුරුණෑගල සිට පොල් ලබා ගැනීම ගවේෂණය කරන්න — තනි වෙන්දේසියකට රඳා නොසිටින්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Register with 3+ auction centres" if _R=="en" else "වෙන්දේසි මධ්‍යස්ථාන 3+ක ලියාපදිංචි වන්න"),
+                ("💡",
+                 "Switch to Value Products" if _R=="en" else "අගය නිෂ්පාදනවලට මාරු වන්න",
+                 "Shift production mix toward premium products (virgin coconut oil, organic) with higher margin buffer." if _R=="en" else "ඉහළ ආන්තික බෆරයක් සහිත ශ්‍රේෂ්ඨ නිෂ්පාදන (කළු නොකළ පොල් තෙල්, කාබනික) දෙසට නිෂ්පාදන මිශ්‍රණය මාරු කරන්න.",
+                 "MEDIUM","2-4 weeks" if _R=="en" else "සති 2-4","Requires product certification — SLSI contact" if _R=="en" else "නිෂ්පාදන සහතිකය අවශ්‍ය — SLSI සම්බන්ධ කරගන්න"),
+                ("📊",
+                 "Weekly Price Tracking" if _R=="en" else "සතිපතා මිල නිරීක්ෂණය",
+                 "Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80." if _R=="en" else "දිනපතා වෙන්දේසි මධ්‍යස්ථාන 6 ම නිරීක්ෂණය කරන්න. රු.70, රු.75, රු.80 හිදී ස්වයංක්‍රීය ඇඟවීම් සකස් කරන්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","COCOStat dashboard — set custom thresholds" if _R=="en" else "COCOStat පාලක පුවරුව — අභිරුචි සීමා සකස් කරන්න"),
             ],
             "farmer": [
-                ("💰","Sell Now — Don't Hoard","Warning phase prices are already elevated. Sell at current auction prices rather than waiting.",
-                 "URGENT","This week","Colombo auction Monday, Wednesday, Friday"),
-                ("📋","Register for Emergency Support","Pre-register for government income support scheme before crisis is declared.",
-                 "HIGH","This week","CDA Regional Office — free registration"),
-                ("🧑‍🤝‍🧑","Coordinate with Neighbours","Pool harvests with nearby farmers for stronger auction bargaining position.",
-                 "HIGH","Immediate","Minimum 5,000 nuts for cooperative lot"),
-                ("💧","Accelerate Irrigation Use","If irrigation installed — increase watering frequency to maximise current yield.",
-                 "MEDIUM","Immediate","CDA agronomy helpline: 1920"),
-                ("📦","Explore Direct Buyer Contracts","Some processors will pay 5-8% above auction price for guaranteed supply contracts.",
-                 "MEDIUM","1-2 weeks","CDA Buyer Directory available on request"),
+                ("💰",
+                 "Sell Now — Don't Hoard" if _R=="en" else "දැන් විකුණන්න — ගබඩා නොකරන්න",
+                 "Warning phase prices are already elevated. Sell at current auction prices rather than waiting." if _R=="en" else "අවවාද අදියර මිල දැනටමත් ඉහළ ගොස් ඇත. බලා සිටීමේ වෙනුවට වත්මන් වෙන්දේසි මිලට විකුණන්න.",
+                 "URGENT","This week" if _R=="en" else "මෙම සතිය","Colombo auction Monday, Wednesday, Friday" if _R=="en" else "කොළඹ වෙන්දේසිය සඳු, බදා, සිකු"),
+                ("📋",
+                 "Register for Emergency Support" if _R=="en" else "හදිසි සහාය සඳහා ලියාපදිංචි වන්න",
+                 "Pre-register for government income support scheme before crisis is declared." if _R=="en" else "අර්බුදය ප්‍රකාශිත වීමට පෙර රජයේ ආදායම් සහාය ක්‍රමයේ පූර්ව ලියාපදිංචිය සිදු කරන්න.",
+                 "HIGH","This week" if _R=="en" else "මෙම සතිය","CDA Regional Office — free registration" if _R=="en" else "CDA කලාපීය කාර්යාලය — නොමිලේ ලියාපදිංචිය"),
+                ("🧑‍🤝‍🧑",
+                 "Coordinate with Neighbours" if _R=="en" else "අසල්වාසීන් සමග සම්බන්ධීකරණය",
+                 "Pool harvests with nearby farmers for stronger auction bargaining position." if _R=="en" else "ශක්තිමත් වෙන්දේසි ගනුදෙනු ස්ථාවරයක් සඳහා ළඟම ගොවීන් සමග අස්වනු එක්රැස් කරන්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Minimum 5,000 nuts for cooperative lot" if _R=="en" else "සමිති ලොටයකට අවම ගෙඩි 5,000"),
+                ("💧",
+                 "Accelerate Irrigation Use" if _R=="en" else "වාරිමාර්ග භාවිතය ත්වරාන්විත කරන්න",
+                 "If irrigation installed — increase watering frequency to maximise current yield." if _R=="en" else "වාරිමාර්ගය ස්ථාපිත නම් — වත්මන් අස්වැන්න උපරිම කිරීමට ජල ලැබීමේ ප්‍රවර්ථනය වැඩි කරන්න.",
+                 "MEDIUM","Immediate" if _R=="en" else "ක්ෂණිකව","CDA agronomy helpline: 1920" if _R=="en" else "CDA කෘෂිකර්ම ආධාර: 1920"),
+                ("📦",
+                 "Explore Direct Buyer Contracts" if _R=="en" else "සෘජු ගැනුම්කරු ගිවිසුම් ගවේෂණය කරන්න",
+                 "Some processors will pay 5-8% above auction price for guaranteed supply contracts." if _R=="en" else "සමහර සකසන්නෝ සහතික සැපයුම් ගිවිසුම් සඳහා වෙන්දේසි මිලට වඩා 5-8% ඉහළ ගෙවනු ඇත.",
+                 "MEDIUM","1-2 weeks" if _R=="en" else "සති 1-2","CDA Buyer Directory available on request" if _R=="en" else "CDA ගැනුම්කරු නාමාවලිය ඉල්ලීමෙන් ලබා ගත හැකිය"),
             ],
         },
         2: {  # Crisis Market
             "government": [
-                ("🆘","Emergency Price Control Activation","Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels.",
-                 "CRITICAL","Within 24hrs","Cabinet emergency session — Rs. 50M enforcement budget"),
-                ("🚛","Full Buffer Stock Emergency Release","Release 100% of available buffer stocks immediately. Coordinate HARTI emergency auction.",
-                 "CRITICAL","Within 48hrs","All regional centres — coordinate military logistics if needed"),
-                ("🌐","Emergency Import Authorisation","Fast-track import permits for coconut from India/Philippines to bridge supply gap.",
-                 "CRITICAL","Within 1 week","Ministry of Trade emergency order — waive normal 45-day process"),
-                ("💵","Cash Transfer to Vulnerable Households","Rs. 2,500 per household hardship payment via Samurdhi mechanism for bottom 30%.",
-                 "CRITICAL","Within 2 weeks","Rs. 12B — emergency supplementary estimate"),
-                ("📡","Daily National Price Broadcast","Daily 8PM TV/radio broadcast of official controlled prices and where to buy.",
-                 "HIGH","Immediate","SLRC coordination — Rs. 2M production budget"),
-                ("🔎","Anti-Hoarding Enforcement","CAA/Police joint teams to inspect large warehouses for hoarding. Penalties up to Rs. 5M.",
-                 "HIGH","Immediate","District secretariat coordination required"),
+                ("🆘",
+                 "Emergency Price Control Activation" if _R=="en" else "හදිසි මිල පාලන සක්‍රිය කිරීම",
+                 "Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels." if _R=="en" else "පාරිභෝගික කටයුතු අධිකාරි පනත ක්‍රියාත්මක කරන්න — උපරිම මිල රු.85 ලෙස සකසන්න. සියලු සිල්ලර මට්ටම්වල ක්‍රියාත්මක කරන්න.",
+                 "CRITICAL","Within 24hrs" if _R=="en" else "පැය 24 ඇතුළත","Cabinet emergency session — Rs. 50M enforcement budget" if _R=="en" else "කැබිනට් හදිසි රැස්වීම — රු. 50M ක්‍රියාත්මක කිරීමේ අයවැය"),
+                ("🚛",
+                 "Full Buffer Stock Emergency Release" if _R=="en" else "සම්පූර්ණ බෆර් තොග හදිසි මුදා හැරීම",
+                 "Release 100% of available buffer stocks immediately. Coordinate HARTI emergency auction." if _R=="en" else "ලබා ගත හැකි සියලු බෆර් තොග ක්ෂණිකව මුදා හරින්න. HARTI හදිසි වෙන්දේසිය සම්බන්ධීකරණය කරන්න.",
+                 "CRITICAL","Within 48hrs" if _R=="en" else "පැය 48 ඇතුළත","All regional centres — coordinate military logistics if needed" if _R=="en" else "සියලු කලාපීය මධ්‍යස්ථාන — අවශ්‍ය නම් හමුදා සැපයුම් සම්බන්ධීකරණය"),
+                ("🌐",
+                 "Emergency Import Authorisation" if _R=="en" else "හදිසි ආනයන අනුමැතිය",
+                 "Fast-track import permits for coconut from India/Philippines to bridge supply gap." if _R=="en" else "සැපයුම් හිඟය පියවා ගැනීමට ඉන්දියාව/පිලිපීනය සිට පොල් ආනයන බලපත්‍ර ඉක්මනින් ලබා දෙන්න.",
+                 "CRITICAL","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","Ministry of Trade emergency order — waive normal 45-day process" if _R=="en" else "වෙළඳ අමාත්‍යාංශ හදිසි නියෝගය — සාමාන්‍ය දින 45 ක්‍රියාවලිය ඉවත් කරන්න"),
+                ("💵",
+                 "Cash Transfer to Vulnerable Households" if _R=="en" else "අවදානම් ගෘහ සඳහා මුදල් හුවමාරු",
+                 "Rs. 2,500 per household hardship payment via Samurdhi mechanism for bottom 30%." if _R=="en" else "පහළ 30% සඳහා සමෘද්ධි යාන්ත්‍රණය හරහා ගෘහ සඳහා රු. 2,500 ක දුෂ්කරතා ගෙවීම.",
+                 "CRITICAL","Within 2 weeks" if _R=="en" else "සති 2 ඇතුළත","Rs. 12B — emergency supplementary estimate" if _R=="en" else "රු. 12B — හදිසි අතිරේක ඇස්තමේන්තුව"),
+                ("📡",
+                 "Daily National Price Broadcast" if _R=="en" else "දෛනික ජාතික මිල විකාශය",
+                 "Daily 8PM TV/radio broadcast of official controlled prices and where to buy." if _R=="en" else "නිල පාලිත මිල සහ මිල දී ගත හැකි ස්ථාන ගැන දිනපතා රාත්‍රී 8 TV/ගුවන් විදුලි විකාශය.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","SLRC coordination — Rs. 2M production budget" if _R=="en" else "SLRC සම්බන්ධීකරණය — රු. 2M නිෂ්පාදන අයවැය"),
+                ("🔎",
+                 "Anti-Hoarding Enforcement" if _R=="en" else "ගබඩා කිරීම් විරෝධී ක්‍රියාත්මක කිරීම",
+                 "CAA/Police joint teams to inspect large warehouses for hoarding. Penalties up to Rs. 5M." if _R=="en" else "ගබඩා කිරීම් සඳහා විශාල ගබඩා පරීක්ෂා කිරීමට CAA/පොලිස් ඒකාබද්ධ කණ්ඩායම්. දඩ රු. 5M දක්වා.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","District secretariat coordination required" if _R=="en" else "දිස්ත්‍රික් ලේකම් කාර්යාල සම්බන්ධීකරණය අවශ්‍ය"),
             ],
             "business": [
-                ("🆘","Activate Business Continuity Protocol","Implement pre-agreed crisis supply chain procedures. Identify alternative inputs immediately.",
-                 "CRITICAL","Immediate","Board-level decision required"),
-                ("🏦","Secure Emergency Credit Lines","Apply for SME Emergency Credit from NDB/BOC at 6% crisis rate before demand exceeds capacity.",
-                 "CRITICAL","Within 3 days","NDB/BOC — Rs. 50M facility available"),
-                ("📦","Reduce Production Volumes","Temporarily reduce production of commodity lines. Maintain only high-margin premium products.",
-                 "HIGH","Immediate","Protect working capital — prioritise cash flow"),
-                ("🔄","Source Alternative Raw Materials","Explore palm oil, sunflower — partial substitution in cooking oil lines until crisis passes.",
-                 "HIGH","Within 1 week","SLSI approval may be required for labelling change"),
-                ("📣","Customer Communication","Proactively communicate price increases to retail partners with written justification.",
-                 "HIGH","Within 2 days","Prevents channel conflict — protect long-term relationships"),
-                ("💼","Engage Industry Association","Coconut Industry Collective Action — joint lobbying for import duty relief and government support.",
-                 "MEDIUM","This week","CDA Industry Association: +94 11 243 0610"),
+                ("🆘",
+                 "Activate Business Continuity Protocol" if _R=="en" else "ව්‍යාපාර අඛණ්ඩතා ක්‍රියාවලිය සක්‍රිය කරන්න",
+                 "Implement pre-agreed crisis supply chain procedures. Identify alternative inputs immediately." if _R=="en" else "පූර්ව-එකඟ වූ අර්බුද සැපයුම් දාම ක්‍රියාවලි ක්‍රියාත්මක කරන්න. විකල්ප ආදාන ක්ෂණිකව හඳුනා ගන්න.",
+                 "CRITICAL","Immediate" if _R=="en" else "ක්ෂණිකව","Board-level decision required" if _R=="en" else "මණ්ඩල මට්ටමේ තීරණය අවශ්‍ය"),
+                ("🏦",
+                 "Secure Emergency Credit Lines" if _R=="en" else "හදිසි ණය රේඛා සුරක්ෂිත කරගන්න",
+                 "Apply for SME Emergency Credit from NDB/BOC at 6% crisis rate before demand exceeds capacity." if _R=="en" else "ඉල්ලුම ධාරිතාවය ඉක්මවීමට පෙර 6% අර්බුද අනුපාතයේ NDB/BOC SME හදිසි ණය සඳහා ඉල්ලුම් කරන්න.",
+                 "CRITICAL","Within 3 days" if _R=="en" else "දින 3 ඇතුළත","NDB/BOC — Rs. 50M facility available" if _R=="en" else "NDB/BOC — රු. 50M පහසුකම් ලබා ගත හැකිය"),
+                ("📦",
+                 "Reduce Production Volumes" if _R=="en" else "නිෂ්පාදන ප්‍රමාණ අඩු කරන්න",
+                 "Temporarily reduce production of commodity lines. Maintain only high-margin premium products." if _R=="en" else "ගොවිතැන් නිෂ්පාදන රේඛා තාවකාලිකව අඩු කරන්න. ඉහළ ආන්තිකයෙන් යුතු ශ්‍රේෂ්ඨ නිෂ්පාදන පමණක් ලාභදායි ලෙස නිෂ්පාදනය කරන්න.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","Protect working capital — prioritise cash flow" if _R=="en" else "ශ්‍රම ප්‍රාග්ධනය ආරක්ෂා කරන්න — මුදල් ප්‍රවාහයට ප්‍රමුඛතාවය"),
+                ("🔄",
+                 "Source Alternative Raw Materials" if _R=="en" else "විකල්ප අමු ද්‍රව්‍ය ලබා ගන්න",
+                 "Explore palm oil, sunflower — partial substitution in cooking oil lines until crisis passes." if _R=="en" else "අර්බුදය ගතවන තෙක් ඉවුම් පිහුම් තෙල් රේඛාවල අර්ධ ආදේශනය සඳහා පාම් තෙල්, සූරියකාන්ත ගවේෂණය කරන්න.",
+                 "HIGH","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","SLSI approval may be required for labelling change" if _R=="en" else "ලේබල් වෙනස් කිරීමට SLSI අනුමැතිය අවශ්‍ය විය හැක"),
+                ("📣",
+                 "Customer Communication" if _R=="en" else "ගනුදෙනුකරු සන්නිවේදනය",
+                 "Proactively communicate price increases to retail partners with written justification." if _R=="en" else "ලිඛිත සාධාරණීකරණයක් සහිතව සිල්ලර හවුල්කරුවන්ට ක්‍රියාශීලීව මිල ඉහළ යාම ගැන දැනුම් දෙන්න.",
+                 "HIGH","Within 2 days" if _R=="en" else "දින 2 ඇතුළත","Prevents channel conflict — protect long-term relationships" if _R=="en" else "නාලිකා ගැටුම් වළක්වයි — දිගු කාලීන සම්බන්ධතා ආරක්ෂා කරයි"),
+                ("💼",
+                 "Engage Industry Association" if _R=="en" else "කර්මාන්ත සංගමය සමග කටයුතු කරන්න",
+                 "Coconut Industry Collective Action — joint lobbying for import duty relief and government support." if _R=="en" else "පොල් කර්මාන්ත සාමූහික ක්‍රියාව — ආනයන බදු සහනය සහ රජු සහාය සඳහා ඒකාබද්ධ ශ්‍රමය.",
+                 "MEDIUM","This week" if _R=="en" else "මෙම සතිය","CDA Industry Association: +94 11 243 0610"),
             ],
             "farmer": [
-                ("💰","Maximise Harvest Immediately","Rush all harvestable nuts to market before government price controls reduce ceiling.",
-                 "CRITICAL","Next 3-5 days","All 6 auction centres operating emergency sessions"),
-                ("📞","Call CDA Emergency Helpline","Register for emergency farmer support — income protection payments being processed.",
-                 "CRITICAL","Today","CDA Emergency: 1920 (toll-free 24/7)"),
-                ("🛡️","Document Your Costs","Keep all receipts for fertiliser, labour, transport — required for compensation claims.",
-                 "HIGH","Immediate","CDA compensation forms available at regional offices"),
-                ("🌱","Do Not Sell Seedlings/Young Trees","Crisis will pass. Do not liquidate productive assets for short-term cash.",
-                 "HIGH","Now","Long-term income protection — very important"),
-                ("🤝","Apply for Samurdhi Emergency Aid","Farming households affected by crisis can apply for Rs. 3,500/month emergency support.",
-                 "HIGH","Within 1 week","Divisional Secretariat — bring NIC and CDA registration"),
-                ("📋","Report Price Manipulation","If brokers or middlemen offering below-auction prices — report immediately.",
-                 "MEDIUM","If occurs","CAA hotline: 1977 (Consumer Affairs Authority)"),
+                ("💰",
+                 "Maximise Harvest Immediately" if _R=="en" else "ක්ෂණිකව අස්වනු උපරිම කරන්න",
+                 "Rush all harvestable nuts to market before government price controls reduce ceiling." if _R=="en" else "රජයේ මිල පාලනය කූඩාව අඩු කිරීමට පෙර අස්වනු ලබා ගත හැකි සියලු ගෙඩි ඉක්මනින් වෙළඳපොළට ගෙන යන්න.",
+                 "CRITICAL","Next 3-5 days" if _R=="en" else "ඉදිරි දින 3-5","All 6 auction centres operating emergency sessions" if _R=="en" else "වෙන්දේසි මධ්‍යස්ථාන 6 ම හදිසි සැසි ක්‍රියාත්මක කරයි"),
+                ("📞",
+                 "Call CDA Emergency Helpline" if _R=="en" else "CDA හදිසි ආධාර රේඛාව අමතන්න",
+                 "Register for emergency farmer support — income protection payments being processed." if _R=="en" else "හදිසි ගොවි සහාය සඳහා ලියාපදිංචි වන්න — ආදායම් ආරක්ෂා ගෙවීම් සකස් කෙරේ.",
+                 "CRITICAL","Today" if _R=="en" else "අද","CDA Emergency: 1920 (toll-free 24/7)"),
+                ("🛡️",
+                 "Document Your Costs" if _R=="en" else "ඔබේ පිරිවැය ලේඛනගත කරන්න",
+                 "Keep all receipts for fertiliser, labour, transport — required for compensation claims." if _R=="en" else "පොහොර, ශ්‍රම, ප්‍රවාහන සියලු රිසිට්පත් රඳවා ගන්න — වන්දි ඉල්ලීම් සඳහා අවශ්‍ය.",
+                 "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","CDA compensation forms available at regional offices" if _R=="en" else "CDA වන්දි ෆෝරම කලාපීය කාර්යාලවල ලබා ගත හැකිය"),
+                ("🌱",
+                 "Do Not Sell Seedlings/Young Trees" if _R=="en" else "පැළ/තරුණ ගස් විකිණීම නොකරන්න",
+                 "Crisis will pass. Do not liquidate productive assets for short-term cash." if _R=="en" else "අර්බුදය ගතවනු ඇත. කෙටි කාලීන මුදල් සඳහා ඵලදායි වත්කම් ලිදිවිය නොකරන්න.",
+                 "HIGH","Now" if _R=="en" else "දැන්","Long-term income protection — very important" if _R=="en" else "දිගු කාලීන ආදායම් ආරක්ෂාව — ඉතා වැදගත්"),
+                ("🤝",
+                 "Apply for Samurdhi Emergency Aid" if _R=="en" else "සමෘද්ධි හදිසි ආධාර ඉල්ලන්න",
+                 "Farming households affected by crisis can apply for Rs. 3,500/month emergency support." if _R=="en" else "අර්බුදයෙන් බලපෑමට ලක් වූ ගොවි ගෘහ මාසිකව රු. 3,500 ක හදිසි සහාය සඳහා ඉල්ලුම් කළ හැකිය.",
+                 "HIGH","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","Divisional Secretariat — bring NIC and CDA registration" if _R=="en" else "ප්‍රාදේශීය ලේකම් — NIC සහ CDA ලියාපදිංචිය රැගෙන යන්න"),
+                ("📋",
+                 "Report Price Manipulation" if _R=="en" else "මිල හිරිහැර වාර්තා කරන්න",
+                 "If brokers or middlemen offering below-auction prices — report immediately." if _R=="en" else "තැරැව්කරුවන් හෝ මැදිහත්කරුවන් වෙන්දේසිට අඩු මිල ඉදිරිපත් කරන්නේ නම් — ක්ෂණිකව වාර්තා කරන්න.",
+                 "MEDIUM","If occurs" if _R=="en" else "සිදු වේ නම්","CAA hotline: 1977 (Consumer Affairs Authority)" if _R=="en" else "CAA ආධාර: 1977 (පාරිභෝගික කටයුතු අධිකාරිය)"),
             ],
         },
     }
@@ -1354,7 +1458,7 @@ elif t["nav"][3] in sec_name:
 
     # ── Render all 3 stakeholder tabs ──────────────────────────────────────────
     tab_gov, tab_biz, tab_farm = st.tabs([
-        "🏛️ " + ("Government & Policymakers" if lang=="en" else "රජය සහ ප්‍රතිපත්ති立案 කරන්නන්"),
+        "🏛️ " + ("Government & Policymakers" if lang=="en" else "රජය සහ ප්‍රතිපත්ති සම්පාදකයන්"),
         "💼 " + ("Businesses & Traders" if lang=="en" else "ව්‍යාපාරිකයන් සහ වෙළෙන්දන්"),
         "👨‍🌾 " + ("Coconut Farmers" if lang=="en" else "පොල් ගොවීන්"),
     ])
@@ -1600,33 +1704,33 @@ elif t["nav"][3] in sec_name:
     from datetime import datetime
     report_lines = [
         f"COCOStat – Strategic Recommendation Report",
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-        f"Current Market Regime: {regime_name}",
-        f"Current Price: Rs. {current_price:.2f}",
-        f"12-Month Average: Rs. {avg_12m:.2f}",
-        f"Price Volatility (CV): {cv:.1f}%",
+        f"{'Generated' if lang=='en' else 'ජනනය කළ දිනය'}: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        f"{'Current Market Regime' if lang=='en' else 'වත්මන් වෙළඳ තත්ත්වය'}: {regime_name}",
+        f"{'Current Price' if lang=='en' else 'වත්මන් මිල'}: Rs. {current_price:.2f}",
+        f"{'12-Month Average' if lang=='en' else 'මාස 12 සාමාන්‍යය'}: Rs. {avg_12m:.2f}",
+        f"{'Price Volatility (CV)' if lang=='en' else 'මිල අස්ථාවරතාව (CV)'}: {cv:.1f}%",
         "",
         "=" * 60,
-        "POLICY SIMULATOR RESULTS",
+        "POLICY SIMULATOR RESULTS" if lang=="en" else "ප්‍රතිපත්ති අනුකරණ ප්‍රතිඵල",
         "=" * 60,
-        f"Buffer Stock Release:  {buffer_stock}%",
-        f"Import Duty Change:    {import_duty:+}%",
-        f"Farmer Subsidy:        {subsidy_pct}%",
-        f"Price Floor:           Rs. {price_floor}",
-        f"Export Quota Cut:      {export_quota}%",
-        f"Projected Price:       Rs. {price_impact:.2f} ({delta_pct:+.1f}%)",
-        f"Policy Verdict:        {verdict_title}",
+        f"{'Buffer Stock Release' if lang=='en' else 'බෆර් තොග මුදා හැරීම'}:  {buffer_stock}%",
+        f"{'Import Duty Change' if lang=='en' else 'ආනයන බදු වෙනස'}:    {import_duty:+}%",
+        f"{'Farmer Subsidy' if lang=='en' else 'ගොවි සහාය'}:        {subsidy_pct}%",
+        f"{'Price Floor' if lang=='en' else 'අවම මිල'}:           Rs. {price_floor}",
+        f"{'Export Quota Cut' if lang=='en' else 'අපනයන සීමා කප්පාදු'}:      {export_quota}%",
+        f"{'Projected Price' if lang=='en' else 'ඉදිරි මිල'}:       Rs. {price_impact:.2f} ({delta_pct:+.1f}%)",
+        f"{'Policy Verdict' if lang=='en' else 'ප්‍රතිපත්ති තීරණය'}:        {verdict_title}",
         "",
         "=" * 60,
-        f"GOVERNMENT RECOMMENDATIONS ({regime_name})",
+        f"{'GOVERNMENT RECOMMENDATIONS' if lang=='en' else 'රජු නිර්දේශ'} ({regime_name})",
         "=" * 60,
     ]
     for icon, title, desc, priority, timing, resource in recs["government"]:
         report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
-    report_lines += ["", "=" * 60, f"BUSINESS RECOMMENDATIONS ({regime_name})", "=" * 60]
+    report_lines += ["", "=" * 60, f"{'BUSINESS RECOMMENDATIONS' if lang=='en' else 'ව්‍යාපාර නිර්දේශ'} ({regime_name})", "=" * 60]
     for icon, title, desc, priority, timing, resource in recs["business"]:
         report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
-    report_lines += ["", "=" * 60, f"FARMER RECOMMENDATIONS ({regime_name})", "=" * 60]
+    report_lines += ["", "=" * 60, f"{'FARMER RECOMMENDATIONS' if lang=='en' else 'ගොවි නිර්දේශ'} ({regime_name})", "=" * 60]
     for icon, title, desc, priority, timing, resource in recs["farmer"]:
         report_lines += [f"\n[{priority}] {title}", f"  {desc}", f"  ⏱ {timing} | 💡 {resource}"]
     report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
@@ -1640,8 +1744,12 @@ elif t["nav"][3] in sec_name:
             mime="text/plain", use_container_width=True)
     with dl2:
         import io
-        csv_rows = [["Stakeholder","Priority","Action","Description","Timing","Resource"]]
-        for stakeholder, recs_list in [("Government",recs["government"]),("Business",recs["business"]),("Farmer",recs["farmer"])]:
+        csv_rows = [["Stakeholder","Priority","Action","Description","Timing","Resource"] if lang=="en"
+                    else ["පාර්ශ්වය","ප්‍රමුඛතාවය","ක්‍රියාව","විස්තරය","කාලය","සම්පත"]]
+        _gov_lbl  = "Government" if lang=="en" else "රජය"
+        _biz_lbl  = "Business"   if lang=="en" else "ව්‍යාපාරය"
+        _farm_lbl = "Farmer"     if lang=="en" else "ගොවිය"
+        for stakeholder, recs_list in [(_gov_lbl,recs["government"]),(_biz_lbl,recs["business"]),(_farm_lbl,recs["farmer"])]:
             for icon, title, desc, priority, timing, resource in recs_list:
                 csv_rows.append([stakeholder, priority, title, desc, timing, resource])
         csv_buf = io.StringIO()
@@ -2123,15 +2231,17 @@ elif t["nav"][7] in sec_name:
     ap=history_df.groupby("year")["price"].mean().reset_index()
     me=export_df.merge(ap,on="year",how="inner")
     fig_ep=make_subplots(specs=[[{"secondary_y":True}]])
-    fig_ep.add_trace(go.Bar(x=me["year"].astype(str),y=me["Total"],name="Export Revenue ($M)",
+    fig_ep.add_trace(go.Bar(x=me["year"].astype(str),y=me["Total"],
+        name=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),
         marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>$%{y}M<extra></extra>"),secondary_y=False)
-    fig_ep.add_trace(go.Scatter(x=me["year"].astype(str),y=me["price"],name="Domestic Price (Rs.)",
+    fig_ep.add_trace(go.Scatter(x=me["year"].astype(str),y=me["price"],
+        name=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),
         line=dict(color="#f59e0b",width=2.5),mode="lines+markers",marker=dict(size=7),
         hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"),secondary_y=True)
     fig_ep.update_layout(height=300,margin=dict(l=20,r=60,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
-    fig_ep.update_yaxes(title_text="Export Revenue ($M)",secondary_y=False,gridcolor="#e8f5e9",tickprefix="$",ticksuffix="M")
-    fig_ep.update_yaxes(title_text="Domestic Price (Rs.)",secondary_y=True,showgrid=False,tickprefix="Rs.")
+    fig_ep.update_yaxes(title_text=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),secondary_y=False,gridcolor="#e8f5e9",tickprefix="$",ticksuffix="M")
+    fig_ep.update_yaxes(title_text=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),secondary_y=True,showgrid=False,tickprefix="Rs.")
     st.plotly_chart(fig_ep,use_container_width=True,config={"displayModeBar":"hover"})
     divider()
 
@@ -2190,7 +2300,9 @@ elif t["nav"][8] in sec_name:
         st.markdown("#### \U0001f4a7 "+("Revenue Waterfall" if lang=="en" else "\u0d86\u0daf\u0dcf\u0dba\u0db8\u0dca \u0daf\u0dd2\u0dba \u0d87\u0dbd\u0dca\u0dbd"))
         fig_wf=go.Figure(go.Waterfall(orientation="v",
             measure=["absolute","relative","relative","relative","relative","total"],
-            x=["Gross Revenue","Labour","Fertilizer","Transport","Other","Net Profit"],
+            x=(["Gross Revenue","Labour","Fertilizer","Transport","Other","Net Profit"]
+               if lang=="en" else
+               ["දළ ආදායම","ශ්‍රමය","පොහොර","ප්‍රවාහනය","වෙනත්","ශුද්ධ ලාභය"]),
             y=[gross_rev,-labour_ann,-fert_year,-transport,-other,net_profit],
             connector=dict(line=dict(color="#94a3b8",width=1.5)),
             increasing=dict(marker=dict(color="#16a34a")),decreasing=dict(marker=dict(color="#ef4444")),totals=dict(marker=dict(color=pc_)),
@@ -2206,16 +2318,19 @@ elif t["nav"][8] in sec_name:
         fig_be.add_trace(go.Scatter(x=pr_be,y=pr_be*total_nuts-total_cost,mode="lines",line=dict(color="#16a34a",width=2.5),showlegend=False,
             hovertemplate="Price: Rs.%{x:.1f}<br>Profit: Rs.%{y:,.0f}<extra></extra>"))
         fig_be.add_hline(y=0,line_dash="dash",line_color="#ef4444",annotation_text="Break-even" if lang=="en" else "\u0DC1\u0dda\u0DC2 \u0dc3\u0dca\u0da5\u0dcf\u0db1\u0dba")
-        fig_be.add_vline(x=sell_price,line_dash="dot",line_color="#f59e0b",annotation_text=f"Current Rs.{sell_price}",annotation_position="top right")
-        fig_be.add_vline(x=be_price,line_dash="dash",line_color="#ef4444",annotation_text=f"BE Rs.{be_price:.1f}",annotation_position="bottom right")
+        fig_be.add_vline(x=sell_price,line_dash="dot",line_color="#f59e0b",
+            annotation_text=("Current" if lang=="en" else "වත්මන්")+f" Rs.{sell_price}",annotation_position="top right")
+        fig_be.add_vline(x=be_price,line_dash="dash",line_color="#ef4444",
+            annotation_text=f"BE Rs.{be_price:.1f}",annotation_position="bottom right")
         fig_be.update_layout(height=260,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-            xaxis=dict(title="Price per Nut (Rs.)",showgrid=False),yaxis=dict(title="Net Profit (Rs.)",gridcolor="#e8f5e9"),showlegend=False)
+            xaxis=dict(title=("Price per Nut (Rs.)" if lang=="en" else "ගෙඩියකට මිල (රු.)"),showgrid=False),
+            yaxis=dict(title=("Net Profit (Rs.)" if lang=="en" else "ශුද්ධ ලාභය (රු.)"),gridcolor="#e8f5e9"),showlegend=False)
         st.plotly_chart(fig_be,use_container_width=True,config={"displayModeBar":"hover"})
         bev=sell_price-be_price; bec="#22c55e" if bev>0 else "#ef4444"
         st.markdown(f"""<div style='background:#f8fafc;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
             <div style='font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:4px;'>{"Break-Even Price" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0da5\u0dcf\u0db1 \u0db8\u0dd2\u0dbd"}</div>
             <div style='font-size:1.4rem;font-weight:900;color:{bec};'>Rs.{be_price:.2f}</div>
-            <div style=\'font-size:.78rem;color:{bec};margin-top:4px;\'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} current</div></div>""",unsafe_allow_html=True)
+            <div style=\'font-size:.78rem;color:{bec};margin-top:4px;\'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} {"current" if lang=="en" else "වත්මනින්"}</div></div>""",unsafe_allow_html=True)
     divider()
 
     st.markdown("#### \U0001f4c8 "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0da4\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0dbb\u0dca \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
@@ -2223,7 +2338,7 @@ elif t["nav"][8] in sec_name:
     prf=[p*total_nuts-total_cost for p in ps]
     fig_ps=go.Figure(go.Bar(x=[f"Rs.{p}" for p in ps],y=prf,marker_color=["#22c55e" if v>0 else "#ef4444" for v in prf],
         text=[f"Rs.{v:,.0f}" for v in prf],textposition="outside",textfont=dict(size=9),
-        hovertemplate="Price: %{x}<br>Profit: Rs.%{y:,.0f}<extra></extra>"))
+        hovertemplate=("Price" if lang=="en" else "මිල")+": %{x}<br>"+("Profit" if lang=="en" else "ලාභය")+": Rs.%{y:,.0f}<extra></extra>"))
     fig_ps.add_hline(y=0,line_dash="dash",line_color="#94a3b8")
     fig_ps.update_layout(height=280,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs."),showlegend=False)
@@ -2259,9 +2374,11 @@ elif t["nav"][9] in sec_name:
             "days": "Monday, Wednesday, Friday",
             "time": "7:30 AM – 10:00 AM",
             "type": "Whole Nuts & Copra",
+            "si_type": "සම්පූර්ණ ගෙඩි සහ කොප්රා",
             "authority": "HARTI / CDA",
             "phone": "+94 11 259 1919",
             "note": "Largest & most active auction. Sets the national benchmark price.",
+            "si_note": "විශාලතම සහ වඩාත් ක්‍රියාශීලී වෙන්දේසිය. ජාතික මිල නිශ්චය කරයි.",
             "clr": "#16a34a",
         },
         {
@@ -2271,9 +2388,11 @@ elif t["nav"][9] in sec_name:
             "days": "Tuesday, Thursday",
             "time": "8:00 AM – 10:30 AM",
             "type": "Whole Nuts",
+            "si_type": "සම්පූර්ණ ගෙඩි",
             "authority": "CDA",
             "phone": "+94 37 222 2250",
             "note": "Main centre for Kurunegala district — Sri Lanka's largest coconut belt.",
+            "si_note": "කුරුණෑගල දිස්ත්‍රික්කයේ ප්‍රධාන මධ්‍යස්ථානය — ශ්‍රී ලංකාවේ විශාලතම පොල් කලාපය.",
             "clr": "#3b82f6",
         },
         {
@@ -2283,9 +2402,11 @@ elif t["nav"][9] in sec_name:
             "days": "Monday, Friday",
             "time": "8:00 AM – 10:00 AM",
             "type": "Whole Nuts & Coconut Oil",
+            "si_type": "සම්පූර්ණ ගෙඩි සහ පොල් තෙල්",
             "authority": "CDA",
             "phone": "+94 32 222 5120",
             "note": "Covers northern coconut triangle; strong copra and oil trade.",
+            "si_note": "උතුරු පොල් ත්‍රිකෝණය ආවරණය කරයි; ශක්තිමත් කොප්රා සහ තෙල් වෙළඳාම.",
             "clr": "#f59e0b",
         },
         {
@@ -2295,9 +2416,11 @@ elif t["nav"][9] in sec_name:
             "days": "Tuesday, Thursday, Saturday",
             "time": "7:00 AM – 9:30 AM",
             "type": "Whole Nuts & Desiccated Coconut",
+            "si_type": "සම්පූර්ණ ගෙඩි සහ ගම්මිරිස් කළ පොල්",
             "authority": "HARTI",
             "phone": "+94 33 222 3100",
             "note": "Serves Western Province. High volume during peak harvest months.",
+            "si_note": "බස්නාහිර පළාත සේවය කරයි. උච්ච අස්වනු මාසවලදී ඉහළ පරිමාව.",
             "clr": "#8b5cf6",
         },
         {
@@ -2307,9 +2430,11 @@ elif t["nav"][9] in sec_name:
             "days": "Wednesday, Saturday",
             "time": "8:30 AM – 10:30 AM",
             "type": "Whole Nuts",
+            "si_type": "සම්පූර්ණ ගෙඩි",
             "authority": "HARTI / CDA",
             "phone": "+94 41 222 2440",
             "note": "Key centre for Southern Province coconut growers.",
+            "si_note": "දකුණු පළාත් පොල් ගොවීන් සඳහා ප්‍රධාන මධ්‍යස්ථානය.",
             "clr": "#ef4444",
         },
         {
@@ -2319,9 +2444,11 @@ elif t["nav"][9] in sec_name:
             "days": "Monday, Thursday",
             "time": "8:00 AM – 10:00 AM",
             "type": "Whole Nuts & Coconut Milk",
+            "si_type": "සම්පූර්ණ ගෙඩි සහ පොල් කිරි",
             "authority": "HARTI",
             "phone": "+94 34 222 5300",
             "note": "Significant trade in coconut milk products alongside whole nuts.",
+            "si_note": "සම්පූර්ණ ගෙඩිවලට අමතරව පොල් කිරි නිෂ්පාදනවල සැලකිය යුතු වෙළඳාම.",
             "clr": "#06b6d4",
         },
     ]
@@ -2332,6 +2459,8 @@ elif t["nav"][9] in sec_name:
         cols = st.columns(3)
         for col, c in zip(cols, row_centres):
             name_display = c["si_name"] if lang == "si" else c["name"]
+            type_display = c["si_type"] if lang == "si" else c["type"]
+            note_display = c["si_note"] if lang == "si" else c["note"]
             with col:
                 st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid {c["clr"]};
                     border-radius:12px;padding:18px 16px;margin-bottom:14px;height:280px;display:flex;flex-direction:column;justify-content:space-between;'>
@@ -2342,12 +2471,12 @@ elif t["nav"][9] in sec_name:
                         📍 {c["venue"]}<br>
                         📅 {c["days"]}<br>
                         🕗 {c["time"]}<br>
-                        📦 {c["type"]}<br>
+                        📦 {type_display}<br>
                         📞 {c["phone"]}
                       </div>
                     </div>
                     <div style='font-size:.68rem;color:{c["clr"]};font-weight:600;margin-top:8px;background:{c["clr"]}11;
-                        padding:6px 8px;border-radius:6px;line-height:1.4;'>💡 {c["note"]}</div>
+                        padding:6px 8px;border-radius:6px;line-height:1.4;'>💡 {note_display}</div>
                 </div>""", unsafe_allow_html=True)
     divider()
 
@@ -2443,7 +2572,7 @@ elif t["nav"][9] in sec_name:
     bar_colors = ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"]
     fig_grades = go.Figure()
     fig_grades.add_trace(go.Bar(
-        name="Min (base)", x=grade_labels, y=gmins,
+        name=("Min (base)" if lang=="en" else "අවම (පාදම)"), x=grade_labels, y=gmins,
         marker_color="rgba(0,0,0,0)", showlegend=False, hoverinfo="skip"))
     fig_grades.add_trace(go.Bar(
         name=("Price Range" if lang=="en" else "මිල පරාසය"), x=grade_labels,
