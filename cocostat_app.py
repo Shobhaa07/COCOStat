@@ -106,6 +106,7 @@ export_df, destinations_df = generate_export_data()
 global_price_df, production_df = generate_global_data()
 PRODUCT_COLS = ["Desiccated Coconut","Coconut Oil","Coconut Milk","Coir Products","Fresh Nuts","Activated Carbon"]
 PRODUCT_COLORS = ["#16a34a","#3b82f6","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
+PRODUCT_NAMES_SI = ["ගම්මිරිස් කළ පොල්","පොල් තෙල්","පොල් කිරි","කොයිර් නිෂ්පාදන","නැවුම් ගෙඩි","සක්‍රිය කාබන්"]
 
 # ─────────────────────────────────────────────
 # TRANSLATIONS
@@ -196,8 +197,8 @@ T = {
         "subtitle": "\u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0db6\u0dd4\u0daf\u0dca\u0db0\u0dd2\u0db8\u0dad\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
         "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0dc4\u0dd9\u0dc5\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
-        "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba & \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 & \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 & \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
-                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab & \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 & \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
+        "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba \u0dc3\u0dc4 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0dc4 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
+                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
         "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f52e","\U0001f3db","\U0001f50d","\U0001f9e0",
                      "\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
@@ -241,7 +242,7 @@ T = {
         "compare_sub":"\u0dc3\u0dd8\u0dad\u0dd4\u0db8\u0dba \u0dbb\u0da7\u0dcf \u0dc4\u0db3\u0dd4\u0db1\u0dcf \u0d9c\u0dd9\u0db1\u0dd3\u0db8\u0da7.",
         "price_calc_title":"\U0001f4b0 \u0db8\u0dd2\u0dbd \u0db6\u0dbd\u0db4\u0dcf\u0db8\u0dca \u0d9a\u0dd0\u0dbd\u0dca\u0d9a\u0dd2\u0dba\u0dd4\u0dbd\u0dda\u0da7\u0dbb\u0dba",
         "price_calc_sub":"\u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca \u0d9c\u0dd0\u0dc4\u0dc3\u0dca\u0dad \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0d9a\u0dd9\u0dc3\u0dda \u0db6\u0dbd\u0db4\u0dcf\u0daf\u0dd0\u0dba\u0dd2 \u0d9c\u0dab\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
-        "nuts_per_week":"\u0dc3\u0dad\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0db1\u0dca\u0db1 \u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd0\u0da9\u0dd2","current_price_input":"\u0daf\u0dd0\u0db1\u0da7 \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)","new_price_input":"\u0db1\u0dc0 \u0d9c\u0dd0\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)",
+        "nuts_per_week":"\u0dc3\u0dad\u0dd2\u0dba\u0d9a\u0da7 \u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2","current_price_input":"\u0daf\u0dd0\u0db1\u0da7 \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)","new_price_input":"\u0db1\u0dc0 \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4.)",
         "weekly_impact":"\u0dc3\u0dad\u0dd2\u0db4\u0dad\u0dcf \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3","monthly_impact":"\u0db8\u0dcf\u0dc3\u0dd2\u0d9a\u0dc0 \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3","annual_impact":"\u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a\u0dc0 \u0dc0\u0dd2\u0dba\u0daf\u0db8\u0dca \u0dc0\u0dd9\u0db1\u0dc3",
         "alert_warn":"\u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d87\u0d9f\u0dc5\u0dd3\u0db8 (\u0dbb\u0dd4.)","alert_crisis":"\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d87\u0d9f\u0dc5\u0dd3\u0db8 (\u0dbb\u0dd4.)",
         # NEW
@@ -1290,7 +1291,7 @@ elif t["nav"][3] in sec_name:
                  "HIGH","Within 3 days" if _R=="en" else "දින 3 ඇතුළත","Rs. 5M — public communications budget" if _R=="en" else "රු. 5M — මහජන සන්නිවේදන අයවැය"),
                 ("🏦",
                  "Activate Price Stabilisation Fund" if _R=="en" else "මිල ස්ථාවරීකරණ අරමුදල සක්‍රිය කරන්න",
-                 "Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation." if _R=="en" else "ස්ථාවරීකරණ අරමුදල යෙදවීමට සූදානම සංඥා කරන්න. වෙළඳ දැනුවත්කම පමණින් 투機ය අඩු කළ හැකිය.",
+                 "Signal readiness to deploy stabilisation fund. Market awareness alone can reduce speculation." if _R=="en" else "ස්ථාවරීකරණ අරමුදල යෙදවීමට සූදානම සංඥා කරන්න. වෙළඳ දැනුවත්කම පමණින් ද ශේෂකාරිත්වය අඩු කළ හැකිය.",
                  "HIGH","Within 1 week" if _R=="en" else "සතියක් ඇතුළත","Rs. 500M fund — Cabinet authorisation required" if _R=="en" else "රු. 500M අරමුදල — කැබිනට් අනුමැතිය අවශ්‍ය"),
                 ("🌾",
                  "Accelerate Harvest Support" if _R=="en" else "අස්වනු සහාය ත්වරාන්විත කරන්න",
@@ -1597,7 +1598,7 @@ elif t["nav"][3] in sec_name:
             ("🔋",
              "Activated Carbon" if lang=="en" else "සක්‍රිය කාබන්",
              "MEDIUM",
-             "High-value industrial product from coconut shell. Margins 4x raw nuts." if lang=="en" else "පොල් කටු වලින් ලබාගත් අධි-අගය කාර්මික නිෂ්පාදනය. ලාභ ආන්තිකය 날 ගෙඩිවලට වඩා 4 ගුණයකි."),
+             "High-value industrial product from coconut shell. Margins 4x raw nuts." if lang=="en" else "පොල් කටු වලින් ලබාගත් අධි-අගය කාර්මික නිෂ්පාදනය. ලාභ ආන්තිකය නැවුම් ගෙඩිවලට වඩා 4 ගුණයකි."),
             ("🏝",
              "Agro-Tourism" if lang=="en" else "කෘෂිකාර්මික සංචාරය",
              "MEDIUM",
@@ -2201,7 +2202,8 @@ elif t["nav"][7] in sec_name:
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
         ("\U0001f4e6 Total Exports (Latest Yr)" if lang=="en" else "\U0001f4e6 \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#16a34a"),
         ("\U0001f4c8 YoY Growth" if lang=="en" else "\U0001f4c8 \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0daf\u0dc4\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
-        ("\U0001f3c6 Top Product" if lang=="en" else "\U0001f3c6 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba","Desiccated Coconut","#3b82f6"),
+        ("\U0001f3c6 Top Product" if lang=="en" else "\U0001f3c6 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9a \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba",
+         "Desiccated Coconut" if lang=="en" else "ගම්මිරිස් කළ පොල්","#3b82f6"),
         ("\U0001f30d Top Market" if lang=="en" else "\U0001f30d \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc7\u0dad\u0db4\u0ddc\u0ddc\u0dbd\u0dca","USA (22%)","#8b5cf6")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
@@ -2210,9 +2212,10 @@ elif t["nav"][7] in sec_name:
     with ce1:
         st.markdown("#### \U0001f4ca "+("Export Revenue by Product (USD Million)" if lang=="en" else "\u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d9a\u0dcf\u0da4 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0d86\u0daf\u0dcf\u0dba\u0db8"))
         fig_eb=go.Figure()
-        for pc,pcl in zip(PRODUCT_COLS,PRODUCT_COLORS):
-            fig_eb.add_trace(go.Bar(x=export_df["year"].astype(str),y=export_df[pc],name=pc,marker_color=pcl,
-                hovertemplate=f"<b>%{{x}}</b><br>{pc}: $%{{y}}M<extra></extra>"))
+        _pnames = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
+        for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames):
+            fig_eb.add_trace(go.Bar(x=export_df["year"].astype(str),y=export_df[pc],name=pn,marker_color=pcl,
+                hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
         fig_eb.update_layout(barmode="stack",height=320,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="$",ticksuffix="M"),
             legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
@@ -2248,9 +2251,10 @@ elif t["nav"][7] in sec_name:
     # Individual product trends
     st.markdown("#### \U0001f4c9 "+("Individual Product Export Trends" if lang=="en" else "\u0dad\u0db1\u0dd2 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf"))
     fig_pt=go.Figure()
-    for pc,pcl in zip(PRODUCT_COLS,PRODUCT_COLORS):
-        fig_pt.add_trace(go.Scatter(x=export_df["year"].astype(str),y=export_df[pc],mode="lines+markers",name=pc,
-            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pc}: $%{{y}}M<extra></extra>"))
+    _pnames2 = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
+    for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames2):
+        fig_pt.add_trace(go.Scatter(x=export_df["year"].astype(str),y=export_df[pc],mode="lines+markers",name=pn,
+            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
     fig_pt.update_layout(height=300,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e8f5e9",tickprefix="$",ticksuffix="M"),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
@@ -2540,7 +2544,7 @@ elif t["nav"][9] in sec_name:
              "ගෙඩි ප්‍රමාණය, සතුටුදායකත්වය සහ ගුණාත්මකභාවය අනුව ශ්‍රේණිගත කෙරේ. සම්මත ලොට් = ගෙඩි 1,000. අවම ලොට් ගෙඩි 500.",
              "A ශ්‍රේණිය: ≥12cm. B ශ්‍රේණිය: 10–12cm. C ශ්‍රේණිය: <10cm.","#3b82f6"),
             ("03","ලංසු ක්‍රියාවලිය",
-             "විවෘත ලංසු ක්‍රමය. 競売人 ආරම්භ මිල කියයි. ඉහළම ලංසුකරු ජය ගනී. ගැනුම්කරු පැය 24 ඇතුළත ගෙවිය යුතුය.",
+             "විවෘත ලංසු ක්‍රමය. වෙන්දේසිකරු ආරම්භ මිල කියයි. ඉහළම ලංසුකරු ජය ගනී. ගැනුම්කරු පැය 24 ඇතුළත ගෙවිය යුතුය.",
              "කොළඹ මධ්‍යස්ථානයේ ඉලෙක්ට්‍රොනික ලංසු ක්‍රමය පරීක්ෂාර්ථ ක්‍රියාත්මක වේ.","#f59e0b"),
             ("04","නිරවැද්‍යතාව සහ ප්‍රවාහනය",
              "බැංකු හරහා හෝ සහතිකගත චෙකපත් මගින් ගෙවීම. විකුණුම්කරු ව්‍යාපාරික දින 2ක් ඇතුළත මුදල් ලබා ගනී.",
@@ -2796,9 +2800,9 @@ st.markdown(f"""
   <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:24px;">
     <div style="text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">{_footer_triangle_title}</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Kurunegala</div></div>
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Puttalam</div></div>
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">Gampaha</div></div>
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Kurunegala" if lang=="en" else "කුරුණෑගල"}</div></div>
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Puttalam" if lang=="en" else "පුත්තලම"}</div></div>
+      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Gampaha" if lang=="en" else "ගම්පහ"}</div></div>
     </div>
   </div>
 
