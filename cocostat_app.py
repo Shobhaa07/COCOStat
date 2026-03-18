@@ -374,11 +374,11 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
-        padding:10px 12px;margin-bottom:10px;text-align:center;'>
-      <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
-        🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
-      </div>
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#7c2d12,#ea580c,#f97316);border-radius:12px;
+        padding:12px 14px;margin-bottom:12px;text-align:center;
+        box-shadow:0 4px 16px rgba(234,88,12,0.45);border:1px solid #fb923c;'>
+      <div style='font-size:.68rem;font-weight:900;color:#fff3e0;text-transform:uppercase;letter-spacing:2px;margin-bottom:2px;'>🔥 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}</div>
+      <div style='font-size:.58rem;color:#fed7aa;font-weight:600;letter-spacing:.5px;'>{'Live Market Alert System' if lang=='en' else 'සජීව වෙළඳ අනතුරු ඇඟවීම'}</div>
     </div>""", unsafe_allow_html=True)
 
     current_price    = 68.50
@@ -392,6 +392,13 @@ with st.sidebar:
     crisis_months_sb = int((history_df["price"].tail(12) >= 80).sum())
 
     # Thresholds (user-configurable)
+    st.markdown("""<div style='background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fdba74;
+        border-radius:10px;padding:8px 12px 4px;margin-bottom:4px;
+        box-shadow:0 1px 6px rgba(234,88,12,0.12);'>
+      <div style='font-size:.62rem;font-weight:900;color:#c2410c;text-transform:uppercase;
+          letter-spacing:1.2px;border-bottom:2px solid #fb923c;padding-bottom:4px;margin-bottom:2px;'>
+        🎚️ Alert Thresholds</div>
+    </div>""", unsafe_allow_html=True)
     warn_threshold   = st.slider(
         "⚠️ Warning Level (Rs.)" if lang=="en" else "⚠️ අවවාද සීමාව (රු.)",
         min_value=50, max_value=90, value=65, step=1)
@@ -476,19 +483,21 @@ with st.sidebar:
     # ── Risk Score Gauge ──────────────────
     # Visual bar gauge
     bar_w   = min(int(risk_score), 100)
-    bar_clr = ("#ef4444" if risk_score >= 70 else "#f59e0b" if risk_score >= 45
-               else "#eab308" if risk_score >= 25 else "#22c55e")
-    st.markdown(f"""<div style='background:{rl_bg};border:2px solid {rl_border};border-radius:10px;
-        padding:12px 12px 10px;margin-bottom:8px;'>
+    bar_clr = ("#ef4444" if risk_score >= 70 else "#f97316" if risk_score >= 45
+               else "#fb923c" if risk_score >= 25 else "#fdba74")
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid #fb923c;
+        border-radius:12px;padding:12px 12px 10px;margin-bottom:8px;
+        box-shadow:0 2px 10px rgba(234,88,12,0.18);'>
       <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>
-        <div style='font-size:.72rem;font-weight:900;color:{rl_clr};'>{rl_label}</div>
-        <div style='font-size:1rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.6rem;'>/100</span></div>
+        <div style='font-size:.72rem;font-weight:900;color:#c2410c;'>{rl_label}</div>
+        <div style='font-size:1rem;font-weight:900;color:#ea580c;'>{risk_score}<span style='font-size:.6rem;color:#9a3412;'>/100</span></div>
       </div>
-      <div style='background:#e5e7eb;border-radius:99px;height:8px;overflow:hidden;margin-bottom:6px;'>
-        <div style='background:linear-gradient(90deg,#22c55e,{bar_clr});width:{bar_w}%;height:100%;
-            border-radius:99px;transition:width .3s;'></div>
+      <div style='background:#fed7aa;border-radius:99px;height:9px;overflow:hidden;margin-bottom:6px;'>
+        <div style='background:linear-gradient(90deg,#fb923c,{bar_clr});width:{bar_w}%;height:100%;
+            border-radius:99px;transition:width .3s;box-shadow:0 0 6px rgba(234,88,12,0.4);'></div>
       </div>
-      <div style='font-size:.63rem;color:{rl_clr};font-weight:700;text-align:center;'>
+      <div style='font-size:.63rem;color:#c2410c;font-weight:800;text-align:center;
+          background:#fed7aa;border-radius:6px;padding:3px 0;'>
         {rl_action}
       </div>
     </div>""", unsafe_allow_html=True)
@@ -497,21 +506,26 @@ with st.sidebar:
     rf_label = "Risk Factors" if lang=="en" else "අවදානම් සාධක"
     rf_rows_html = ""
     for dot, label, pts in risk_factors:
-        pt_span = (f"<span style='font-size:.56rem;color:#ef4444;font-weight:700;min-width:18px;text-align:right;'>+{pts}</span>"
+        pt_span = (f"<span style='font-size:.56rem;color:#c2410c;font-weight:800;min-width:22px;text-align:right;"
+                   f"background:#fee2c8;border-radius:4px;padding:1px 3px;'>+{pts}</span>"
                    if pts > 0 else
-                   "<span style='min-width:18px;'></span>")
+                   "<span style='min-width:22px;'></span>")
         rf_rows_html += (
-            f"<div style='display:flex;align-items:center;gap:5px;padding:3px 0;"
-            f"border-bottom:1px solid #f0fdf4;'>"
+            f"<div style='display:flex;align-items:center;gap:5px;padding:4px 6px;"
+            f"border-bottom:1px solid #fed7aa;border-radius:4px;'>"
             f"<span style='font-size:.7rem;'>{dot}</span>"
-            f"<span style='font-size:.63rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>"
+            f"<span style='font-size:.63rem;color:#431407;flex:1;line-height:1.3;font-weight:500;'>{label}</span>"
             f"{pt_span}"
             f"</div>"
         )
     st.markdown(
-        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;"
-        f"letter-spacing:1px;margin-bottom:5px;'>{rf_label}</div>"
-        f"<div>{rf_rows_html}</div>",
+        f"<div style='background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fdba74;"
+        f"border-radius:10px;padding:10px 10px 6px;margin-bottom:8px;"
+        f"box-shadow:0 1px 6px rgba(234,88,12,0.12);'>"
+        f"<div style='font-size:.62rem;font-weight:900;color:#c2410c;text-transform:uppercase;"
+        f"letter-spacing:1.2px;margin-bottom:6px;border-bottom:2px solid #fb923c;padding-bottom:4px;'>"
+        f"⚡ {rf_label}</div>"
+        f"<div>{rf_rows_html}</div></div>",
         unsafe_allow_html=True
     )
 
@@ -550,29 +564,37 @@ with st.sidebar:
 
     pz_zones_label = "Price Zones" if lang=="en" else "මිල කලාප"
     st.markdown(
-        f"<div style='margin-top:10px;'>"
-        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{pz_zones_label}</div>"
+        f"<div style='background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fdba74;"
+        f"border-radius:10px;padding:10px;margin-bottom:8px;box-shadow:0 1px 6px rgba(234,88,12,0.12);'>"
+        f"<div style='font-size:.62rem;font-weight:900;color:#c2410c;text-transform:uppercase;"
+        f"letter-spacing:1.2px;margin-bottom:6px;border-bottom:2px solid #fb923c;padding-bottom:4px;'>"
+        f"🏷️ {pz_zones_label}</div>"
         f"<div style='display:flex;flex-direction:column;gap:4px;'>"
-        f"<div style='background:#fee2e2;border-left:3px solid #ef4444;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<div style='background:#fee2e2;border-left:4px solid #ef4444;border-radius:0 6px 6px 0;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;'>"
         f"<span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'>🔴 {pz_crisis_lbl}</span>"
         f"<span style='font-size:.63rem;font-weight:800;color:#7f1d1d;'>Rs.{crisis_threshold}+</span></div>"
-        f"<div style='background:#fef9c3;border-left:3px solid #eab308;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#713f12;'>🟡 {pz_warn_lbl}</span>"
-        f"<span style='font-size:.63rem;font-weight:800;color:#713f12;'>Rs.{warn_threshold}&#8211;{crisis_threshold-1}</span></div>"
-        f"<div style='background:#dcfce7;border-left:3px solid #22c55e;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<div style='background:#fff3e0;border-left:4px solid #f97316;border-radius:0 6px 6px 0;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;'>"
+        f"<span style='font-size:.63rem;font-weight:700;color:#7c2d12;'>🟠 {pz_warn_lbl}</span>"
+        f"<span style='font-size:.63rem;font-weight:800;color:#7c2d12;'>Rs.{warn_threshold}&#8211;{crisis_threshold-1}</span></div>"
+        f"<div style='background:#ecfdf5;border-left:4px solid #22c55e;border-radius:0 6px 6px 0;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;'>"
         f"<span style='font-size:.63rem;font-weight:700;color:#14532d;'>🟢 {pz_safe_lbl}</span>"
         f"<span style='font-size:.63rem;font-weight:800;color:#14532d;'>Rs.&lt;{warn_threshold}</span></div>"
         f"</div></div>"
-        f"<div style='background:#fff;border:1px solid #d1e7d1;border-radius:8px;padding:8px 10px;margin-top:8px;text-align:center;'>"
-        f"<div style='font-size:.58rem;color:#4a7a4a;font-weight:700;text-transform:uppercase;letter-spacing:1px;'>{cp_lbl}</div>"
-        f"<div style='font-size:1.35rem;font-weight:900;color:{rl_clr};margin:2px 0;'>Rs. {current_price:.2f}</div>"
-        f"<div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {mom_lbl}</div>"
+        f"<div style='background:linear-gradient(135deg,#7c2d12,#c2410c);border-radius:10px;"
+        f"padding:10px;margin-bottom:8px;text-align:center;"
+        f"box-shadow:0 3px 12px rgba(194,65,12,0.35);'>"
+        f"<div style='font-size:.58rem;color:#fed7aa;font-weight:800;text-transform:uppercase;letter-spacing:1px;'>{cp_lbl}</div>"
+        f"<div style='font-size:1.5rem;font-weight:900;color:#fff;margin:4px 0;"
+        f"text-shadow:0 2px 6px rgba(0,0,0,.2);'>Rs. {current_price:.2f}</div>"
+        f"<div style='font-size:.6rem;color:#fdba74;font-weight:600;'>{momentum_3m:+.1f}% {mom_lbl}</div>"
         f"</div>"
-        f"<div style='margin-top:10px;'>"
-        f"<div style='font-size:.62rem;font-weight:800;color:#4a7a4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{qa_label}</div>"
-        f"<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;'>"
-        f"<div style='font-size:.63rem;line-height:1.7;color:#374151;'>{actions_inner}</div>"
-        f"</div></div>",
+        f"<div style='background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fdba74;"
+        f"border-radius:10px;padding:10px;box-shadow:0 1px 6px rgba(234,88,12,0.12);'>"
+        f"<div style='font-size:.62rem;font-weight:900;color:#c2410c;text-transform:uppercase;"
+        f"letter-spacing:1.2px;margin-bottom:6px;border-bottom:2px solid #fb923c;padding-bottom:4px;'>"
+        f"⚡ {qa_label}</div>"
+        f"<div style='font-size:.63rem;line-height:1.8;color:#431407;font-weight:500;'>{actions_inner}</div>"
+        f"</div>",
         unsafe_allow_html=True
     )
     st.markdown("---")
