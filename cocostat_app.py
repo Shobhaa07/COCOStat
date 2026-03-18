@@ -2138,22 +2138,41 @@ elif t["nav"][6] in sec_name:
     with c_corr:
         st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
         fig_sc = go.Figure()
-        fig_sc.add_trace(go.Scatter(
-            x=fwd_df["yield_index"], y=fwd_df["price_impact"],
-            mode="markers+text",
-            marker=dict(color=["#16a34a" if h else "#3b82f6" for h in fwd_df["harvest_period"]],
-                size=10, symbol=["star" if h else "circle" for h in fwd_df["harvest_period"]]),
-            text=[m.strftime("%b") for m in fwd_df["date"]],
-            textposition="top center", textfont=dict(size=9),
-            hovertemplate="Yield: %{x:.1f}<br>Est. Price: Rs.%{y:.2f}<extra></extra>"))
+        # Split into harvest and non-harvest for proper legend
+        _harv_mask = fwd_df["harvest_period"].values
+        _harv_lbl = ("🌾 Harvest Month" if lang=="en" else "🌾 අස්වනු මාසය")
+        _norm_lbl = ("🔵 Normal Month"  if lang=="en" else "🔵 සාමාන්‍ය මාසය")
+        # Non-harvest points
+        _norm_idx = [i for i,h in enumerate(_harv_mask) if not h]
+        _harv_idx = [i for i,h in enumerate(_harv_mask) if h]
+        if _norm_idx:
+            fig_sc.add_trace(go.Scatter(
+                x=fwd_df["yield_index"].iloc[_norm_idx],
+                y=fwd_df["price_impact"].iloc[_norm_idx],
+                mode="markers+text", name=_norm_lbl,
+                marker=dict(color="#3b82f6", size=10, symbol="circle"),
+                text=[fwd_df["date"].iloc[i].strftime("%b") for i in _norm_idx],
+                textposition="top center", textfont=dict(size=9),
+                hovertemplate=("Yield" if lang=="en" else "අස්වැන්න")+": %{x:.1f}<br>"+("Est. Price" if lang=="en" else "ඇ. මිල")+": Rs.%{y:.2f}<extra></extra>"))
+        if _harv_idx:
+            fig_sc.add_trace(go.Scatter(
+                x=fwd_df["yield_index"].iloc[_harv_idx],
+                y=fwd_df["price_impact"].iloc[_harv_idx],
+                mode="markers+text", name=_harv_lbl,
+                marker=dict(color="#16a34a", size=10, symbol="star"),
+                text=[fwd_df["date"].iloc[i].strftime("%b") for i in _harv_idx],
+                textposition="top center", textfont=dict(size=9),
+                hovertemplate=("Yield" if lang=="en" else "අස්වැන්න")+": %{x:.1f}<br>"+("Est. Price" if lang=="en" else "ඇ. මිල")+": Rs.%{y:.2f}<extra></extra>"))
         if len(fwd_df) > 3:
             zf = np.polyfit(fwd_df["yield_index"], fwd_df["price_impact"],1); pf=np.poly1d(zf)
             xr = np.linspace(fwd_df["yield_index"].min(), fwd_df["yield_index"].max(), 40)
             fig_sc.add_trace(go.Scatter(x=xr, y=pf(xr), mode="lines",
-                line=dict(color="#ef4444",width=1.5,dash="dash"), showlegend=False))
-        fig_sc.update_layout(height=260,margin=dict(l=20,r=20,t=10,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
+                name=("Trend" if lang=="en" else "ප්‍රවණතාව"),
+                line=dict(color="#ef4444",width=1.5,dash="dash"), showlegend=True))
+        fig_sc.update_layout(height=280,margin=dict(l=20,r=20,t=10,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(title=("Yield Index" if lang=="en" else "අස්වැන්න දර්ශකය"),showgrid=False),
-            yaxis=dict(title=("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)"),gridcolor="#e8f5e9",tickprefix="Rs."))
+            yaxis=dict(title=("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)"),gridcolor="#e8f5e9",tickprefix="Rs."),
+            legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=9)))
         st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
@@ -2319,16 +2338,34 @@ elif t["nav"][8] in sec_name:
         st.markdown("#### \U0001f4cd "+("Break-Even Analysis" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0da5\u0dcf\u0db1 \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba"))
         pr_be=np.linspace(20,120,100)
         fig_be=go.Figure()
-        fig_be.add_trace(go.Scatter(x=pr_be,y=pr_be*total_nuts-total_cost,mode="lines",line=dict(color="#16a34a",width=2.5),showlegend=False,
-            hovertemplate="Price: Rs.%{x:.1f}<br>Profit: Rs.%{y:,.0f}<extra></extra>"))
-        fig_be.add_hline(y=0,line_dash="dash",line_color="#ef4444",annotation_text="Break-even" if lang=="en" else "\u0DC1\u0dda\u0DC2 \u0dc3\u0dca\u0da5\u0dcf\u0db1\u0dba")
+        fig_be.add_trace(go.Scatter(x=pr_be,y=pr_be*total_nuts-total_cost,mode="lines",
+            line=dict(color="#16a34a",width=2.5),showlegend=False,
+            name=("Net Profit" if lang=="en" else "ශුද්ධ ලාභය"),
+            hovertemplate=("Price" if lang=="en" else "මිල")+": Rs.%{x:.1f}<br>"+("Profit" if lang=="en" else "ලාභය")+": Rs.%{y:,.0f}<extra></extra>"))
+        _be_zero_lbl  = "Break-even"          if lang=="en" else "ශේෂ ස්ථානය"
+        _curr_lbl     = ("Current" if lang=="en" else "වත්මන්") + f" Rs.{sell_price}"
+        _be_price_lbl = f"BE Rs.{be_price:.1f}"
+        fig_be.add_hline(y=0,line_dash="dash",line_color="#ef4444",
+            annotation_text=_be_zero_lbl,
+            annotation_position="bottom right",
+            annotation_font_color="#ef4444")
         fig_be.add_vline(x=sell_price,line_dash="dot",line_color="#f59e0b",
-            annotation_text=("Current" if lang=="en" else "වත්මන්")+f" Rs.{sell_price}",annotation_position="top right")
+            annotation_text=_curr_lbl,annotation_position="top right",
+            annotation_font_color="#d97706")
         fig_be.add_vline(x=be_price,line_dash="dash",line_color="#ef4444",
-            annotation_text=f"BE Rs.{be_price:.1f}",annotation_position="bottom right")
-        fig_be.update_layout(height=260,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
+            annotation_text=_be_price_lbl,annotation_position="bottom right",
+            annotation_font_color="#ef4444")
+        # Format large y-axis values nicely
+        _ymax = max(pr_be) * total_nuts - total_cost
+        _ymin = min(pr_be) * total_nuts - total_cost
+        fig_be.update_layout(height=280,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(title=("Price per Nut (Rs.)" if lang=="en" else "ගෙඩියකට මිල (රු.)"),showgrid=False),
-            yaxis=dict(title=("Net Profit (Rs.)" if lang=="en" else "ශුද්ධ ලාභය (රු.)"),gridcolor="#e8f5e9"),showlegend=False)
+            yaxis=dict(
+                title=("Net Profit (Rs.)" if lang=="en" else "ශුද්ධ ලාභය (රු.)"),
+                gridcolor="#e8f5e9",
+                tickformat=",.0f",
+                tickprefix="Rs.",
+            ),showlegend=False)
         st.plotly_chart(fig_be,use_container_width=True,config={"displayModeBar":"hover"})
         bev=sell_price-be_price; bec="#22c55e" if bev>0 else "#ef4444"
         st.markdown(f"""<div style='background:#f8fafc;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
@@ -2567,36 +2604,46 @@ elif t["nav"][9] in sec_name:
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
     st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
-    grade_labels = (["Grade A<br>(Premium Large)", "Grade B<br>(Standard)", "Grade C<br>(Small)", "Copra<br>(per kg)", "Coconut Oil<br>(per litre)"]
-                    if lang=="en" else
-                    ["A ශ්‍රේණිය<br>(විශාල)", "B ශ්‍රේණිය<br>(සම්මත)", "C ශ්‍රේණිය<br>(කුඩා)", "කොප්රා<br>(kg ට)", "පොල් තෙල්<br>(ලීටර් ට)"])
+    # Use numeric indices for x so <br> renders via ticktext HTML
+    grade_keys = [0, 1, 2, 3, 4]
+    grade_labels_raw = (
+        ["Grade A\n(Premium Large)", "Grade B\n(Standard)", "Grade C\n(Small)", "Copra\n(per kg)", "Coconut Oil\n(per litre)"]
+        if lang=="en" else
+        ["A ශ්‍රේණිය\n(විශාල)", "B ශ්‍රේණිය\n(සම්මත)", "C ශ්‍රේණිය\n(කුඩා)", "කොප්රා\n(kg ට)", "පොල් තෙල්\n(ලීටර් ට)"]
+    )
     gmins  = [72,  58,  42,  85,  380]
     gmaxs  = [85,  72,  58,  110, 450]
     gavgs  = [78,  65,  50,  95,  415]
     bar_colors = ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"]
     fig_grades = go.Figure()
     fig_grades.add_trace(go.Bar(
-        name=("Min (base)" if lang=="en" else "අවම (පාදම)"), x=grade_labels, y=gmins,
+        name=("Min (base)" if lang=="en" else "අවම (පාදම)"), x=grade_keys, y=gmins,
         marker_color="rgba(0,0,0,0)", showlegend=False, hoverinfo="skip"))
     fig_grades.add_trace(go.Bar(
-        name=("Price Range" if lang=="en" else "මිල පරාසය"), x=grade_labels,
+        name=("Price Range" if lang=="en" else "මිල පරාසය"), x=grade_keys,
         y=[mx - mn for mx, mn in zip(gmaxs, gmins)],
         marker_color=bar_colors, marker_line=dict(width=0), opacity=0.85,
         text=[f"Rs.{mn} – Rs.{mx}" for mn, mx in zip(gmins, gmaxs)],
         textposition="inside", textfont=dict(size=10, color="#fff", family="Arial Black"),
-        hovertemplate="<b>%{x}</b><br>Min: Rs.%{base}<br>Max: Rs.%{base+y}<extra></extra>"))
+        hovertemplate="<b>%{text}</b><extra></extra>"))
     _avg_lbl2 = "Avg" if lang=="en" else "සාමාන්‍යය"
     fig_grades.add_trace(go.Scatter(
-        name=("Avg Price" if lang=="en" else "සාමාන්‍ය මිල"), x=grade_labels, y=gavgs,
+        name=("Avg Price" if lang=="en" else "සාමාන්‍ය මිල"), x=grade_keys, y=gavgs,
         mode="markers+text",
         marker=dict(color="#f59e0b", size=16, symbol="diamond", line=dict(color="#fff", width=2)),
         text=[f"{_avg_lbl2}: Rs.{v}" for v in gavgs], textposition="top center",
         textfont=dict(size=11, color="#92400e", family="Arial Black"),
-        hovertemplate="<b>%{x}</b><br>Avg: Rs.%{y}<extra></extra>"))
+        hovertemplate="<b>%{text}</b><extra></extra>"))
     fig_grades.update_layout(
-        barmode="stack", height=380, margin=dict(l=60,r=20,t=40,b=20),
+        barmode="stack", height=420, margin=dict(l=60,r=20,t=40,b=80),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+        xaxis=dict(
+            showgrid=False,
+            tickmode="array",
+            tickvals=grade_keys,
+            ticktext=grade_labels_raw,
+            tickfont=dict(size=10),
+        ),
         yaxis=dict(gridcolor="#f0fdf4", tickprefix="Rs.",
                    title=("Price (Rs.)" if lang=="en" else "මිල (රු.)"),
                    zeroline=True, zerolinecolor="#e2e8f0"),
