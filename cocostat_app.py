@@ -360,10 +360,10 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("### \u2699\ufe0f " + ("Settings" if lang=="en" else "සැකසුම්"))
     lang_choice = st.radio("\U0001f310 Language / \u0db7\u0dcf\u0DC2\u0dcf\u0dc0", ["English", "\u0dc3\u0dd2\u0d82\u0dc4\u0dbd"], index=0)
     lang = "en" if lang_choice == "English" else "si"
     t = T[lang]
+    st.markdown("### \u2699\ufe0f " + ("Settings" if lang=="en" else "සැකසුම්"))
     regime_emojis = ["\U0001f7e2 ","\U0001f7e1 ","\U0001f534 "]
     active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
     regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
