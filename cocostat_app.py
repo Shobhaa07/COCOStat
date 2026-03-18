@@ -214,12 +214,12 @@ T = {
         "regime_avg_label":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u0dba \u0db8\u0dd2\u0dbd","regime_vol_label":"\u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0","regime_status_label":"\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "regime_status":["\u2705 \u0dc4\u0ddc\u0db3\u0dba\u0dd2","\u26a0\ufe0f \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba","\U0001f6a8 \u0d85\u0dc0\u0daf\u0dcf\u0db1\u0db8"],
         "demand_title":"\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0dd9\u0db1\u0dd3\u0db8 \u0d85\u0da9\u0dd4 \u0d9a\u0dbb\u0dba\u0dd2\u0daf?",
-        "demand_note":"\U0001f4a1 \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dad\u0dca\u0dba\u0dc0\u0DC1\u0dca\u0dba \u0d86\u0dc4\u0dcf\u0dbb\u0dba\u0d9a\u0dca \u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0db1\u0dca\u0db1\u0dda \u0db1\u0dd0\u0dad.",
+        "demand_note":"\U0001f4a1 \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dad\u0dca\u200d\u0dba\u0dc0\u0DC1\u0dca\u200d\u0dba \u0d86\u0dc4\u0dcf\u0dbb\u0dba\u0d9a\u0dca \u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0db1\u0dca\u0db1\u0dda \u0db1\u0dd0\u0dad.",
         "demand_bar_title":"\u0db8\u0dd2\u0dbd \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf \u0db8\u0da7\u0dca\u0da7\u0db8 (%)","demand_periods":["\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb","\u0d85\u0dc0\u0dc0\u0dcf\u0daf","\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf"],
         "demand_sens":[35,22,12],
         "demand_cards":[
             ("\U0001f7e2 \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca \u0dc0\u0dbd\u0da7 \u0da7\u0dd2\u0d9a\u0d9a\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb \u0daf\u0d9a\u0dca\u0dc0\u0dba\u0dd2."),
-            ("\U0001f7e1 \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0\u0da7 \u0db8\u0daf\u0dca\u0dba\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba\u0d9a\u0dca."),
+            ("\U0001f7e1 \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0\u0da7 \u0db8\u0db0\u0dca\u200d\u0dba\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba\u0d9a\u0dca."),
             ("\U0001f534 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dbd \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0db1\u0dd3."),
         ],
         "forecast_title":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12 \u0dad\u0dd4\u0dbd \u0db8\u0dd2\u0dbd\u0da7 \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0dc3\u0dd2\u0daf\u0dc0\u0dda\u0daf?",
@@ -539,7 +539,7 @@ with st.sidebar:
         actions_inner = (
             "📋 Weekly price check sufficient<br>🌱 Farmers: continue normal ops<br>🏭 Businesses: plan ahead<br>📈 Consider forward contracts<br>🌍 Explore export opportunities"
             if lang=="en" else
-            "📋 සතිපතා මිල පරීක්ෂාව ප්‍රමාණවත්<br>🌱 ගොවීන්: සාමාන්‍ය ක්‍රියාකාරිත්වය දිගටම කරන්න<br>🏭 ව්‍යාපාර: ముందදිය සැලසුම් කරන්න<br>📈 ඉදිරි ගිවිසුම් සලකා බලන්න<br>🌍 අපනයන අවස්ථා ගවේෂණය කරන්න")
+            "📋 සතිපතා මිල පරීක්ෂාව ප්‍රමාණවත්<br>🌱 ගොවීන්: සාමාන්‍ය ක්‍රියාකාරිත්වය දිගටම කරන්න<br>🏭 ව්‍යාපාර: ඉදිරිය සැලසුම් කරන්න<br>📈 ඉදිරි ගිවිසුම් සලකා බලන්න<br>🌍 අපනයන අවස්ථා ගවේෂණය කරන්න")
     else:
         actions_inner = (
             "✅ No immediate action needed<br>🌱 Good time to invest/expand<br>📋 Monthly monitoring sufficient<br>🏦 Build buffer stocks now<br>🌿 Explore value-added products"
@@ -1925,7 +1925,7 @@ elif t["nav"][5] in sec_name:
                 <div style='font-size:.95rem;color:#0d2b0d;line-height:1.55;font-weight:600;'>{step}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("<div style='font-size:.78rem;font-weight:800;color:#14532d;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;'>"
-        +("System Architecture &amp; Processing Pipeline" if lang=="en" else "\u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2 \u0d9c\u0ddb\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0db8\u0dcf\u0da4\u0dba")
+        +("System Architecture &amp; Processing Pipeline" if lang=="en" else "\u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2 \u0d9c\u0ddc\u0da9 \u0db1\u0dd2\u0dbb\u0dca\u0db8\u0dcf\u0dab\u0dba")
         +"</div>",unsafe_allow_html=True)
     ac=st.columns(5)
     pipeline_steps = ([("01","Raw Data","Auction Records"),("02","Pre-processing","& Cleaning"),
@@ -2290,8 +2290,8 @@ elif t["nav"][8] in sec_name:
         farm_acres=st.slider("\U0001f334 "+("Farm Size (acres)" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0dc0\u0dd2\u0DC1\u0dcf\u0dbd\u0dad\u0dca\u0dc0\u0dba (\u0d85\u0d9a\u0dca\u0d9a\u0dbb)"),1,50,5,1)
         trees_acre=st.slider("\U0001f333 "+("Trees per Acre" if lang=="en" else "\u0d85\u0d9a\u0dca\u0d9a\u0dbb\u0dba\u0d9a\u0da7 \u0d9c\u0dc3\u0dca"),20,80,40,5)
     with fi2:
-        nuts_tree=st.slider("\U0001f965 "+("Nuts per Tree/Year" if lang=="en" else "\u0d9c\u0dc3\u0d9a\u0da7 \u0d9c\u0dd0\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba"),30,120,60,5)
-        sell_price=st.slider("\U0001f4b0 "+("Selling Price (Rs./nut)" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0da4\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4./\u0d9c\u0dd0\u0da9\u0dd2\u0dba)"),30,120,int(current_price),1)
+        nuts_tree=st.slider("\U0001f965 "+("Nuts per Tree/Year" if lang=="en" else "\u0d9c\u0dc3\u0d9a\u0da7 \u0d9c\u0dd9\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba"),30,120,60,5)
+        sell_price=st.slider("\U0001f4b0 "+("Selling Price (Rs./nut)" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4./\u0d9c\u0dd9\u0da9\u0dd2\u0dba)"),30,120,int(current_price),1)
     with fi3:
         labour_month=st.slider("\U0001f477 "+("Labour Cost (Rs./month)" if lang=="en" else "\u0d9a\u0db8\u0dca\u0d9a\u0dbb\u0dd4 \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba (\u0dbb\u0dd4./\u0db8\u0dcf\u0dc3\u0dba)"),5000,50000,15000,1000)
         fert_year=st.slider("\U0001f33f "+("Fertilizer & Inputs (Rs./yr)" if lang=="en" else "\u0db4\u0ddc\u0dc4\u0ddc\u0dbb & \u0d86\u0daf\u0dcf\u0db1 (\u0dbb\u0dd4./\u0dc0\u0dbb\u0dca\u0DC2\u0dba)"),5000,100000,25000,5000)
@@ -2306,7 +2306,7 @@ elif t["nav"][8] in sec_name:
     be_price=total_cost/total_nuts if total_nuts>0 else 0
     pc_=("#22c55e" if net_profit>0 else "#ef4444")
     divider()
-    st.markdown("#### \U0001f4ca "+("Profitability Results" if lang=="en" else "\u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dc2\u0dbd"))
+    st.markdown("#### \U0001f4ca "+("Profitability Results" if lang=="en" else "\u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db5\u0dbd"))
     r1,r2,r3,r4,r5=st.columns(5)
     for col,(lbl,val,clr) in zip([r1,r2,r3,r4,r5],[
         ("\U0001f965 Total Nuts/Year" if lang=="en" else "\U0001f965 \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d9c\u0dd0\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba", f"{total_nuts:,}","#16a34a"),
@@ -2335,7 +2335,7 @@ elif t["nav"][8] in sec_name:
             yaxis=dict(gridcolor="#e8f5e9",tickprefix="Rs."),xaxis=dict(showgrid=False),showlegend=False)
         st.plotly_chart(fig_wf,use_container_width=True,config={"displayModeBar":"hover"})
     with cb:
-        st.markdown("#### \U0001f4cd "+("Break-Even Analysis" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0da5\u0dcf\u0db1 \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba"))
+        st.markdown("#### \U0001f4cd "+("Break-Even Analysis" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0dae\u0dcf\u0db1 \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba"))
         pr_be=np.linspace(20,120,100)
         fig_be=go.Figure()
         fig_be.add_trace(go.Scatter(x=pr_be,y=pr_be*total_nuts-total_cost,mode="lines",
@@ -2369,12 +2369,12 @@ elif t["nav"][8] in sec_name:
         st.plotly_chart(fig_be,use_container_width=True,config={"displayModeBar":"hover"})
         bev=sell_price-be_price; bec="#22c55e" if bev>0 else "#ef4444"
         st.markdown(f"""<div style='background:#f8fafc;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
-            <div style='font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:4px;'>{"Break-Even Price" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0da5\u0dcf\u0db1 \u0db8\u0dd2\u0dbd"}</div>
+            <div style='font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:4px;'>{"Break-Even Price" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0dae\u0dcf\u0db1 \u0db8\u0dd2\u0dbd"}</div>
             <div style='font-size:1.4rem;font-weight:900;color:{bec};'>Rs.{be_price:.2f}</div>
             <div style=\'font-size:.78rem;color:{bec};margin-top:4px;\'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} {"current" if lang=="en" else "වත්මනින්"}</div></div>""",unsafe_allow_html=True)
     divider()
 
-    st.markdown("#### \U0001f4c8 "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0da4\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0dbb\u0dca \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
+    st.markdown("#### \U0001f4c8 "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0db7 \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
     ps=[40,50,55,60,65,68.5,70,75,80,85,90,100]
     prf=[p*total_nuts-total_cost for p in ps]
     fig_ps=go.Figure(go.Bar(x=[f"Rs.{p}" for p in ps],y=prf,marker_color=["#22c55e" if v>0 else "#ef4444" for v in prf],
