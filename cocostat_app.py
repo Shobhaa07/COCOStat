@@ -116,10 +116,10 @@ T = {
         "subtitle": "Coconut Market Intelligence Dashboard",
         "tagline": "Understanding Coconut Prices in Simple Terms",
         "desc": "This dashboard explains coconut price changes, demand behaviour, and gives future predictions with policy advice.",
-        "nav": ["Overview & History","Market & Demand","Forecast","Policy & Recommendations","Compare","Method",
-                "Weather & Harvest","Export & Trade","Farmer Profitability","Auction Details"],
-        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f52e","\U0001f3db","\U0001f50d","\U0001f9e0",
-                     "\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
+        "nav": ["Overview & History","Market & Demand","Weather & Harvest","Forecast","Compare","Export & Trade",
+                "Policy & Recommendations","Farmer Profitability","Auction Details","Method"],
+        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f326","\U0001f52e","\U0001f50d","\U0001f4e6",
+                     "\U0001f3db","\U0001f9d1\u200d\U0001f33e","\U0001f6a9","\U0001f9e0"],
         "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
@@ -197,10 +197,10 @@ T = {
         "subtitle": "\u0db4\u0ddc\u0dbd\u0dca \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0db6\u0dd4\u0daf\u0dca\u0db0\u0dd2\u0db8\u0dad\u0dca \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
         "tagline": "\u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0db4\u0dc4\u0dc3\u0dd4\u0dc0\u0dd9\u0db1\u0dca \u0dad\u0dda\u0dbb\u0dd4\u0db8\u0dca \u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         "desc": "\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca, \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0dc4\u0dd9\u0dc5\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dc4 \u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0dc3\u0dbb\u0dbd\u0dc0 \u0db4\u0dd0\u0dc4\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
-        "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba \u0dc3\u0dc4 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0dc4 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba",
-                "\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb"],
-        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f52e","\U0001f3db","\U0001f50d","\U0001f9e0",
-                     "\U0001f326","\U0001f4e6","\U0001f9d1\u200d\U0001f33e","\U0001f6a9"],
+        "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba \u0dc3\u0dc4 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0dc4 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8",
+                "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba"],
+        "nav_icons":["\U0001f4ca","\U0001f6a6","\U0001f326","\U0001f52e","\U0001f50d","\U0001f4e6",
+                     "\U0001f3db","\U0001f9d1\u200d\U0001f33e","\U0001f6a9","\U0001f9e0"],
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u200d\u0dba\u0dcf\u0dc3\u0dca\u0dae","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
@@ -371,6 +371,20 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### " + ("\U0001f4cd Navigation" if lang=="en" else "\U0001f4cd \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
     nav_full = [f"{icon} {name}" for icon, name in zip(t["nav_icons"], t["nav"])]
+    st.markdown("""
+    <style>
+    div[data-testid="stSidebar"] .stRadio > div { gap:4px !important; }
+    div[data-testid="stSidebar"] .stRadio label {
+        background:#fff; border:1px solid #d1e7d1;
+        border-radius:8px !important; padding:8px 12px !important;
+        font-size:.85rem !important; font-weight:500;
+        width:100%; display:block; cursor:pointer;
+    }
+    div[data-testid="stSidebar"] .stRadio label:hover {
+        background:#dcfce7 !important; border-color:#16a34a !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     section = st.radio("", nav_full, label_visibility="collapsed")
     st.markdown("---")
 
@@ -831,7 +845,7 @@ elif t["nav"][1] in sec_name:
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_dc,use_container_width=True,config={"displayModeBar":"hover"})
 # ══ FORECAST ════════════════════════════════════════════════════════════════
-elif t["nav"][2] in sec_name:
+elif t["nav"][3] in sec_name:
     section_header("\U0001f52e "+t["forecast_title"])
     st.markdown(f"<div class='info-box-green'>{t['forecast_summary']}</div>",unsafe_allow_html=True)
     hist_r=history_df.tail(16)
@@ -882,7 +896,7 @@ elif t["nav"][2] in sec_name:
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
-elif t["nav"][3] in sec_name:
+elif t["nav"][6] in sec_name:
     section_header("\U0001f3db "+t["policy_title"], t["policy_sub"])
     pc1,pc2,pc3=st.columns(3)
     for i,col in enumerate([pc1,pc2,pc3]):
@@ -1914,7 +1928,7 @@ elif t["nav"][4] in sec_name:
         st.info("Please select at least one year." if lang=="en" else "\u0d9a\u0dbb\u0dd4\u0dab\u0dcf\u0d9a\u0dbb \u0d85\u0dc0\u0db8 \u0dc0\u0dc3\u0dbb\u0d9a\u0dca \u0dad\u0ddc\u0dbb\u0db1\u0dca\u0db1.")
 
 # ══ METHOD ═══════════════════════════════════════════════════════════════════
-elif t["nav"][5] in sec_name:
+elif t["nav"][9] in sec_name:
     section_header("\U0001f9e0 "+t["method_title"])
     mc=st.columns(4)
     for i,(col,step) in enumerate(zip(mc,t["method_steps"])):
@@ -1965,7 +1979,7 @@ elif t["nav"][5] in sec_name:
         """)
 
 # ══ WEATHER & HARVEST (FORWARD FORECAST) ═════════════════════════════════════
-elif t["nav"][6] in sec_name:
+elif t["nav"][2] in sec_name:
     section_header("\U0001f326\ufe0f "+t["weather_title"], t["weather_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['weather_note']}</div>",unsafe_allow_html=True)
 
@@ -2238,7 +2252,7 @@ elif t["nav"][6] in sec_name:
                 </div></div>""", unsafe_allow_html=True)
 
 # ══ EXPORT & TRADE (NEW) ═════════════════════════════════════════════════════
-elif t["nav"][7] in sec_name:
+elif t["nav"][5] in sec_name:
     section_header("\U0001f4e6 "+t["export_title"], t["export_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['export_note']}</div>",unsafe_allow_html=True)
 
@@ -2308,7 +2322,7 @@ elif t["nav"][7] in sec_name:
     st.plotly_chart(fig_pt,use_container_width=True,config={"displayModeBar":"hover"})
 
 # ══ FARMER PROFITABILITY (NEW) ═══════════════════════════════════════════════
-elif t["nav"][8] in sec_name:
+elif t["nav"][7] in sec_name:
     section_header("\U0001f9d1\u200d\U0001f33e "+t["farmer_title"], t["farmer_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['farmer_note']}</div>",unsafe_allow_html=True)
 
@@ -2414,7 +2428,7 @@ elif t["nav"][8] in sec_name:
     st.plotly_chart(fig_ps,use_container_width=True,config={"displayModeBar":"hover"})
 
 # ══ AUCTION DETAILS ══════════════════════════════════════════════════════════
-elif t["nav"][9] in sec_name:
+elif t["nav"][8] in sec_name:
     section_header("\U0001f6a9 "+t["auction_title"], t["auction_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['auction_note']}</div>", unsafe_allow_html=True)
 
