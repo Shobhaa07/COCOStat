@@ -1582,7 +1582,7 @@ elif t["nav"][6] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with rm2:
-        st.markdown("#####  + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
+        st.markdown("##### " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
         opportunities = [
             ("🥥",
              "Virgin Coconut Oil Export" if lang=="en" else "කළු නොකළ පොල් තෙල් අපනයනය",
