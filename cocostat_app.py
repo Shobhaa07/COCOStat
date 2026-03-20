@@ -2190,10 +2190,10 @@ elif t["nav"][6] in sec_name:
                         xanchor="right", x=1, font=dict(size=9)))
         fig_sc.update_yaxes(title_text=_yl_lbl, secondary_y=False,
             gridcolor="#e8f5e9", tickfont=dict(color="#3b82f6"),
-            titlefont=dict(color="#3b82f6"))
+            title_font=dict(color="#3b82f6"))
         fig_sc.update_yaxes(title_text=_pr_lbl, secondary_y=True,
             showgrid=False, tickprefix="Rs.",
-            tickfont=dict(color="#f59e0b"), titlefont=dict(color="#f59e0b"))
+            tickfont=dict(color="#f59e0b"), title_font=dict(color="#f59e0b"))
         st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
