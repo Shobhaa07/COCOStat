@@ -2139,61 +2139,68 @@ elif t["nav"][6] in sec_name:
         st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
         _mn_lbs_sc = [d.strftime("%b") for d in fwd_df["date"]]
         _harv_mask  = fwd_df["harvest_period"].values
-        _yl_lbl  = ("Yield Index"     if lang=="en" else "අස්වැන්න දර්ශකය")
-        _pr_lbl  = ("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)")
-        _hw_lbl  = ("🌾 Harvest"      if lang=="en" else "🌾 අස්වනු")
-        fig_sc = make_subplots(specs=[[{"secondary_y": True}]])
-        # Yield bars (left axis) – green for harvest, blue for normal
-        fig_sc.add_trace(go.Bar(
-            x=_mn_lbs_sc, y=fwd_df["yield_index"],
-            name=_yl_lbl,
-            marker_color=["rgba(22,163,74,0.80)" if h else "rgba(59,130,246,0.55)"
-                          for h in _harv_mask],
-            marker_line=dict(width=0),
-            hovertemplate="<b>%{x}</b><br>"+_yl_lbl+": %{y:.1f}<extra></extra>"),
-            secondary_y=False)
-        # Price line (right axis)
+        _yl_lbl = ("Yield Index"      if lang=="en" else "අස්වැන්න දර්ශකය")
+        _pr_lbl = ("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)")
+
+        # Normalise yield to same 0-100 scale as price for direct overlay
+        _yi  = fwd_df["yield_index"].values
+        _pi  = fwd_df["price_impact"].values
+        _yi_norm = (_yi - _yi.min()) / max(_yi.max() - _yi.min(), 1) * (_pi.max() - _pi.min()) + _pi.min()
+
+        fig_sc = go.Figure()
+
+        # Shaded yield area
         fig_sc.add_trace(go.Scatter(
-            x=_mn_lbs_sc, y=fwd_df["price_impact"],
+            x=_mn_lbs_sc, y=_yi_norm,
+            name=_yl_lbl,
+            mode="lines",
+            fill="tozeroy",
+            fillcolor="rgba(59,130,246,0.12)",
+            line=dict(color="#3b82f6", width=2),
+            hovertemplate="<b>%{x}</b><br>" + _yl_lbl + ": %{customdata:.0f}<extra></extra>",
+            customdata=_yi))
+
+        # Price line
+        fig_sc.add_trace(go.Scatter(
+            x=_mn_lbs_sc, y=_pi,
             name=_pr_lbl,
             mode="lines+markers",
             line=dict(color="#f59e0b", width=2.5),
-            marker=dict(
-                color=["#16a34a" if h else "#f59e0b" for h in _harv_mask],
-                size=[11 if h else 7 for h in _harv_mask],
-                symbol=["star" if h else "circle" for h in _harv_mask],
-                line=dict(color="#fff", width=1.5)),
-            hovertemplate="<b>%{x}</b><br>"+_pr_lbl+": Rs.%{y:.2f}<extra></extra>"),
-            secondary_y=True)
-        # Harvest band label
+            marker=dict(color="#f59e0b", size=7, line=dict(color="#fff", width=1.5)),
+            hovertemplate="<b>%{x}</b><br>" + _pr_lbl + ": Rs.%{y:.1f}<extra></extra>"))
+
+        # Harvest month markers on price line
         fig_sc.add_trace(go.Scatter(
             x=[_mn_lbs_sc[i] for i,h in enumerate(_harv_mask) if h],
-            y=[fwd_df["price_impact"].iloc[i]+1.5 for i,h in enumerate(_harv_mask) if h],
-            mode="text", text=["🌾"]*sum(_harv_mask),
-            showlegend=False, hoverinfo="skip"), secondary_y=True)
-        fig_sc.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
-            line_width=1.2,
+            y=[_pi[i]        for i,h in enumerate(_harv_mask) if h],
+            name=("🌾 Harvest" if lang=="en" else "🌾 අස්වනු"),
+            mode="markers",
+            marker=dict(color="#16a34a", size=12, symbol="star",
+                        line=dict(color="#fff", width=1.5)),
+            hovertemplate="<b>%{x}</b> 🌾<br>Rs.%{y:.1f}<extra></extra>"))
+
+        # Warn / crisis lines
+        fig_sc.add_hline(y=warn_threshold,
+            line_dash="dot", line_color="#eab308", line_width=1.5,
             annotation_text=f"⚠ Rs.{warn_threshold}",
-            annotation_font=dict(size=9, color="#b45309"),
-            secondary_y=True)
-        fig_sc.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
-            line_width=1.2,
+            annotation_position="top left",
+            annotation_font=dict(size=9, color="#b45309"))
+        fig_sc.add_hline(y=crisis_threshold,
+            line_dash="dot", line_color="#ef4444", line_width=1.5,
             annotation_text=f"🔴 Rs.{crisis_threshold}",
-            annotation_font=dict(size=9, color="#ef4444"),
-            secondary_y=True)
+            annotation_position="top right",
+            annotation_font=dict(size=9, color="#ef4444"))
+
         fig_sc.update_layout(
-            height=300, margin=dict(l=50,r=55,t=20,b=20),
+            height=300,
+            margin=dict(l=20, r=20, t=20, b=20),
             plot_bgcolor="#fff", paper_bgcolor="#fff",
-            barmode="group",
             xaxis=dict(showgrid=False, tickfont=dict(size=10)),
+            yaxis=dict(
+                tickprefix="Rs.", gridcolor="#e8f5e9",
+                title=_pr_lbl, tickfont=dict(size=10)),
             legend=dict(orientation="h", yanchor="bottom", y=1.02,
                         xanchor="right", x=1, font=dict(size=9)))
-        fig_sc.update_yaxes(title_text=_yl_lbl, secondary_y=False,
-            gridcolor="#e8f5e9", tickfont=dict(color="#3b82f6"),
-            title_font=dict(color="#3b82f6"))
-        fig_sc.update_yaxes(title_text=_pr_lbl, secondary_y=True,
-            showgrid=False, tickprefix="Rs.",
-            tickfont=dict(color="#f59e0b"), title_font=dict(color="#f59e0b"))
         st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
