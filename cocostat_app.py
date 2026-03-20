@@ -2137,101 +2137,64 @@ elif t["nav"][6] in sec_name:
 
     with c_corr:
         st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
-        fig_sc = go.Figure()
-        # Split into harvest and non-harvest for proper legend
-        _harv_mask = fwd_df["harvest_period"].values
-        _harv_lbl = ("🌾 Harvest Month" if lang=="en" else "🌾 අස්වනු මාසය")
-        _norm_lbl = ("🔵 Normal Month"  if lang=="en" else "🔵 සාමාන්‍ය මාසය")
-        # Non-harvest points
-        _norm_idx = [i for i,h in enumerate(_harv_mask) if not h]
-        _harv_idx = [i for i,h in enumerate(_harv_mask) if h]
-        if _norm_idx:
-            fig_sc.add_trace(go.Scatter(
-                x=fwd_df["yield_index"].iloc[_norm_idx],
-                y=fwd_df["price_impact"].iloc[_norm_idx],
-                mode="markers+text", name=_norm_lbl,
-                marker=dict(color="#3b82f6", size=10, symbol="circle"),
-                text=[fwd_df["date"].iloc[i].strftime("%b") for i in _norm_idx],
-                textposition="top center", textfont=dict(size=9),
-                hovertemplate=("Yield" if lang=="en" else "අස්වැන්න")+": %{x:.1f}<br>"+("Est. Price" if lang=="en" else "ඇ. මිල")+": Rs.%{y:.2f}<extra></extra>"))
-        if _harv_idx:
-            fig_sc.add_trace(go.Scatter(
-                x=fwd_df["yield_index"].iloc[_harv_idx],
-                y=fwd_df["price_impact"].iloc[_harv_idx],
-                mode="markers+text", name=_harv_lbl,
-                marker=dict(color="#16a34a", size=10, symbol="star"),
-                text=[fwd_df["date"].iloc[i].strftime("%b") for i in _harv_idx],
-                textposition="top center", textfont=dict(size=9),
-                hovertemplate=("Yield" if lang=="en" else "අස්වැන්න")+": %{x:.1f}<br>"+("Est. Price" if lang=="en" else "ඇ. මිල")+": Rs.%{y:.2f}<extra></extra>"))
-        if len(fwd_df) > 3:
-            zf = np.polyfit(fwd_df["yield_index"], fwd_df["price_impact"],1); pf=np.poly1d(zf)
-            xr = np.linspace(fwd_df["yield_index"].min(), fwd_df["yield_index"].max(), 40)
-            fig_sc.add_trace(go.Scatter(x=xr, y=pf(xr), mode="lines",
-                name=("Trend" if lang=="en" else "ප්‍රවණතාව"),
-                line=dict(color="#ef4444",width=1.5,dash="dash"), showlegend=True))
-        fig_sc.update_layout(height=280,margin=dict(l=20,r=20,t=10,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-            xaxis=dict(title=("Yield Index" if lang=="en" else "අස්වැන්න දර්ශකය"),showgrid=False),
-            yaxis=dict(title=("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)"),gridcolor="#e8f5e9",tickprefix="Rs."),
-            legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=9)))
-        st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
-    divider()
-
-    # ── Complementary: Yield & Price dual-axis bar+line chart (month-by-month) 
-    _line_title = ("📉 Yield Index vs Est. Price — Month by Month (Next 12)" if lang=="en"
-                   else "📉 අස්වැන්න දර්ශකය හා ඇ. මිල — මාසිකව (ඉදිරි මාස 12)")
-    st.markdown(f"#### {_line_title}")
-
-    _mn_lbs  = [d.strftime("%b %Y") for d in fwd_df["date"]]
-    _yield_trace_lbl = ("Yield Index" if lang=="en" else "අස්වැන්න දර්ශකය")
-    _price_trace_lbl = ("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)")
-    _harvest_note    = ("★ = Harvest month" if lang=="en" else "★ = අස්වනු මාසය")
-
-    fig_dual = go.Figure()
-    fig_dual.add_trace(go.Bar(
-        x=_mn_lbs, y=fwd_df["yield_index"],
-        name=_yield_trace_lbl,
-        marker_color=[
-            "rgba(22,163,74,0.75)" if h else "rgba(59,130,246,0.55)"
-            for h in fwd_df["harvest_period"]
-        ],
-        marker_line=dict(width=0),
-        yaxis="y1",
-        hovertemplate="<b>%{x}</b><br>" + _yield_trace_lbl + ": %{y:.1f}<extra></extra>"))
-    fig_dual.add_trace(go.Scatter(
-        x=_mn_lbs, y=fwd_df["price_impact"],
-        name=_price_trace_lbl,
-        mode="lines+markers",
-        line=dict(color="#f59e0b", width=2.5),
-        marker=dict(
-            color=["#16a34a" if h else "#f59e0b" for h in fwd_df["harvest_period"]],
-            size=[10 if h else 7 for h in fwd_df["harvest_period"]],
-            symbol=["star" if h else "circle" for h in fwd_df["harvest_period"]],
-            line=dict(color="#fff", width=1)),
-        yaxis="y2",
-        hovertemplate="<b>%{x}</b><br>" + _price_trace_lbl + ": Rs.%{y:.2f}<extra></extra>"))
-    fig_dual.add_shape(type="line", x0=0, x1=1, xref="paper",
-        y0=warn_threshold, y1=warn_threshold, yref="y2",
-        line=dict(color="#eab308", width=1.2, dash="dot"))
-    fig_dual.add_shape(type="line", x0=0, x1=1, xref="paper",
-        y0=crisis_threshold, y1=crisis_threshold, yref="y2",
-        line=dict(color="#ef4444", width=1.2, dash="dot"))
-    fig_dual.update_layout(
-        height=320, margin=dict(l=60, r=60, t=30, b=60),
-        plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False, tickangle=-35, tickfont=dict(size=9)),
-        yaxis=dict(
-            title=_yield_trace_lbl, gridcolor="#e8f5e9",
-            titlefont=dict(color="#3b82f6"), tickfont=dict(color="#3b82f6")),
-        yaxis2=dict(
-            title=_price_trace_lbl, overlaying="y", side="right",
+        _mn_lbs_sc = [d.strftime("%b") for d in fwd_df["date"]]
+        _harv_mask  = fwd_df["harvest_period"].values
+        _yl_lbl  = ("Yield Index"     if lang=="en" else "අස්වැන්න දර්ශකය")
+        _pr_lbl  = ("Est. Price (Rs.)" if lang=="en" else "ඇ. මිල (රු.)")
+        _hw_lbl  = ("🌾 Harvest"      if lang=="en" else "🌾 අස්වනු")
+        fig_sc = make_subplots(specs=[[{"secondary_y": True}]])
+        # Yield bars (left axis) – green for harvest, blue for normal
+        fig_sc.add_trace(go.Bar(
+            x=_mn_lbs_sc, y=fwd_df["yield_index"],
+            name=_yl_lbl,
+            marker_color=["rgba(22,163,74,0.80)" if h else "rgba(59,130,246,0.55)"
+                          for h in _harv_mask],
+            marker_line=dict(width=0),
+            hovertemplate="<b>%{x}</b><br>"+_yl_lbl+": %{y:.1f}<extra></extra>"),
+            secondary_y=False)
+        # Price line (right axis)
+        fig_sc.add_trace(go.Scatter(
+            x=_mn_lbs_sc, y=fwd_df["price_impact"],
+            name=_pr_lbl,
+            mode="lines+markers",
+            line=dict(color="#f59e0b", width=2.5),
+            marker=dict(
+                color=["#16a34a" if h else "#f59e0b" for h in _harv_mask],
+                size=[11 if h else 7 for h in _harv_mask],
+                symbol=["star" if h else "circle" for h in _harv_mask],
+                line=dict(color="#fff", width=1.5)),
+            hovertemplate="<b>%{x}</b><br>"+_pr_lbl+": Rs.%{y:.2f}<extra></extra>"),
+            secondary_y=True)
+        # Harvest band label
+        fig_sc.add_trace(go.Scatter(
+            x=[_mn_lbs_sc[i] for i,h in enumerate(_harv_mask) if h],
+            y=[fwd_df["price_impact"].iloc[i]+1.5 for i,h in enumerate(_harv_mask) if h],
+            mode="text", text=["🌾"]*sum(_harv_mask),
+            showlegend=False, hoverinfo="skip"), secondary_y=True)
+        fig_sc.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+            line_width=1.2,
+            annotation_text=f"⚠ Rs.{warn_threshold}",
+            annotation_font=dict(size=9, color="#b45309"),
+            secondary_y=True)
+        fig_sc.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+            line_width=1.2,
+            annotation_text=f"🔴 Rs.{crisis_threshold}",
+            annotation_font=dict(size=9, color="#ef4444"),
+            secondary_y=True)
+        fig_sc.update_layout(
+            height=300, margin=dict(l=50,r=55,t=20,b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            barmode="group",
+            xaxis=dict(showgrid=False, tickfont=dict(size=10)),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02,
+                        xanchor="right", x=1, font=dict(size=9)))
+        fig_sc.update_yaxes(title_text=_yl_lbl, secondary_y=False,
+            gridcolor="#e8f5e9", tickfont=dict(color="#3b82f6"),
+            titlefont=dict(color="#3b82f6"))
+        fig_sc.update_yaxes(title_text=_pr_lbl, secondary_y=True,
             showgrid=False, tickprefix="Rs.",
-            titlefont=dict(color="#f59e0b"), tickfont=dict(color="#f59e0b")),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02,
-                    xanchor="right", x=1, font=dict(size=10)),
-        annotations=[dict(
-            text=_harvest_note, x=0, y=-0.22, xref="paper", yref="paper",
-            showarrow=False, font=dict(size=9, color="#16a34a"))])
-    st.plotly_chart(fig_dual, use_container_width=True, config={"displayModeBar":"hover"})
+            tickfont=dict(color="#f59e0b"), titlefont=dict(color="#f59e0b"))
+        st.plotly_chart(fig_sc, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
     # ── Monsoon & Harvest season summary ──────────────────────────────────────
@@ -2662,103 +2625,50 @@ elif t["nav"][9] in sec_name:
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
     st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
-    # Use numeric indices for x so <br> renders via ticktext HTML
-    grade_keys = [0, 1, 2, 3, 4]
-    grade_labels_raw = (
-        ["Grade A\n(Premium Large)", "Grade B\n(Standard)", "Grade C\n(Small)", "Copra\n(per kg)", "Coconut Oil\n(per litre)"]
-        if lang=="en" else
-        ["A ශ්‍රේණිය\n(විශාල)", "B ශ්‍රේණිය\n(සම්මත)", "C ශ්‍රේණිය\n(කුඩා)", "කොප්රා\n(kg ට)", "පොල් තෙල්\n(ලීටර් ට)"]
-    )
     gmins  = [72,  58,  42,  85,  380]
     gmaxs  = [85,  72,  58,  110, 450]
     gavgs  = [78,  65,  50,  95,  415]
     bar_colors = ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"]
-    fig_grades = go.Figure()
-    fig_grades.add_trace(go.Bar(
-        name=("Min (base)" if lang=="en" else "අවම (පාදම)"), x=grade_keys, y=gmins,
-        marker_color="rgba(0,0,0,0)", showlegend=False, hoverinfo="skip"))
-    fig_grades.add_trace(go.Bar(
-        name=("Price Range" if lang=="en" else "මිල පරාසය"), x=grade_keys,
-        y=[mx - mn for mx, mn in zip(gmaxs, gmins)],
-        marker_color=bar_colors, marker_line=dict(width=0), opacity=0.85,
-        text=[f"Rs.{mn} – Rs.{mx}" for mn, mx in zip(gmins, gmaxs)],
-        textposition="inside", textfont=dict(size=10, color="#fff", family="Arial Black"),
-        hovertemplate="<b>%{text}</b><extra></extra>"))
-    _avg_lbl2 = "Avg" if lang=="en" else "සාමාන්‍යය"
-    fig_grades.add_trace(go.Scatter(
-        name=("Avg Price" if lang=="en" else "සාමාන්‍ය මිල"), x=grade_keys, y=gavgs,
-        mode="markers+text",
-        marker=dict(color="#f59e0b", size=16, symbol="diamond", line=dict(color="#fff", width=2)),
-        text=[f"{_avg_lbl2}: Rs.{v}" for v in gavgs], textposition="top center",
-        textfont=dict(size=11, color="#92400e", family="Arial Black"),
-        hovertemplate="<b>%{text}</b><extra></extra>"))
-    fig_grades.update_layout(
-        barmode="stack", height=420, margin=dict(l=60,r=20,t=40,b=80),
-        plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(
-            showgrid=False,
-            tickmode="array",
-            tickvals=grade_keys,
-            ticktext=grade_labels_raw,
-            tickfont=dict(size=10),
-        ),
-        yaxis=dict(gridcolor="#f0fdf4", tickprefix="Rs.",
-                   title=("Price (Rs.)" if lang=="en" else "මිල (රු.)"),
-                   zeroline=True, zerolinecolor="#e2e8f0"),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(size=11)),
-        bargap=0.35)
-    st.plotly_chart(fig_grades, use_container_width=True, config={"displayModeBar":"hover"})
-
-    # ── Complementary: Bullet / Indicator chart (avg vs range, at a glance) ───
-    _bullet_title = ("📊 Price Benchmark Summary — Average vs Range" if lang=="en"
-                     else "📊 මිල දණ්ඩ සාරාංශය — සාමාන්‍යය හා පරාසය")
-    st.markdown(f"<div style='font-size:.85rem;font-weight:700;color:#0d2b0d;margin:10px 0 6px;'>{_bullet_title}</div>",
-                unsafe_allow_html=True)
-
-    _grade_full_labels = (
+    _grade_lbls = (
         ["Grade A (Premium)", "Grade B (Standard)", "Grade C (Small)", "Copra (per kg)", "Coconut Oil (per L)"]
         if lang=="en" else
         ["A ශ්‍රේණිය (විශාල)", "B ශ්‍රේණිය (සම්මත)", "C ශ්‍රේණිය (කුඩා)", "කොප්රා (kg)", "පොල් තෙල් (L)"]
     )
-    _range_lbl  = "Range"   if lang=="en" else "පරාසය"
-    _avg_lbl3   = "Average" if lang=="en" else "සාමාන්‍යය"
-
-    fig_bullet = go.Figure()
+    _rng_lbl = "Price Range" if lang=="en" else "මිල පරාසය"
+    _avg_lbl2 = "Avg Price"  if lang=="en" else "සාමාන්‍ය මිල"
+    _px_lbl  = "Price (Rs.)" if lang=="en" else "මිල (රු.)"
+    fig_grades = go.Figure()
     for idx, (lbl, mn, mx, av, clr) in enumerate(zip(
-            _grade_full_labels, gmins, gmaxs, gavgs,
-            ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"])):
-        # Range bar
-        fig_bullet.add_trace(go.Bar(
-            name=_range_lbl if idx==0 else "", legendgroup="range",
-            showlegend=(idx==0),
+            _grade_lbls, gmins, gmaxs, gavgs, bar_colors)):
+        fig_grades.add_trace(go.Bar(
+            name=_rng_lbl if idx == 0 else "",
+            legendgroup="range", showlegend=(idx == 0),
             y=[lbl], x=[mx - mn], base=[mn],
             orientation="h",
-            marker_color=clr, opacity=0.55,
-            marker_line=dict(width=0),
-            hovertemplate=f"<b>{lbl}</b><br>{_range_lbl}: Rs.{mn}–Rs.{mx}<extra></extra>"))
-        # Avg marker
-        fig_bullet.add_trace(go.Scatter(
-            name=_avg_lbl3 if idx==0 else "", legendgroup="avg",
-            showlegend=(idx==0),
+            marker_color=clr, opacity=0.70, marker_line=dict(width=0),
+            text=[f"Rs.{mn} – Rs.{mx}"], textposition="inside",
+            textfont=dict(size=10, color="#fff"),
+            hovertemplate=f"<b>{lbl}</b><br>Rs.{mn} – Rs.{mx}<extra></extra>"))
+        fig_grades.add_trace(go.Scatter(
+            name=_avg_lbl2 if idx == 0 else "",
+            legendgroup="avg", showlegend=(idx == 0),
             y=[lbl], x=[av],
             mode="markers+text",
             marker=dict(color="#f59e0b", size=14, symbol="diamond",
                         line=dict(color="#fff", width=2)),
-            text=[f"Rs.{av}"],
-            textposition="middle right",
+            text=[f"Rs.{av}"], textposition="middle right",
             textfont=dict(size=10, color="#92400e", family="Arial Black"),
-            hovertemplate=f"<b>{lbl}</b><br>{_avg_lbl3}: Rs.{av}<extra></extra>"))
-
-    fig_bullet.update_layout(
-        barmode="overlay", height=260,
-        margin=dict(l=20, r=80, t=10, b=20),
+            hovertemplate=f"<b>{lbl}</b><br>Avg: Rs.{av}<extra></extra>"))
+    fig_grades.update_layout(
+        barmode="overlay", height=300,
+        margin=dict(l=20, r=80, t=30, b=20),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
         xaxis=dict(tickprefix="Rs.", gridcolor="#f0fdf4", zeroline=False,
-                   title=("Price (Rs.)" if lang=="en" else "මිල (රු.)")),
-        yaxis=dict(showgrid=False, autorange="reversed"),
+                   title=_px_lbl, tickfont=dict(size=10)),
+        yaxis=dict(showgrid=False, autorange="reversed", tickfont=dict(size=10)),
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
                     xanchor="right", x=1, font=dict(size=11)))
-    st.plotly_chart(fig_bullet, use_container_width=True, config={"displayModeBar":"hover"})
+    st.plotly_chart(fig_grades, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
     # ── Key Rules & Regulations ────────────────────────────────────────────────
