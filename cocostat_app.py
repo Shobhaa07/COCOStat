@@ -2625,77 +2625,74 @@ elif t["nav"][9] in sec_name:
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
     st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
-    import numpy as np
+
     gmins  = [72,  58,  42,  85,  380]
-    gmaxs  = [85,  72,  58,  110, 450]
+    gmaxs  = [85,  72,  58, 110,  450]
     gavgs  = [78,  65,  50,  95,  415]
     bar_colors = ["#22c55e","#16a34a","#15803d","#0d9488","#0891b2"]
+
     _grade_lbls = (
         ["Grade A (Premium)", "Grade B (Standard)", "Grade C (Small)", "Copra (per kg)", "Coconut Oil (per L)"]
         if lang=="en" else
         ["A ශ්‍රේණිය (විශාල)", "B ශ්‍රේණිය (සම්මත)", "C ශ්‍රේණිය (කුඩා)", "කොප්රා (kg)", "පොල් තෙල් (L)"]
     )
+    _lbl_min = "Min"     if lang=="en" else "අවම"
+    _lbl_avg = "Average" if lang=="en" else "සාමාන්‍යය"
+    _lbl_max = "Max"     if lang=="en" else "උපරිම"
     _px_lbl  = "Price (Rs.)" if lang=="en" else "මිල (රු.)"
-    _avg_lbl2 = "● Avg" if lang=="en" else "● සාමාන්‍යය"
-    # Build simulated distributions for violin (triangular around avg within min-max)
+
     fig_grades = go.Figure()
-    for idx, (lbl, mn, mx, av, clr) in enumerate(zip(
-            _grade_lbls, gmins, gmaxs, gavgs, bar_colors)):
-        np.random.seed(idx * 7)
-        pts = np.concatenate([
-            np.random.triangular(mn, av, mx, 120),
-            [mn, mx, av]          # ensure endpoints are present
-        ])
-        fig_grades.add_trace(go.Violin(
-            x=pts,
-            name=lbl,
-            orientation="h",
-            side="positive",
-            width=1.8,
-            fillcolor=clr,
-            opacity=0.72,
-            line_color=clr,
-            meanline_visible=True,
-            meanline=dict(color="#fff", width=2),
-            points=False,
-            hoverinfo="skip",
-            showlegend=False,
-            box_visible=True,
-            box=dict(fillcolor="rgba(255,255,255,0.6)", line_color=clr, line_width=1.5),
-            marker=dict(color=clr),
-        ))
-        # Avg label annotation
-        fig_grades.add_annotation(
-            x=av, y=idx,
-            text=f"<b>Rs.{av}</b>",
-            showarrow=False,
-            yshift=26,
-            font=dict(size=10, color="#92400e", family="Arial Black"),
-            bgcolor="rgba(255,255,255,0.85)",
-            bordercolor=clr, borderwidth=1, borderpad=3)
-        # Min/Max labels
-        fig_grades.add_annotation(
-            x=mn, y=idx, text=f"Rs.{mn}",
-            showarrow=False, yshift=-22,
-            font=dict(size=9, color="#64748b"))
-        fig_grades.add_annotation(
-            x=mx, y=idx, text=f"Rs.{mx}",
-            showarrow=False, yshift=-22,
-            font=dict(size=9, color="#64748b"))
+
+    # Min bars
+    fig_grades.add_trace(go.Bar(
+        name=_lbl_min,
+        x=_grade_lbls, y=gmins,
+        marker_color="#94a3b8",
+        marker_line=dict(width=0),
+        text=[f"Rs.{v}" for v in gmins],
+        textposition="outside",
+        textfont=dict(size=10, color="#475569"),
+        hovertemplate="<b>%{x}</b><br>" + _lbl_min + ": Rs.%{y}<extra></extra>"))
+
+    # Avg bars
+    fig_grades.add_trace(go.Bar(
+        name=_lbl_avg,
+        x=_grade_lbls, y=gavgs,
+        marker_color=bar_colors,
+        marker_line=dict(width=0),
+        text=[f"Rs.{v}" for v in gavgs],
+        textposition="outside",
+        textfont=dict(size=11, color="#0d2b0d", family="Arial Black"),
+        hovertemplate="<b>%{x}</b><br>" + _lbl_avg + ": Rs.%{y}<extra></extra>"))
+
+    # Max bars
+    fig_grades.add_trace(go.Bar(
+        name=_lbl_max,
+        x=_grade_lbls, y=gmaxs,
+        marker_color=["rgba(34,197,94,0.35)","rgba(22,163,74,0.35)",
+                      "rgba(21,128,61,0.35)","rgba(13,148,136,0.35)","rgba(8,145,178,0.35)"],
+        marker_line=dict(color=bar_colors, width=1.5),
+        text=[f"Rs.{v}" for v in gmaxs],
+        textposition="outside",
+        textfont=dict(size=10, color="#475569"),
+        hovertemplate="<b>%{x}</b><br>" + _lbl_max + ": Rs.%{y}<extra></extra>"))
+
     fig_grades.update_layout(
-        violinmode="overlay",
-        height=380,
-        margin=dict(l=20, r=20, t=20, b=50),
+        barmode="group",
+        height=400,
+        margin=dict(l=20, r=20, t=20, b=20),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(tickprefix="Rs.", gridcolor="#f0fdf4", zeroline=False,
-                   title=_px_lbl, tickfont=dict(size=10)),
+        xaxis=dict(showgrid=False, tickfont=dict(size=11)),
         yaxis=dict(
-            tickmode="array",
-            tickvals=list(range(len(_grade_lbls))),
-            ticktext=_grade_lbls,
-            showgrid=False,
-            tickfont=dict(size=10)),
-        showlegend=False)
+            gridcolor="#f0fdf4", tickprefix="Rs.",
+            title=_px_lbl,
+            tickfont=dict(size=10),
+            zeroline=False),
+        legend=dict(
+            orientation="h", yanchor="bottom", y=1.01,
+            xanchor="right", x=1, font=dict(size=11)),
+        bargap=0.25, bargroupgap=0.06)
+
     st.plotly_chart(fig_grades, use_container_width=True, config={"displayModeBar":"hover"})
     divider()
 
