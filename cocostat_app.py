@@ -305,8 +305,9 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 [data-testid="stHorizontalBlock"]>[data-testid="column"]>div:first-child{flex:1!important;display:flex!important;flex-direction:column!important}
 div[data-testid="stSidebar"]{background:#f7faf7!important;border-right:2px solid #d1e7d1!important}
 div[data-testid="stSidebar"] *{color:#1a3a1a!important}
-div[data-testid="stSidebar"] .stRadio label{padding:7px 12px;border-radius:8px;font-size:.85rem;font-weight:500}
-div[data-testid="stSidebar"] .stRadio label:hover{background:#dcfce7;color:#14532d!important}
+div[data-testid="stSidebar"] .stRadio>div{display:flex!important;flex-direction:column!important;gap:5px!important}
+div[data-testid="stSidebar"] .stRadio label{background:#fff!important;border:1.5px solid #d1e7d1!important;border-radius:8px!important;padding:9px 13px!important;font-size:.85rem!important;font-weight:500!important;width:100%!important;display:block!important;cursor:pointer!important}
+div[data-testid="stSidebar"] .stRadio label:hover{background:#dcfce7!important;border-color:#16a34a!important;color:#14532d!important}
 div[data-testid="stSidebar"] hr{border-color:#d1e7d1!important}
 div[data-testid="stSidebar"] h3{color:#14532d!important;font-size:.72rem!important;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
 .section-header{font-size:1.45rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;letter-spacing:-.2px}
@@ -371,20 +372,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### " + ("\U0001f4cd Navigation" if lang=="en" else "\U0001f4cd \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
     nav_full = [f"{icon} {name}" for icon, name in zip(t["nav_icons"], t["nav"])]
-    st.markdown("""
-    <style>
-    div[data-testid="stSidebar"] .stRadio > div { gap:4px !important; }
-    div[data-testid="stSidebar"] .stRadio label {
-        background:#fff; border:1px solid #d1e7d1;
-        border-radius:8px !important; padding:8px 12px !important;
-        font-size:.85rem !important; font-weight:500;
-        width:100%; display:block; cursor:pointer;
-    }
-    div[data-testid="stSidebar"] .stRadio label:hover {
-        background:#dcfce7 !important; border-color:#16a34a !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
     section = st.radio("", nav_full, label_visibility="collapsed")
     st.markdown("---")
 
