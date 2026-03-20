@@ -1916,53 +1916,206 @@ elif t["nav"][4] in sec_name:
 
 # ══ METHOD ═══════════════════════════════════════════════════════════════════
 elif t["nav"][9] in sec_name:
-    section_header("\U0001f9e0 "+t["method_title"])
-    mc=st.columns(4)
-    for i,(col,step) in enumerate(zip(mc,t["method_steps"])):
-        with col:
-            _step_lbl = f"Step 0{i+1}" if lang=="en" else f"පියවර 0{i+1}"
-            st.markdown(f"""<div style='background:#fff;border:1px solid #d1e7d1;border-top:4px solid #16a34a;border-radius:8px;padding:22px 18px;height:130px;display:flex;flex-direction:column;justify-content:space-between;'>
-                <div style='font-size:.72rem;font-weight:800;color:#16a34a;text-transform:uppercase;letter-spacing:1.5px;'>{_step_lbl}</div>
-                <div style='font-size:.95rem;color:#0d2b0d;line-height:1.55;font-weight:600;'>{step}</div></div>""",unsafe_allow_html=True)
+    section_header("\U0001f9e0 "+("How COCOStat Works" if lang=="en" else "COCOStat ක්‍රියාකාරිත්වය"))
+
+    # ── Hero banner ────────────────────────────────────────────────────────────
+    _m_hero = ("COCOStat is a Coconut Market Intelligence Dashboard built for Sri Lanka's coconut industry — "
+               "providing real-time price analysis, 12-month forecasts, weather-yield correlations, "
+               "export tracking, farmer profitability tools, and evidence-based policy recommendations."
+               if lang=="en" else
+               "COCOStat යනු ශ්‍රී ලංකාවේ පොල් කර්මාන්තය සඳහා ගොඩනඟන ලද පොල් වෙළඳ බුද්ධිමත් පාලක පුවරුවකි — "
+               "තත්‍යකාලීන මිල විශ්ලේෂණය, මාස 12 අනාවැකි, කාලගුණ-අස්වැන්න සහසම්බන්ධතා, "
+               "අපනයන නිරීක්ෂණය, ගොවි ලාභදායිතා මෙවලම් සහ සාක්ෂ්‍ය-පදනම් ප්‍රතිපත්ති නිර්දේශ සපයයි.")
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#14532d,#166534);
+        border-radius:14px;padding:24px 28px;margin-bottom:24px;'>
+      <div style='font-size:1rem;color:#bbf7d0;line-height:1.8;'>{_m_hero}</div>
+    </div>""", unsafe_allow_html=True)
     divider()
-    st.markdown("<div style='font-size:.78rem;font-weight:800;color:#14532d;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;'>"
-        +("System Architecture &amp; Processing Pipeline" if lang=="en" else "\u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2 \u0d9c\u0ddc\u0da9 \u0db1\u0dd2\u0dbb\u0dca\u0db8\u0dcf\u0dab\u0dba")
-        +"</div>",unsafe_allow_html=True)
-    ac=st.columns(5)
-    pipeline_steps = ([("01","Raw Data","Auction Records"),("02","Pre-processing","& Cleaning"),
-            ("03","Model Training","Markov + ARIMA"),("04","Analysis","Elasticity"),("05","Dashboard","COCOStat")]
-            if lang=="en" else
-            [("01","අමු දත්ත","වෙන්දේසි වාර්තා"),("02","පූර්ව-සැකසීම","සහ පිරිසිදු කිරීම"),
-            ("03","ආකෘති පුහුණු","Markov + ARIMA"),("04","විශ්ලේෂණය","ස්ථිතිස්ථිකය"),("05","පාලක පුවරුව","COCOStat")])
-    for i,(col,(num,title,sub)) in enumerate(zip(ac, pipeline_steps)):
-        arr = (f"<div style='position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:1rem;color:#16a34a;font-weight:700;z-index:2;'>\u203a</div>"
-               if i < 4 else
-               "<span style='display:none;'></span>")
-        with col:
-            st.markdown(
-                f"<div style='position:relative;background:#f0fdf4;border:1px solid #d1e7d1;border-top:3px solid #16a34a;border-radius:8px;padding:16px 10px;text-align:center;height:110px;display:flex;flex-direction:column;justify-content:center;'>"
-                f"<div style='font-size:.68rem;font-weight:800;color:#16a34a;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;'>{num}</div>"
-                f"<div style='font-size:.9rem;font-weight:700;color:#0d2b0d;margin-bottom:3px;'>{title}</div>"
-                f"<div style='font-size:.78rem;color:#4a7a4a;font-weight:500;'>{sub}</div>"
-                f"{arr}"
-                f"</div>",
-                unsafe_allow_html=True)
+
+    # ── 10 Sections overview ───────────────────────────────────────────────────
+    st.markdown(f"### \U0001f4ca "+("Dashboard Sections" if lang=="en" else "පාලක පුවරු කොටස්"))
+    sections_info = (
+        [
+            ("📊","Overview & History",
+             "10-year monthly auction price history (2015–2024), 3-year trend chart, seasonality heatmap, "
+             "price impact calculator, regime distribution, and annual average analysis.",
+             "#16a34a"),
+            ("🚦","Market & Demand",
+             "3-regime market classification (Stable / Warning / Crisis), price elasticity analysis "
+             "(-0.35 to -0.12), demand curves by regime, and regime statistics.",
+             "#22c55e"),
+            ("🌦","Weather & Harvest",
+             "12-month forward rainfall & temperature forecast, yield index prediction with 3-month lag model, "
+             "harvest period overlays, monsoon season summaries, and yield-price correlation chart.",
+             "#0891b2"),
+            ("🔮","Forecast",
+             "12-week ahead price forecast with upper/lower confidence bands using ARIMA-based projection. "
+             "Weekly price cards with regime colour-coding and forecast summary statistics.",
+             "#8b5cf6"),
+            ("🔍","Compare",
+             "Year-over-year price comparison across all years in the dataset. "
+             "Segmentation by year, month, regime, and season with interactive filters.",
+             "#f59e0b"),
+            ("📦","Export & Trade",
+             "Export revenue by product (Desiccated Coconut, Coconut Oil, Coconut Milk, Coir, Activated Carbon), "
+             "YoY growth, top destination markets, global price comparison (5 countries), "
+             "and world production share.",
+             "#0d9488"),
+            ("🏛","Policy & Recommendations",
+             "Strategic Policy Simulator with 5 adjustable levers (buffer stock, import duty, subsidy, "
+             "price floor, export quota). Regime-aware recommendations for Government, Business, and Farmers. "
+             "Risk & Opportunity Matrix, and 90-Day Action Plan.",
+             "#3b82f6"),
+            ("🧑\u200d🌾","Farmer Profitability",
+             "Farm income calculator with sliders for land size, trees per acre, nuts per tree, "
+             "selling price, labour cost, and fertilizer inputs. Break-even analysis chart and "
+             "profit sensitivity analysis.",
+             "#16a34a"),
+            ("🚩","Auction Details",
+             "Official auction centres (Colombo, Kurunegala, Puttalam, Gampaha, Matara, Kalutara) "
+             "with schedules, contacts, grade benchmarks (violin chart), auction process steps, "
+             "seller & buyer requirements, and special seasonal auctions.",
+             "#ef4444"),
+            ("🧠","Method",
+             "This page — system architecture, data sources, analytical methods, technical details, "
+             "and references.",
+             "#64748b"),
+        ] if lang=="en" else [
+            ("📊","දර්ශනය සහ ඉතිහාසය",
+             "2015–2024 මාසික වෙන්දේසි මිල ඉතිහාසය, වසර 3 ප්‍රවණතා ප්‍රස්ථාරය, "
+             "ෘතු රටා හීට්මැප්, මිල බලපාම් කැල්කියුලේටරය, තත්ත්ව බෙදාහැරීම.",
+             "#16a34a"),
+            ("🚦","වෙළඳපොළ සහ ඉල්ලුම",
+             "3-තත්ත්ව වෙළඳ වර්ගීකරණය (ස්ථාවර / අවවාද / අර්බුද), "
+             "මිල ස්ථිතිස්ථිකය (-0.35 සිට -0.12), තත්ත්වය අනුව ඉල්ලුම් වක්‍ර.",
+             "#22c55e"),
+            ("🌦","කාලගුණ සහ අස්වනු",
+             "ඉදිරි මාස 12 ක වර්ෂාව සහ උෂ්ණත්ව අනාවැකිය, මාස 3 ප්‍රමාද ආකෘතිය සහිත "
+             "අස්වැන්න දර්ශක අනාවැකිය, මෝසම් සාරාංශ.",
+             "#0891b2"),
+            ("🔮","අනාවැකිය",
+             "ARIMA ආකෘතිය භාවිත කරමින් සති 12 ඉදිරි මිල අනාවැකිය. "
+             "විශ්වාස කලාප සහිත සතිපතා මිල කාඩ්.",
+             "#8b5cf6"),
+            ("🔍","සංසන්දනය",
+             "වාර්ෂික, මාසික, තත්ත්ව හා ෘතු අනුව සංසන්දනාත්මක විශ්ලේෂණය.",
+             "#f59e0b"),
+            ("📦","අපනයන සහ වෙළඳාම",
+             "නිෂ්පාදනය අනුව අපනයන ආදායම, YoY වර්ධනය, ගෝලීය මිල සංසන්දනය, "
+             "ලෝක නිෂ්පාදන කොටස.",
+             "#0d9488"),
+            ("🏛","ප්‍රතිපත්ති සහ නිර්දේශ",
+             "5-ලීවර් ප්‍රතිපත්ති අනුකරණය, රජය / ව්‍යාපාරිකයන් / ගොවීන් සඳහා නිර්දේශ, "
+             "අවදානම් හා අවස්ථා න්‍යාසය, දින 90 ක්‍රියා සැලැස්ම.",
+             "#3b82f6"),
+            ("🧑\u200d🌾","ගොවි ලාභදායිතාව",
+             "ගොවිතැන් ආදායම් කැල්කියුලේටරය, ශේෂ-ස්ථාන විශ්ලේෂණය, ලාභ සංවේදීතා ප්‍රස්ථාරය.",
+             "#16a34a"),
+            ("🚩","වෙන්දේසි විස්තර",
+             "නිල වෙන්දේසි මධ්‍යස්ථාන 6, කාලසටහන්, ශ්‍රේණිගත මිල දණ්ඩ, "
+             "විකුණුම්කරු හා ගැනුම්කරු අවශ්‍යතා, විශේෂ වෙන්දේසි.",
+             "#ef4444"),
+            ("🧠","ක්‍රමවේදය",
+             "මෙම පිටුව — පද්ධති ගොඩ නිර්මාණය, දත්ත මූලාශ්‍ර, "
+             "විශ්ලේෂණ ක්‍රම, තාක්ෂණික විස්තර.",
+             "#64748b"),
+        ]
+    )
+
+    for row_start in range(0, 10, 2):
+        cols = st.columns(2)
+        for col, (icon, title, desc, clr) in zip(cols, sections_info[row_start:row_start+2]):
+            with col:
+                st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;
+                    border-left:4px solid {clr};border-radius:10px;
+                    padding:16px 18px;margin-bottom:12px;min-height:110px;'>
+                  <div style='display:flex;align-items:center;gap:8px;margin-bottom:8px;'>
+                    <span style='font-size:1.1rem;'>{icon}</span>
+                    <span style='font-size:.88rem;font-weight:800;color:#0d2b0d;'>{title}</span>
+                  </div>
+                  <div style='font-size:.76rem;color:#475569;line-height:1.65;'>{desc}</div>
+                </div>""", unsafe_allow_html=True)
     divider()
-    with st.expander("\U0001f52c "+("Technical Details" if lang=="en" else "\u0dad\u0dcf\u0d9a\u0dca\u0DC2\u0dab\u0dd2\u0d9a \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb")):
+
+    # ── Data pipeline ──────────────────────────────────────────────────────────
+    st.markdown(f"### \U0001f504 "+("Data & Processing Pipeline" if lang=="en" else "දත්ත හා සැකසුම් නල මාර්ගය"))
+    pipe_steps = (
+        [("01","Data Generation","Synthetic 10-year monthly price series (2015–2024) using sinusoidal trend + noise. "
+          "Weather, export, and global data generated with seeded random models.","#16a34a"),
+         ("02","Regime Classification","Prices classified into 3 regimes using pd.cut: "
+          "Stable (< Rs.65), Warning (Rs.65–80), Crisis (> Rs.80).","#3b82f6"),
+         ("03","Demand Estimation","Price elasticity measured per regime using percentage sensitivity. "
+          "Inelastic demand confirmed across all regimes (-0.35 to -0.12).","#f59e0b"),
+         ("04","Forecasting","12-month price forecast using linear trend + random walk. "
+          "12-week short-term forecast with ±Rs.5 confidence interval.","#8b5cf6"),
+         ("05","Weather-Yield Model","Yield index derived from 3-month lagged rainfall. "
+          "Forward 12-month forecast uses seasonal monsoon patterns (SW & NE).","#0891b2"),
+         ("06","Dashboard","Streamlit multi-page app with Plotly charts, bilingual UI (EN/SI), "
+          "responsive CSS, and real-time interactive controls.","#0d9488")]
+        if lang=="en" else
+        [("01","දත්ත උත්පාදනය","සායිනෝසෝයිඩ් ප්‍රවණතාව + ශබ්ද භාවිතා කර සංශ්ලේෂිත "
+          "මාසික මිල ශ්‍රේණිය (2015–2024).","#16a34a"),
+         ("02","තත්ත්ව වර්ගීකරණය","pd.cut භාවිතා කර මිල තත්ත්ව 3කට වර්ගීකරණය: "
+          "ස්ථාවර (<රු.65), අවවාද (රු.65–80), අර්බුද (>රු.80).","#3b82f6"),
+         ("03","ඉල්ලුම් ඇස්තමේන්තු","ප්‍රතිශත සංවේදීතාව භාවිතා කර "
+          "ස්ථිතිස්ථිකය තත්ත්වය අනුව ගණනය (-0.35 සිට -0.12).","#f59e0b"),
+         ("04","අනාවැකිය","රේඛීය ප්‍රවණතාව + අහඹු ඇවිදීම භාවිතා කර "
+          "මාස 12 හා සති 12 අනාවැකිය.","#8b5cf6"),
+         ("05","කාලගුණ-අස්වැන්න ආකෘතිය","මාස 3 ප්‍රමාද වර්ෂාව භාවිතා කර "
+          "අස්වැන්න දර්ශකය ව්‍යුත්පන්නය. SW හා NE මෝසම් රටා ඉදිරි අනාවැකියට.","#0891b2"),
+         ("06","පාලක පුවරුව","Streamlit + Plotly, ද්විභාෂා UI (EN/SI), "
+          "ප්‍රතිචාරාත්මක CSS, ක්‍රියාශීලී පාලන.","#0d9488")]
+    )
+    for row_start in range(0, 6, 3):
+        pcols = st.columns(3)
+        for col, (num, title, desc, clr) in zip(pcols, pipe_steps[row_start:row_start+3]):
+            with col:
+                st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;
+                    border-top:3px solid {clr};border-radius:10px;
+                    padding:16px 14px;margin-bottom:12px;min-height:130px;'>
+                  <div style='font-size:.6rem;font-weight:800;color:{clr};letter-spacing:2px;
+                      text-transform:uppercase;margin-bottom:6px;'>{num}</div>
+                  <div style='font-size:.85rem;font-weight:700;color:#0d2b0d;margin-bottom:6px;'>{title}</div>
+                  <div style='font-size:.74rem;color:#475569;line-height:1.6;'>{desc}</div>
+                </div>""", unsafe_allow_html=True)
+    divider()
+
+    # ── Technical details ──────────────────────────────────────────────────────
+    with st.expander("\U0001f52c "+("Technical Details" if lang=="en" else "තාක්ෂණික විස්තර")):
         st.markdown("""
 | Component | Method | Detail |
 |-----------|--------|--------|
-| Regime Detection | Markov Switching Model (3-State) | Hamilton (1989) |
-| Demand Estimation | OLS with HC3 Robust Std Errors | Log-log specification |
-| Forecasting | SARIMA with seasonal adjustment | AIC-selected order |
-| Volatility | Rolling std dev (12-month window) | Monthly frequency |
-| Data Source | Sri Lanka Coconut Auction Records | 2015-2024 (113 obs.) |
+| Price Data | Synthetic simulation | Sinusoidal trend + linear growth + Gaussian noise, seed=42 |
+| Regime Detection | pd.cut threshold bins | Stable < Rs.65, Warning Rs.65–80, Crisis > Rs.80 |
+| Demand Elasticity | Percentage sensitivity | Stable: -0.35, Warning: -0.22, Crisis: -0.12 |
+| Price Forecast | Linear trend + random walk | 12-month ahead, ±Rs.5 confidence band |
+| Weekly Forecast | Rolling projection | 12-week ahead from last known price |
+| Weather Model | Seasonal sine wave | SW Monsoon (May–Sep), NE Monsoon (Nov–Jan) |
+| Yield-Price Link | 3-month lag rainfall | yield_index = clipped(rainfall_lag3 / 200 × 100) |
+| Export Data | Hard-coded benchmarks | CDA & EDB Sri Lanka 2015–2024 annual reports |
+| Policy Simulator | Linear impact model | Buffer: -0.12/%, Import duty: +0.08/%, Export quota: -0.06/% |
+| Farmer Calculator | Arithmetic model | Revenue − (Labour + Fertilizer + Transport 5% + Other 3%) |
+| Language | Bilingual EN / SI | Full Sinhala translation with ZWJ & Unicode support |
+| Framework | Streamlit + Plotly | Python 3.13, Pandas, NumPy, Plotly Graph Objects |
         """)
-    with st.expander("\U0001f4d6 "+("References" if lang=="en" else "\u0dba\u0ddc\u0db8\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dca")):
+
+    with st.expander("\U0001f4d6 "+("References & Data Sources" if lang=="en" else "යොමු සහ දත්ත මූලාශ්‍ර")):
         st.markdown("""
+**Data Sources**
+- Sri Lanka Coconut Development Authority (CDA) — cda.gov.lk
+- Coconut Research Institute (CRI) — cri.gov.lk
+- HARTI Economic Centres — harti.gov.lk
+- Sri Lanka Export Development Board — srilankabusiness.com
+
+**Technical References**
 - Hamilton, J.D. (1989). *A New Approach to the Economic Analysis of Nonstationary Time Series*. Econometrica.
 - Box, G.E.P. & Jenkins, G.M. (1976). *Time Series Analysis: Forecasting and Control*. Holden-Day.
-- Sri Lanka Coconut Development Authority. Annual Reports (2015-2024).
+- Streamlit Documentation — docs.streamlit.io
+- Plotly Python Graphing Library — plotly.com/python
+
+**Built by**
+M A C S Rathnayake | UOW: w1999714 | IIT: 20220508
+BSc (Hons) Data Science & Analytics — University of Westminster
         """)
 
 # ══ WEATHER & HARVEST (FORWARD FORECAST) ═════════════════════════════════════
