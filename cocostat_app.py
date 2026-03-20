@@ -379,7 +379,7 @@ with st.sidebar:
     st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
         padding:10px 12px;margin-bottom:10px;text-align:center;'>
       <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
-        🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
+         {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
       </div>
     </div>""", unsafe_allow_html=True)
 
@@ -966,7 +966,7 @@ elif t["nav"][6] in sec_name:
     regime_colors   = ["#22c55e","#eab308","#ef4444"]
     regime_bgs      = ["#dcfce7","#fef9c3","#fee2e2"]
 
-    st.markdown("#### 📊 " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
+    st.markdown("#### " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
     sn1,sn2,sn3,sn4,sn5 = st.columns(5)
     snap_data = [
         ("💰 " + ("Current Price" if lang=="en" else "වත්මන් මිල"),  f"Rs. {current_price:.2f}", "#16a34a"),
