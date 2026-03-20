@@ -1523,7 +1523,7 @@ elif t["nav"][6] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 3 — DECISION RISK MATRIX
     # ══════════════════════════════════════════════════════════════════════════
-    _risk_title = "🗺️ " + ("Strategic Risk & Opportunity Matrix" if lang=="en" else "උපාය මාර්ගික අවදානම් සහ අවස්ථා න්‍යාසය")
+    _risk_title = ("Strategic Risk & Opportunity Matrix" if lang=="en" else "උපාය මාර්ගික අවදානම් සහ අවස්ථා න්‍යාසය")
     _risk_sub   = ("Visual mapping of risks and opportunities across all market conditions"
                    if lang=="en" else
                    "සියලු වෙළඳ තත්ත්ව හරහා අවදානම් සහ අවස්ථා දෘශ්‍ය සිතියම")
@@ -1540,7 +1540,7 @@ elif t["nav"][6] in sec_name:
 
     rm1, rm2 = st.columns(2)
     with rm1:
-        st.markdown("##### ⚠️ " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
+        st.markdown("##### " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
         risks = [
             ("🌧️",
              "Drought / Low Rainfall" if lang=="en" else "නියඟය / අඩු වර්ෂාව",
@@ -1582,7 +1582,7 @@ elif t["nav"][6] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with rm2:
-        st.markdown("##### 🌟 " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
+        st.markdown("#####  + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
         opportunities = [
             ("🥥",
              "Virgin Coconut Oil Export" if lang=="en" else "කළු නොකළ පොල් තෙල් අපනයනය",
@@ -1628,7 +1628,7 @@ elif t["nav"][6] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 4 — 90-DAY ACTION PLAN
     # ══════════════════════════════════════════════════════════════════════════
-    _plan_title = "📅 " + ("90-Day Priority Action Plan" if lang=="en" else "දින 90 ප්‍රමුඛ ක්‍රියා සැලැස්ම")
+    _plan_title =  ("90-Day Priority Action Plan" if lang=="en" else "දින 90 ප්‍රමුඛ ක්‍රියා සැලැස්ම")
     _plan_sub   = ("Immediate, short-term and medium-term actions based on current market regime"
                    if lang=="en" else
                    "වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ක්ෂණික, කෙටි කාලීන සහ මධ්‍ය කාලීන ක්‍රියාමාර්ග")
@@ -1702,7 +1702,7 @@ elif t["nav"][6] in sec_name:
     divider()
 
     # ── Download summary report ────────────────────────────────────────────────
-    st.markdown("##### 📥 " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
+    st.markdown("##### " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
     from datetime import datetime
     report_lines = [
         f"COCOStat – Strategic Recommendation Report",
@@ -1740,7 +1740,7 @@ elif t["nav"][6] in sec_name:
     dl1, dl2 = st.columns(2)
     with dl1:
         st.download_button(
-            label="📄 " + ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
+            label= ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
             data="\n".join(report_lines),
             file_name=f"cocostat_recommendations_{datetime.now().strftime('%Y%m%d')}.txt",
             mime="text/plain", use_container_width=True)
@@ -1759,7 +1759,7 @@ elif t["nav"][6] in sec_name:
         writer = csv_mod.writer(csv_buf)
         writer.writerows(csv_rows)
         st.download_button(
-            label="📊 " + ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
+            label= ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
             data=csv_buf.getvalue(),
             file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv", use_container_width=True)
@@ -1823,16 +1823,16 @@ elif t["nav"][4] in sec_name:
         sl_vs = sl_l - w_avg; sv_clr = "#f59e0b" if sl_vs > 0 else "#22c55e"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
-            ("🇱🇰 SL Price (2024)" if lang=="en" else "🇱🇰 ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
-            ("🌍 World Avg Price" if lang=="en" else "🌍 ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
-            ("📊 SL Premium" if lang=="en" else "📊 ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
-            ("🏭 World Rank" if lang=="en" else "🏭 ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
+            ("SL Price (2024)" if lang=="en" else "ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
+            ("World Avg Price" if lang=="en" else "ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
+            ("SL Premium" if lang=="en" else "ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
+            ("World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
             with col: st.markdown(metric_card(lbl,val,clr,height=100), unsafe_allow_html=True)
 
         divider()
 
         # Multi-country price trend
-        st.markdown("#### 📈 "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
+        st.markdown("####  "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
         c_colors={"Sri Lanka":"#16a34a","Indonesia":"#3b82f6","Philippines":"#f59e0b","India":"#ef4444","Vietnam":"#8b5cf6"}
         fig_gl=go.Figure()
         for country,clr in c_colors.items():
@@ -1851,7 +1851,7 @@ elif t["nav"][4] in sec_name:
         # Production share + radar
         cp2,cr=st.columns(2)
         with cp2:
-            st.markdown("#### 🌍 "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
+            st.markdown("#### "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
             fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
                 textinfo="label+percent",textfont=dict(size=10),
                 marker=dict(colors=["#3b82f6","#f59e0b","#ef4444","#16a34a","#8b5cf6","#06b6d4","#84cc16"]),
@@ -1860,7 +1860,7 @@ elif t["nav"][4] in sec_name:
             fig_pp.update_layout(height=300,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
             st.plotly_chart(fig_pp,use_container_width=True,config={"displayModeBar":"hover"})
         with cr:
-            st.markdown("#### 📊 "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
+            st.markdown("#### "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
             ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
             attrs=(["Quality","Volume","Price Comp.","Export Infra.","Processing"]
                    if lang=="en" else
@@ -1881,7 +1881,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # Price gap table
-        st.markdown("#### 📋 "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
+        st.markdown("####  "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
         lr=global_price_df.iloc[-1]; sl_p=lr["Sri Lanka"]
         gdrows=[]
         for ct in ["Indonesia","Philippines","India","Vietnam"]:
@@ -1898,7 +1898,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # SL price divergence bar chart
-        st.markdown("#### 📉 "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්‍යයෙන් ශ්‍රී ලංකා අපගමනය"))
+        st.markdown("####  "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්‍යයෙන් ශ්‍රී ලංකා අපගමනය"))
         wavg_s=global_price_df[["Indonesia","Philippines","India","Vietnam"]].mean(axis=1)
         sldev=global_price_df["Sri Lanka"]-wavg_s
         fig_dv=go.Figure(go.Bar(x=global_price_df["year"].astype(str),y=sldev,
@@ -2265,7 +2265,7 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Month-by-month forward table ──────────────────────────────────────────
-    st.markdown("#### 📋 "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
+    st.markdown("#### "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
     table_df = fwd_df[["date","rainfall_mm","temp_c","yield_index","price_impact","harvest_period","monsoon"]].copy()
     table_df["date"] = table_df["date"].dt.strftime("%b %Y")
     table_df["harvest_period"] = table_df["harvest_period"].apply(
@@ -2279,7 +2279,7 @@ elif t["nav"][2] in sec_name:
     # ── Monthly rainfall pattern (forward) ───────────────────────────────────
     c_heat, c_corr = st.columns([3,2])
     with c_heat:
-        st.markdown("#### 🗓 "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
+        st.markdown("####  "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
         mnames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         # Build a single-row heatmap for next 12 months
         rain_by_month = {mnames[m-1]: [] for m in range(1,13)}
@@ -2306,7 +2306,7 @@ elif t["nav"][2] in sec_name:
         st.plotly_chart(fig_rh, use_container_width=True, config={"displayModeBar":"hover"})
 
     with c_corr:
-        st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
+        st.markdown("#### "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
         _mn_lbs_sc = [d.strftime("%b") for d in fwd_df["date"]]
         _harv_mask  = fwd_df["harvest_period"].values
         _yl_lbl = ("Yield Index"      if lang=="en" else "අස්වැන්න දර්ශකය")
@@ -2375,7 +2375,7 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Monsoon & Harvest season summary ──────────────────────────────────────
-    st.markdown("#### 🌀 "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
+    st.markdown("#### "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
     seasons_fwd = (
         {"SW Monsoon (May–Sep)":[5,6,7,8,9],"NE Monsoon (Nov–Jan)":[11,12,1],
          "Inter-Monsoon 1 (Mar–Apr)":[3,4],"Inter-Monsoon 2 (Oct)":[10]}
@@ -2591,13 +2591,13 @@ elif t["nav"][8] in sec_name:
     # ── KPI row ────────────────────────────────────────────────────────────────
     ak1,ak2,ak3,ak4 = st.columns(4)
     for col,(lbl,val,clr) in zip([ak1,ak2,ak3,ak4],[
-        ("🏛️ Primary Authority" if lang=="en" else "🏛️ ප්‍රධාන බලධාරිය",
+        ("Primary Authority" if lang=="en" else " ප්‍රධාන බලධාරිය",
          "CDA / HARTI", "#16a34a"),
-        ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
+        ("Auction Frequency" if lang=="en" else "වෙන්දේසි නිතිය",
          "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
-        ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
+        ("Typical Start Time" if lang=="en" else "ආරම්භ වේලාව",
          "7:30 – 9:00 AM", "#f59e0b"),
-        ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
+        ("Lot Size" if lang=="en" else "ලොට් ප්‍රමාණය",
          "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#8b5cf6"),
     ]):
         with col: st.markdown(metric_card(lbl, val, clr, height=110, val_size="1.1rem"), unsafe_allow_html=True)
@@ -2720,7 +2720,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Weekly Auction Schedule ────────────────────────────────────────────────
-    st.markdown("#### 📅 "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
+    st.markdown("#### "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
     days_en = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     days_si = ["සඳුදා","අඟහරුවාදා","බදාදා","බ්‍රහස්පතින්දා","සිකුරාදා","සෙනසුරාදා"]
     days    = days_en if lang=="en" else days_si
@@ -2755,7 +2755,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Auction Process & Rules ────────────────────────────────────────────────
-    st.markdown("#### 📋 "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
+    st.markdown("#### "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
     proc_cols = st.columns(4)
     steps = (
         [
@@ -2800,7 +2800,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
-    st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
+    st.markdown("#### "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
 
     gmins  = [72,  58,  42,  85,  380]
@@ -2876,7 +2876,7 @@ elif t["nav"][8] in sec_name:
     # ── Key Rules & Regulations ────────────────────────────────────────────────
     r1c, r2c = st.columns(2)
     with r1c:
-        st.markdown("#### 📜 "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
+        st.markdown("####  "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
         seller_rules = (
             [
                 ("✅","CDA Registration","All sellers must be registered with the Coconut Development Authority (CDA)."),
@@ -2900,7 +2900,7 @@ elif t["nav"][8] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with r2c:
-        st.markdown("#### 📜 "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
+        st.markdown("#### "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
         buyer_rules = (
             [
                 ("✅","Buyer Licence","Valid CDA buyer licence required. Obtainable from CDA Head Office, Colombo 02."),
@@ -2925,32 +2925,32 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Special Auctions ──────────────────────────────────────────────────────
-    st.markdown("#### 🌟 "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
+    st.markdown("#### "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
     spec_cols = st.columns(3)
     specials = (
         [
-            ("🌾 Peak Harvest Auctions",
+            ("Peak Harvest Auctions",
              "March–April / Aug–November",
              "Extra auction sessions added during peak harvest. Colombo centre operates 5 days/week. Prices typically lower due to high supply.",
              "#16a34a"),
-            ("🏆 Premium Quality Auction",
+            ("Premium Quality Auction",
              "Quarterly (Jan, Apr, Jul, Oct)",
              "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
              "#f59e0b"),
-            ("🌐 Export Auction",
+            ("Export Auction",
              "Every 2nd Friday of month",
              "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
              "#3b82f6"),
         ] if lang=="en" else [
-            ("🌾 උච්ච අස්වනු වෙන්දේසිය",
+            ("උච්ච අස්වනු වෙන්දේසිය",
              "මාර්තු–අප්‍රේල් / අගෝ–නොවැ",
              "උච්ච අස්වනු කාලය තුළ අමතර වෙන්දේසි සැසි එකතු කෙරේ. කොළඹ මධ්‍යස්ථානය සතිපතා දින 5 ක් ක්‍රියාත්මක වේ. ඉහළ සැපයුම හේතුවෙන් මිල සාමාන්‍යයෙන් අඩු වේ.",
              "#16a34a"),
-            ("🏆 ශ්‍රේෂ්ඨ ගුණාත්මක වෙන්දේසිය",
+            ("ශ්‍රේෂ්ඨ ගුණාත්මක වෙන්දේසිය",
              "කාර්තුව (ජන, අප්‍රේ, ජූලි, ඔක්)",
              "විශේෂයෙන් ශ්‍රේණිගත A+ ලොට්. පූර්ව ලියාපදිංචිය අවශ්‍ය. සහතිකගත අපනයන ශ්‍රේණියේ ගැනුම්කරුවන් සහ ශ්‍රේෂ්ඨ නිෂ්පාදකයන් සඳහා.",
              "#f59e0b"),
-            ("🌐 අපනයන වෙන්දේසිය",
+            ("අපනයන වෙන්දේසිය",
              "සෑම 2 වන සිකුරාදා",
              "අපනයන ගුණාත්මක පොල් සහ අගය-එකතු නිෂ්පාදන සඳහා විශේෂ වෙන්දේසිය. CDA අපනයන ආධාරක කණ්ඩායම සහභාගී වේ. USD/EUR මිල ද පිළිගනු ලැබේ.",
              "#3b82f6"),
@@ -2970,11 +2970,11 @@ elif t["nav"][8] in sec_name:
     st.markdown("#### 📞 "+("Register & Contact" if lang=="en" else "ලියාපදිංචි සහ සම්බන්ධ වන්න"))
     ct1, ct2, ct3 = st.columns(3)
     contacts = [
-        ("🏛️","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk",
+        ("CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk",
          ("Seller & Buyer Registration, Licence Applications" if lang=="en" else "විකුණුම්කරු සහ ගැනුම්කරු ලියාපදිංචිය, බලපත්‍ර ඉල්ලීම්"),"#16a34a"),
-        ("🏪","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
+        ("HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
          ("Colombo & Gampaha Auction Operations" if lang=="en" else "කොළඹ සහ ගම්පහ වෙන්දේසි ක්‍රියාකාරිත්වය"),"#3b82f6"),
-        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
+        ("CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
          ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#f59e0b"),
     ]
     _contact_lbl = "Contact" if lang=="en" else "සම්බන්ධයි"
@@ -3008,10 +3008,10 @@ _DIST_STYLE  = "flex:1;min-width:120px;max-width:220px;text-align:center;padding
 
 _footer_industry_title  = "Sri Lanka Coconut Industry" if lang=="en" else "ශ්‍රී ලංකා පොල් කර්මාන්තය"
 _footer_industry_sub    = "Key Organisations, Contacts &amp; Industry Facts" if lang=="en" else "ප්‍රධාන සංවිධාන, සම්බන්ධතා සහ කර්මාන්ත කරුණු"
-_footer_regulator_lbl   = "🏛 Primary Regulator" if lang=="en" else "🏛 ප්‍රාථමික නියාමකය"
-_footer_research_lbl    = "🔬 Research Institute" if lang=="en" else "🔬 පර්යේෂණ ආයතනය"
-_footer_export_lbl      = "📦 Export Promoter" if lang=="en" else "📦 අපනයන ප්‍රවර්ධකය"
-_footer_market_lbl      = "🛒 Market &amp; Auction" if lang=="en" else "🛒 වෙළඳ සහ වෙන්දේසිය"
+_footer_regulator_lbl   = "Primary Regulator" if lang=="en" else "ප්‍රාථමික නියාමකය"
+_footer_research_lbl    = "Research Institute" if lang=="en" else "පර්යේෂණ ආයතනය"
+_footer_export_lbl      = "Export Promoter" if lang=="en" else "අපනයන ප්‍රවර්ධකය"
+_footer_market_lbl      = "Market &amp; Auction" if lang=="en" else "වෙළඳ සහ වෙන්දේසිය"
 _footer_glance_title    = "Sri Lanka Coconut Industry at a Glance" if lang=="en" else "ශ්‍රී ලංකා පොල් කර්මාන්තය දළ විශ්ලේෂණයක්"
 _footer_hectares        = "Hectares" if lang=="en" else "හෙක්ටෙයාර්"
 _footer_nutsyear        = "Nuts/Year" if lang=="en" else "ගෙඩි/වර්ෂය"
@@ -3019,8 +3019,8 @@ _footer_families        = "Families" if lang=="en" else "පවුල්"
 _footer_exports         = "Exports" if lang=="en" else "අපනයන"
 _footer_worldrank       = "World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය"
 _footer_gdp             = "GDP Share" if lang=="en" else "GDP කොටස"
-_footer_triangle_title  = "📍 The Coconut Triangle" if lang=="en" else "📍 පොල් ත්‍රිකෝණය"
-_footer_tagline         = "🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka" if lang=="en" else "🥥 COCOStat · පොල් වෙළඳ බුද්ධිමත් පාලක පුවරුව · CDA සහ CRI ශ්‍රී ලංකා දත්ත"
+_footer_triangle_title  = "The Coconut Triangle" if lang=="en" else "පොල් ත්‍රිකෝණය"
+_footer_tagline         = "COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka" if lang=="en" else "🥥 COCOStat · පොල් වෙළඳ බුද්ධිමත් පාලක පුවරුව · CDA සහ CRI ශ්‍රී ලංකා දත්ත"
 
 st.markdown(f"""
 <div style="background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-radius:0;padding:36px 32px;box-shadow:0 4px 24px rgba(13,43,13,.25);margin-bottom:28px;">
