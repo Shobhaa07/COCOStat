@@ -374,12 +374,8 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    st.markdown(f"""<div style='background:linear-gradient(135deg,#1a3328,#3d7a55);border-radius:10px;
-        padding:10px 12px;margin-bottom:10px;text-align:center;'>
-      <div style='font-size:.72rem;font-weight:900;color:#82b49a;text-transform:uppercase;letter-spacing:1.5px;'>
-         {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
-      </div>
-    </div>""", unsafe_allow_html=True)
+    # header label only — full box rendered after score is computed
+    _ew_title = 'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'
 
 
     current_price = 68.50
@@ -474,104 +470,108 @@ with st.sidebar:
         rl_clr = "#3d7a55"; rl_bg = "#f0f5f2"; rl_border = "#a8c9b8"
         rl_action = "Market is stable" if lang=="en" else "වෙළඳ ස්ථාවරයි"
 
-    # ── Risk Score Gauge ──────────────────
-    # Visual bar gauge
-    bar_w = min(int(risk_score), 100)
+    # ── Unified Formal Risk Panel ─────────────────────────────────────────
+    bar_w   = min(int(risk_score), 100)
     bar_clr = ("#ef4444" if risk_score >= 70 else "#f59e0b" if risk_score >= 45
                else "#eab308" if risk_score >= 25 else "#5a9470")
-    st.markdown(f"""<div style='background:{rl_bg};border:2px solid {rl_border};border-radius:10px;
-        padding:12px 12px 10px;margin-bottom:8px;'>
-      <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>
-        <div style='font-size:.72rem;font-weight:900;color:{rl_clr};'>{rl_label}</div>
-        <div style='font-size:1rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.6rem;'>/100</span></div>
-      </div>
-      <div style='background:#e5e7eb;border-radius:99px;height:8px;overflow:hidden;margin-bottom:6px;'>
-        <div style='background:linear-gradient(90deg,#5a9470,{bar_clr});width:{bar_w}%;height:100%;
-            border-radius:99px;transition:width .3s;'></div>
-      </div>
-      <div style='font-size:.63rem;color:{rl_clr};font-weight:700;text-align:center;'>
-        {rl_action}
-      </div>
-    </div>""", unsafe_allow_html=True)
 
-    # ── Risk Factor Breakdown ─────────────
-    rf_label = "Risk Factors" if lang=="en" else "අවදානම් සාධක"
+    # Build risk factor rows
     rf_rows_html = ""
     for dot, label, pts in risk_factors:
-        pt_span = (f"<span style='font-size:.56rem;color:#ef4444;font-weight:700;min-width:18px;text-align:right;'>+{pts}</span>"
-                   if pts > 0 else
-                   "<span style='min-width:18px;'></span>")
+        pt_html = (f"<span style='color:#ef4444;font-size:.6rem;font-weight:700;'>+{pts}</span>"
+                   if pts > 0 else "")
         rf_rows_html += (
-            f"<div style='display:flex;align-items:center;gap:5px;padding:3px 0;"
-            f"border-bottom:1px solid #f0f5f2;'>"
-            f"<span style='font-size:.7rem;'>{dot}</span>"
-            f"<span style='font-size:.63rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>"
-            f"{pt_span}"
+            f"<div style='display:flex;align-items:center;gap:6px;padding:4px 0;"
+            f"border-bottom:1px solid #e8f0eb;'>"
+            f"<span style='font-size:.7rem;flex-shrink:0;'>{dot}</span>"
+            f"<span style='font-size:.62rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>"
+            f"{pt_html}"
             f"</div>"
         )
-    st.markdown(
-        f"<div style='font-size:.62rem;font-weight:800;color:#2d5a3d;text-transform:uppercase;"
-        f"letter-spacing:1px;margin-bottom:5px;'>{rf_label}</div>"
-        f"<div>{rf_rows_html}</div>",
-        unsafe_allow_html=True
+
+    # Build quick action items
+    action_items = actions_inner.replace("<br>", "|||").split("|||")
+    action_rows_html = "".join(
+        f"<div style='padding:3px 0;border-bottom:1px solid #e8f0eb;font-size:.62rem;color:#374151;line-height:1.4;'>{a.strip()}</div>"
+        for a in action_items if a.strip()
     )
 
-    # ── Price Zones + Current Price + Quick Actions (all one call) ────────────
-    pz_crisis_lbl = "Crisis" if lang=="en" else "අර්බුද"
-    pz_warn_lbl = "Warning" if lang=="en" else "අවවාද"
-    pz_safe_lbl = "Safe" if lang=="en" else "ආරක්ෂිත"
-    cp_lbl = "Current Auction Price" if lang=="en" else "දැනට වෙන්දේසි මිල"
-    mom_lbl = "vs 3 months ago" if lang=="en" else "මාස 3 ට සාපේක්ෂව"
-    qa_label = "Quick Actions" if lang=="en" else "ක්ෂණික ක්‍රියා"
+    _ew_title_lbl   = 'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'
+    _rf_lbl         = 'Risk Factors'      if lang=='en' else 'අවදානම් සාධක'
+    _pz_lbl         = 'Price Thresholds'  if lang=='en' else 'මිල සීමා'
+    _cp_lbl         = 'Current Auction Price' if lang=='en' else 'දැනට වෙන්දේසි මිල'
+    _qa_lbl         = 'Recommended Actions' if lang=='en' else 'නිර්දේශිත ක්‍රියා'
+    _mom_lbl        = 'vs 3 months ago'   if lang=='en' else 'මාස 3 ට සාපේක්ෂව'
+    _crisis_lbl     = 'Crisis'  if lang=='en' else 'අර්බුද'
+    _warn_lbl       = 'Warning' if lang=='en' else 'අවවාද'
+    _safe_lbl       = 'Safe'    if lang=='en' else 'ආරක්ෂිත'
 
-    if risk_score >= 70:
-        actions_inner = (
-            " Alert CDA/HARTI officials<br> Activate buffer stocks<br> Broadcast price warnings<br> Farmers: sell immediately<br> Businesses: hedge now"
-            if lang=="en" else
-            " CDA/HARTI නිලධාරීන් අනතුරු අඟවන්න<br> බෆර් තොග සක්‍රිය කරන්න<br> මිල අනතුරු ඇඟවීම් විකාශය කරන්න<br> ගොවීන්: ඉක්මනින් විකුණන්න<br> ව්‍යාපාර: දැන් ආරක්ෂා කරන්න")
-    elif risk_score >= 45:
-        actions_inner = (
-            " Monitor daily auction prices<br> Prepare buffer stock release<br> Farmers: consider selling<br> Businesses: review contracts<br> Watch export demand"
-            if lang=="en" else
-            " දෛනික වෙන්දේසි මිල නිරීක්ෂණය කරන්න<br> බෆර් තොග මුදා හැරීමට සූදානම් වන්න<br> ගොවීන්: විකිණීම සලකා බලන්න<br> ව්‍යාපාර: ගිවිසුම් සමාලෝචනය කරන්න<br> අපනයන ඉල්ලුම නිරීක්ෂණය කරන්න")
-    elif risk_score >= 25:
-        actions_inner = (
-            " Weekly price check sufficient<br> Farmers: continue normal ops<br> Businesses: plan ahead<br> Consider forward contracts<br> Explore export opportunities"
-            if lang=="en" else
-            " සතිපතා මිල පරීක්ෂාව ප්‍රමාණවත්<br> ගොවීන්: සාමාන්‍ය ක්‍රියාකාරිත්වය දිගටම කරන්න<br> ව්‍යාපාර: ඉදිරිය සැලසුම් කරන්න<br> ඉදිරි ගිවිසුම් සලකා බලන්න<br> අපනයන අවස්ථා ගවේෂණය කරන්න")
-    else:
-        actions_inner = (
-            " No immediate action needed<br> Good time to invest/expand<br> Monthly monitoring sufficient<br> Build buffer stocks now<br> Explore value-added products"
-            if lang=="en" else
-            " ක්ෂණික ක්‍රියාමාර්ගයක් අවශ්‍ය නැත<br> ආයෝජනය/ව්‍යාප්ත කිරීමට හොඳ කාලය<br> මාසික නිරීක්ෂණය ප්‍රමාණවත්<br> දැන් බෆර් තොග ගොඩ නගා ගන්න<br> අගය-එකතු නිෂ්පාදන ගවේෂණය කරන්න")
+    st.markdown(f"""
+<div style='background:#fff;border:1px solid #b8d0c4;border-radius:10px;overflow:hidden;margin-bottom:12px;'>
 
-    pz_zones_label = "Price Zones" if lang=="en" else "මිල කලාප"
-    st.markdown(
-        f"<div style='margin-top:10px;'>"
-        f"<div style='font-size:.62rem;font-weight:800;color:#2d5a3d;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{pz_zones_label}</div>"
-        f"<div style='display:flex;flex-direction:column;gap:4px;'>"
-        f"<div style='background:#fee2e2;border-left:3px solid #ef4444;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#7f1d1d;'> {pz_crisis_lbl}</span>"
-        f"<span style='font-size:.63rem;font-weight:800;color:#7f1d1d;'>Rs.{crisis_threshold}+</span></div>"
-        f"<div style='background:#fef9c3;border-left:3px solid #eab308;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#713f12;'> {pz_warn_lbl}</span>"
-        f"<span style='font-size:.63rem;font-weight:800;color:#713f12;'>Rs.{warn_threshold}&#8211;{crisis_threshold-1}</span></div>"
-        f"<div style='background:#f0f5f2;border-left:3px solid #5a9470;border-radius:0 5px 5px 0;padding:4px 8px;display:flex;justify-content:space-between;align-items:center;'>"
-        f"<span style='font-size:.63rem;font-weight:700;color:#2d5a3d;'> {pz_safe_lbl}</span>"
-        f"<span style='font-size:.63rem;font-weight:800;color:#2d5a3d;'>Rs.&lt;{warn_threshold}</span></div>"
-        f"</div></div>"
-        f"<div style='background:#fff;border:1px solid #b8d0c4;border-radius:8px;padding:8px 10px;margin-top:8px;text-align:center;'>"
-        f"<div style='font-size:.58rem;color:#2d5a3d;font-weight:700;text-transform:uppercase;letter-spacing:1px;'>{cp_lbl}</div>"
-        f"<div style='font-size:1.35rem;font-weight:900;color:{rl_clr};margin:2px 0;'>Rs. {current_price:.2f}</div>"
-        f"<div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {mom_lbl}</div>"
-        f"</div>"
-        f"<div style='margin-top:10px;'>"
-        f"<div style='font-size:.62rem;font-weight:800;color:#2d5a3d;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;'>{qa_label}</div>"
-        f"<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;'>"
-        f"<div style='font-size:.63rem;line-height:1.7;color:#374151;'>{actions_inner}</div>"
-        f"</div></div>",
-        unsafe_allow_html=True
-    )
+  <!-- Header -->
+  <div style='background:#1a3328;padding:9px 14px;'>
+    <div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>
+      {_ew_title_lbl}
+    </div>
+  </div>
+
+  <div style='padding:12px 14px;'>
+
+    <!-- Status + Score -->
+    <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>
+      <div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>
+      <div style='font-size:.9rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.58rem;font-weight:500;'>/100</span></div>
+    </div>
+    <div style='background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:5px;'>
+      <div style='background:{bar_clr};width:{bar_w}%;height:100%;border-radius:4px;'></div>
+    </div>
+    <div style='font-size:.6rem;color:{rl_clr};font-weight:600;margin-bottom:10px;'>{rl_action}</div>
+
+    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
+
+    <!-- Current Price -->
+    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;'>{_cp_lbl}</div>
+    <div style='display:flex;align-items:baseline;gap:6px;margin-bottom:2px;'>
+      <div style='font-size:1.2rem;font-weight:900;color:{rl_clr};'>Rs. {current_price:.2f}</div>
+      <div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {_mom_lbl}</div>
+    </div>
+
+    <div style='height:1px;background:#e8f0eb;margin:8px 0;'></div>
+
+    <!-- Price Thresholds -->
+    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;'>{_pz_lbl}</div>
+    <div style='display:flex;flex-direction:column;gap:3px;margin-bottom:8px;'>
+      <div style='display:flex;justify-content:space-between;align-items:center;background:#fef2f2;border-left:3px solid #ef4444;padding:3px 7px;border-radius:0 4px 4px 0;'>
+        <span style='font-size:.62rem;font-weight:600;color:#7f1d1d;'>{_crisis_lbl}</span>
+        <span style='font-size:.62rem;font-weight:700;color:#7f1d1d;'>Rs.{crisis_threshold}+</span>
+      </div>
+      <div style='display:flex;justify-content:space-between;align-items:center;background:#fefce8;border-left:3px solid #eab308;padding:3px 7px;border-radius:0 4px 4px 0;'>
+        <span style='font-size:.62rem;font-weight:600;color:#713f12;'>{_warn_lbl}</span>
+        <span style='font-size:.62rem;font-weight:700;color:#713f12;'>Rs.{warn_threshold}&ndash;{crisis_threshold-1}</span>
+      </div>
+      <div style='display:flex;justify-content:space-between;align-items:center;background:#f0f5f2;border-left:3px solid #3d7a55;padding:3px 7px;border-radius:0 4px 4px 0;'>
+        <span style='font-size:.62rem;font-weight:600;color:#1a3328;'>{_safe_lbl}</span>
+        <span style='font-size:.62rem;font-weight:700;color:#1a3328;'>Rs.&lt;{warn_threshold}</span>
+      </div>
+    </div>
+
+    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
+
+    <!-- Risk Factors -->
+    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_rf_lbl}</div>
+    <div style='margin-bottom:8px;'>{rf_rows_html}</div>
+
+    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
+
+    <!-- Recommended Actions -->
+    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_qa_lbl}</div>
+    <div>{action_rows_html}</div>
+
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
     st.markdown("---")
     st.markdown(f"""<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-radius:10px;padding:14px 12px;text-align:center;'>
       <div style='font-size:.6rem;font-weight:700;color:#2d5a3d;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;'>\U0001f464 {t['footer_researcher']}</div>
