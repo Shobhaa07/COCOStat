@@ -399,14 +399,14 @@ with st.sidebar:
     _thresh_lbl = "Set Thresholds" if lang=="en" else "සීමාවන් සකසන්න"
     _warn_lbl   = "Warning Level (Rs.)" if lang=="en" else "අවවාද සීමාව (රු.)"
     _cris_lbl   = "Crisis Level (Rs.)"  if lang=="en" else "අර්බුද සීමාව (රු.)"
-    st.markdown(f"""<div style='background:#1a3328;padding:7px 14px 0 14px;border-radius:10px 10px 0 0;
-        margin-bottom:0;border:1px solid #b8d0c4;border-bottom:none;'>
+    st.markdown(f"""<div style='background:#1a3328;padding:8px 14px;border-radius:10px 10px 0 0;
+        margin-bottom:0;border:2px solid #1a3328;'>
       <div style='font-size:.6rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;
-          letter-spacing:1.5px;padding-bottom:4px;'>PRICE RISK EARLY WARNING</div>
+          letter-spacing:1.5px;'>PRICE RISK EARLY WARNING</div>
       <div style='font-size:.58rem;font-weight:600;color:#82b49a;text-transform:uppercase;
-          letter-spacing:1px;padding-bottom:6px;'>{_thresh_lbl}</div>
+          letter-spacing:1px;margin-top:2px;'>{_thresh_lbl}</div>
     </div>""", unsafe_allow_html=True)
-    st.markdown("<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-top:none;border-bottom:none;padding:6px 14px 2px 14px;'>", unsafe_allow_html=True)
+    st.markdown("<div style='background:#f0f5f2;border-left:2px solid #1a3328;border-right:2px solid #1a3328;border-bottom:2px solid #1a3328;border-radius:0 0 0 0;padding:6px 14px 4px 14px;margin-bottom:0;'>", unsafe_allow_html=True)
     warn_threshold = st.slider(_warn_lbl, min_value=50, max_value=90,  value=65, step=1)
     crisis_threshold = st.slider(_cris_lbl, min_value=60, max_value=120, value=80, step=1)
     st.markdown("</div>", unsafe_allow_html=True)
@@ -544,7 +544,7 @@ with st.sidebar:
     _safe_lbl       = 'Safe'    if lang=='en' else 'ආරක්ෂිත'
 
     _html_box = (
-        "<div style='background:#fff;border:1px solid #b8d0c4;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
+        "<div style='background:#fff;border:2px solid #1a3328;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
         "<div style='padding:12px 14px;'>"
         f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
         f"<div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>"
