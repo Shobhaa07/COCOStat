@@ -2976,18 +2976,18 @@ elif t["nav"][8] in sec_name:
          ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#f59e0b"),
     ]
     _contact_lbl = "Contact" if lang=="en" else "සම්බන්ධයි"
-    for col, (icon,org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
+    for col, (org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};
                 border-radius:10px;padding:16px 14px;height:220px;display:flex;flex-direction:column;'>
                 <div style='font-size:.6rem;font-weight:700;color:{clr};text-transform:uppercase;
-                    letter-spacing:1px;margin-bottom:6px;'>{icon} {_contact_lbl}</div>
+                    letter-spacing:1px;margin-bottom:6px;'>{_contact_lbl}</div>
                 <div style='font-weight:800;font-size:.82rem;color:#1a3328;margin-bottom:8px;'>{org}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.8;flex:1;'>
-                     {addr}<br> {phone}<br> {email}<br>
-                     <a href='https://{web}' target='_blank' style='color:{clr};font-weight:600;text-decoration:none;'>{web}</a>
+                    {addr}<br>{phone}<br>{email}<br>
+                    <a href='https://{web}' target='_blank' style='color:{clr};font-weight:600;text-decoration:none;'>{web}</a>
                 </div>
-                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'> {purpose}</div>
+                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:6px;'>{purpose}</div>
             </div>""", unsafe_allow_html=True)
 
 
