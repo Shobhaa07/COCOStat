@@ -398,8 +398,8 @@ with st.sidebar:
         background:#fff !important;
         padding:6px 14px !important;
         margin:0 !important;
-        border-left:2px solid #1a3328 !important;
-        border-right:2px solid #1a3328 !important;
+        border-left:1px solid #b8d0c4 !important;
+        border-right:1px solid #b8d0c4 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
         font-size:.62rem !important; font-weight:700 !important; color:#2d5a3d !important;
@@ -412,7 +412,7 @@ with st.sidebar:
     # Dark green header
     _thresh_lbl = "Set Thresholds" if lang=="en" else "සීමාවන් සකසන්න"
     st.markdown(f"""<div style='background:#1a3328;padding:10px 14px;border-radius:10px 10px 0 0;
-        border:2px solid #1a3328;border-bottom:none;margin-bottom:0;'>
+        border:1px solid #b8d0c4;border-bottom:none;margin-bottom:0;'>
       <div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>
         PRICE RISK EARLY WARNING</div>
       <div style='font-size:.6rem;font-weight:600;color:#82b49a;text-transform:uppercase;letter-spacing:1px;margin-top:3px;'>
@@ -533,7 +533,7 @@ with st.sidebar:
 
     # ── Single HTML box — continues below sliders via matching border ──
     _html_box = (
-        "<div style='background:#fff;border:2px solid #1a3328;border-top:none;"
+        "<div style='background:#fff;border:1px solid #b8d0c4;border-top:none;"
         "border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
         "<div style='padding:12px 14px;'>"
         f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
