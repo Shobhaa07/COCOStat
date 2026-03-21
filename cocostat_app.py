@@ -395,7 +395,7 @@ with st.sidebar:
     # CSS to style the sliders to match the card theme
     st.markdown("""<style>
     section[data-testid="stSidebar"] [data-testid="stSlider"] {
-        background:#fff !important;
+        background:#f0f5f2 !important;
         padding:6px 14px !important;
         margin:0 !important;
         border-left:1px solid #b8d0c4 !important;
@@ -533,9 +533,9 @@ with st.sidebar:
 
     # ── Single HTML box — continues below sliders via matching border ──
     _html_box = (
-        "<div style='background:#fff;border:1px solid #b8d0c4;border-top:none;"
+        "<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-top:none;"
         "border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
-        "<div style='padding:12px 14px;'>"
+        "<div style='padding:12px 14px;background:#f0f5f2;'>"
         f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
         f"<div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>"
         f"<div style='font-size:.9rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.58rem;font-weight:500;'>/100</span></div>"
