@@ -279,44 +279,147 @@ T = {
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
+/* ═══════════════════════════════════════════════════════
+   COCOStat — Unified Formal Theme
+   Palette: White page · Dark green accent (#15803d)
+            Text: #0f172a · Muted: #64748b
+            Cards: #fff border #e2e8f0 · Sidebar: #f8faf8
+   ═══════════════════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
-html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a2e1a}
+
+/* ── Base ── */
+html,body,[class*="css"]{
+  font-family:'Inter','Noto Sans Sinhala',sans-serif;
+  background:#f9fafb;color:#0f172a}
 #MainMenu,footer,header{visibility:hidden}
-.main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
+.main .block-container{
+  background:#f9fafb;padding-top:0!important;padding-bottom:2rem;
+  padding-left:1.2rem!important;padding-right:1.2rem!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
+
+/* ── Sidebar ── */
+div[data-testid="stSidebar"]{
+  background:#fff!important;
+  border-right:1px solid #e2e8f0!important}
+div[data-testid="stSidebar"] *{color:#0f172a!important}
+div[data-testid="stSidebar"] .stRadio>div{
+  display:flex!important;flex-direction:column!important;gap:4px!important}
+div[data-testid="stSidebar"] .stRadio label{
+  background:#f8fafc!important;
+  border:1px solid #e2e8f0!important;
+  border-radius:6px!important;
+  padding:9px 12px!important;
+  font-size:.84rem!important;font-weight:500!important;
+  width:100%!important;display:block!important;cursor:pointer!important;
+  transition:all .15s ease!important}
+div[data-testid="stSidebar"] .stRadio label:hover{
+  background:#f0fdf4!important;
+  border-color:#15803d!important;
+  color:#14532d!important}
+div[data-testid="stSidebar"] hr{border-color:#e2e8f0!important}
+div[data-testid="stSidebar"] h3{
+  color:#15803d!important;font-size:.68rem!important;
+  text-transform:uppercase;letter-spacing:1.8px;font-weight:700}
+
+/* ── Layout helpers ── */
 @media(min-width:768px){
-  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important;transform:none!important}
+  section[data-testid="stSidebar"]{
+    min-width:270px!important;max-width:270px!important;
+    width:270px!important;transform:none!important}
   section[data-testid="stSidebar"]>div{width:270px!important;transform:none!important}
 }
 @media(max-width:767px){
-  section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
+  section[data-testid="stSidebar"]{
+    position:fixed!important;left:0!important;top:0!important;
+    height:100vh!important;min-width:82vw!important;max-width:82vw!important;
+    width:82vw!important;z-index:9998!important;
+    box-shadow:4px 0 20px rgba(0,0,0,.12)!important}
   section[data-testid="stSidebar"]>div{width:82vw!important}
   [data-testid="collapsedControl"]{display:flex!important;z-index:9999!important;position:fixed!important}
-  [data-testid="stAppViewContainer"]>.main{margin-left:0!important;padding-left:0!important;width:100vw!important;max-width:100vw!important}
-  .main .block-container{padding-left:.5rem!important;padding-right:.5rem!important;max-width:100vw!important;margin-left:0!important}
-  html,body,.main,.block-container,[data-testid="stAppViewContainer"]{overflow-x:hidden!important;max-width:100vw!important}
-  [data-testid="column"],div[data-testid="column"]{min-width:100%!important;width:100%!important;flex:0 0 100%!important;max-width:100%!important}
+  [data-testid="stAppViewContainer"]>.main{
+    margin-left:0!important;padding-left:0!important;
+    width:100vw!important;max-width:100vw!important}
+  .main .block-container{
+    padding-left:.6rem!important;padding-right:.6rem!important;
+    max-width:100vw!important;margin-left:0!important}
+  html,body,.main,.block-container,[data-testid="stAppViewContainer"]{
+    overflow-x:hidden!important;max-width:100vw!important}
+  [data-testid="column"],div[data-testid="column"]{
+    min-width:100%!important;width:100%!important;
+    flex:0 0 100%!important;max-width:100%!important}
   [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
   .js-plotly-plot,.plotly,.plot-container{width:100%!important;overflow-x:hidden!important}
 }
 [data-testid="stHorizontalBlock"]{align-items:stretch!important}
-[data-testid="stHorizontalBlock"]>[data-testid="column"]{display:flex!important;flex-direction:column!important}
-[data-testid="stHorizontalBlock"]>[data-testid="column"]>div:first-child{flex:1!important;display:flex!important;flex-direction:column!important}
-div[data-testid="stSidebar"]{background:#f7faf7!important;border-right:2px solid #d1e7d1!important}
-div[data-testid="stSidebar"] *{color:#1a3a1a!important}
-div[data-testid="stSidebar"] .stRadio>div{display:flex!important;flex-direction:column!important;gap:5px!important}
-div[data-testid="stSidebar"] .stRadio label{background:#fff!important;border:1.5px solid #d1e7d1!important;border-radius:8px!important;padding:9px 13px!important;font-size:.85rem!important;font-weight:500!important;width:100%!important;display:block!important;cursor:pointer!important}
-div[data-testid="stSidebar"] .stRadio label:hover{background:#dcfce7!important;border-color:#16a34a!important;color:#14532d!important}
-div[data-testid="stSidebar"] hr{border-color:#d1e7d1!important}
-div[data-testid="stSidebar"] h3{color:#14532d!important;font-size:.72rem!important;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
-.section-header{font-size:1.45rem;font-weight:800;color:#0d2b0d;margin-bottom:4px;letter-spacing:-.2px}
-.section-sub{color:#6b7280;font-size:.87rem;margin-bottom:18px}
-.info-box-green,.info-box-blue{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 10px 10px 0;padding:12px 16px;color:#14532d;font-weight:600;font-size:.9rem;margin-bottom:16px}
-.info-box-yellow{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;color:#78350f;font-weight:600;font-size:.9rem;margin-bottom:16px}
-.info-box-red{background:#fff1f2;border-left:4px solid #ef4444;border-radius:0 10px 10px 0;padding:12px 16px;color:#7f1d1d;font-weight:600;font-size:.9rem;margin-bottom:16px}
-.styled-divider{height:1px;background:#d1e7d1;margin:28px 0}
-@media(max-width:767px){.section-header{font-size:1.15rem!important}.section-sub{font-size:.8rem!important}}
+[data-testid="stHorizontalBlock"]>[data-testid="column"]{
+  display:flex!important;flex-direction:column!important}
+[data-testid="stHorizontalBlock"]>[data-testid="column"]>div:first-child{
+  flex:1!important;display:flex!important;flex-direction:column!important}
+
+/* ── Section headers ── */
+.section-header{
+  font-size:1.35rem;font-weight:800;color:#0f172a;
+  margin-bottom:4px;letter-spacing:-.3px;
+  border-left:4px solid #15803d;padding-left:12px}
+.section-sub{
+  color:#64748b;font-size:.86rem;
+  margin-bottom:18px;padding-left:16px}
+
+/* ── Info boxes ── */
+.info-box-green,.info-box-blue{
+  background:#f0fdf4;border-left:4px solid #15803d;
+  border-radius:0 8px 8px 0;
+  padding:11px 16px;color:#14532d;
+  font-weight:600;font-size:.88rem;margin-bottom:16px}
+.info-box-yellow{
+  background:#fffbeb;border-left:4px solid #d97706;
+  border-radius:0 8px 8px 0;
+  padding:11px 16px;color:#78350f;
+  font-weight:600;font-size:.88rem;margin-bottom:16px}
+.info-box-red{
+  background:#fef2f2;border-left:4px solid #dc2626;
+  border-radius:0 8px 8px 0;
+  padding:11px 16px;color:#7f1d1d;
+  font-weight:600;font-size:.88rem;margin-bottom:16px}
+
+/* ── Divider ── */
+.styled-divider{
+  height:1px;background:#e2e8f0;margin:24px 0}
+
+/* ── Expander ── */
+[data-testid="stExpander"]{
+  border:1px solid #e2e8f0!important;
+  border-radius:8px!important;background:#fff!important}
+
+/* ── Dataframe ── */
+[data-testid="stDataFrame"] iframe{border-radius:6px}
+
+/* ── Inputs / sliders ── */
+[data-testid="stSlider"] [data-baseweb="slider"] div[role="slider"]{
+  background:#15803d!important}
+[data-testid="stSlider"] div[data-testid="stTickBar"]{color:#15803d!important}
+
+/* ── Number input ── */
+[data-testid="stNumberInput"] input{
+  border-color:#e2e8f0!important;border-radius:6px!important}
+
+/* ── Select box ── */
+[data-testid="stSelectbox"] [data-baseweb="select"] div{
+  border-color:#e2e8f0!important;border-radius:6px!important;background:#fff!important}
+
+/* ── Tabs ── */
+[data-testid="stTabs"] [data-baseweb="tab-list"]{
+  border-bottom:2px solid #e2e8f0!important;gap:4px}
+[data-testid="stTabs"] [data-baseweb="tab"]{
+  border-radius:6px 6px 0 0!important;
+  font-weight:600!important;font-size:.84rem!important;color:#64748b!important}
+[data-testid="stTabs"] [aria-selected="true"]{
+  color:#15803d!important;border-bottom:2px solid #15803d!important;background:#f0fdf4!important}
+
+@media(max-width:767px){
+  .section-header{font-size:1.1rem!important;padding-left:10px}
+  .section-sub{font-size:.78rem!important}}
 </style>
 <script>
 (function(){
@@ -343,22 +446,19 @@ div[data-testid="stSidebar"] h3{color:#14532d!important;font-size:.72rem!importa
 # SIDEBAR
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""<div style='text-align:center;padding:22px 0 14px;border-bottom:2px solid #d1e7d1;margin-bottom:4px;'>
-      <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 8px;display:block;">
-        <circle cx="32" cy="32" r="30" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
-        <circle cx="32" cy="32" r="23" fill="#166534"/>
-        <rect x="30.5" y="35" width="3" height="13" rx="1.5" fill="#bbf7d0"/>
-        <path d="M32 34 Q24 26 20 18 Q28 22 32 28 Q36 22 44 18 Q40 26 32 34Z" fill="#4ade80"/>
-        <path d="M32 30 Q26 24 24 16 Q31 21 32 27 Q33 21 40 16 Q38 24 32 30Z" fill="#86efac"/>
-        <circle cx="32" cy="37" r="4.5" fill="#92400e"/>
-        <rect x="8" y="46" width="3.5" height="9" rx="1" fill="#4ade80" opacity="0.85"/>
-        <rect x="13.5" y="42" width="3.5" height="13" rx="1" fill="#4ade80" opacity="0.85"/>
-        <rect x="19" y="45" width="3.5" height="10" rx="1" fill="#4ade80" opacity="0.85"/>
-        <polyline points="9.75,50 15.25,46 20.75,49" stroke="#bbf7d0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        <circle cx="9.75" cy="50" r="1.2" fill="#86efac"/><circle cx="15.25" cy="46" r="1.2" fill="#86efac"/><circle cx="20.75" cy="49" r="1.2" fill="#86efac"/>
-      </svg>
-      <div style='font-size:1.3rem;font-weight:900;color:#0d2b0d;'>COCOStat</div>
-      <div style='font-size:.65rem;color:#4a7a4a;margin-top:3px;letter-spacing:2px;font-weight:600;text-transform:uppercase;'>Market Intelligence</div>
+    st.markdown("""<div style='padding:20px 16px 16px;
+        border-bottom:1px solid #e2e8f0;margin-bottom:8px;'>
+      <div style='display:flex;align-items:center;gap:10px;'>
+        <div style='background:#15803d;border-radius:8px;width:36px;height:36px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.1rem;flex-shrink:0;'>🥥</div>
+        <div>
+          <div style='font-size:1rem;font-weight:800;color:#0f172a;
+              letter-spacing:-.3px;line-height:1.2;'>COCOStat</div>
+          <div style='font-size:.6rem;color:#15803d;font-weight:700;
+              text-transform:uppercase;letter-spacing:1.8px;'>Market Intelligence</div>
+        </div>
+      </div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -376,10 +476,12 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d,#166534);border-radius:10px;
-        padding:10px 12px;margin-bottom:10px;text-align:center;'>
-      <div style='font-size:.72rem;font-weight:900;color:#4ade80;text-transform:uppercase;letter-spacing:1.5px;'>
-         {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
+    st.markdown(f"""<div style='background:#f0fdf4;border:1px solid #bbf7d0;
+        border-left:4px solid #15803d;border-radius:6px;
+        padding:9px 12px;margin-bottom:10px;'>
+      <div style='font-size:.68rem;font-weight:700;color:#15803d;
+          text-transform:uppercase;letter-spacing:1.5px;'>
+        🚦 {'Price Risk Early Warning' if lang=='en' else 'මිල අවදානම් අනතුරු ඇඟවීම'}
       </div>
     </div>""", unsafe_allow_html=True)
 
@@ -590,27 +692,36 @@ with st.sidebar:
 # HERO BANNER
 # ─────────────────────────────────────────────
 st.markdown(f"""
-<div id='coco-hero' style='text-align:center;padding:clamp(16px,4vw,36px) clamp(12px,5vw,48px) clamp(14px,3vw,32px);margin-bottom:0;
-  background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-bottom:3px solid #16a34a;box-shadow:0 4px 20px rgba(13,43,13,.18);'>
-  <div style='display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 18px;
-      font-size:clamp(.62rem,2vw,.78rem);font-weight:700;color:#bbf7d0;letter-spacing:1px;margin-bottom:10px;'>🥥 {t["subtitle"]}</div>
-  <h1 style='font-size:clamp(1.3rem,5vw,2.2rem);font-weight:900;color:#fff;margin:0 0 10px;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.2);'>{t["tagline"]}</h1>
-  <p style='color:#bbf7d0;font-size:clamp(.78rem,2.5vw,.9rem);max-width:580px;margin:0 auto;line-height:1.7;font-weight:500;opacity:.9;'>{t["desc"]}</p>
+<div style='background:#15803d;padding:clamp(18px,3vw,32px) clamp(16px,4vw,48px);
+     margin-bottom:0;border-bottom:3px solid #166534;'>
+  <div style='max-width:780px;'>
+    <div style='font-size:clamp(.6rem,1.8vw,.72rem);font-weight:700;color:#bbf7d0;
+        letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;'>
+      🥥 {t["subtitle"]}</div>
+    <h1 style='font-size:clamp(1.25rem,4vw,2rem);font-weight:800;color:#ffffff;
+        margin:0 0 10px;line-height:1.25;letter-spacing:-.4px;'>{t["tagline"]}</h1>
+    <p style='color:#dcfce7;font-size:clamp(.78rem,2vw,.88rem);
+        margin:0;line-height:1.75;font-weight:400;max-width:600px;opacity:.92;'>{t["desc"]}</p>
+  </div>
 </div>
-<div style='margin-bottom:24px;'></div>
+<div style='margin-bottom:20px;'></div>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
-def metric_card(label, value, clr="#16a34a", sub=None, height=110, val_size="1.4rem"):
-    sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#166534;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;margin-top:4px;'>{sub}</div>"
-                if sub else
-                "<span style='display:none;'></span>")
-    return (f"<div style='background:#fff;border:1px solid #d1e7d1;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;"
+def metric_card(label, value, clr="#15803d", sub=None, height=110, val_size="1.4rem"):
+    sub_html = (f"<div style='display:inline-block;background:#f0fdf4;color:#15803d;font-size:.7rem;"
+                f"font-weight:600;padding:2px 10px;border-radius:4px;border:1px solid #bbf7d0;"
+                f"margin-top:4px;'>{sub}</div>"
+                if sub else "<span style='display:none;'></span>")
+    return (f"<div style='background:#fff;border:1px solid #e2e8f0;border-top:3px solid {clr};"
+            f"border-radius:8px;padding:14px 16px;"
             f"height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>"
-            f"<div style='font-size:.65rem;font-weight:700;color:#4a7a4a;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
-            f"<div style='font-size:{val_size};font-weight:900;color:{clr};line-height:1.2;white-space:nowrap;'>{value}</div>"
+            f"<div style='font-size:.63rem;font-weight:700;color:#64748b;text-transform:uppercase;"
+            f"letter-spacing:1px;'>{label}</div>"
+            f"<div style='font-size:{val_size};font-weight:800;color:{clr};line-height:1.2;"
+            f"white-space:nowrap;'>{value}</div>"
             f"{sub_html}</div>")
 
 def section_header(title, sub=None):
@@ -941,12 +1052,13 @@ elif t["nav"][6] in sec_name:
                    "<strong style='color:#4ade80;'>රජයේ ප්‍රතිපත්ති සම්පාදකයන්</strong>, "
                    "<strong style='color:#86efac;'>ව්‍යාපාරිකයන් සහ වෙළෙන්දන්</strong> සහ "
                    "<strong style='color:#a7f3d0;'>පොල් ගොවීන්</strong> වෙනුවෙන් ක්‍රියාශීලී නිර්දේශ ලබා දේ.")
-    st.markdown(f"""<div style='background:linear-gradient(135deg,#0d2b0d 0%,#14532d 55%,#166534 100%);
-        border-radius:14px;padding:28px 32px;margin-bottom:20px;'>
-      <div style='font-size:clamp(1.2rem,4vw,1.7rem);font-weight:900;color:#fff;margin-bottom:8px;'>
+    st.markdown(f"""<div style='background:#15803d;
+        border-radius:8px;padding:22px 28px;margin-bottom:20px;'>
+      <div style='font-size:clamp(1.1rem,3vw,1.45rem);font-weight:800;color:#fff;
+          margin-bottom:8px;letter-spacing:-.3px;'>
         {_hero_title}
       </div>
-      <div style='font-size:.88rem;color:#bbf7d0;line-height:1.7;max-width:760px;'>
+      <div style='font-size:.84rem;color:#dcfce7;line-height:1.75;max-width:760px;'>
         {_hero_desc}
       </div>
     </div>
@@ -966,7 +1078,7 @@ elif t["nav"][6] in sec_name:
     regime_colors   = ["#22c55e","#eab308","#ef4444"]
     regime_bgs      = ["#dcfce7","#fef9c3","#fee2e2"]
 
-    st.markdown("#### " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
+    st.markdown("#### 📊 " + ("Live Market Snapshot" if lang=="en" else "සජීව වෙළඳ තතු"))
     sn1,sn2,sn3,sn4,sn5 = st.columns(5)
     snap_data = [
         ("💰 " + ("Current Price" if lang=="en" else "වත්මන් මිල"),  f"Rs. {current_price:.2f}", "#16a34a"),
@@ -986,12 +1098,12 @@ elif t["nav"][6] in sec_name:
     _sim_sub   = ("Test government intervention scenarios and see projected market outcomes before implementation"
                   if lang=="en" else
                   "රජයේ මැදිහත්වීම් අවස්ථා පරීක්ෂා කර ක්‍රියාත්මක කිරීමට පෙර ඉදිරි වෙළඳ ප්‍රතිඵල බලන්න")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#1e3a8a,#1d4ed8);border-radius:10px;
+    st.markdown(f"""<div style='background:#eff6ff;border-left:4px solid #2563eb,#1d4ed8);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#0f172a;'>
         {_sim_title}
       </div>
-      <div style='font-size:.78rem;color:#bfdbfe;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#475569;margin-top:3px;'>
         {_sim_sub}
       </div>
     </div>
@@ -1194,12 +1306,12 @@ elif t["nav"][6] in sec_name:
     _eng_sub   = ("AI-driven, regime-sensitive recommendations for all three market stakeholder groups"
                   if lang=="en" else
                   "වෙළඳ තත්ත්වය අනුව, සියලු තුන් පාර්ශ්ව කණ්ඩායම් සඳහා ක්‍රියාශීලී නිර්දේශ")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
+    st.markdown(f"""<div style='background:#faf5ff;border-left:4px solid #7c3aed,#6d28d9);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#0f172a;'>
         {_eng_title}
       </div>
-      <div style='font-size:.78rem;color:#ddd6fe;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#475569;margin-top:3px;'>
         {_eng_sub}
       </div>
     </div>
@@ -1523,16 +1635,16 @@ elif t["nav"][6] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 3 — DECISION RISK MATRIX
     # ══════════════════════════════════════════════════════════════════════════
-    _risk_title = ("Strategic Risk & Opportunity Matrix" if lang=="en" else "උපාය මාර්ගික අවදානම් සහ අවස්ථා න්‍යාසය")
+    _risk_title = "🗺️ " + ("Strategic Risk & Opportunity Matrix" if lang=="en" else "උපාය මාර්ගික අවදානම් සහ අවස්ථා න්‍යාසය")
     _risk_sub   = ("Visual mapping of risks and opportunities across all market conditions"
                    if lang=="en" else
                    "සියලු වෙළඳ තත්ත්ව හරහා අවදානම් සහ අවස්ථා දෘශ්‍ය සිතියම")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
+    st.markdown(f"""<div style='background:#f0fdfa;border-left:4px solid #0d9488,#0d9488);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#0f172a;'>
         {_risk_title}
       </div>
-      <div style='font-size:.78rem;color:#ccfbf1;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#475569;margin-top:3px;'>
         {_risk_sub}
       </div>
     </div>
@@ -1540,7 +1652,7 @@ elif t["nav"][6] in sec_name:
 
     rm1, rm2 = st.columns(2)
     with rm1:
-        st.markdown("##### " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
+        st.markdown("##### ⚠️ " + ("Key Risks to Monitor" if lang=="en" else "ප්‍රධාන අවදානම්"))
         risks = [
             ("🌧️",
              "Drought / Low Rainfall" if lang=="en" else "නියඟය / අඩු වර්ෂාව",
@@ -1582,7 +1694,7 @@ elif t["nav"][6] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with rm2:
-        st.markdown("##### " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
+        st.markdown("##### 🌟 " + ("Key Opportunities" if lang=="en" else "ප්‍රධාන අවස්ථා"))
         opportunities = [
             ("🥥",
              "Virgin Coconut Oil Export" if lang=="en" else "කළු නොකළ පොල් තෙල් අපනයනය",
@@ -1628,16 +1740,16 @@ elif t["nav"][6] in sec_name:
     # ══════════════════════════════════════════════════════════════════════════
     # SECTION 4 — 90-DAY ACTION PLAN
     # ══════════════════════════════════════════════════════════════════════════
-    _plan_title =  ("90-Day Priority Action Plan" if lang=="en" else "දින 90 ප්‍රමුඛ ක්‍රියා සැලැස්ම")
+    _plan_title = "📅 " + ("90-Day Priority Action Plan" if lang=="en" else "දින 90 ප්‍රමුඛ ක්‍රියා සැලැස්ම")
     _plan_sub   = ("Immediate, short-term and medium-term actions based on current market regime"
                    if lang=="en" else
                    "වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ක්ෂණික, කෙටි කාලීන සහ මධ්‍ය කාලීන ක්‍රියාමාර්ග")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
+    st.markdown(f"""<div style='background:#fffbeb;border-left:4px solid #d97706,#b45309);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
-      <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
+      <div style='font-size:1.05rem;font-weight:900;color:#0f172a;'>
         {_plan_title}
       </div>
-      <div style='font-size:.78rem;color:#fde68a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#475569;margin-top:3px;'>
         {_plan_sub}
       </div>
     </div>
@@ -1702,7 +1814,7 @@ elif t["nav"][6] in sec_name:
     divider()
 
     # ── Download summary report ────────────────────────────────────────────────
-    st.markdown("##### " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
+    st.markdown("##### 📥 " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
     from datetime import datetime
     report_lines = [
         f"COCOStat – Strategic Recommendation Report",
@@ -1740,7 +1852,7 @@ elif t["nav"][6] in sec_name:
     dl1, dl2 = st.columns(2)
     with dl1:
         st.download_button(
-            label= ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
+            label="📄 " + ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
             data="\n".join(report_lines),
             file_name=f"cocostat_recommendations_{datetime.now().strftime('%Y%m%d')}.txt",
             mime="text/plain", use_container_width=True)
@@ -1759,7 +1871,7 @@ elif t["nav"][6] in sec_name:
         writer = csv_mod.writer(csv_buf)
         writer.writerows(csv_rows)
         st.download_button(
-            label= ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
+            label="📊 " + ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
             data=csv_buf.getvalue(),
             file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv", use_container_width=True)
@@ -1823,16 +1935,16 @@ elif t["nav"][4] in sec_name:
         sl_vs = sl_l - w_avg; sv_clr = "#f59e0b" if sl_vs > 0 else "#22c55e"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
-            ("SL Price (2024)" if lang=="en" else "ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
-            ("World Avg Price" if lang=="en" else "ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
-            ("SL Premium" if lang=="en" else "ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
-            ("World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
+            ("🇱🇰 SL Price (2024)" if lang=="en" else "🇱🇰 ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#16a34a"),
+            ("🌍 World Avg Price" if lang=="en" else "🌍 ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3b82f6"),
+            ("📊 SL Premium" if lang=="en" else "📊 ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
+            ("🏭 World Rank" if lang=="en" else "🏭 ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
             with col: st.markdown(metric_card(lbl,val,clr,height=100), unsafe_allow_html=True)
 
         divider()
 
         # Multi-country price trend
-        st.markdown("####  "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
+        st.markdown("#### 📈 "+("Coconut Price Trend — Sri Lanka vs World Producers (LKR Equivalent)" if lang=="en" else "පොල් මිල ප්‍රවණතාව — ශ්‍රී ලංකා හා ලෝක නිෂ්පාදකයෝ"))
         c_colors={"Sri Lanka":"#16a34a","Indonesia":"#3b82f6","Philippines":"#f59e0b","India":"#ef4444","Vietnam":"#8b5cf6"}
         fig_gl=go.Figure()
         for country,clr in c_colors.items():
@@ -1851,7 +1963,7 @@ elif t["nav"][4] in sec_name:
         # Production share + radar
         cp2,cr=st.columns(2)
         with cp2:
-            st.markdown("#### "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
+            st.markdown("#### 🌍 "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
             fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
                 textinfo="label+percent",textfont=dict(size=10),
                 marker=dict(colors=["#3b82f6","#f59e0b","#ef4444","#16a34a","#8b5cf6","#06b6d4","#84cc16"]),
@@ -1860,7 +1972,7 @@ elif t["nav"][4] in sec_name:
             fig_pp.update_layout(height=300,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
             st.plotly_chart(fig_pp,use_container_width=True,config={"displayModeBar":"hover"})
         with cr:
-            st.markdown("#### "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
+            st.markdown("#### 📊 "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
             ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
             attrs=(["Quality","Volume","Price Comp.","Export Infra.","Processing"]
                    if lang=="en" else
@@ -1881,7 +1993,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # Price gap table
-        st.markdown("####  "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
+        st.markdown("#### 📋 "+("Price Gap Analysis vs Sri Lanka (Latest Year)" if lang=="en" else "මිල පරතර විශ්ලේෂණය"))
         lr=global_price_df.iloc[-1]; sl_p=lr["Sri Lanka"]
         gdrows=[]
         for ct in ["Indonesia","Philippines","India","Vietnam"]:
@@ -1898,7 +2010,7 @@ elif t["nav"][4] in sec_name:
         divider()
 
         # SL price divergence bar chart
-        st.markdown("####  "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්‍යයෙන් ශ්‍රී ලංකා අපගමනය"))
+        st.markdown("#### 📉 "+("SL Price Divergence from World Average" if lang=="en" else "ලෝක සාමාන්‍යයෙන් ශ්‍රී ලංකා අපගමනය"))
         wavg_s=global_price_df[["Indonesia","Philippines","India","Vietnam"]].mean(axis=1)
         sldev=global_price_df["Sri Lanka"]-wavg_s
         fig_dv=go.Figure(go.Bar(x=global_price_df["year"].astype(str),y=sldev,
@@ -2265,7 +2377,7 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Month-by-month forward table ──────────────────────────────────────────
-    st.markdown("#### "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
+    st.markdown("#### 📋 "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
     table_df = fwd_df[["date","rainfall_mm","temp_c","yield_index","price_impact","harvest_period","monsoon"]].copy()
     table_df["date"] = table_df["date"].dt.strftime("%b %Y")
     table_df["harvest_period"] = table_df["harvest_period"].apply(
@@ -2279,7 +2391,7 @@ elif t["nav"][2] in sec_name:
     # ── Monthly rainfall pattern (forward) ───────────────────────────────────
     c_heat, c_corr = st.columns([3,2])
     with c_heat:
-        st.markdown("####  "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
+        st.markdown("#### 🗓 "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
         mnames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         # Build a single-row heatmap for next 12 months
         rain_by_month = {mnames[m-1]: [] for m in range(1,13)}
@@ -2306,7 +2418,7 @@ elif t["nav"][2] in sec_name:
         st.plotly_chart(fig_rh, use_container_width=True, config={"displayModeBar":"hover"})
 
     with c_corr:
-        st.markdown("#### "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
+        st.markdown("#### 📈 "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
         _mn_lbs_sc = [d.strftime("%b") for d in fwd_df["date"]]
         _harv_mask  = fwd_df["harvest_period"].values
         _yl_lbl = ("Yield Index"      if lang=="en" else "අස්වැන්න දර්ශකය")
@@ -2375,7 +2487,7 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Monsoon & Harvest season summary ──────────────────────────────────────
-    st.markdown("#### "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
+    st.markdown("#### 🌀 "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
     seasons_fwd = (
         {"SW Monsoon (May–Sep)":[5,6,7,8,9],"NE Monsoon (Nov–Jan)":[11,12,1],
          "Inter-Monsoon 1 (Mar–Apr)":[3,4],"Inter-Monsoon 2 (Oct)":[10]}
@@ -2591,13 +2703,13 @@ elif t["nav"][8] in sec_name:
     # ── KPI row ────────────────────────────────────────────────────────────────
     ak1,ak2,ak3,ak4 = st.columns(4)
     for col,(lbl,val,clr) in zip([ak1,ak2,ak3,ak4],[
-        ("Primary Authority" if lang=="en" else " ප්‍රධාන බලධාරිය",
+        ("🏛️ Primary Authority" if lang=="en" else "🏛️ ප්‍රධාන බලධාරිය",
          "CDA / HARTI", "#16a34a"),
-        ("Auction Frequency" if lang=="en" else "වෙන්දේසි නිතිය",
+        ("📅 Auction Frequency" if lang=="en" else "📅 වෙන්දේසි නිතිය",
          "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3b82f6"),
-        ("Typical Start Time" if lang=="en" else "ආරම්භ වේලාව",
+        ("🕗 Typical Start Time" if lang=="en" else "🕗 ආරම්භ වේලාව",
          "7:30 – 9:00 AM", "#f59e0b"),
-        ("Lot Size" if lang=="en" else "ලොට් ප්‍රමාණය",
+        ("📦 Lot Size" if lang=="en" else "📦 ලොට් ප්‍රමාණය",
          "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#8b5cf6"),
     ]):
         with col: st.markdown(metric_card(lbl, val, clr, height=110, val_size="1.1rem"), unsafe_allow_html=True)
@@ -2720,7 +2832,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Weekly Auction Schedule ────────────────────────────────────────────────
-    st.markdown("#### "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
+    st.markdown("#### 📅 "+("Weekly Auction Schedule" if lang=="en" else "සතිපතා වෙන්දේසි කාලසටහන"))
     days_en = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     days_si = ["සඳුදා","අඟහරුවාදා","බදාදා","බ්‍රහස්පතින්දා","සිකුරාදා","සෙනසුරාදා"]
     days    = days_en if lang=="en" else days_si
@@ -2755,7 +2867,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Auction Process & Rules ────────────────────────────────────────────────
-    st.markdown("#### "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
+    st.markdown("#### 📋 "+("How the Coconut Auction Works" if lang=="en" else "වෙන්දේසිය ක්‍රියාකාරිත්වය"))
     proc_cols = st.columns(4)
     steps = (
         [
@@ -2800,7 +2912,7 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
-    st.markdown("#### "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
+    st.markdown("#### 💰 "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
 
     gmins  = [72,  58,  42,  85,  380]
@@ -2876,7 +2988,7 @@ elif t["nav"][8] in sec_name:
     # ── Key Rules & Regulations ────────────────────────────────────────────────
     r1c, r2c = st.columns(2)
     with r1c:
-        st.markdown("####  "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
+        st.markdown("#### 📜 "+("Seller Requirements" if lang=="en" else "විකුණුම්කරු අවශ්‍යතා"))
         seller_rules = (
             [
                 ("✅","CDA Registration","All sellers must be registered with the Coconut Development Authority (CDA)."),
@@ -2900,7 +3012,7 @@ elif t["nav"][8] in sec_name:
             </div>""", unsafe_allow_html=True)
 
     with r2c:
-        st.markdown("#### "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
+        st.markdown("#### 📜 "+("Buyer Requirements" if lang=="en" else "ගැනුම්කරු අවශ්‍යතා"))
         buyer_rules = (
             [
                 ("✅","Buyer Licence","Valid CDA buyer licence required. Obtainable from CDA Head Office, Colombo 02."),
@@ -2925,32 +3037,32 @@ elif t["nav"][8] in sec_name:
     divider()
 
     # ── Special Auctions ──────────────────────────────────────────────────────
-    st.markdown("#### "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
+    st.markdown("#### 🌟 "+("Special & Seasonal Auction Events" if lang=="en" else "විශේෂ සහ සෘතු වෙන්දේසි"))
     spec_cols = st.columns(3)
     specials = (
         [
-            ("Peak Harvest Auctions",
+            ("🌾 Peak Harvest Auctions",
              "March–April / Aug–November",
              "Extra auction sessions added during peak harvest. Colombo centre operates 5 days/week. Prices typically lower due to high supply.",
              "#16a34a"),
-            ("Premium Quality Auction",
+            ("🏆 Premium Quality Auction",
              "Quarterly (Jan, Apr, Jul, Oct)",
              "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
              "#f59e0b"),
-            ("Export Auction",
+            ("🌐 Export Auction",
              "Every 2nd Friday of month",
              "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
              "#3b82f6"),
         ] if lang=="en" else [
-            ("උච්ච අස්වනු වෙන්දේසිය",
+            ("🌾 උච්ච අස්වනු වෙන්දේසිය",
              "මාර්තු–අප්‍රේල් / අගෝ–නොවැ",
              "උච්ච අස්වනු කාලය තුළ අමතර වෙන්දේසි සැසි එකතු කෙරේ. කොළඹ මධ්‍යස්ථානය සතිපතා දින 5 ක් ක්‍රියාත්මක වේ. ඉහළ සැපයුම හේතුවෙන් මිල සාමාන්‍යයෙන් අඩු වේ.",
              "#16a34a"),
-            ("ශ්‍රේෂ්ඨ ගුණාත්මක වෙන්දේසිය",
+            ("🏆 ශ්‍රේෂ්ඨ ගුණාත්මක වෙන්දේසිය",
              "කාර්තුව (ජන, අප්‍රේ, ජූලි, ඔක්)",
              "විශේෂයෙන් ශ්‍රේණිගත A+ ලොට්. පූර්ව ලියාපදිංචිය අවශ්‍ය. සහතිකගත අපනයන ශ්‍රේණියේ ගැනුම්කරුවන් සහ ශ්‍රේෂ්ඨ නිෂ්පාදකයන් සඳහා.",
              "#f59e0b"),
-            ("අපනයන වෙන්දේසිය",
+            ("🌐 අපනයන වෙන්දේසිය",
              "සෑම 2 වන සිකුරාදා",
              "අපනයන ගුණාත්මක පොල් සහ අගය-එකතු නිෂ්පාදන සඳහා විශේෂ වෙන්දේසිය. CDA අපනයන ආධාරක කණ්ඩායම සහභාගී වේ. USD/EUR මිල ද පිළිගනු ලැබේ.",
              "#3b82f6"),
@@ -2970,11 +3082,11 @@ elif t["nav"][8] in sec_name:
     st.markdown("#### 📞 "+("Register & Contact" if lang=="en" else "ලියාපදිංචි සහ සම්බන්ධ වන්න"))
     ct1, ct2, ct3 = st.columns(3)
     contacts = [
-        ("CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk",
+        ("🏛️","CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk",
          ("Seller & Buyer Registration, Licence Applications" if lang=="en" else "විකුණුම්කරු සහ ගැනුම්කරු ලියාපදිංචිය, බලපත්‍ර ඉල්ලීම්"),"#16a34a"),
-        ("HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
+        ("🏪","HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
          ("Colombo & Gampaha Auction Operations" if lang=="en" else "කොළඹ සහ ගම්පහ වෙන්දේසි ක්‍රියාකාරිත්වය"),"#3b82f6"),
-        ("CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
+        ("📋","CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
          ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#f59e0b"),
     ]
     _contact_lbl = "Contact" if lang=="en" else "සම්බන්ධයි"
@@ -3008,10 +3120,10 @@ _DIST_STYLE  = "flex:1;min-width:120px;max-width:220px;text-align:center;padding
 
 _footer_industry_title  = "Sri Lanka Coconut Industry" if lang=="en" else "ශ්‍රී ලංකා පොල් කර්මාන්තය"
 _footer_industry_sub    = "Key Organisations, Contacts &amp; Industry Facts" if lang=="en" else "ප්‍රධාන සංවිධාන, සම්බන්ධතා සහ කර්මාන්ත කරුණු"
-_footer_regulator_lbl   = "Primary Regulator" if lang=="en" else "ප්‍රාථමික නියාමකය"
-_footer_research_lbl    = "Research Institute" if lang=="en" else "පර්යේෂණ ආයතනය"
-_footer_export_lbl      = "Export Promoter" if lang=="en" else "අපනයන ප්‍රවර්ධකය"
-_footer_market_lbl      = "Market &amp; Auction" if lang=="en" else "වෙළඳ සහ වෙන්දේසිය"
+_footer_regulator_lbl   = "🏛 Primary Regulator" if lang=="en" else "🏛 ප්‍රාථමික නියාමකය"
+_footer_research_lbl    = "🔬 Research Institute" if lang=="en" else "🔬 පර්යේෂණ ආයතනය"
+_footer_export_lbl      = "📦 Export Promoter" if lang=="en" else "📦 අපනයන ප්‍රවර්ධකය"
+_footer_market_lbl      = "🛒 Market &amp; Auction" if lang=="en" else "🛒 වෙළඳ සහ වෙන්දේසිය"
 _footer_glance_title    = "Sri Lanka Coconut Industry at a Glance" if lang=="en" else "ශ්‍රී ලංකා පොල් කර්මාන්තය දළ විශ්ලේෂණයක්"
 _footer_hectares        = "Hectares" if lang=="en" else "හෙක්ටෙයාර්"
 _footer_nutsyear        = "Nuts/Year" if lang=="en" else "ගෙඩි/වර්ෂය"
@@ -3019,62 +3131,102 @@ _footer_families        = "Families" if lang=="en" else "පවුල්"
 _footer_exports         = "Exports" if lang=="en" else "අපනයන"
 _footer_worldrank       = "World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය"
 _footer_gdp             = "GDP Share" if lang=="en" else "GDP කොටස"
-_footer_triangle_title  = "The Coconut Triangle" if lang=="en" else "පොල් ත්‍රිකෝණය"
-_footer_tagline         = "COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka" if lang=="en" else "🥥 COCOStat · පොල් වෙළඳ බුද්ධිමත් පාලක පුවරුව · CDA සහ CRI ශ්‍රී ලංකා දත්ත"
+_footer_triangle_title  = "📍 The Coconut Triangle" if lang=="en" else "📍 පොල් ත්‍රිකෝණය"
+_footer_tagline         = "🥥 COCOStat · Coconut Market Intelligence Dashboard · Data from CDA &amp; CRI Sri Lanka" if lang=="en" else "🥥 COCOStat · පොල් වෙළඳ බුද්ධිමත් පාලක පුවරුව · CDA සහ CRI ශ්‍රී ලංකා දත්ත"
 
 st.markdown(f"""
-<div style="background:linear-gradient(135deg,#0d2b0d 0%,#14532d 50%,#166534 100%);border-radius:0;padding:36px 32px;box-shadow:0 4px 24px rgba(13,43,13,.25);margin-bottom:28px;">
+<div style='background:#fff;border-top:2px solid #e2e8f0;
+    padding:32px 32px 24px;margin-top:12px;'>
 
-  <div style="text-align:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:28px;">
-    <div style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.2);">{_footer_industry_title}</div>
-    <div style="font-size:.9rem;color:#bbf7d0;font-weight:500;">{_footer_industry_sub}</div>
-  </div>
+  <div style='display:flex;justify-content:space-between;align-items:flex-start;
+      flex-wrap:wrap;gap:24px;padding-bottom:24px;border-bottom:1px solid #e2e8f0;
+      margin-bottom:24px;'>
 
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
-      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">{_footer_regulator_lbl}</div>
-      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Development Authority</div>
-      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 No.54, Nawam Mawatha<br>Colombo 02<br>📞 +94 11 243 0610<br>🌐 <a href="https://www.cda.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cda.gov.lk</a></div>
+    <div>
+      <div style='font-size:1rem;font-weight:800;color:#0f172a;margin-bottom:4px;'>
+        🥥 {_footer_industry_title}</div>
+      <div style='font-size:.78rem;color:#64748b;'>{_footer_industry_sub}</div>
     </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
-      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">{_footer_research_lbl}</div>
-      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Coconut Research Institute (CRI)</div>
-      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Bandirippuwa Estate<br>Lunuwila 61150<br>📞 +94 31 222 2481<br>🌐 <a href="https://www.cri.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.cri.gov.lk</a></div>
-    </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
-      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">{_footer_export_lbl}</div>
-      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">Sri Lanka Export Development Board</div>
-      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 42 Nawam Mawatha<br>Colombo 02<br>📞 +94 11 230 0705<br>🌐 <a href="https://www.srilankabusiness.com" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.srilankabusiness.com</a></div>
-    </div>
-    <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #4ade80;padding:16px 14px;display:flex;flex-direction:column;">
-      <div style="font-size:.58rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">{_footer_market_lbl}</div>
-      <div style="font-weight:800;font-size:.82rem;color:#ffffff;margin-bottom:10px;line-height:1.3;">HARTI / Economic Centres</div>
-      <div style="font-size:.72rem;color:#bbf7d0;line-height:1.9;flex:1;">📍 Narahenpita, Colombo 05<br>{"(Head Office)" if lang=="en" else "(ප්‍රධාන කාර්යාලය)"}<br>📞 +94 11 259 1919<br>🌐 <a href="https://www.harti.gov.lk" target="_blank" style="color:#4ade80;font-weight:600;text-decoration:none;">www.harti.gov.lk</a></div>
-    </div>
-  </div>
 
-  <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:24px;">
-    <div style="text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">{_footer_glance_title}</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~2.7M</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_hectares}</div></div>
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~3B</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_nutsyear}</div></div>
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">450K+</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_families}</div></div>
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">$350M+</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_exports}</div></div>
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">3rd</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_worldrank}</div></div>
-      <div style="flex:1;min-width:80px;text-align:center;padding:14px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;font-weight:900;color:#ffffff;">~2%</div><div style="font-size:.65rem;color:#86efac;margin-top:4px;font-weight:600;text-transform:uppercase;">{_footer_gdp}</div></div>
+    <div style='display:flex;gap:8px;flex-wrap:wrap;'>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        ~2.7M {_footer_hectares}</span>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        ~3B {_footer_nutsyear}</span>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        450K+ {_footer_families}</span>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        $350M+ {_footer_exports}</span>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        3rd {_footer_worldrank}</span>
+      <span style='background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+          font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;'>
+        ~2% {_footer_gdp}</span>
     </div>
   </div>
 
-  <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:24px;margin-bottom:24px;">
-    <div style="text-align:center;font-size:.75rem;font-weight:700;color:#86efac;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">{_footer_triangle_title}</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Kurunegala" if lang=="en" else "කුරුණෑගල"}</div></div>
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Puttalam" if lang=="en" else "පුත්තලම"}</div></div>
-      <div style="flex:1;min-width:120px;max-width:220px;text-align:center;padding:16px 8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);"><div style="font-size:1.4rem;">🌴</div><div style="font-size:.85rem;font-weight:700;color:#ffffff;margin-top:6px;">{"Gampaha" if lang=="en" else "ගම්පහ"}</div></div>
+  <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;'>
+    <div style='border:1px solid #e2e8f0;border-top:3px solid #15803d;
+        border-radius:6px;padding:14px;'>
+      <div style='font-size:.58rem;font-weight:700;color:#15803d;text-transform:uppercase;
+          letter-spacing:1px;margin-bottom:6px;'>{_footer_regulator_lbl}</div>
+      <div style='font-weight:700;font-size:.8rem;color:#0f172a;margin-bottom:6px;'>
+          Coconut Development Authority</div>
+      <div style='font-size:.68rem;color:#64748b;line-height:1.8;'>
+          📍 No.54, Nawam Mawatha, Colombo 02<br>
+          📞 +94 11 243 0610<br>
+          🌐 <a href="https://www.cda.gov.lk" target="_blank"
+              style="color:#15803d;text-decoration:none;font-weight:600;">cda.gov.lk</a>
+      </div>
+    </div>
+    <div style='border:1px solid #e2e8f0;border-top:3px solid #15803d;
+        border-radius:6px;padding:14px;'>
+      <div style='font-size:.58rem;font-weight:700;color:#15803d;text-transform:uppercase;
+          letter-spacing:1px;margin-bottom:6px;'>{_footer_research_lbl}</div>
+      <div style='font-weight:700;font-size:.8rem;color:#0f172a;margin-bottom:6px;'>
+          Coconut Research Institute (CRI)</div>
+      <div style='font-size:.68rem;color:#64748b;line-height:1.8;'>
+          📍 Bandirippuwa Estate, Lunuwila 61150<br>
+          📞 +94 31 222 2481<br>
+          🌐 <a href="https://www.cri.gov.lk" target="_blank"
+              style="color:#15803d;text-decoration:none;font-weight:600;">cri.gov.lk</a>
+      </div>
+    </div>
+    <div style='border:1px solid #e2e8f0;border-top:3px solid #15803d;
+        border-radius:6px;padding:14px;'>
+      <div style='font-size:.58rem;font-weight:700;color:#15803d;text-transform:uppercase;
+          letter-spacing:1px;margin-bottom:6px;'>{_footer_export_lbl}</div>
+      <div style='font-weight:700;font-size:.8rem;color:#0f172a;margin-bottom:6px;'>
+          Sri Lanka Export Development Board</div>
+      <div style='font-size:.68rem;color:#64748b;line-height:1.8;'>
+          📍 42 Nawam Mawatha, Colombo 02<br>
+          📞 +94 11 230 0705<br>
+          🌐 <a href="https://www.srilankabusiness.com" target="_blank"
+              style="color:#15803d;text-decoration:none;font-weight:600;">srilankabusiness.com</a>
+      </div>
+    </div>
+    <div style='border:1px solid #e2e8f0;border-top:3px solid #15803d;
+        border-radius:6px;padding:14px;'>
+      <div style='font-size:.58rem;font-weight:700;color:#15803d;text-transform:uppercase;
+          letter-spacing:1px;margin-bottom:6px;'>{_footer_market_lbl}</div>
+      <div style='font-weight:700;font-size:.8rem;color:#0f172a;margin-bottom:6px;'>
+          HARTI / Economic Centres</div>
+      <div style='font-size:.68rem;color:#64748b;line-height:1.8;'>
+          📍 Narahenpita, Colombo 05<br>
+          📞 +94 11 259 1919<br>
+          🌐 <a href="https://www.harti.gov.lk" target="_blank"
+              style="color:#15803d;text-decoration:none;font-weight:600;">harti.gov.lk</a>
+      </div>
     </div>
   </div>
 
-  <div style="text-align:center;font-size:.72rem;color:#86efac;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);opacity:.85;">
+  <div style='text-align:center;font-size:.72rem;color:#94a3b8;
+      padding-top:16px;border-top:1px solid #e2e8f0;'>
     {_footer_tagline}
   </div>
 
