@@ -470,7 +470,29 @@ with st.sidebar:
         rl_clr = "#3d7a55"; rl_bg = "#f0f5f2"; rl_border = "#a8c9b8"
         rl_action = "Market is stable" if lang=="en" else "වෙළඳ ස්ථාවරයි"
 
-    # ── Unified Formal Risk Panel ─────────────────────────────────────────
+    # ── Quick Actions by risk level ──────────────────────────────────────
+    if risk_score >= 70:
+        actions_inner = (
+            "Alert CDA/HARTI officials<br>Activate buffer stocks<br>Broadcast price warnings<br>Farmers: sell immediately<br>Businesses: hedge now"
+            if lang=="en" else
+            "CDA/HARTI නිලධාරීන් අනතුරු අඟවන්න<br>බෆර් තොග සක්‍රිය කරන්න<br>මිල අනතුරු ඇඟවීම් විකාශය කරන්න<br>ගොවීන්: ඉක්මනින් විකුණන්න<br>ව්‍යාපාර: දැන් ආරක්ෂා කරන්න")
+    elif risk_score >= 45:
+        actions_inner = (
+            "Monitor daily auction prices<br>Prepare buffer stock release<br>Farmers: consider selling<br>Businesses: review contracts<br>Watch export demand"
+            if lang=="en" else
+            "දෛනික වෙන්දේසි මිල නිරීක්ෂණය කරන්න<br>බෆර් තොග මුදා හැරීමට සූදානම් වන්න<br>ගොවීන්: විකිණීම සලකා බලන්න<br>ව්‍යාපාර: ගිවිසුම් සමාලෝචනය කරන්න<br>අපනයන ඉල්ලුම නිරීක්ෂණය කරන්න")
+    elif risk_score >= 25:
+        actions_inner = (
+            "Weekly price check sufficient<br>Farmers: continue normal ops<br>Businesses: plan ahead<br>Consider forward contracts<br>Explore export opportunities"
+            if lang=="en" else
+            "සතිපතා මිල පරීක්ෂාව ප්‍රමාණවත්<br>ගොවීන්: සාමාන්‍ය ක්‍රියාකාරිත්වය දිගටම කරන්න<br>ව්‍යාපාර: ඉදිරිය සැලසුම් කරන්න<br>ඉදිරි ගිවිසුම් සලකා බලන්න<br>අපනයන අවස්ථා ගවේෂණය කරන්න")
+    else:
+        actions_inner = (
+            "No immediate action needed<br>Good time to invest/expand<br>Monthly monitoring sufficient<br>Build buffer stocks now<br>Explore value-added products"
+            if lang=="en" else
+            "ක්ෂණික ක්‍රියාමාර්ගයක් අවශ්‍ය නැත<br>ආයෝජනය/ව්‍යාප්ත කිරීමට හොඳ කාලය<br>මාසික නිරීක්ෂණය ප්‍රමාණවත්<br>දැන් බෆර් තොග ගොඩ නගා ගන්න<br>අගය-එකතු නිෂ්පාදන ගවේෂණය කරන්න")
+
+    # ── Unified Formal Risk Panel ──────────────────────────────────────────
     bar_w   = min(int(risk_score), 100)
     bar_clr = ("#ef4444" if risk_score >= 70 else "#f59e0b" if risk_score >= 45
                else "#eab308" if risk_score >= 25 else "#5a9470")
