@@ -506,7 +506,7 @@ with st.sidebar:
         rf_rows_html += (
             f"<div style='display:flex;align-items:center;gap:6px;padding:4px 0;"
             f"border-bottom:1px solid #e8f0eb;'>"
-            f"<span style='font-size:.7rem;flex-shrink:0;'>{dot}</span>"
+            f"<span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:{'#ef4444' if dot=='🔴' else '#eab308' if dot=='🟡' else '#3d7a55'};flex-shrink:0;margin-top:3px;'></span>"
             f"<span style='font-size:.62rem;color:#374151;flex:1;line-height:1.3;'>{label}</span>"
             f"{pt_html}"
             f"</div>"
@@ -1470,7 +1470,6 @@ elif t["nav"][6] in sec_name:
                 border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;
                 box-shadow:0 1px 4px rgba(0,0,0,.06);'>
               <div style='display:flex;align-items:flex-start;gap:12px;'>
-                <div style='font-size:1.5rem;line-height:1;margin-top:2px;'>{icon}</div>
                 <div style='flex:1;'>
                   <div style='display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;'>
                     <div style='font-size:.88rem;font-weight:800;color:#1a3328;'>{title}</div>
@@ -2794,7 +2793,7 @@ elif t["nav"][8] in sec_name:
                 <div style='font-size:.85rem;font-weight:800;color:#1a3328;margin:6px 0 8px;'>{title}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
                 <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:8px;background:{clr}11;
-                    padding:5px 7px;border-radius:5px;line-height:1.4;'>ℹ️ {note}</div>
+                    padding:5px 7px;border-radius:5px;line-height:1.4;'>{note}</div>
             </div>""", unsafe_allow_html=True)
     divider()
 
