@@ -2746,7 +2746,7 @@ elif t["nav"][8] in sec_name:
         ])
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};
-                border-radius:10px;padding:12px 10px;min-height:160px;'>
+                border-radius:10px;padding:12px 10px;height:200px;overflow:hidden;'>
                 <div style='font-size:.72rem;font-weight:800;color:{clr};text-transform:uppercase;
                     letter-spacing:1px;margin-bottom:8px;text-align:center;'>{day}</div>
                 {items_html}
