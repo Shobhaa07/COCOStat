@@ -310,6 +310,7 @@ div[data-testid="stSidebar"] hr{border-color:#b8d0c4!important}
 div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!important;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
 .section-header{font-size:1.45rem;font-weight:800;color:#1a3328;margin-bottom:4px;letter-spacing:-.2px}
 .section-sub{color:#6b7280;font-size:.87rem;margin-bottom:18px}
+[data-testid="stMarkdownContainer"] *:focus,[data-testid="stMarkdownContainer"] *:focus-visible{outline:none!important;box-shadow:none!important;}
 .info-box-green,.info-box-blue{background:#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 10px 10px 0;padding:12px 16px;color:#2d5a3d;font-weight:600;font-size:.9rem;margin-bottom:16px}
 .info-box-yellow{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;color:#78350f;font-weight:600;font-size:.9rem;margin-bottom:16px}
 .info-box-red{background:#fff1f2;border-left:4px solid #ef4444;border-radius:0 10px 10px 0;padding:12px 16px;color:#7f1d1d;font-weight:600;font-size:.9rem;margin-bottom:16px}
@@ -905,7 +906,7 @@ elif t["nav"][6] in sec_name:
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
             st.markdown(f"""<div style='text-align:center;background:#fff;border-radius:10px;padding:14px 10px;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
-                <div style='width:28px;height:28px;background:#3d7a55;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;'>
+                <div style='width:28px;height:28px;background:#3d7a55;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;outline:none;border:none;'>
                   <span style='color:#fff;font-size:.8rem;font-weight:800;'>{em}</span></div>
                 <div style='font-weight:700;font-size:.82rem;color:#1a3328;'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
@@ -1490,8 +1491,8 @@ elif t["nav"][6] in sec_name:
         _gov_intro = (f" These recommendations are tailored for <strong>Cabinet Ministers, CDA, HARTI, and Central Bank officials</strong> managing the coconut sector under <strong>{regime_name}</strong> conditions."
                       if lang=="en" else
                       f" මෙම නිර්දේශ <strong>{regime_name}</strong> තත්ත්වය යටතේ පොල් අංශය කළමනාකරණය කරන <strong>කැබිනට් අමාත්‍යවරුන්, CDA, HARTI සහ මහ බැංකු නිලධාරීන්</strong> සඳහා සකසා ඇත.")
-        st.markdown(f"""<div style='background:#f0f5f2;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#1a3328;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-left:3px solid #3d7a55;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#1a3328;font-weight:600;'>
             {_gov_intro}
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["government"], "#3d7a55")
@@ -1500,8 +1501,8 @@ elif t["nav"][6] in sec_name:
         _biz_intro = (f" These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong> operating under <strong>{regime_name}</strong> conditions."
                       if lang=="en" else
                       f" මෙම නිර්දේශ <strong>{regime_name}</strong> තත්ත්වය යටතේ ක්‍රියාත්මක <strong>පොල් නිෂ්පාදකයන්, අපනයන කරන්නන්, වෙළෙන්දන් සහ සකසන්නන්</strong> සඳහා සකසා ඇත.")
-        st.markdown(f"""<div style='background:#f0f5f2;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#1a3328;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-left:3px solid #3d7a55;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#1a3328;font-weight:600;'>
             {_biz_intro}
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["business"], "#3d7a55")
@@ -1510,8 +1511,8 @@ elif t["nav"][6] in sec_name:
         _farm_intro = (f"‍ These recommendations are tailored for <strong>Smallholder farmers, coconut growers and farming cooperatives</strong> operating under <strong>{regime_name}</strong> conditions."
                        if lang=="en" else
                        f"‍ මෙම නිර්දේශ <strong>{regime_name}</strong> තත්ත්වය යටතේ ක්‍රියාත්මක <strong>කුඩා ගොවීන්, පොල් වගාකරුවන් සහ ගොවි සමිති</strong> සඳහා සකසා ඇත.")
-        st.markdown(f"""<div style='background:#f0f5f2;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#3d7a55;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-left:3px solid #3d7a55;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#1a3328;font-weight:600;'>
             {_farm_intro}
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["farmer"], "#3d7a55")
