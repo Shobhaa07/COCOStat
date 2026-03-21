@@ -898,10 +898,10 @@ elif t["nav"][6] in sec_name:
                   {badge}</div></div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Policy Decision Framework" if lang=="en" else "ප්‍රතිපත්ති තීරණ රාමුව"))
-    stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න","#3d7a55"),
-          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය","#3d7a55"),
-          ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක","#3d7a55"),
-          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න","#3d7a55")]
+    stps=[("1","Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න","#3d7a55"),
+          ("2","Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය","#3d7a55"),
+          ("3","Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක","#3d7a55"),
+          ("4","Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න","#3d7a55")]
     sc=st.columns(4)
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
