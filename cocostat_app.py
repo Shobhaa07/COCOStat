@@ -395,9 +395,11 @@ with st.sidebar:
     # CSS to style the sliders to match the card theme
     st.markdown("""<style>
     section[data-testid="stSidebar"] [data-testid="stSlider"] {
-        background:#f0f5f2 !important;
-        padding:0 12px !important;
+        background:#fff !important;
+        padding:6px 14px !important;
         margin:0 !important;
+        border-left:2px solid #1a3328 !important;
+        border-right:2px solid #1a3328 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
         font-size:.62rem !important; font-weight:700 !important; color:#2d5a3d !important;
@@ -409,15 +411,13 @@ with st.sidebar:
 
     # Dark green header
     _thresh_lbl = "Set Thresholds" if lang=="en" else "සීමාවන් සකසන්න"
-    st.markdown(f"""<div style='background:#1a3328;padding:10px 14px 10px;border-radius:10px 10px 0 0;
-        border:2px solid #1a3328;margin-bottom:0;'>
+    st.markdown(f"""<div style='background:#1a3328;padding:10px 14px;border-radius:10px 10px 0 0;
+        border:2px solid #1a3328;border-bottom:none;margin-bottom:0;'>
       <div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>
         PRICE RISK EARLY WARNING</div>
       <div style='font-size:.6rem;font-weight:600;color:#82b49a;text-transform:uppercase;letter-spacing:1px;margin-top:3px;'>
         {_thresh_lbl}</div>
-    </div>
-    <div style='background:#f0f5f2;border-left:2px solid #1a3328;border-right:2px solid #1a3328;
-        padding:2px 0 2px 0;margin:0;'></div>""", unsafe_allow_html=True)
+    </div>""", unsafe_allow_html=True)
 
     warn_threshold   = st.slider(_warn_lbl, min_value=50, max_value=90,  value=65, step=1)
     crisis_threshold = st.slider(_cris_lbl, min_value=60, max_value=120, value=80, step=1)
