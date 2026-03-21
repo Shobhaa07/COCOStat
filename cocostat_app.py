@@ -528,71 +528,48 @@ with st.sidebar:
     _warn_lbl       = 'Warning' if lang=='en' else 'අවවාද'
     _safe_lbl       = 'Safe'    if lang=='en' else 'ආරක්ෂිත'
 
-    st.markdown(f"""
-<div style='background:#fff;border:1px solid #b8d0c4;border-radius:10px;overflow:hidden;margin-bottom:12px;'>
-
-  <!-- Header -->
-  <div style='background:#1a3328;padding:9px 14px;'>
-    <div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>
-      {_ew_title_lbl}
-    </div>
-  </div>
-
-  <div style='padding:12px 14px;'>
-
-    <!-- Status + Score -->
-    <div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>
-      <div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>
-      <div style='font-size:.9rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.58rem;font-weight:500;'>/100</span></div>
-    </div>
-    <div style='background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:5px;'>
-      <div style='background:{bar_clr};width:{bar_w}%;height:100%;border-radius:4px;'></div>
-    </div>
-    <div style='font-size:.6rem;color:{rl_clr};font-weight:600;margin-bottom:10px;'>{rl_action}</div>
-
-    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
-
-    <!-- Current Price -->
-    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;'>{_cp_lbl}</div>
-    <div style='display:flex;align-items:baseline;gap:6px;margin-bottom:2px;'>
-      <div style='font-size:1.2rem;font-weight:900;color:{rl_clr};'>Rs. {current_price:.2f}</div>
-      <div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {_mom_lbl}</div>
-    </div>
-
-    <div style='height:1px;background:#e8f0eb;margin:8px 0;'></div>
-
-    <!-- Price Thresholds -->
-    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;'>{_pz_lbl}</div>
-    <div style='display:flex;flex-direction:column;gap:3px;margin-bottom:8px;'>
-      <div style='display:flex;justify-content:space-between;align-items:center;background:#fef2f2;border-left:3px solid #ef4444;padding:3px 7px;border-radius:0 4px 4px 0;'>
-        <span style='font-size:.62rem;font-weight:600;color:#7f1d1d;'>{_crisis_lbl}</span>
-        <span style='font-size:.62rem;font-weight:700;color:#7f1d1d;'>Rs.{crisis_threshold}+</span>
-      </div>
-      <div style='display:flex;justify-content:space-between;align-items:center;background:#fefce8;border-left:3px solid #eab308;padding:3px 7px;border-radius:0 4px 4px 0;'>
-        <span style='font-size:.62rem;font-weight:600;color:#713f12;'>{_warn_lbl}</span>
-        <span style='font-size:.62rem;font-weight:700;color:#713f12;'>Rs.{warn_threshold}&ndash;{crisis_threshold-1}</span>
-      </div>
-      <div style='display:flex;justify-content:space-between;align-items:center;background:#f0f5f2;border-left:3px solid #3d7a55;padding:3px 7px;border-radius:0 4px 4px 0;'>
-        <span style='font-size:.62rem;font-weight:600;color:#1a3328;'>{_safe_lbl}</span>
-        <span style='font-size:.62rem;font-weight:700;color:#1a3328;'>Rs.&lt;{warn_threshold}</span>
-      </div>
-    </div>
-
-    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
-
-    <!-- Risk Factors -->
-    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_rf_lbl}</div>
-    <div style='margin-bottom:8px;'>{rf_rows_html}</div>
-
-    <div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>
-
-    <!-- Recommended Actions -->
-    <div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_qa_lbl}</div>
-    <div>{action_rows_html}</div>
-
-  </div>
-</div>
-""", unsafe_allow_html=True)
+    _html_box = (
+        "<div style='background:#fff;border:1px solid #b8d0c4;border-radius:10px;overflow:hidden;margin-bottom:12px;'>"
+        f"<div style='background:#1a3328;padding:9px 14px;'>"
+        f"<div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>{_ew_title_lbl}</div>"
+        "</div>"
+        "<div style='padding:12px 14px;'>"
+        f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
+        f"<div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>"
+        f"<div style='font-size:.9rem;font-weight:900;color:{rl_clr};'>{risk_score}<span style='font-size:.58rem;font-weight:500;'>/100</span></div>"
+        "</div>"
+        "<div style='background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:5px;'>"
+        f"<div style='background:{bar_clr};width:{bar_w}%;height:100%;border-radius:4px;'></div>"
+        "</div>"
+        f"<div style='font-size:.6rem;color:{rl_clr};font-weight:600;margin-bottom:10px;'>{rl_action}</div>"
+        "<div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>"
+        f"<div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;'>{_cp_lbl}</div>"
+        "<div style='display:flex;align-items:baseline;gap:6px;margin-bottom:2px;'>"
+        f"<div style='font-size:1.2rem;font-weight:900;color:{rl_clr};'>Rs. {current_price:.2f}</div>"
+        f"<div style='font-size:.6rem;color:#64748b;'>{momentum_3m:+.1f}% {_mom_lbl}</div>"
+        "</div>"
+        "<div style='height:1px;background:#e8f0eb;margin:8px 0;'></div>"
+        f"<div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;'>{_pz_lbl}</div>"
+        "<div style='display:flex;flex-direction:column;gap:3px;margin-bottom:8px;'>"
+        f"<div style='display:flex;justify-content:space-between;background:#fef2f2;border-left:3px solid #ef4444;padding:3px 7px;border-radius:0 4px 4px 0;'>"
+        f"<span style='font-size:.62rem;font-weight:600;color:#7f1d1d;'>{_crisis_lbl}</span>"
+        f"<span style='font-size:.62rem;font-weight:700;color:#7f1d1d;'>Rs.{crisis_threshold}+</span></div>"
+        f"<div style='display:flex;justify-content:space-between;background:#fefce8;border-left:3px solid #eab308;padding:3px 7px;border-radius:0 4px 4px 0;'>"
+        f"<span style='font-size:.62rem;font-weight:600;color:#713f12;'>{_warn_lbl}</span>"
+        f"<span style='font-size:.62rem;font-weight:700;color:#713f12;'>Rs.{warn_threshold}&ndash;{crisis_threshold - 1}</span></div>"
+        f"<div style='display:flex;justify-content:space-between;background:#f0f5f2;border-left:3px solid #3d7a55;padding:3px 7px;border-radius:0 4px 4px 0;'>"
+        f"<span style='font-size:.62rem;font-weight:600;color:#1a3328;'>{_safe_lbl}</span>"
+        f"<span style='font-size:.62rem;font-weight:700;color:#1a3328;'>Rs.&lt;{warn_threshold}</span></div>"
+        "</div>"
+        "<div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>"
+        f"<div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_rf_lbl}</div>"
+        f"<div style='margin-bottom:8px;'>{rf_rows_html}</div>"
+        "<div style='height:1px;background:#e8f0eb;margin-bottom:8px;'></div>"
+        f"<div style='font-size:.6rem;font-weight:700;color:#4a6657;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;'>{_qa_lbl}</div>"
+        f"<div>{action_rows_html}</div>"
+        "</div></div>"
+    )
+    st.markdown(_html_box, unsafe_allow_html=True)
 
     st.markdown("---")
     st.markdown(f"""<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-radius:10px;padding:14px 12px;text-align:center;'>
