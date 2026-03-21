@@ -1191,12 +1191,12 @@ elif t["nav"][6] in sec_name:
     _eng_sub = ("AI-driven, regime-sensitive recommendations for all three market stakeholder groups"
                   if lang=="en" else
                   "වෙළඳ තත්ත්වය අනුව, සියලු තුන් පාර්ශ්ව කණ්ඩායම් සඳහා ක්‍රියාශීලී නිර්දේශ")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#7c3aed,#6d28d9);border-radius:10px;
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         {_eng_title}
       </div>
-      <div style='font-size:.78rem;color:#ddd6fe;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#a8c9b8;margin-top:3px;'>
         {_eng_sub}
       </div>
     </div>
@@ -1450,8 +1450,8 @@ elif t["nav"][6] in sec_name:
 
     # Priority badge helper
     def priority_badge(p):
-        cfg = {"CRITICAL":("#7f1d1d","#fca5a5"),"URGENT":("#ef4444","#fee2e2"),
-               "HIGH":("#92400e","#fef3c7"),"MEDIUM":("#1a3328","#e4eeea")}
+        cfg = {"CRITICAL":("#1a3328","#b8d0c4"),"URGENT":("#1a3328","#c8ddd2"),
+               "HIGH":("#2d5a3d","#e4eeea"),"MEDIUM":("#3d7a55","#f0f5f2")}
         bg, txt = cfg.get(p, ("#374151","#f1f5f9"))
         return f"<span style='background:{txt};color:{bg};font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;'>{p}</span>"
 
@@ -1503,7 +1503,7 @@ elif t["nav"][6] in sec_name:
             <div style='font-size:.78rem;color:#6b21a8;font-weight:700;'>
             {_biz_intro}
             </div></div>""", unsafe_allow_html=True)
-        render_rec_cards(recs["business"], "#7c3aed")
+        render_rec_cards(recs["business"], "#3d7a55")
 
     with tab_farm:
         _farm_intro = (f"‍ These recommendations are tailored for <strong>Smallholder farmers, coconut growers and farming cooperatives</strong> operating under <strong>{regime_name}</strong> conditions."
@@ -1524,7 +1524,7 @@ elif t["nav"][6] in sec_name:
     _risk_sub = ("Visual mapping of risks and opportunities across all market conditions"
                    if lang=="en" else
                    "සියලු වෙළඳ තත්ත්ව හරහා අවදානම් සහ අවස්ථා දෘශ්‍ය සිතියම")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#0f766e,#0d9488);border-radius:10px;
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         {_risk_title}
@@ -1565,7 +1565,7 @@ elif t["nav"][6] in sec_name:
              "Value-addition bottlenecks limit export revenue growth." if lang=="en" else "අගය එකතු කිරීමේ බාධා අපනයන ආදායම් වර්ධනය සීමා කරයි."),
         ]
         for icon, risk, level, detail in risks:
-            lvl_clr = {"CRITICAL":"#ef4444","HIGH":"#f59e0b","MEDIUM":"#5a9470","LOW":"#5a9470"}[level]
+            lvl_clr = {"CRITICAL":"#1a3328","HIGH":"#2d5a3d","MEDIUM":"#3d7a55","LOW":"#5a9470"}[level]
             st.markdown(f"""<div style='display:flex;align-items:center;gap:10px;padding:9px 12px;
                 background:#f8fafc;border-radius:8px;margin-bottom:7px;border:1px solid #e2e8f0;'>
                 <div style='font-size:1.1rem;'>{icon}</div>
@@ -1607,7 +1607,7 @@ elif t["nav"][6] in sec_name:
              "IoT sensors and drone spraying can increase yield by 15-20%." if lang=="en" else "IoT සංවේදක සහ ඩ්‍රෝන් ඉසිනා ගැනීම් අස්වැන්න 15-20% ක් ඉහළ නැංවිය හැක."),
         ]
         for icon, opp, level, detail in opportunities:
-            lvl_clr = {"HIGH":"#3d7a55","MEDIUM":"#5a9470","LOW":"#94a3b8"}[level]
+            lvl_clr = {"HIGH":"#2d5a3d","MEDIUM":"#3d7a55","LOW":"#5a9470"}[level]
             st.markdown(f"""<div style='display:flex;align-items:center;gap:10px;padding:9px 12px;
                 background:#f0f5f2;border-radius:8px;margin-bottom:7px;border:1px solid #b8d0c4;'>
                 <div style='font-size:1.1rem;'>{icon}</div>
@@ -1629,12 +1629,12 @@ elif t["nav"][6] in sec_name:
     _plan_sub = ("Immediate, short-term and medium-term actions based on current market regime"
                    if lang=="en" else
                    "වත්මන් වෙළඳ තත්ත්වය මත පදනම් වූ ක්ෂණික, කෙටි කාලීන සහ මධ්‍ය කාලීන ක්‍රියාමාර්ග")
-    st.markdown(f"""<div style='background:linear-gradient(90deg,#92400e,#b45309);border-radius:10px;
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);border-radius:10px;
         padding:14px 22px;margin-bottom:16px;'>
       <div style='font-size:1.05rem;font-weight:900;color:#fff;'>
         {_plan_title}
       </div>
-      <div style='font-size:.78rem;color:#fde68a;margin-top:3px;'>
+      <div style='font-size:.78rem;color:#a8c9b8;margin-top:3px;'>
         {_plan_sub}
       </div>
     </div>
@@ -1645,41 +1645,41 @@ elif t["nav"][6] in sec_name:
             ("Week 1–2" if lang=="en" else "සතිය 1–2", "#3d7a55",
              " Initiate buffer stock procurement | Deploy CDA digital price reporting" if lang=="en" else
              " බෆර් තොග ලබා ගැනීම ආරම්භ කරන්න | CDA ඩිජිටල් මිල වාර්තාකරණය ක්‍රියාත්මක කරන්න"),
-            ("Week 3–4" if lang=="en" else "සතිය 3–4", "#5a9470",
+            ("Week 3–4" if lang=="en" else "සතිය 3–4", "#3d7a55",
              " Update farmer registration database | Launch cooperative formation drive" if lang=="en" else
              " ගොවි ලියාපදිංචි දත්ත සමුදාය යාවත්කාලීන කරන්න | සමිති ගොඩනැගීමේ ව්‍යාපාරය ආරම්භ කරන්න"),
-            ("Month 2" if lang=="en" else "2 වන මාසය", "#f59e0b",
+            ("Month 2" if lang=="en" else "2 වන මාසය", "#3d7a55",
              " Value-addition investment roadshow | Trade agreement preliminary talks" if lang=="en" else
              " අගය-එකතු කිරීමේ ආයෝජන ප්‍රවර්ධනය | වෙළඳ ගිවිසුම් මූලික සාකච්ඡා"),
-            ("Month 3" if lang=="en" else "3 වන මාසය", "#8b5cf6",
+            ("Month 3" if lang=="en" else "3 වන මාසය", "#3d7a55",
              " Review export incentive schemes | Replanting programme launch" if lang=="en" else
              " අපනයන දිරිගැන්වීමේ යෝජනා ක්‍රම සමාලෝචනය | නැවත රෝපණ වැඩසටහන ආරම්භ කරන්න"),
         ],
         1: [ # Warning
-            ("Day 1–3" if lang=="en" else "දිනය 1–3", "#ef4444",
+            ("Day 1–3" if lang=="en" else "දිනය 1–3", "#3d7a55",
              " Activate monitoring task force | Launch price transparency media campaign" if lang=="en" else
              " නිරීක්ෂණ කාර්ය සාධක බලකාය සක්‍රිය කරන්න | මිල විනිවිදභාවය මාධ්‍ය ව්‍යාපාරය ආරම්භ කරන්න"),
-            ("Day 4–7" if lang=="en" else "දිනය 4–7", "#f59e0b",
+            ("Day 4–7" if lang=="en" else "දිනය 4–7", "#3d7a55",
              " Release 10-15% buffer stock | Signal stabilisation fund readiness" if lang=="en" else
              " බෆර් තොගයෙන් 10-15% මුදා හරින්න | ස්ථාවරීකරණ අරමුදල් සූදානම සංඥා කරන්න"),
-            ("Week 2–3" if lang=="en" else "සතිය 2–3", "#5a9470",
+            ("Week 2–3" if lang=="en" else "සතිය 2–3", "#3d7a55",
              " Accelerate harvest support transport | Emergency farmer registration" if lang=="en" else
              " අස්වනු සහාය ප්‍රවාහනය ත්වරාන්විත කරන්න | හදිසි ගොවි ලියාපදිංචිය"),
-            ("Month 2–3" if lang=="en" else "මාස 2–3", "#8b5cf6",
+            ("Month 2–3" if lang=="en" else "මාස 2–3", "#3d7a55",
              "️ Review import duty schedule | Commission independent price audit" if lang=="en" else
              "️ ආනයන බදු කාලසටහන සමාලෝචනය | ස්වාධීන මිල විගණනය කෙරෙහි පත් කිරීම"),
         ],
         2: [ # Crisis
-            ("Today" if lang=="en" else "අද", "#7f1d1d",
+            ("Today" if lang=="en" else "අද", "#3d7a55",
              "🆘 Emergency Cabinet session | Full buffer stock release authorisation" if lang=="en" else
              "🆘 හදිසි කැබිනට් රැස්වීම | සම්පූර්ණ බෆර් තොග මුදා හැරීමේ අනුමැතිය"),
-            ("Day 2–3" if lang=="en" else "දිනය 2–3", "#ef4444",
+            ("Day 2–3" if lang=="en" else "දිනය 2–3", "#3d7a55",
              " Gazette emergency import permits | Activate Samurdhi emergency payments" if lang=="en" else
              " හදිසි ආනයන බලපත්‍ර ගැසට් කරන්න | සමෘද්ධි හදිසි ගෙවීම් සක්‍රිය කරන්න"),
-            ("Week 1" if lang=="en" else "1 වන සතිය", "#f59e0b",
+            ("Week 1" if lang=="en" else "1 වන සතිය", "#3d7a55",
              " Deploy anti-hoarding enforcement | Begin daily national price broadcast" if lang=="en" else
              " ගබඩා කිරීම් වැළැක්වීමේ ක්‍රියාත්මක කිරීම | දෛනික ජාතික මිල විකාශය ආරම්භ කරන්න"),
-            ("Week 2–4" if lang=="en" else "සතිය 2–4", "#5a9470",
+            ("Week 2–4" if lang=="en" else "සතිය 2–4", "#3d7a55",
              " Conduct supply chain audit | Post-crisis recovery plan preparation" if lang=="en" else
              " සැපයුම් දාම විගණනය සිදු කරන්න | අර්බුදයෙන් පසු යථා තත්ත්වයට පත්වීමේ සැලැස්ම සකස් කරන්න"),
         ],
@@ -1690,7 +1690,7 @@ elif t["nav"][6] in sec_name:
         action_items = [a.strip() for a in actions.split("|")]
         items_html = "".join([f"<div style='font-size:.7rem;color:#374151;padding:5px 0;border-bottom:1px solid #f0f5f2;line-height:1.4;'>{a}</div>" for a in action_items])
         with col:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #e2e8f0;border-top:4px solid {clr};
+            st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:4px solid #3d7a55;
                 border-radius:10px;padding:14px 12px;min-height:180px;'>
                 <div style='font-size:.7rem;font-weight:900;color:{clr};text-transform:uppercase;
                     letter-spacing:1px;margin-bottom:10px;'>{period}</div>
