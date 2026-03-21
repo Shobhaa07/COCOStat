@@ -544,7 +544,7 @@ with st.sidebar:
     _safe_lbl       = 'Safe'    if lang=='en' else 'ආරක්ෂිත'
 
     _html_box = (
-        "<div style='background:#fff;border:2px solid #1a3328;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
+        "<div style='background:#fff;border:1px solid #b8d0c4;border-radius:10px;overflow:hidden;margin-bottom:12px;'>"
         "<div style='padding:12px 14px;'>"
         f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
         f"<div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>"
