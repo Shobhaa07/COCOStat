@@ -904,9 +904,10 @@ elif t["nav"][6] in sec_name:
     sc=st.columns(4)
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
-            st.markdown(f"""<div style='text-align:center;background:#f8fafc;border-radius:14px;padding:14px 10px;border:1px solid #e2e8f0;height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
-                <div style='font-size:1.8rem;margin-bottom:6px;'>{em}</div>
-                <div style='font-weight:700;font-size:.85rem;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
+            st.markdown(f"""<div style='text-align:center;background:#fff;border-radius:10px;padding:14px 10px;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;height:100px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
+                <div style='width:28px;height:28px;background:#3d7a55;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;'>
+                  <span style='color:#fff;font-size:.8rem;font-weight:800;'>{em}</span></div>
+                <div style='font-weight:700;font-size:.82rem;color:#1a3328;'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Policy Effectiveness Indicators" if lang=="en" else "ප්‍රතිපත්ති ඵලදාව දර්ශක"))
     indics=[("Price Stability" if lang=="en" else "මිල ස්ථාවරතා",72,"#3d7a55"),
@@ -1499,8 +1500,8 @@ elif t["nav"][6] in sec_name:
         _biz_intro = (f" These recommendations are tailored for <strong>Coconut product manufacturers, exporters, traders and processors</strong> operating under <strong>{regime_name}</strong> conditions."
                       if lang=="en" else
                       f" මෙම නිර්දේශ <strong>{regime_name}</strong> තත්ත්වය යටතේ ක්‍රියාත්මක <strong>පොල් නිෂ්පාදකයන්, අපනයන කරන්නන්, වෙළෙන්දන් සහ සකසන්නන්</strong> සඳහා සකසා ඇත.")
-        st.markdown(f"""<div style='background:#fdf4ff;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
-            <div style='font-size:.78rem;color:#6b21a8;font-weight:700;'>
+        st.markdown(f"""<div style='background:#f0f5f2;border-radius:8px;padding:10px 14px;margin-bottom:14px;'>
+            <div style='font-size:.78rem;color:#1a3328;font-weight:700;'>
             {_biz_intro}
             </div></div>""", unsafe_allow_html=True)
         render_rec_cards(recs["business"], "#3d7a55")
