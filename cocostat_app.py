@@ -7,9 +7,11 @@ from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
 
+from PIL import Image as _PIL_Image
+_app_logo = _PIL_Image.open("/mnt/user-data/uploads/1774121021697_image.png")
 st.set_page_config(
     page_title="COCOStat – Coconut Market Intelligence",
-    page_icon="",
+    page_icon=_app_logo,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -585,7 +587,7 @@ with st.sidebar:
       <div style='font-size:.78rem;color:#2d5a3d;'>UOW: w1999714</div>
       <div style='font-size:.78rem;color:#2d5a3d;margin-bottom:8px;'>IIT: 20220508</div>
       <div style='font-size:.6rem;font-weight:700;color:#2d5a3d;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;'>{t['footer_programme']}</div>
-      <div style='font-size:.75rem;color:#2d5a3d;line-height:1.6;'>BSc (Hons) Data Science<br>&amp; Analytics<br>University of Westminster</div>
+      <div style='font-size:.75rem;color:#2d5a3d;line-height:1.6;'>BSc (Hons) Business Data Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1922,31 +1924,33 @@ elif t["nav"][9] in sec_name:
 
     # ── Page CSS: black & green formal theme ──────────────────────────────────
     st.markdown("""<style>
-    .m-hero{background:#0a0a0a;border-left:5px solid #3d7a55;border-radius:4px;
-        padding:22px 28px;margin-bottom:8px;}
-    .m-section-title{font-size:.65rem;font-weight:800;color:#3d7a55;
-        text-transform:uppercase;letter-spacing:2.5px;margin:28px 0 14px;}
-    .m-card{background:#111;border:1px solid #1f1f1f;border-top:3px solid #3d7a55;
-        border-radius:6px;padding:18px 18px;margin-bottom:10px;height:100%;}
-    .m-card-title{font-size:.82rem;font-weight:700;color:#f0f5f2;margin-bottom:7px;}
-    .m-card-body{font-size:.74rem;color:#9ca3af;line-height:1.7;}
-    .m-pipe{background:#111;border:1px solid #222;border-left:3px solid #3d7a55;
-        border-radius:4px;padding:14px 16px;margin-bottom:8px;}
+    .m-hero{background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);
+        border-radius:10px;padding:22px 28px;margin-bottom:16px;}
+    .m-section-title{font-size:.65rem;font-weight:800;color:#2d5a3d;
+        text-transform:uppercase;letter-spacing:2.5px;margin:28px 0 14px;
+        border-bottom:2px solid #b8d0c4;padding-bottom:6px;}
+    .m-card{background:#fff;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;
+        border-radius:10px;padding:18px 18px;margin-bottom:10px;height:100%;}
+    .m-card-title{font-size:.82rem;font-weight:700;color:#1a3328;margin-bottom:7px;}
+    .m-card-body{font-size:.74rem;color:#374151;line-height:1.7;}
+    .m-pipe{background:#f0f5f2;border:1px solid #b8d0c4;border-left:3px solid #3d7a55;
+        border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:8px;}
     .m-pipe-num{font-size:.58rem;font-weight:800;color:#3d7a55;letter-spacing:2px;
         text-transform:uppercase;margin-bottom:5px;}
-    .m-pipe-title{font-size:.82rem;font-weight:700;color:#f0f5f2;margin-bottom:5px;}
-    .m-pipe-body{font-size:.73rem;color:#9ca3af;line-height:1.65;}
+    .m-pipe-title{font-size:.82rem;font-weight:700;color:#1a3328;margin-bottom:5px;}
+    .m-pipe-body{font-size:.73rem;color:#374151;line-height:1.65;}
     .m-tbl table{width:100%;border-collapse:collapse;font-size:.76rem;}
-    .m-tbl th{background:#1a3328;color:#82b49a;font-weight:700;
+    .m-tbl th{background:#1a3328;color:#a8c9b8;font-weight:700;
         padding:9px 12px;text-align:left;border-bottom:2px solid #3d7a55;letter-spacing:.5px;}
-    .m-tbl td{padding:8px 12px;border-bottom:1px solid #1f1f1f;
-        color:#d1d5db;vertical-align:top;line-height:1.55;}
-    .m-tbl tr:hover td{background:#1a332822;}
-    .m-ref{background:#111;border:1px solid #1f1f1f;border-radius:6px;padding:20px 22px;margin-bottom:10px;}
-    .m-ref-head{font-size:.65rem;font-weight:800;color:#3d7a55;
+    .m-tbl td{padding:8px 12px;border-bottom:1px solid #e4eeea;
+        color:#374151;vertical-align:top;line-height:1.55;}
+    .m-tbl tr:hover td{background:#f0f5f2;}
+    .m-ref{background:#fff;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;
+        border-radius:10px;padding:20px 22px;margin-bottom:10px;}
+    .m-ref-head{font-size:.65rem;font-weight:800;color:#2d5a3d;
         text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
-    .m-ref-item{font-size:.77rem;color:#d1d5db;line-height:1.8;
-        padding:4px 0;border-bottom:1px solid #1a1a1a;}
+    .m-ref-item{font-size:.77rem;color:#374151;line-height:1.8;
+        padding:4px 0;border-bottom:1px solid #e4eeea;}
     </style>""", unsafe_allow_html=True)
 
     # ── Header ────────────────────────────────────────────────────────────────
@@ -2132,9 +2136,9 @@ elif t["nav"][9] in sec_name:
           <div class='m-ref-item'>Streamlit Inc. (2024). <em>Streamlit Documentation.</em> docs.streamlit.io</div>
           <div class='m-ref-item'>Plotly Technologies Inc. (2024). <em>Plotly Python Graphing Library.</em> plotly.com/python</div>
           <div class='m-ref-item' style='margin-top:14px;padding-top:12px;border-top:1px solid #222;
-              color:#a8c9b8;font-weight:600;'>Prepared by: M A C S Rathnayake<br>
+              color:#2d5a3d;font-weight:600;'>Prepared by: M A C S Rathnayake<br>
               UOW: w1999714 &nbsp;|&nbsp; IIT: 20220508<br>
-              BSc (Hons) Data Science &amp; Analytics &mdash; University of Westminster</div>
+              BSc (Hons) Business Data Analytics<br>University of Westminster</div>
         </div>""", unsafe_allow_html=True)
 
 # ══ WEATHER & HARVEST (FORWARD FORECAST) ═════════════════════════════════════
