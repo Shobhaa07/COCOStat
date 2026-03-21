@@ -495,7 +495,7 @@ with st.sidebar:
     # ── Unified Formal Risk Panel ──────────────────────────────────────────
     bar_w   = min(int(risk_score), 100)
     bar_clr = ("#ef4444" if risk_score >= 70 else "#f59e0b" if risk_score >= 45
-               else "#eab308" if risk_score >= 25 else "#5a9470")
+               else "#eab308" if risk_score >= 25 else "#3d7a55")
 
     # Build risk factor rows
     rf_rows_html = ""
@@ -601,13 +601,13 @@ st.markdown(f"""
 # HELPERS
 # ─────────────────────────────────────────────
 def metric_card(label, value, clr="#3d7a55", sub=None, height=110, val_size="1.4rem"):
-    sub_html = (f"<div style='display:inline-block;background:#f0f5f2;color:#3d7a55;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #b8d0c4;margin-top:4px;'>{sub}</div>"
+    sub_html = (f"<div style='display:inline-block;background:#f0f5f2;color:#2d5a3d;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #b8d0c4;margin-top:4px;'>{sub}</div>"
                 if sub else
                 "<span style='display:none;'></span>")
-    return (f"<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};border-radius:10px;padding:14px 16px;"
+    return (f"<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;border-radius:10px;padding:14px 16px;"
             f"height:{height}px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;'>"
             f"<div style='font-size:.65rem;font-weight:700;color:#2d5a3d;text-transform:uppercase;letter-spacing:.8px;'>{label}</div>"
-            f"<div style='font-size:{val_size};font-weight:900;color:{clr};line-height:1.2;white-space:nowrap;'>{value}</div>"
+            f"<div style='font-size:{val_size};font-weight:900;color:#1a3328;line-height:1.2;white-space:nowrap;'>{value}</div>"
             f"{sub_html}</div>")
 
 def section_header(title, sub=None):
@@ -631,9 +631,9 @@ if t["nav"][0] in sec_name:
     c1,c2,c3,c4 = st.columns(4)
     cards = [
         (" "+t["card_price_label"], t["card_price_value"], "#3d7a55", t["card_price_sub"]),
-        (" "+t["card_market_label"], " "+t["card_market_value"], "#5a9470", t["card_market_sub"]),
-        (" "+t["card_demand_label"], t["card_demand_value"], "#5a9470", t["card_demand_sub"]),
-        (" "+t["card_forecast_label"], t["card_forecast_value"], "#f59e0b", t["card_forecast_sub"]),
+        (" "+t["card_market_label"], " "+t["card_market_value"], "#3d7a55", t["card_market_sub"]),
+        (" "+t["card_demand_label"], t["card_demand_value"], "#3d7a55", t["card_demand_sub"]),
+        (" "+t["card_forecast_label"], t["card_forecast_value"], "#3d7a55", t["card_forecast_sub"]),
     ]
     for col,(label,value,clr,sub) in zip([c1,c2,c3,c4], cards):
         with col: st.markdown(metric_card(label,value,clr,sub,130), unsafe_allow_html=True)
@@ -876,7 +876,7 @@ elif t["nav"][3] in sec_name:
         [f"Rs.{fa:.1f}",f"Rs.{fmax:.1f}",f"Rs.{fmin:.1f}",
          f"{ww} " + ("wks" if lang=="en" else "සති"),
          f"{wc} " + ("wks" if lang=="en" else "සති")],
-        ["#3d7a55","#3d7a55","#3d7a55","#f59e0b","#ef4444"]):
+        ["#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55"]):
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
@@ -897,8 +897,8 @@ elif t["nav"][6] in sec_name:
                   {badge}</div></div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Policy Decision Framework" if lang=="en" else "ප්‍රතිපත්ති තීරණ රාමුව"))
-    stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න","#5a9470"),
-          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය","#8b5cf6"),
+    stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න","#3d7a55"),
+          ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය","#3d7a55"),
           ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක","#3d7a55"),
           ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න","#f59e0b")]
     sc=st.columns(4)
@@ -909,10 +909,10 @@ elif t["nav"][6] in sec_name:
                 <div style='font-weight:700;font-size:.85rem;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Policy Effectiveness Indicators" if lang=="en" else "ප්‍රතිපත්ති ඵලදාව දර්ශක"))
-    indics=[("Price Stability" if lang=="en" else "මිල ස්ථාවරතා",72,"#5a9470"),
-            ("Supply Chain" if lang=="en" else "සැපයුම් දාමය",58,"#5a9470"),
+    indics=[("Price Stability" if lang=="en" else "මිල ස්ථාවරතා",72,"#3d7a55"),
+            ("Supply Chain" if lang=="en" else "සැපයුම් දාමය",58,"#3d7a55"),
             ("Farmer Support" if lang=="en" else "ගොවි සහාය",64,"#f59e0b"),
-            ("Market Transparency" if lang=="en" else "වෙළෙඳ විනිවිද",80,"#8b5cf6")]
+            ("Market Transparency" if lang=="en" else "වෙළෙඳ විනිවිද",80,"#3d7a55")]
     ic=st.columns(4)
     for col,(lbl,sc_,clr) in zip(ic,indics):
         with col:
@@ -967,10 +967,10 @@ elif t["nav"][6] in sec_name:
     sn1,sn2,sn3,sn4,sn5 = st.columns(5)
     snap_data = [
         (" " + ("Current Price" if lang=="en" else "වත්මන් මිල"), f"Rs. {current_price:.2f}", "#3d7a55"),
-        (" " + ("3-Month Change" if lang=="en" else "මාස 3 වෙනස"), f"{price_change_3m:+.1f}%", "#5a9470" if price_change_3m<=0 else "#ef4444"),
-        (" " + ("12M Average" if lang=="en" else "මාස 12 සාමාන්‍යය"), f"Rs. {avg_12m:.2f}", "#5a9470"),
-        (" " + ("Volatility" if lang=="en" else "අස්ථාවරතාව"), f"{cv:.1f}% CV", "#f59e0b"),
-        ("️ " + ("Market Regime" if lang=="en" else "වෙළඳ තත්ත්වය"), regime_labels[regime_now], regime_colors[regime_now]),
+        (" " + ("3-Month Change" if lang=="en" else "මාස 3 වෙනස"), f"{price_change_3m:+.1f}%", "#3d7a55" if price_change_3m<=0 else "#ef4444"),
+        (" " + ("12M Average" if lang=="en" else "මාස 12 සාමාන්‍යය"), f"Rs. {avg_12m:.2f}", "#3d7a55"),
+        (" " + ("Volatility" if lang=="en" else "අස්ථාවරතාව"), f"{cv:.1f}% CV", "#3d7a55"),
+        ("️ " + ("Market Regime" if lang=="en" else "වෙළඳ තත්ත්වය"), regime_labels[regime_now], "#3d7a55"),
     ]
     for col,(lbl,val,clr) in zip([sn1,sn2,sn3,sn4,sn5], snap_data):
         with col: st.markdown(metric_card(lbl, val, clr, height=95), unsafe_allow_html=True)
@@ -1075,7 +1075,7 @@ elif t["nav"][6] in sec_name:
              "#5a9470" if consumer_impact<=0 else "#ef4444"),
             (" " + ("Export Revenue Est." if lang=="en" else "අපනයන ආදායම ඇ."),
              f"{export_revenue_change:+.1f}M USD",
-             "#5a9470"),
+             "#3d7a55"),
         ]):
             with col:
                 st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {clr};
@@ -1817,13 +1817,13 @@ elif t["nav"][4] in sec_name:
         # Global KPI row
         sl_l = global_price_df["Sri Lanka"].iloc[-1]
         w_avg = global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1].mean()
-        sl_vs = sl_l - w_avg; sv_clr = "#f59e0b" if sl_vs > 0 else "#5a9470"
+        sl_vs = sl_l - w_avg; sv_clr = "#3d7a55"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
             ("SL Price (2024)" if lang=="en" else "ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#3d7a55"),
-            ("World Avg Price" if lang=="en" else "ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#5a9470"),
+            ("World Avg Price" if lang=="en" else "ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3d7a55"),
             ("SL Premium" if lang=="en" else "ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
-            ("World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#8b5cf6")]):
+            ("World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#3d7a55")]):
             with col: st.markdown(metric_card(lbl,val,clr,height=100), unsafe_allow_html=True)
 
         divider()
@@ -2181,10 +2181,10 @@ elif t["nav"][2] in sec_name:
 
     wk1,wk2,wk3,wk4 = st.columns(4)
     for col,(lbl,val,clr) in zip([wk1,wk2,wk3,wk4],[
-        (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්‍ය වර්ෂාව", f"{avg_frain:.0f} mm", "#5a9470"),
-        (" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#f59e0b"),
+        (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්‍ය වර්ෂාව", f"{avg_frain:.0f} mm", "#3d7a55"),
+        (" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#3d7a55"),
         (" Forecast Yield Index" if lang=="en" else " අනාවැකි අස්වැන්න දර්ශකය", f"{avg_fyield:.0f}/100", "#3d7a55"),
-        (" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", f"{harvest_months_count} " + ("months" if lang=="en" else "මාස"), "#8b5cf6")]):
+        (" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", f"{harvest_months_count} " + ("months" if lang=="en" else "මාස"), "#3d7a55")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
@@ -2411,14 +2411,14 @@ elif t["nav"][5] in sec_name:
 
     # KPI row
     le=export_df.iloc[-1]; pe=export_df.iloc[-2]
-    yoy=(le["Total"]-pe["Total"])/pe["Total"]*100; yoy_clr="#5a9470" if yoy>0 else "#ef4444"
+    yoy=(le["Total"]-pe["Total"])/pe["Total"]*100; yoy_clr="#3d7a55"
     ek1,ek2,ek3,ek4=st.columns(4)
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
         (" Total Exports (Latest Yr)" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#3d7a55"),
         (" YoY Growth" if lang=="en" else " \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
         (" Top Product" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9b \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba",
-         "Desiccated Coconut" if lang=="en" else "වියළි පොල්","#5a9470"),
-        (" Top Market" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","USA (22%)","#8b5cf6")]):
+         "Desiccated Coconut" if lang=="en" else "වියළි පොල්","#3d7a55"),
+        (" Top Market" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","USA (22%)","#3d7a55")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
@@ -2499,14 +2499,14 @@ elif t["nav"][7] in sec_name:
     net_profit=gross_rev-total_cost
     margin=net_profit/gross_rev*100 if gross_rev>0 else 0
     be_price=total_cost/total_nuts if total_nuts>0 else 0
-    pc_=("#5a9470" if net_profit>0 else "#ef4444")
+    pc_="#3d7a55"
     divider()
     st.markdown("#### "+("Profitability Results" if lang=="en" else "\u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db5\u0dbd"))
     r1,r2,r3,r4,r5=st.columns(5)
     for col,(lbl,val,clr) in zip([r1,r2,r3,r4,r5],[
         (" Total Nuts/Year" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d9c\u0dd9\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba", f"{total_nuts:,}","#3d7a55"),
-        (" Gross Revenue" if lang=="en" else " \u0daf\u0dc5 \u0d86\u0daf\u0dcf\u0dba\u0db8", f"Rs.{gross_rev:,.0f}","#5a9470"),
-        (" Total Costs" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba", f"Rs.{total_cost:,.0f}","#ef4444"),
+        (" Gross Revenue" if lang=="en" else " \u0daf\u0dc5 \u0d86\u0daf\u0dcf\u0dba\u0db8", f"Rs.{gross_rev:,.0f}","#3d7a55"),
+        (" Total Costs" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba", f"Rs.{total_cost:,.0f}","#3d7a55"),
         ((" Net Profit" if net_profit>0 else " Net Loss") if lang=="en" else (" \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0dbd\u0dcf\u0db7\u0dba" if net_profit>0 else " \u0dbd\u0dcf\u0db7 \u0d85\u0dc0"),
          f"Rs.{net_profit:,.0f}",pc_),
         (" Profit Margin" if lang=="en" else " \u0dbd\u0dcf\u0db7 \u0db8\u0dcf\u0daf\u0dd2\u0dbd\u0dd2\u0dba",f"{margin:.1f}%",pc_)]):
@@ -2591,11 +2591,11 @@ elif t["nav"][8] in sec_name:
         ("Primary Authority" if lang=="en" else " ප්‍රධාන බලධාරිය",
          "CDA / HARTI", "#3d7a55"),
         ("Auction Frequency" if lang=="en" else "වෙන්දේසි නිතිය",
-         "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#5a9470"),
+         "Weekly (Mon–Fri)" if lang=="en" else "සතිපතා (සඳු–සිකු)", "#3d7a55"),
         ("Typical Start Time" if lang=="en" else "ආරම්භ වේලාව",
-         "7:30 – 9:00 AM", "#f59e0b"),
+         "7:30 – 9:00 AM", "#3d7a55"),
         ("Lot Size" if lang=="en" else "ලොට් ප්‍රමාණය",
-         "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#8b5cf6"),
+         "500–5,000 nuts" if lang=="en" else "ඇට 500–5,000", "#3d7a55"),
     ]):
         with col: st.markdown(metric_card(lbl, val, clr, height=110, val_size="1.1rem"), unsafe_allow_html=True)
     divider()
@@ -2761,26 +2761,26 @@ elif t["nav"][8] in sec_name:
              "Buyers must hold valid CDA buyer licence. Annual renewal required.","#3d7a55"),
             ("02","Grading & Lot Formation",
              "Nuts are graded by size, freshness and quality. Standard lot = 1,000 nuts. Minimum 500 nuts per lot.",
-             "Grade A: ≥12cm dia. Grade B: 10–12cm. Grade C: <10cm.","#5a9470"),
+             "Grade A: ≥12cm dia. Grade B: 10–12cm. Grade C: <10cm.","#3d7a55"),
             ("03","Bidding Process",
              "Open outcry ascending bid auction. Auctioneer calls starting price. Highest bid wins. Buyer must pay within 24 hrs.",
              "Electronic bidding being piloted at Colombo centre.","#f59e0b"),
             ("04","Settlement & Transport",
              "Payment via bank transfer or certified cheque. Seller receives funds within 2 working days.",
-             "CDA provides transport support for quantities >5,000 nuts.","#8b5cf6"),
+             "CDA provides transport support for quantities >5,000 nuts.","#3d7a55"),
         ] if lang=="en" else [
             ("01","ලියාපදිංචිය",
              "විකුණුම්කරුවන් වෙන්දේසියට අවම වශයෙන් පැය 24 කට පෙර CDA/HARTI සමග ලියාපදිංචි විය යුතුය. නිලධාරීන් විසින් ලොට් පරීක්ෂා කර ශ්‍රේණිගත කෙරේ.",
              "ගැනුම්කරුවන් සතුව වලංගු CDA ගැනුම්කරු බලපත්‍රයක් තිබිය යුතුය. වාර්ෂික අලුත් කිරීම අවශ්‍ය වේ.","#3d7a55"),
             ("02","ශ්‍රේණිගත කිරීම සහ ලොට් සෑදීම",
              "ගෙඩි ප්‍රමාණය, සතුටුදායකත්වය සහ ගුණාත්මකභාවය අනුව ශ්‍රේණිගත කෙරේ. සම්මත ලොට් = ගෙඩි 1,000. අවම ලොට් ගෙඩි 500.",
-             "A ශ්‍රේණිය: ≥12cm. B ශ්‍රේණිය: 10–12cm. C ශ්‍රේණිය: <10cm.","#5a9470"),
+             "A ශ්‍රේණිය: ≥12cm. B ශ්‍රේණිය: 10–12cm. C ශ්‍රේණිය: <10cm.","#3d7a55"),
             ("03","ලංසු ක්‍රියාවලිය",
              "විවෘත ලංසු ක්‍රමය. වෙන්දේසිකරු ආරම්භ මිල කියයි. ඉහළම ලංසුකරු ජය ගනී. ගැනුම්කරු පැය 24 ඇතුළත ගෙවිය යුතුය.",
              "කොළඹ මධ්‍යස්ථානයේ ඉලෙක්ට්‍රොනික ලංසු ක්‍රමය පරීක්ෂාර්ථ ක්‍රියාත්මක වේ.","#f59e0b"),
             ("04","නිරවැද්‍යතාව සහ ප්‍රවාහනය",
              "බැංකු හරහා හෝ සහතිකගත චෙකපත් මගින් ගෙවීම. විකුණුම්කරු ව්‍යාපාරික දින 2ක් ඇතුළත මුදල් ලබා ගනී.",
-             "CDA ගෙඩි 5,000 ට වඩා ඇති ප්‍රමාණ සඳහා ප්‍රවාහන සහාය සපයයි.","#8b5cf6"),
+             "CDA ගෙඩි 5,000 ට වඩා ඇති ප්‍රමාණ සඳහා ප්‍රවාහන සහාය සපයයි.","#3d7a55"),
         ]
     )
     _step_lbl = "STEP" if lang=="en" else "පියවර"
@@ -2937,7 +2937,7 @@ elif t["nav"][8] in sec_name:
             ("Export Auction",
              "Every 2nd Friday of month",
              "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
-             "#5a9470"),
+             "#3d7a55"),
         ] if lang=="en" else [
             ("උච්ච අස්වනු වෙන්දේසිය",
              "මාර්තු–අප්‍රේල් / අගෝ–නොවැ",
@@ -2950,7 +2950,7 @@ elif t["nav"][8] in sec_name:
             ("අපනයන වෙන්දේසිය",
              "සෑම 2 වන සිකුරාදා",
              "අපනයන ගුණාත්මක පොල් සහ අගය-එකතු නිෂ්පාදන සඳහා විශේෂ වෙන්දේසිය. CDA අපනයන ආධාරක කණ්ඩායම සහභාගී වේ. USD/EUR මිල ද පිළිගනු ලැබේ.",
-             "#5a9470"),
+             "#3d7a55"),
         ]
     )
     for col, (title, schedule, desc, clr) in zip(spec_cols, specials):
@@ -2970,7 +2970,7 @@ elif t["nav"][8] in sec_name:
         ("CDA Head Office","No. 54, Nawam Mawatha, Colombo 02","+94 11 243 0610","cda@cda.gov.lk","www.cda.gov.lk",
          ("Seller & Buyer Registration, Licence Applications" if lang=="en" else "විකුණුම්කරු සහ ගැනුම්කරු ලියාපදිංචිය, බලපත්‍ර ඉල්ලීම්"),"#3d7a55"),
         ("HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
-         ("Colombo & Gampaha Auction Operations" if lang=="en" else "කොළඹ සහ ගම්පහ වෙන්දේසි ක්‍රියාකාරිත්වය"),"#5a9470"),
+         ("Colombo & Gampaha Auction Operations" if lang=="en" else "කොළඹ සහ ගම්පහ වෙන්දේසි ක්‍රියාකාරිත්වය"),"#3d7a55"),
         ("CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
          ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#f59e0b"),
     ]
