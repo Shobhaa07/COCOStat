@@ -900,7 +900,7 @@ elif t["nav"][6] in sec_name:
     stps=[("1\ufe0f\u20e3","Detect Regime" if lang=="en" else "තත්ත්වය හඳුනන්න","#3d7a55"),
           ("2\ufe0f\u20e3","Assess Priority" if lang=="en" else "ප්‍රමුඛතාව තීරණය","#3d7a55"),
           ("3\ufe0f\u20e3","Implement Policy" if lang=="en" else "ප්‍රතිපත්තිය ක්‍රියාත්මක","#3d7a55"),
-          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න","#f59e0b")]
+          ("4\ufe0f\u20e3","Monitor & Review" if lang=="en" else "නිරීක්ෂණය කරන්න","#3d7a55")]
     sc=st.columns(4)
     for col,(em,st_,clr) in zip(sc,stps):
         with col:
@@ -911,7 +911,7 @@ elif t["nav"][6] in sec_name:
     st.markdown("#### "+("Policy Effectiveness Indicators" if lang=="en" else "ප්‍රතිපත්ති ඵලදාව දර්ශක"))
     indics=[("Price Stability" if lang=="en" else "මිල ස්ථාවරතා",72,"#3d7a55"),
             ("Supply Chain" if lang=="en" else "සැපයුම් දාමය",58,"#3d7a55"),
-            ("Farmer Support" if lang=="en" else "ගොවි සහාය",64,"#f59e0b"),
+            ("Farmer Support" if lang=="en" else "ගොවි සහාය",64,"#3d7a55"),
             ("Market Transparency" if lang=="en" else "වෙළෙඳ විනිවිද",80,"#3d7a55")]
     ic=st.columns(4)
     for col,(lbl,sc_,clr) in zip(ic,indics):
@@ -2629,7 +2629,7 @@ elif t["nav"][8] in sec_name:
             "phone": "+94 37 222 2250",
             "note": "Main centre for Kurunegala district — Sri Lanka's largest coconut belt.",
             "si_note": "කුරුණෑගල දිස්ත්‍රික්කයේ ප්‍රධාන මධ්‍යස්ථානය — ශ්‍රී ලංකාවේ විශාලතම පොල් කලාපය.",
-            "clr": "#5a9470",
+            "clr": "#3d7a55",
         },
         {
             "name": "Puttalam Auction Centre",
@@ -2643,7 +2643,7 @@ elif t["nav"][8] in sec_name:
             "phone": "+94 32 222 5120",
             "note": "Covers northern coconut triangle; strong copra and oil trade.",
             "si_note": "උතුරු පොල් ත්‍රිකෝණය ආවරණය කරයි; ශක්තිමත් කොප්රා සහ තෙල් වෙළඳාම.",
-            "clr": "#f59e0b",
+            "clr": "#3d7a55",
         },
         {
             "name": "Gampaha Auction Centre",
@@ -2657,7 +2657,7 @@ elif t["nav"][8] in sec_name:
             "phone": "+94 33 222 3100",
             "note": "Serves Western Province. High volume during peak harvest months.",
             "si_note": "බස්නාහිර පළාත සේවය කරයි. උච්ච අස්වනු මාසවලදී ඉහළ පරිමාව.",
-            "clr": "#8b5cf6",
+            "clr": "#3d7a55",
         },
         {
             "name": "Matara Auction Centre",
@@ -2671,7 +2671,7 @@ elif t["nav"][8] in sec_name:
             "phone": "+94 41 222 2440",
             "note": "Key centre for Southern Province coconut growers.",
             "si_note": "දකුණු පළාත් පොල් ගොවීන් සඳහා ප්‍රධාන මධ්‍යස්ථානය.",
-            "clr": "#ef4444",
+            "clr": "#3d7a55",
         },
         {
             "name": "Kalutara Auction Centre",
@@ -2685,7 +2685,7 @@ elif t["nav"][8] in sec_name:
             "phone": "+94 34 222 5300",
             "note": "Significant trade in coconut milk products alongside whole nuts.",
             "si_note": "සම්පූර්ණ ගෙඩිවලට අමතරව පොල් කිරි නිෂ්පාදනවල සැලකිය යුතු වෙළඳාම.",
-            "clr": "#06b6d4",
+            "clr": "#3d7a55",
         },
     ]
 
@@ -2730,7 +2730,7 @@ elif t["nav"][8] in sec_name:
         "Saturday": [("Gampaha","7:00 AM"),("Matara","8:30 AM")],
     }
     day_auctions = {d_si: day_auctions_en[d_en] for d_en, d_si in zip(days_en, days_si)} if lang=="si" else day_auctions_en
-    day_colors_map = dict(zip(days, ["#3d7a55","#5a9470","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]))
+    day_colors_map = dict(zip(days, ["#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55"]))
     sched_cols = st.columns(6)
     for col, day in zip(sched_cols, days):
         auctions = day_auctions[day]
@@ -2764,7 +2764,7 @@ elif t["nav"][8] in sec_name:
              "Grade A: ≥12cm dia. Grade B: 10–12cm. Grade C: <10cm.","#3d7a55"),
             ("03","Bidding Process",
              "Open outcry ascending bid auction. Auctioneer calls starting price. Highest bid wins. Buyer must pay within 24 hrs.",
-             "Electronic bidding being piloted at Colombo centre.","#f59e0b"),
+             "Electronic bidding being piloted at Colombo centre.","#3d7a55"),
             ("04","Settlement & Transport",
              "Payment via bank transfer or certified cheque. Seller receives funds within 2 working days.",
              "CDA provides transport support for quantities >5,000 nuts.","#3d7a55"),
@@ -2777,7 +2777,7 @@ elif t["nav"][8] in sec_name:
              "A ශ්‍රේණිය: ≥12cm. B ශ්‍රේණිය: 10–12cm. C ශ්‍රේණිය: <10cm.","#3d7a55"),
             ("03","ලංසු ක්‍රියාවලිය",
              "විවෘත ලංසු ක්‍රමය. වෙන්දේසිකරු ආරම්භ මිල කියයි. ඉහළම ලංසුකරු ජය ගනී. ගැනුම්කරු පැය 24 ඇතුළත ගෙවිය යුතුය.",
-             "කොළඹ මධ්‍යස්ථානයේ ඉලෙක්ට්‍රොනික ලංසු ක්‍රමය පරීක්ෂාර්ථ ක්‍රියාත්මක වේ.","#f59e0b"),
+             "කොළඹ මධ්‍යස්ථානයේ ඉලෙක්ට්‍රොනික ලංසු ක්‍රමය පරීක්ෂාර්ථ ක්‍රියාත්මක වේ.","#3d7a55"),
             ("04","නිරවැද්‍යතාව සහ ප්‍රවාහනය",
              "බැංකු හරහා හෝ සහතිකගත චෙකපත් මගින් ගෙවීම. විකුණුම්කරු ව්‍යාපාරික දින 2ක් ඇතුළත මුදල් ලබා ගනී.",
              "CDA ගෙඩි 5,000 ට වඩා ඇති ප්‍රමාණ සඳහා ප්‍රවාහන සහාය සපයයි.","#3d7a55"),
@@ -2803,7 +2803,7 @@ elif t["nav"][8] in sec_name:
     gmins = [72, 58, 42, 85, 380]
     gmaxs = [85, 72, 58, 110, 450]
     gavgs = [78, 65, 50, 95, 415]
-    bar_colors = ["#5a9470","#3d7a55","#3d7a55","#0d9488","#0891b2"]
+    bar_colors = ["#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55"]
 
     _grade_lbls = (
         ["Grade A (Premium)", "Grade B (Standard)", "Grade C (Small)", "Copra (per kg)", "Coconut Oil (per L)"]
@@ -2914,7 +2914,7 @@ elif t["nav"][8] in sec_name:
             ]
         )
         for icon, title, desc in buyer_rules:
-            st.markdown(f"""<div style='background:#f0f5f2;border-left:4px solid #5a9470;border-radius:0 8px 8px 0;
+            st.markdown(f"""<div style='background:#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 8px 8px 0;
                 padding:10px 14px;margin-bottom:8px;'>
                 <div style='font-size:.75rem;font-weight:800;color:#1a3328;'>{icon} {title}</div>
                 <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
@@ -2933,7 +2933,7 @@ elif t["nav"][8] in sec_name:
             ("Premium Quality Auction",
              "Quarterly (Jan, Apr, Jul, Oct)",
              "Specially graded Grade A+ lots. Pre-registration required. Reserved for certified export-grade buyers and premium product manufacturers.",
-             "#f59e0b"),
+             "#3d7a55"),
             ("Export Auction",
              "Every 2nd Friday of month",
              "Dedicated auction for export-quality coconuts and value-added products. CDA export facilitation team present. Prices in USD/EUR accepted.",
@@ -2946,7 +2946,7 @@ elif t["nav"][8] in sec_name:
             ("ශ්‍රේෂ්ඨ ගුණාත්මක වෙන්දේසිය",
              "කාර්තුව (ජන, අප්‍රේ, ජූලි, ඔක්)",
              "විශේෂයෙන් ශ්‍රේණිගත A+ ලොට්. පූර්ව ලියාපදිංචිය අවශ්‍ය. සහතිකගත අපනයන ශ්‍රේණියේ ගැනුම්කරුවන් සහ ශ්‍රේෂ්ඨ නිෂ්පාදකයන් සඳහා.",
-             "#f59e0b"),
+             "#3d7a55"),
             ("අපනයන වෙන්දේසිය",
              "සෑම 2 වන සිකුරාදා",
              "අපනයන ගුණාත්මක පොල් සහ අගය-එකතු නිෂ්පාදන සඳහා විශේෂ වෙන්දේසිය. CDA අපනයන ආධාරක කණ්ඩායම සහභාගී වේ. USD/EUR මිල ද පිළිගනු ලැබේ.",
@@ -2972,7 +2972,7 @@ elif t["nav"][8] in sec_name:
         ("HARTI Head Office","Narahenpita, Colombo 05","+94 11 259 1919","harti@harti.gov.lk","www.harti.gov.lk",
          ("Colombo & Gampaha Auction Operations" if lang=="en" else "කොළඹ සහ ගම්පහ වෙන්දේසි ක්‍රියාකාරිත්වය"),"#3d7a55"),
         ("CDA Auction Hotline","Any CDA Regional Office","1920 (toll-free)","auctions@cda.gov.lk","www.cda.gov.lk/auctions",
-         ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#f59e0b"),
+         ("Auction schedule enquiries, lot registration" if lang=="en" else "වෙන්දේසි කාලසටහන විමසීම්, ලොට් ලියාපදිංචිය"),"#3d7a55"),
     ]
     _contact_lbl = "Contact" if lang=="en" else "සම්බන්ධයි"
     for col, (org,addr,phone,email,web,purpose,clr) in zip([ct1,ct2,ct3], contacts):
