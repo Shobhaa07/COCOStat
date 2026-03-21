@@ -389,13 +389,21 @@ with st.sidebar:
     momentum_6m = ((current_price - price_6m_ago) / price_6m_ago) * 100
     crisis_months_sb = int((history_df["price"].tail(12) >= 80).sum())
 
-    # Thresholds (user-configurable)
-    warn_threshold = st.slider(
-        " Warning Level (Rs.)" if lang=="en" else " අවවාද සීමාව (රු.)",
-        min_value=50, max_value=90, value=65, step=1)
-    crisis_threshold = st.slider(
-        " Crisis Level (Rs.)" if lang=="en" else " අර්බුද සීමාව (රු.)",
-        min_value=60, max_value=120, value=80, step=1)
+    # Thresholds — rendered inside a styled container to visually connect with the box
+    _thresh_lbl = "Set Thresholds" if lang=="en" else "සීමාවන් සකසන්න"
+    _warn_lbl   = "Warning Level (Rs.)" if lang=="en" else "අවවාද සීමාව (රු.)"
+    _cris_lbl   = "Crisis Level (Rs.)"  if lang=="en" else "අර්බුද සීමාව (රු.)"
+    st.markdown(f"""<div style='background:#1a3328;padding:7px 14px 0 14px;border-radius:10px 10px 0 0;
+        margin-bottom:0;border:1px solid #b8d0c4;border-bottom:none;'>
+      <div style='font-size:.6rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;
+          letter-spacing:1.5px;padding-bottom:4px;'>PRICE RISK EARLY WARNING</div>
+      <div style='font-size:.58rem;font-weight:600;color:#82b49a;text-transform:uppercase;
+          letter-spacing:1px;padding-bottom:6px;'>{_thresh_lbl}</div>
+    </div>""", unsafe_allow_html=True)
+    st.markdown("<div style='background:#f0f5f2;border:1px solid #b8d0c4;border-top:none;border-bottom:none;padding:6px 14px 2px 14px;'>", unsafe_allow_html=True)
+    warn_threshold = st.slider(_warn_lbl, min_value=50, max_value=90,  value=65, step=1)
+    crisis_threshold = st.slider(_cris_lbl, min_value=60, max_value=120, value=80, step=1)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # ── Risk Score Engine ──────────────────
     risk_score = 0
@@ -530,10 +538,7 @@ with st.sidebar:
     _safe_lbl       = 'Safe'    if lang=='en' else 'ආරක්ෂිත'
 
     _html_box = (
-        "<div style='background:#fff;border:1px solid #b8d0c4;border-radius:10px;overflow:hidden;margin-bottom:12px;'>"
-        f"<div style='background:#1a3328;padding:9px 14px;'>"
-        f"<div style='font-size:.65rem;font-weight:700;color:#a8c9b8;text-transform:uppercase;letter-spacing:1.5px;'>{_ew_title_lbl}</div>"
-        "</div>"
+        "<div style='background:#fff;border:1px solid #b8d0c4;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:12px;'>"
         "<div style='padding:12px 14px;'>"
         f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;'>"
         f"<div style='font-size:.75rem;font-weight:800;color:{rl_clr};'>{rl_label}</div>"
