@@ -855,10 +855,10 @@ elif t["nav"][3] in sec_name:
     wcols=st.columns(6)
     for i,(_,row) in enumerate(forecast_df.iterrows()):
         if i>=12: break
-        p=row["price"]; clr="#ef4444" if p>=crisis_threshold else "#eab308" if p>=warn_threshold else "#5a9470"
+        p=row["price"]; clr="#ef4444" if p>=crisis_threshold else "#eab308" if p>=warn_threshold else "#3d7a55"
         st_=("Crisis" if p>=crisis_threshold else "Warning" if p>=warn_threshold else "Stable")
         with wcols[i%6]:
-            st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-top:3px solid {clr};border-radius:10px;padding:10px 6px;text-align:center;margin-bottom:8px;min-height:78px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
+            st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};border-radius:10px;padding:10px 6px;text-align:center;margin-bottom:8px;min-height:78px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
                 <div style='font-size:.7rem;color:#94a3b8;margin-bottom:2px;'>{t["forecast_week"]} {i+1}</div>
                 <div style='font-size:.95rem;font-weight:800;color:{clr};'>Rs.{p:.1f}</div>
                 <div style='font-size:.65rem;font-weight:700;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
@@ -2380,7 +2380,7 @@ elif t["nav"][2] in sec_name:
         {"නිරිත දිග මෝසම (මැයි–සැප්)":[5,6,7,8,9],"ඊසාන දිග මෝසම (නොවැ–ජන)":[11,12,1],
          "අන්තර් මෝසම 1 (මාර්–අප්‍රේ)":[3,4],"අන්තර් මෝසම 2 (ඔක්)":[10]}
     )
-    seas_clrs = ["#5a9470","#8b5cf6","#f59e0b","#5a9470"]
+    seas_clrs = ["#3d7a55","#3d7a55","#3d7a55","#3d7a55"]
     sc2 = st.columns(4)
     for col,(season,months_s),clr in zip(sc2,seasons_fwd.items(),seas_clrs):
         msk = fwd_df["month"].isin(months_s)
@@ -2395,12 +2395,12 @@ elif t["nav"][2] in sec_name:
         _yield_lbl = "Yield" if lang=="en" else "අස්වැන්න"
         _est_lbl = "Est." if lang=="en" else "ඇ."
         with col:
-            st.markdown(f"""<div style='background:#f8fafc;border:1px solid #e2e8f0;border-top:3px solid {clr};border-radius:10px;padding:14px 10px;text-align:center;height:180px;display:flex;flex-direction:column;justify-content:space-between;'>
+            st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;border-radius:10px;padding:14px 10px;text-align:center;height:180px;display:flex;flex-direction:column;justify-content:space-between;'>
                 <div style='font-size:.72rem;font-weight:800;color:{clr};'>{season}</div>
                 <div>
-                  <div style='font-size:.75rem;color:#5a9470;font-weight:600;'> {ar:.0f} {_mm_lbl}</div>
-                  <div style='font-size:.75rem;color:#3d7a55;font-weight:600;'> {_yield_lbl}: {ay:.0f}/100</div>
-                  <div style='font-size:.75rem;color:#f59e0b;font-weight:600;'> {_est_lbl} Rs.{ap:.1f}</div>
+                  <div style='font-size:.75rem;color:#3d7a55;font-weight:600;'>{ar:.0f} {_mm_lbl}</div>
+                  <div style='font-size:.75rem;color:#3d7a55;font-weight:600;'>{_yield_lbl}: {ay:.0f}/100</div>
+                  <div style='font-size:.75rem;color:#3d7a55;font-weight:600;'>{_est_lbl} Rs.{ap:.1f}</div>
                   <div style='font-size:.72rem;color:#3d7a55;font-weight:700;margin-top:4px;'>{harv}</div>
                 </div></div>""", unsafe_allow_html=True)
 
