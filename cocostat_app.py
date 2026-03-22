@@ -2975,7 +2975,7 @@ elif t["nav"][8] in sec_name:
     for col, (title, schedule, desc, clr) in zip(spec_cols, specials):
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:4px solid {clr};
-                border-radius:12px;padding:18px 14px;height:220px;display:flex;flex-direction:column;'>
+                border-radius:12px;padding:14px 14px;min-height:0;display:flex;flex-direction:column;'>
                 <div style='font-size:.85rem;font-weight:800;color:#1a3328;margin-bottom:4px;'>{title}</div>
                 <div style='font-size:.7rem;font-weight:700;color:{clr};margin-bottom:8px;'> {schedule}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
