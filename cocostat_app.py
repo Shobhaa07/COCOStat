@@ -1980,12 +1980,34 @@ elif t["nav"][4] in sec_name:
         cp2,cr=st.columns(2)
         with cp2:
             st.markdown("#### "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
-            fig_pp=go.Figure(go.Pie(labels=production_df["Country"],values=production_df["Production_B_nuts"],hole=.45,
-                textinfo="label+percent",textfont=dict(size=10),
-                marker=dict(colors=["#5a9470","#f59e0b","#ef4444","#3d7a55","#8b5cf6","#06b6d4","#84cc16"]),
-                pull=[.08 if c=="Sri Lanka" else 0 for c in production_df["Country"]],
+            fig_pp=go.Figure(go.Pie(
+                labels=production_df["Country"],
+                values=production_df["Production_B_nuts"],
+                hole=.42,
+                textinfo="label+percent",
+                textfont=dict(size=11, family="Inter, sans-serif"),
+                textposition="auto",
+                marker=dict(
+                    colors=["#1a3328","#f59e0b","#ef4444","#2d5a3d","#8b5cf6","#06b6d4","#84cc16"],
+                    line=dict(color="#fff", width=2)
+                ),
+                pull=[.12 if c=="Sri Lanka" else 0 for c in production_df["Country"]],
+                insidetextorientation="radial",
                 hovertemplate="<b>%{label}</b><br>%{value}B nuts/yr<br>%{percent}<extra></extra>"))
-            fig_pp.update_layout(height=300,margin=dict(l=10,r=10,t=10,b=10),paper_bgcolor="#fff",showlegend=False)
+            fig_pp.update_traces(
+                texttemplate="<b>%{label}</b><br>%{percent:.1%}",
+                textfont_size=11)
+            fig_pp.update_layout(
+                height=360,
+                margin=dict(l=20,r=20,t=20,b=20),
+                paper_bgcolor="#fff",
+                showlegend=True,
+                legend=dict(
+                    orientation="v",
+                    x=1.02, y=0.5,
+                    font=dict(size=11, family="Inter, sans-serif"),
+                    itemsizing="constant"
+                ))
             st.plotly_chart(fig_pp,use_container_width=True,config={"displayModeBar":"hover"})
         with cr:
             st.markdown("#### "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
