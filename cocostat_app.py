@@ -6,6 +6,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io, csv as csv_mod
+from pathlib import Path
 
 st.set_page_config(
     page_title="COCOStat",
@@ -17,7 +18,23 @@ st.set_page_config(
 # ─────────────────────────────────────────────
 # CONFIGURATION
 # ─────────────────────────────────────────────
-EXCEL_PATH  = "COCOStat_Master_Dataset.xlsx"
+# Resolve the Excel file relative to this script so it works on
+# Streamlit Cloud (/mount/src/<repo>/), locally, and in Colab.
+_HERE = Path(__file__).parent
+_CANDIDATES = [
+    _HERE / "COCOStat_Master_Dataset.xlsx",          # same folder as app
+    _HERE / "data" / "COCOStat_Master_Dataset.xlsx", # /data sub-folder
+    Path("COCOStat_Master_Dataset.xlsx"),             # cwd fallback
+]
+EXCEL_PATH = next((str(p) for p in _CANDIDATES if p.exists()), None)
+
+if EXCEL_PATH is None:
+    st.error(
+        "**Dataset not found.** Please place `COCOStat_Master_Dataset.xlsx` "
+        "in the same folder as `cocostat_app.py` (or in a `data/` sub-folder) "
+        "and redeploy."
+    )
+    st.stop()
 WARN_THRESHOLD_DEFAULT   = 650   # Rs./Nut
 CRISIS_THRESHOLD_DEFAULT = 800   # Rs./Nut
 
@@ -32,7 +49,9 @@ PRODUCT_COLORS = ["#3d7a55","#5a9470","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
 # DATA LOADERS  (real dataset)
 # ─────────────────────────────────────────────
 def read_sheet(sheet, skip=3):
-    df = pd.read_excel(EXCEL_PATH, sheet_name=sheet, skiprows=skip, header=0)
+    # openpyxl required explicitly for Streamlit Cloud
+    df = pd.read_excel(EXCEL_PATH, sheet_name=sheet, skiprows=skip,
+                       header=0, engine="openpyxl")
     return df.dropna(how="all").reset_index(drop=True)
 
 @st.cache_data
