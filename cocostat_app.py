@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
-import io, csv as csv_mod
+import io, csv as csv_mod, os
 from pathlib import Path
 
 st.set_page_config(
@@ -16,25 +16,34 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# CONFIGURATION
+# CONFIGURATION — robust path for Streamlit Cloud
 # ─────────────────────────────────────────────
-# Resolve the Excel file relative to this script so it works on
-# Streamlit Cloud (/mount/src/<repo>/), locally, and in Colab.
-_HERE = Path(__file__).parent
+# On Streamlit Cloud the repo lives at /mount/src/<repo-name>/
+# __file__ == /mount/src/<repo>/cocostat_app.py  →  parent == /mount/src/<repo>/
+_HERE = Path(__file__).resolve().parent
+FNAME = "COCOStat_Master_Dataset.xlsx"
+
 _CANDIDATES = [
-    _HERE / "COCOStat_Master_Dataset.xlsx",          # same folder as app
-    _HERE / "data" / "COCOStat_Master_Dataset.xlsx", # /data sub-folder
-    Path("COCOStat_Master_Dataset.xlsx"),             # cwd fallback
+    _HERE / FNAME,
+    _HERE / "data" / FNAME,
+    _HERE / "assets" / FNAME,
+    Path(os.getcwd()) / FNAME,
 ]
-EXCEL_PATH = next((str(p) for p in _CANDIDATES if p.exists()), None)
+EXCEL_PATH = next((p for p in _CANDIDATES if p.exists()), None)
 
 if EXCEL_PATH is None:
     st.error(
-        "**Dataset not found.** Please place `COCOStat_Master_Dataset.xlsx` "
-        "in the same folder as `cocostat_app.py` (or in a `data/` sub-folder) "
-        "and redeploy."
+        f"### Dataset not found\n\n"
+        f"`{FNAME}` was not found in the repository.\n\n"
+        f"**Fix:** Commit `{FNAME}` to your GitHub repo in the **same folder** as "
+        f"`cocostat_app.py` and redeploy.\n\n"
+        f"Searched in:\n" +
+        "\n".join(f"- `{p}`" for p in _CANDIDATES)
     )
     st.stop()
+
+EXCEL_PATH = str(EXCEL_PATH)   # pandas needs a str, not a Path
+
 WARN_THRESHOLD_DEFAULT   = 650   # Rs./Nut
 CRISIS_THRESHOLD_DEFAULT = 800   # Rs./Nut
 
@@ -46,10 +55,9 @@ PRODUCT_COLS   = ["Desiccated Coconut","Coconut Oil","VCO","Coconut Milk","Cocon
 PRODUCT_COLORS = ["#3d7a55","#5a9470","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
 
 # ─────────────────────────────────────────────
-# DATA LOADERS  (real dataset)
+# DATA LOADERS
 # ─────────────────────────────────────────────
 def read_sheet(sheet, skip=3):
-    # openpyxl required explicitly for Streamlit Cloud
     df = pd.read_excel(EXCEL_PATH, sheet_name=sheet, skiprows=skip,
                        header=0, engine="openpyxl")
     return df.dropna(how="all").reset_index(drop=True)
