@@ -2501,14 +2501,14 @@ elif t["nav"][7] in sec_name:
     st.markdown("#### "+("Your Farm Parameters" if lang=="en" else "\u0d94\u0db6\u0dda \u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0daf\u0dad\u0dca\u0dad"))
     fi1,fi2,fi3=st.columns(3)
     with fi1:
-        farm_acres=st.slider(" "+("Farm Size (acres)" if lang=="en" else "\u0d9c\u0ddc\u0dc0\u0dd2\u0dad\u0dd0\u0db1\u0dca \u0dc0\u0dd2\u0DC1\u0dcf\u0dbd\u0dad\u0dca\u0dc0\u0dba (\u0d85\u0d9a\u0dca\u0d9a\u0dbb)"),1,50,5,1)
-        trees_acre=st.slider(" "+("Trees per Acre" if lang=="en" else "\u0d85\u0d9a\u0dca\u0d9a\u0dbb\u0dba\u0d9a\u0da7 \u0d9c\u0dc3\u0dca"),20,80,40,5)
+        farm_acres=st.number_input("Farm Size (acres)" if lang=="en" else "ගොවිතැන් විශාලත්වය (අක්කර)",min_value=1,max_value=50,value=5,step=1)
+        trees_acre=st.number_input("Trees per Acre" if lang=="en" else "අක්කරයකට ගස්",min_value=20,max_value=80,value=40,step=5)
     with fi2:
-        nuts_tree=st.slider(" "+("Nuts per Tree/Year" if lang=="en" else "\u0d9c\u0dc3\u0d9a\u0da7 \u0d9c\u0dd9\u0da9\u0dd2/\u0dc0\u0dbb\u0dca\u0DC2\u0dba"),30,120,60,5)
-        sell_price=st.slider(" "+("Selling Price (Rs./nut)" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd (\u0dbb\u0dd4./\u0d9c\u0dd9\u0da9\u0dd2\u0dba)"),30,120,int(current_price),1)
+        nuts_tree=st.number_input("Nuts per Tree/Year" if lang=="en" else "ගසකට ගෙඩි/වර්ෂය",min_value=30,max_value=120,value=60,step=5)
+        sell_price=st.number_input("Selling Price (Rs./nut)" if lang=="en" else "විකිණුම් මිල (රු./ගෙඩිය)",min_value=30,max_value=120,value=int(current_price),step=1)
     with fi3:
-        labour_month=st.slider(" "+("Labour Cost (Rs./month)" if lang=="en" else "\u0d9a\u0db8\u0dca\u0d9a\u0dbb\u0dd4 \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba (\u0dbb\u0dd4./\u0db8\u0dcf\u0dc3\u0dba)"),5000,50000,15000,1000)
-        fert_year=st.slider(" "+("Fertilizer & Inputs (Rs./yr)" if lang=="en" else "\u0db4\u0ddc\u0dc4\u0ddc\u0dbb & \u0d86\u0daf\u0dcf\u0db1 (\u0dbb\u0dd4./\u0dc0\u0dbb\u0dca\u0DC2\u0dba)"),5000,100000,25000,5000)
+        labour_month=st.number_input("Labour Cost (Rs./month)" if lang=="en" else "කම්කරු පිරිවැය (රු./මාසය)",min_value=5000,max_value=50000,value=15000,step=1000)
+        fert_year=st.number_input("Fertilizer & Inputs (Rs./yr)" if lang=="en" else "පොහොර & ආදාන (රු./වර්ෂය)",min_value=5000,max_value=100000,value=25000,step=5000)
 
     # Calculations
     total_trees=farm_acres*trees_acre; total_nuts=total_trees*nuts_tree
