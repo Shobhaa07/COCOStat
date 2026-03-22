@@ -1752,167 +1752,150 @@ elif t["nav"][6] in sec_name:
     report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
 
     import io
-    from reportlab.lib.pagesizes import A4
-    from reportlab.lib import colors
-    from reportlab.lib.units import mm
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
-    from reportlab.lib.styles import ParagraphStyle
-    from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 
-    def build_pdf_report():
-        buf = io.BytesIO()
-        doc = SimpleDocTemplate(buf, pagesize=A4,
-            leftMargin=18*mm, rightMargin=18*mm,
-            topMargin=16*mm, bottomMargin=16*mm)
+    def build_html_report():
+        """Generate a styled HTML report that renders like a PDF when printed."""
+        pri_colors = {
+            "CRITICAL": "#7f1d1d", "URGENT": "#ef4444",
+            "HIGH": "#2d5a3d", "MEDIUM": "#3d7a55"
+        }
+        pri_bg = {
+            "CRITICAL": "#fca5a5", "URGENT": "#fee2e2",
+            "HIGH": "#e4eeea", "MEDIUM": "#f0f5f2"
+        }
 
-        # ── Colours ──
-        C_DARK   = colors.HexColor("#1a3328")
-        C_MID    = colors.HexColor("#2d5a3d")
-        C_GREEN  = colors.HexColor("#3d7a55")
-        C_LIGHT  = colors.HexColor("#f0f5f2")
-        C_BORDER = colors.HexColor("#b8d0c4")
-        C_TEXT   = colors.HexColor("#1a3328")
-        C_MUTED  = colors.HexColor("#4a6657")
-        C_WHITE  = colors.white
-        C_RED    = colors.HexColor("#ef4444")
-        C_AMBER  = colors.HexColor("#d97706")
+        def rec_cards_html(recs_list):
+            html = ""
+            for _, title, desc, priority, timing, resource in recs_list:
+                pc = pri_colors.get(priority, "#374151")
+                pb = pri_bg.get(priority, "#f8fafc")
+                html += f"""
+                <div style="border:1px solid #b8d0c4;border-left:4px solid {pc};
+                    border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:8px;
+                    background:#fff;page-break-inside:avoid;">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <span style="background:{pb};color:{pc};font-size:10px;font-weight:800;
+                        padding:2px 8px;border-radius:12px;text-transform:uppercase;">{priority}</span>
+                    <span style="font-size:13px;font-weight:700;color:#1a3328;">{title}</span>
+                  </div>
+                  <p style="font-size:11px;color:#374151;margin:4px 0 6px;line-height:1.5;">{desc}</p>
+                  <p style="font-size:10px;color:#4a6657;margin:0;">
+                    <b>Timing:</b> {timing} &nbsp;|&nbsp; {resource}
+                  </p>
+                </div>"""
+            return html
 
-        # ── Styles ──
-        def sty(name, **kw):
-            return ParagraphStyle(name, **kw)
+        regime_colors = ["#3d7a55","#d97706","#ef4444"]
+        rc = regime_colors[regime_now]
 
-        s_title   = sty("title",   fontSize=20, textColor=C_WHITE,  fontName="Helvetica-Bold",   leading=26, alignment=TA_LEFT)
-        s_sub     = sty("sub",     fontSize=9,  textColor=colors.HexColor("#a8c9b8"), fontName="Helvetica", leading=13, alignment=TA_LEFT)
-        s_section = sty("section", fontSize=7,  textColor=C_GREEN,  fontName="Helvetica-Bold",   leading=10, spaceBefore=10, spaceAfter=4, textTransform="uppercase", letterSpacing=1.2)
-        s_label   = sty("label",   fontSize=7,  textColor=C_MUTED,  fontName="Helvetica",        leading=10)
-        s_value   = sty("value",   fontSize=10, textColor=C_TEXT,   fontName="Helvetica-Bold",   leading=14)
-        s_body    = sty("body",    fontSize=8,  textColor=C_TEXT,   fontName="Helvetica",        leading=12, spaceAfter=2)
-        s_rec_t   = sty("rect",    fontSize=9,  textColor=C_TEXT,   fontName="Helvetica-Bold",   leading=13, spaceBefore=4)
-        s_rec_b   = sty("recb",    fontSize=8,  textColor=colors.HexColor("#374151"), fontName="Helvetica", leading=11)
-        s_rec_m   = sty("recm",    fontSize=7,  textColor=C_MUTED,  fontName="Helvetica-Oblique",leading=10)
-        s_footer  = sty("footer",  fontSize=7,  textColor=C_MUTED,  fontName="Helvetica",        leading=10, alignment=TA_CENTER)
+        html = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>COCOStat Recommendation Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  * {{ box-sizing:border-box; margin:0; padding:0; }}
+  body {{ font-family:'Inter',sans-serif; background:#fff; color:#1a3328; padding:32px 40px; max-width:900px; margin:0 auto; }}
+  @media print {{
+    body {{ padding:0; }}
+    .no-print {{ display:none; }}
+    .page-break {{ page-break-before:always; }}
+  }}
+  .header {{ background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);
+    border-radius:12px;padding:24px 28px;margin-bottom:20px; }}
+  .header h1 {{ font-size:22px;font-weight:900;color:#fff;margin-bottom:6px; }}
+  .header p  {{ font-size:11px;color:#a8c9b8; }}
+  .section-label {{ font-size:9px;font-weight:800;color:#3d7a55;text-transform:uppercase;
+    letter-spacing:2px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid #b8d0c4; }}
+  .snapshot-grid {{ display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px; }}
+  .snap-card {{ background:#f0f5f2;border:1px solid #b8d0c4;border-radius:8px;padding:10px 12px; }}
+  .snap-label {{ font-size:9px;color:#4a6657;font-weight:600;text-transform:uppercase;margin-bottom:4px; }}
+  .snap-val {{ font-size:16px;font-weight:900; }}
+  .policy-box {{ background:#f0f5f2;border:1px solid #b8d0c4;border-radius:8px;
+    padding:12px 16px;margin-bottom:4px; }}
+  .policy-row {{ display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#374151;margin-bottom:6px; }}
+  .policy-row span {{ background:#fff;border:1px solid #b8d0c4;border-radius:6px;
+    padding:3px 10px;font-weight:600; }}
+  .projected {{ font-size:15px;font-weight:900;color:{rc}; }}
+  .footer {{ margin-top:28px;padding-top:12px;border-top:1px solid #b8d0c4;
+    font-size:10px;color:#4a6657;text-align:center;line-height:1.6; }}
+  .print-btn {{ background:#1a3328;color:#fff;border:none;border-radius:8px;
+    padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:20px; }}
+  .print-btn:hover {{ background:#2d5a3d; }}
+</style>
+</head>
+<body>
 
-        def priority_color(p):
-            return {
-                "CRITICAL": colors.HexColor("#7f1d1d"),
-                "URGENT":   colors.HexColor("#ef4444"),
-                "HIGH":     colors.HexColor("#2d5a3d"),
-                "MEDIUM":   colors.HexColor("#3d7a55"),
-            }.get(p, C_MUTED)
+<div class="no-print" style="text-align:center;margin-bottom:16px;">
+  <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  <p style="font-size:11px;color:#4a6657;">Use your browser's Print → Save as PDF for best results</p>
+</div>
 
-        story = []
-        W = A4[0] - 36*mm
+<div class="header">
+  <h1>COCOStat &mdash; Strategic Recommendation Report</h1>
+  <p>Generated: {datetime.now().strftime('%d %B %Y at %H:%M')} &nbsp;|&nbsp; Market Regime: <b style="color:#fff;">{regime_name}</b></p>
+</div>
 
-        # ── HEADER BANNER ──
-        banner_data = [[
-            Paragraph(f"COCOStat — Strategic Recommendation Report", s_title),
-            Paragraph(f"Generated: {datetime.now().strftime('%d %B %Y  %H:%M')}", s_sub),
-        ]]
-        banner = Table(banner_data, colWidths=[W])
-        banner.setStyle(TableStyle([
-            ("BACKGROUND",  (0,0), (-1,-1), C_DARK),
-            ("TOPPADDING",  (0,0), (-1,-1), 12),
-            ("BOTTOMPADDING",(0,0),(-1,-1), 12),
-            ("LEFTPADDING", (0,0), (-1,-1), 14),
-            ("RIGHTPADDING",(0,0), (-1,-1), 14),
-            ("ROUNDEDCORNERS", (0,0), (-1,-1), [6,6,0,0]),
-        ]))
-        story.append(banner)
+<div class="section-label">Market Snapshot</div>
+<div class="snapshot-grid">
+  <div class="snap-card">
+    <div class="snap-label">Current Price</div>
+    <div class="snap-val" style="color:{rc};">Rs. {current_price:.2f}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">Market Regime</div>
+    <div class="snap-val" style="color:{rc};">{regime_name}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">12-Month Average</div>
+    <div class="snap-val" style="color:#1a3328;">Rs. {avg_12m:.2f}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">Volatility (CV)</div>
+    <div class="snap-val" style="color:#1a3328;">{cv:.1f}%</div>
+  </div>
+</div>
 
-        # ── MARKET SNAPSHOT ──
-        story.append(Spacer(1, 2*mm))
-        regime_color = [C_GREEN, C_AMBER, C_RED][regime_now]
-        snap_data = [
-            [Paragraph("MARKET SNAPSHOT", s_section), "", "", ""],
-            [
-                Table([[Paragraph("Current Price", s_label)],[Paragraph(f"Rs. {current_price:.2f}", s_value)]], colWidths=[W/4-3]),
-                Table([[Paragraph("Market Regime", s_label)],[Paragraph(regime_name, sty("rv", fontSize=10, textColor=regime_color, fontName="Helvetica-Bold", leading=14))]],colWidths=[W/4-3]),
-                Table([[Paragraph("12M Average", s_label)],[Paragraph(f"Rs. {avg_12m:.2f}", s_value)]],colWidths=[W/4-3]),
-                Table([[Paragraph("Volatility (CV)", s_label)],[Paragraph(f"{cv:.1f}%", s_value)]],colWidths=[W/4-3]),
-            ]
-        ]
-        snap_tbl = Table(snap_data, colWidths=[W/4, W/4, W/4, W/4])
-        snap_tbl.setStyle(TableStyle([
-            ("BACKGROUND",  (0,0), (-1,0), C_LIGHT),
-            ("BACKGROUND",  (0,1), (-1,1), colors.white),
-            ("BOX",         (0,0), (-1,-1), 0.5, C_BORDER),
-            ("INNERGRID",   (0,1), (-1,1), 0.3, C_BORDER),
-            ("TOPPADDING",  (0,0), (-1,-1), 6),
-            ("BOTTOMPADDING",(0,0),(-1,-1), 6),
-            ("LEFTPADDING", (0,0), (-1,-1), 8),
-            ("SPAN",        (0,0), (-1,0)),
-        ]))
-        story.append(snap_tbl)
+<div class="section-label">Policy Simulator Results</div>
+<div class="policy-box">
+  <div class="policy-row">
+    <span>Buffer Stock: {buffer_stock}%</span>
+    <span>Import Duty: {import_duty:+}%</span>
+    <span>Farmer Subsidy: {subsidy_pct}%</span>
+    <span>Price Floor: Rs.{price_floor}</span>
+    <span>Export Quota: {export_quota}%</span>
+  </div>
+  <div>
+    <span class="projected">Projected Price: Rs.{price_impact:.2f} ({delta_pct:+.1f}%)</span>
+    &nbsp;&nbsp;<span style="font-size:11px;color:#374151;font-weight:600;">{verdict_title}</span>
+  </div>
+</div>
 
-        # ── POLICY SIMULATOR ──
-        story.append(Spacer(1, 3*mm))
-        pol_data = [
-            [Paragraph("POLICY SIMULATOR RESULTS", s_section), ""],
-            [Paragraph(f"Buffer Stock Release: {buffer_stock}%   |   Import Duty: {import_duty:+}%   |   Farmer Subsidy: {subsidy_pct}%   |   Price Floor: Rs.{price_floor}   |   Export Quota Cut: {export_quota}%", s_body), ""],
-            [Paragraph(f"Projected Price: Rs.{price_impact:.2f}  ({delta_pct:+.1f}%)", sty("pp", fontSize=10, textColor=regime_color, fontName="Helvetica-Bold", leading=14)), Paragraph(f"Verdict: {verdict_title}", s_body)],
-        ]
-        pol_tbl = Table(pol_data, colWidths=[W*0.65, W*0.35])
-        pol_tbl.setStyle(TableStyle([
-            ("BACKGROUND",  (0,0), (-1,0), C_LIGHT),
-            ("SPAN",        (0,0), (-1,0)),
-            ("SPAN",        (0,1), (-1,1)),
-            ("BOX",         (0,0), (-1,-1), 0.5, C_BORDER),
-            ("TOPPADDING",  (0,0), (-1,-1), 6),
-            ("BOTTOMPADDING",(0,0),(-1,-1), 6),
-            ("LEFTPADDING", (0,0), (-1,-1), 8),
-        ]))
-        story.append(pol_tbl)
+<div class="section-label">Government &amp; Policy Recommendations</div>
+{rec_cards_html(recs["government"])}
 
-        # ── RECOMMENDATIONS ──
-        def rec_section(title, recs_list, accent):
-            story.append(Spacer(1, 3*mm))
-            story.append(HRFlowable(width=W, thickness=1, color=C_BORDER))
-            story.append(Paragraph(title, s_section))
-            for _, rec_title, desc, priority, timing, resource in recs_list:
-                p_clr = priority_color(priority)
-                badge = f"<font color='#{p_clr.hexval()[1:]}' size=7><b>[{priority}]</b></font>"
-                row = [[
-                    Paragraph(f"{badge}  {rec_title}", s_rec_t),
-                    Paragraph(desc, s_rec_b),
-                    Paragraph(f"Timing: {timing}   |   {resource}", s_rec_m),
-                ]]
-                rt = Table(row, colWidths=[W])
-                rt.setStyle(TableStyle([
-                    ("LEFTPADDING",  (0,0),(-1,-1), 10),
-                    ("RIGHTPADDING", (0,0),(-1,-1), 8),
-                    ("TOPPADDING",   (0,0),(-1,-1), 5),
-                    ("BOTTOMPADDING",(0,0),(-1,-1), 5),
-                    ("LINEBEFORE",   (0,0),(0,-1),  3, accent),
-                    ("BOX",          (0,0),(-1,-1),  0.3, C_BORDER),
-                    ("BACKGROUND",   (0,0),(-1,-1),  colors.white),
-                    ("BOTTOMMARGIN", (0,0),(-1,-1),  3),
-                ]))
-                story.append(rt)
-                story.append(Spacer(1, 1.5*mm))
+<div class="section-label page-break">Business &amp; Trade Recommendations</div>
+{rec_cards_html(recs["business"])}
 
-        rec_section("GOVERNMENT & POLICY RECOMMENDATIONS", recs["government"], C_GREEN)
-        rec_section("BUSINESS & TRADE RECOMMENDATIONS",    recs["business"],   C_MID)
-        rec_section("FARMER RECOMMENDATIONS",              recs["farmer"],     C_GREEN)
+<div class="section-label">Farmer Recommendations</div>
+{rec_cards_html(recs["farmer"])}
 
-        # ── FOOTER ──
-        story.append(Spacer(1, 4*mm))
-        story.append(HRFlowable(width=W, thickness=0.5, color=C_BORDER))
-        story.append(Spacer(1, 2*mm))
-        story.append(Paragraph(
-            f"COCOStat · Coconut Market Intelligence Dashboard · Data: CDA & HARTI Sri Lanka · "
-            f"Prepared by M A C S Rathnayake · BSc (Hons) Business Data Analytics · University of Westminster",
-            s_footer))
+<div class="footer">
+  COCOStat &middot; Coconut Market Intelligence Dashboard &middot; Data: CDA &amp; HARTI Sri Lanka<br>
+  Prepared by M A C S Rathnayake &middot; UOW: w1999714 &middot; IIT: 20220508<br>
+  BSc (Hons) Business Data Analytics &middot; University of Westminster
+</div>
 
-        doc.build(story)
-        buf.seek(0)
-        return buf.getvalue()
+</body></html>"""
+        return html.encode("utf-8")
 
-    pdf_bytes = build_pdf_report()
+    html_bytes = build_html_report()
     st.download_button(
-        label=("Download Recommendation Report (PDF)" if lang=="en" else "නිර්දේශ වාර්තාව PDF ලෙස බාගන්න"),
-        data=pdf_bytes,
-        file_name=f"COCOStat_Recommendations_{datetime.now().strftime('%Y%m%d')}.pdf",
-        mime="application/pdf",
+        label=("Download Recommendation Report (HTML→PDF)" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න (HTML→PDF)"),
+        data=html_bytes,
+        file_name=f"COCOStat_Recommendations_{datetime.now().strftime('%Y%m%d')}.html",
+        mime="text/html",
         use_container_width=True)
 
 # ══ COMPARE ══════════════════════════════════════════════════════════════════
