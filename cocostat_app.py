@@ -2806,7 +2806,7 @@ elif t["nav"][8] in sec_name:
     for col, (num, title, desc, note, clr) in zip(proc_cols, steps):
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:4px solid {clr};
-                border-radius:10px;padding:16px 14px;display:flex;flex-direction:column;'>
+                border-radius:10px;padding:16px 14px;height:220px;display:flex;flex-direction:column;'>
                 <div style='font-size:.6rem;font-weight:800;color:{clr};text-transform:uppercase;letter-spacing:2px;'>{_step_lbl} {num}</div>
                 <div style='font-size:.85rem;font-weight:800;color:#1a3328;margin:6px 0 8px;'>{title}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
