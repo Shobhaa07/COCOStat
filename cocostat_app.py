@@ -1751,32 +1751,169 @@ elif t["nav"][6] in sec_name:
         report_lines += [f"\n[{priority}] {title}", f" {desc}", f" ⏱ {timing} | {resource}"]
     report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
 
-    dl1, dl2 = st.columns(2)
-    with dl1:
-        st.download_button(
-            label= ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
-            data="\n".join(report_lines),
-            file_name=f"cocostat_recommendations_{datetime.now().strftime('%Y%m%d')}.txt",
-            mime="text/plain", use_container_width=True)
-    with dl2:
-        import io
-        csv_rows = [["Stakeholder","Priority","Action","Description","Timing","Resource"] if lang=="en"
-                    else ["පාර්ශ්වය","ප්‍රමුඛතාවය","ක්‍රියාව","විස්තරය","කාලය","සම්පත"]]
-        _gov_lbl = "Government" if lang=="en" else "රජය"
-        _biz_lbl = "Business" if lang=="en" else "ව්‍යාපාරය"
-        _farm_lbl = "Farmer" if lang=="en" else "ගොවිය"
-        for stakeholder, recs_list in [(_gov_lbl,recs["government"]),(_biz_lbl,recs["business"]),(_farm_lbl,recs["farmer"])]:
-            for icon, title, desc, priority, timing, resource in recs_list:
-                csv_rows.append([stakeholder, priority, title, desc, timing, resource])
-        csv_buf = io.StringIO()
-        import csv as csv_mod
-        writer = csv_mod.writer(csv_buf)
-        writer.writerows(csv_rows)
-        st.download_button(
-            label= ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
-            data=csv_buf.getvalue(),
-            file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv", use_container_width=True)
+    import io
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib import colors
+    from reportlab.lib.units import mm
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+
+    def build_pdf_report():
+        buf = io.BytesIO()
+        doc = SimpleDocTemplate(buf, pagesize=A4,
+            leftMargin=18*mm, rightMargin=18*mm,
+            topMargin=16*mm, bottomMargin=16*mm)
+
+        # ── Colours ──
+        C_DARK   = colors.HexColor("#1a3328")
+        C_MID    = colors.HexColor("#2d5a3d")
+        C_GREEN  = colors.HexColor("#3d7a55")
+        C_LIGHT  = colors.HexColor("#f0f5f2")
+        C_BORDER = colors.HexColor("#b8d0c4")
+        C_TEXT   = colors.HexColor("#1a3328")
+        C_MUTED  = colors.HexColor("#4a6657")
+        C_WHITE  = colors.white
+        C_RED    = colors.HexColor("#ef4444")
+        C_AMBER  = colors.HexColor("#d97706")
+
+        # ── Styles ──
+        def sty(name, **kw):
+            return ParagraphStyle(name, **kw)
+
+        s_title   = sty("title",   fontSize=20, textColor=C_WHITE,  fontName="Helvetica-Bold",   leading=26, alignment=TA_LEFT)
+        s_sub     = sty("sub",     fontSize=9,  textColor=colors.HexColor("#a8c9b8"), fontName="Helvetica", leading=13, alignment=TA_LEFT)
+        s_section = sty("section", fontSize=7,  textColor=C_GREEN,  fontName="Helvetica-Bold",   leading=10, spaceBefore=10, spaceAfter=4, textTransform="uppercase", letterSpacing=1.2)
+        s_label   = sty("label",   fontSize=7,  textColor=C_MUTED,  fontName="Helvetica",        leading=10)
+        s_value   = sty("value",   fontSize=10, textColor=C_TEXT,   fontName="Helvetica-Bold",   leading=14)
+        s_body    = sty("body",    fontSize=8,  textColor=C_TEXT,   fontName="Helvetica",        leading=12, spaceAfter=2)
+        s_rec_t   = sty("rect",    fontSize=9,  textColor=C_TEXT,   fontName="Helvetica-Bold",   leading=13, spaceBefore=4)
+        s_rec_b   = sty("recb",    fontSize=8,  textColor=colors.HexColor("#374151"), fontName="Helvetica", leading=11)
+        s_rec_m   = sty("recm",    fontSize=7,  textColor=C_MUTED,  fontName="Helvetica-Oblique",leading=10)
+        s_footer  = sty("footer",  fontSize=7,  textColor=C_MUTED,  fontName="Helvetica",        leading=10, alignment=TA_CENTER)
+
+        def priority_color(p):
+            return {
+                "CRITICAL": colors.HexColor("#7f1d1d"),
+                "URGENT":   colors.HexColor("#ef4444"),
+                "HIGH":     colors.HexColor("#2d5a3d"),
+                "MEDIUM":   colors.HexColor("#3d7a55"),
+            }.get(p, C_MUTED)
+
+        story = []
+        W = A4[0] - 36*mm
+
+        # ── HEADER BANNER ──
+        banner_data = [[
+            Paragraph(f"COCOStat — Strategic Recommendation Report", s_title),
+            Paragraph(f"Generated: {datetime.now().strftime('%d %B %Y  %H:%M')}", s_sub),
+        ]]
+        banner = Table(banner_data, colWidths=[W])
+        banner.setStyle(TableStyle([
+            ("BACKGROUND",  (0,0), (-1,-1), C_DARK),
+            ("TOPPADDING",  (0,0), (-1,-1), 12),
+            ("BOTTOMPADDING",(0,0),(-1,-1), 12),
+            ("LEFTPADDING", (0,0), (-1,-1), 14),
+            ("RIGHTPADDING",(0,0), (-1,-1), 14),
+            ("ROUNDEDCORNERS", (0,0), (-1,-1), [6,6,0,0]),
+        ]))
+        story.append(banner)
+
+        # ── MARKET SNAPSHOT ──
+        story.append(Spacer(1, 2*mm))
+        regime_color = [C_GREEN, C_AMBER, C_RED][regime_now]
+        snap_data = [
+            [Paragraph("MARKET SNAPSHOT", s_section), "", "", ""],
+            [
+                Table([[Paragraph("Current Price", s_label)],[Paragraph(f"Rs. {current_price:.2f}", s_value)]], colWidths=[W/4-3]),
+                Table([[Paragraph("Market Regime", s_label)],[Paragraph(regime_name, sty("rv", fontSize=10, textColor=regime_color, fontName="Helvetica-Bold", leading=14))]],colWidths=[W/4-3]),
+                Table([[Paragraph("12M Average", s_label)],[Paragraph(f"Rs. {avg_12m:.2f}", s_value)]],colWidths=[W/4-3]),
+                Table([[Paragraph("Volatility (CV)", s_label)],[Paragraph(f"{cv:.1f}%", s_value)]],colWidths=[W/4-3]),
+            ]
+        ]
+        snap_tbl = Table(snap_data, colWidths=[W/4, W/4, W/4, W/4])
+        snap_tbl.setStyle(TableStyle([
+            ("BACKGROUND",  (0,0), (-1,0), C_LIGHT),
+            ("BACKGROUND",  (0,1), (-1,1), colors.white),
+            ("BOX",         (0,0), (-1,-1), 0.5, C_BORDER),
+            ("INNERGRID",   (0,1), (-1,1), 0.3, C_BORDER),
+            ("TOPPADDING",  (0,0), (-1,-1), 6),
+            ("BOTTOMPADDING",(0,0),(-1,-1), 6),
+            ("LEFTPADDING", (0,0), (-1,-1), 8),
+            ("SPAN",        (0,0), (-1,0)),
+        ]))
+        story.append(snap_tbl)
+
+        # ── POLICY SIMULATOR ──
+        story.append(Spacer(1, 3*mm))
+        pol_data = [
+            [Paragraph("POLICY SIMULATOR RESULTS", s_section), ""],
+            [Paragraph(f"Buffer Stock Release: {buffer_stock}%   |   Import Duty: {import_duty:+}%   |   Farmer Subsidy: {subsidy_pct}%   |   Price Floor: Rs.{price_floor}   |   Export Quota Cut: {export_quota}%", s_body), ""],
+            [Paragraph(f"Projected Price: Rs.{price_impact:.2f}  ({delta_pct:+.1f}%)", sty("pp", fontSize=10, textColor=regime_color, fontName="Helvetica-Bold", leading=14)), Paragraph(f"Verdict: {verdict_title}", s_body)],
+        ]
+        pol_tbl = Table(pol_data, colWidths=[W*0.65, W*0.35])
+        pol_tbl.setStyle(TableStyle([
+            ("BACKGROUND",  (0,0), (-1,0), C_LIGHT),
+            ("SPAN",        (0,0), (-1,0)),
+            ("SPAN",        (0,1), (-1,1)),
+            ("BOX",         (0,0), (-1,-1), 0.5, C_BORDER),
+            ("TOPPADDING",  (0,0), (-1,-1), 6),
+            ("BOTTOMPADDING",(0,0),(-1,-1), 6),
+            ("LEFTPADDING", (0,0), (-1,-1), 8),
+        ]))
+        story.append(pol_tbl)
+
+        # ── RECOMMENDATIONS ──
+        def rec_section(title, recs_list, accent):
+            story.append(Spacer(1, 3*mm))
+            story.append(HRFlowable(width=W, thickness=1, color=C_BORDER))
+            story.append(Paragraph(title, s_section))
+            for _, rec_title, desc, priority, timing, resource in recs_list:
+                p_clr = priority_color(priority)
+                badge = f"<font color='#{p_clr.hexval()[1:]}' size=7><b>[{priority}]</b></font>"
+                row = [[
+                    Paragraph(f"{badge}  {rec_title}", s_rec_t),
+                    Paragraph(desc, s_rec_b),
+                    Paragraph(f"Timing: {timing}   |   {resource}", s_rec_m),
+                ]]
+                rt = Table(row, colWidths=[W])
+                rt.setStyle(TableStyle([
+                    ("LEFTPADDING",  (0,0),(-1,-1), 10),
+                    ("RIGHTPADDING", (0,0),(-1,-1), 8),
+                    ("TOPPADDING",   (0,0),(-1,-1), 5),
+                    ("BOTTOMPADDING",(0,0),(-1,-1), 5),
+                    ("LINEBEFORE",   (0,0),(0,-1),  3, accent),
+                    ("BOX",          (0,0),(-1,-1),  0.3, C_BORDER),
+                    ("BACKGROUND",   (0,0),(-1,-1),  colors.white),
+                    ("BOTTOMMARGIN", (0,0),(-1,-1),  3),
+                ]))
+                story.append(rt)
+                story.append(Spacer(1, 1.5*mm))
+
+        rec_section("GOVERNMENT & POLICY RECOMMENDATIONS", recs["government"], C_GREEN)
+        rec_section("BUSINESS & TRADE RECOMMENDATIONS",    recs["business"],   C_MID)
+        rec_section("FARMER RECOMMENDATIONS",              recs["farmer"],     C_GREEN)
+
+        # ── FOOTER ──
+        story.append(Spacer(1, 4*mm))
+        story.append(HRFlowable(width=W, thickness=0.5, color=C_BORDER))
+        story.append(Spacer(1, 2*mm))
+        story.append(Paragraph(
+            f"COCOStat · Coconut Market Intelligence Dashboard · Data: CDA & HARTI Sri Lanka · "
+            f"Prepared by M A C S Rathnayake · BSc (Hons) Business Data Analytics · University of Westminster",
+            s_footer))
+
+        doc.build(story)
+        buf.seek(0)
+        return buf.getvalue()
+
+    pdf_bytes = build_pdf_report()
+    st.download_button(
+        label=("Download Recommendation Report (PDF)" if lang=="en" else "නිර්දේශ වාර්තාව PDF ලෙස බාගන්න"),
+        data=pdf_bytes,
+        file_name=f"COCOStat_Recommendations_{datetime.now().strftime('%Y%m%d')}.pdf",
+        mime="application/pdf",
+        use_container_width=True)
 
 # ══ COMPARE ══════════════════════════════════════════════════════════════════
 elif t["nav"][4] in sec_name:
