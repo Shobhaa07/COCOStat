@@ -1708,7 +1708,7 @@ elif t["nav"][6] in sec_name:
         items_html = "".join([f"<div style='font-size:.7rem;color:#374151;padding:5px 0;border-bottom:1px solid #f0f5f2;line-height:1.4;'>{a}</div>" for a in action_items])
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:4px solid #3d7a55;
-                border-radius:10px;padding:14px 12px;min-height:180px;'>
+                border-radius:10px;padding:14px 12px;'>
                 <div style='font-size:.7rem;font-weight:900;color:{clr};text-transform:uppercase;
                     letter-spacing:1px;margin-bottom:10px;'>{period}</div>
                 {items_html}
@@ -1751,32 +1751,152 @@ elif t["nav"][6] in sec_name:
         report_lines += [f"\n[{priority}] {title}", f" {desc}", f" ⏱ {timing} | {resource}"]
     report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
 
-    dl1, dl2 = st.columns(2)
-    with dl1:
-        st.download_button(
-            label= ("Download Full Recommendation Report (TXT)" if lang=="en" else "සම්පූර්ණ නිර්දේශ වාර්තාව බාගන්න (TXT)"),
-            data="\n".join(report_lines),
-            file_name=f"cocostat_recommendations_{datetime.now().strftime('%Y%m%d')}.txt",
-            mime="text/plain", use_container_width=True)
-    with dl2:
-        import io
-        csv_rows = [["Stakeholder","Priority","Action","Description","Timing","Resource"] if lang=="en"
-                    else ["පාර්ශ්වය","ප්‍රමුඛතාවය","ක්‍රියාව","විස්තරය","කාලය","සම්පත"]]
-        _gov_lbl = "Government" if lang=="en" else "රජය"
-        _biz_lbl = "Business" if lang=="en" else "ව්‍යාපාරය"
-        _farm_lbl = "Farmer" if lang=="en" else "ගොවිය"
-        for stakeholder, recs_list in [(_gov_lbl,recs["government"]),(_biz_lbl,recs["business"]),(_farm_lbl,recs["farmer"])]:
-            for icon, title, desc, priority, timing, resource in recs_list:
-                csv_rows.append([stakeholder, priority, title, desc, timing, resource])
-        csv_buf = io.StringIO()
-        import csv as csv_mod
-        writer = csv_mod.writer(csv_buf)
-        writer.writerows(csv_rows)
-        st.download_button(
-            label= ("Download Action Items (CSV)" if lang=="en" else "ක්‍රියා අයිතම බාගන්න (CSV)"),
-            data=csv_buf.getvalue(),
-            file_name=f"cocostat_actions_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv", use_container_width=True)
+    import io
+
+    def build_html_report():
+        """Generate a styled HTML report that renders like a PDF when printed."""
+        pri_colors = {
+            "CRITICAL": "#7f1d1d", "URGENT": "#ef4444",
+            "HIGH": "#2d5a3d", "MEDIUM": "#3d7a55"
+        }
+        pri_bg = {
+            "CRITICAL": "#fca5a5", "URGENT": "#fee2e2",
+            "HIGH": "#e4eeea", "MEDIUM": "#f0f5f2"
+        }
+
+        def rec_cards_html(recs_list):
+            html = ""
+            for _, title, desc, priority, timing, resource in recs_list:
+                pc = pri_colors.get(priority, "#374151")
+                pb = pri_bg.get(priority, "#f8fafc")
+                html += f"""
+                <div style="border:1px solid #b8d0c4;border-left:4px solid {pc};
+                    border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:8px;
+                    background:#fff;page-break-inside:avoid;">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <span style="background:{pb};color:{pc};font-size:10px;font-weight:800;
+                        padding:2px 8px;border-radius:12px;text-transform:uppercase;">{priority}</span>
+                    <span style="font-size:13px;font-weight:700;color:#1a3328;">{title}</span>
+                  </div>
+                  <p style="font-size:11px;color:#374151;margin:4px 0 6px;line-height:1.5;">{desc}</p>
+                  <p style="font-size:10px;color:#4a6657;margin:0;">
+                    <b>Timing:</b> {timing} &nbsp;|&nbsp; {resource}
+                  </p>
+                </div>"""
+            return html
+
+        regime_colors = ["#3d7a55","#d97706","#ef4444"]
+        rc = regime_colors[regime_now]
+
+        html = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>COCOStat Recommendation Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  * {{ box-sizing:border-box; margin:0; padding:0; }}
+  body {{ font-family:'Inter',sans-serif; background:#fff; color:#1a3328; padding:32px 40px; max-width:900px; margin:0 auto; }}
+  @media print {{
+    body {{ padding:0; }}
+    .no-print {{ display:none; }}
+    .page-break {{ page-break-before:always; }}
+  }}
+  .header {{ background:linear-gradient(135deg,#1a3328 0%,#2d5a3d 60%,#3d7a55 100%);
+    border-radius:12px;padding:24px 28px;margin-bottom:20px; }}
+  .header h1 {{ font-size:22px;font-weight:900;color:#fff;margin-bottom:6px; }}
+  .header p  {{ font-size:11px;color:#a8c9b8; }}
+  .section-label {{ font-size:9px;font-weight:800;color:#3d7a55;text-transform:uppercase;
+    letter-spacing:2px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid #b8d0c4; }}
+  .snapshot-grid {{ display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px; }}
+  .snap-card {{ background:#f0f5f2;border:1px solid #b8d0c4;border-radius:8px;padding:10px 12px; }}
+  .snap-label {{ font-size:9px;color:#4a6657;font-weight:600;text-transform:uppercase;margin-bottom:4px; }}
+  .snap-val {{ font-size:16px;font-weight:900; }}
+  .policy-box {{ background:#f0f5f2;border:1px solid #b8d0c4;border-radius:8px;
+    padding:12px 16px;margin-bottom:4px; }}
+  .policy-row {{ display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#374151;margin-bottom:6px; }}
+  .policy-row span {{ background:#fff;border:1px solid #b8d0c4;border-radius:6px;
+    padding:3px 10px;font-weight:600; }}
+  .projected {{ font-size:15px;font-weight:900;color:{rc}; }}
+  .footer {{ margin-top:28px;padding-top:12px;border-top:1px solid #b8d0c4;
+    font-size:10px;color:#4a6657;text-align:center;line-height:1.6; }}
+  .print-btn {{ background:#1a3328;color:#fff;border:none;border-radius:8px;
+    padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:20px; }}
+  .print-btn:hover {{ background:#2d5a3d; }}
+</style>
+</head>
+<body>
+
+<div class="no-print" style="text-align:center;margin-bottom:16px;">
+  <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  <p style="font-size:11px;color:#4a6657;">Use your browser's Print → Save as PDF for best results</p>
+</div>
+
+<div class="header">
+  <h1>COCOStat &mdash; Strategic Recommendation Report</h1>
+  <p>Generated: {datetime.now().strftime('%d %B %Y at %H:%M')} &nbsp;|&nbsp; Market Regime: <b style="color:#fff;">{regime_name}</b></p>
+</div>
+
+<div class="section-label">Market Snapshot</div>
+<div class="snapshot-grid">
+  <div class="snap-card">
+    <div class="snap-label">Current Price</div>
+    <div class="snap-val" style="color:{rc};">Rs. {current_price:.2f}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">Market Regime</div>
+    <div class="snap-val" style="color:{rc};">{regime_name}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">12-Month Average</div>
+    <div class="snap-val" style="color:#1a3328;">Rs. {avg_12m:.2f}</div>
+  </div>
+  <div class="snap-card">
+    <div class="snap-label">Volatility (CV)</div>
+    <div class="snap-val" style="color:#1a3328;">{cv:.1f}%</div>
+  </div>
+</div>
+
+<div class="section-label">Policy Simulator Results</div>
+<div class="policy-box">
+  <div class="policy-row">
+    <span>Buffer Stock: {buffer_stock}%</span>
+    <span>Import Duty: {import_duty:+}%</span>
+    <span>Farmer Subsidy: {subsidy_pct}%</span>
+    <span>Price Floor: Rs.{price_floor}</span>
+    <span>Export Quota: {export_quota}%</span>
+  </div>
+  <div>
+    <span class="projected">Projected Price: Rs.{price_impact:.2f} ({delta_pct:+.1f}%)</span>
+    &nbsp;&nbsp;<span style="font-size:11px;color:#374151;font-weight:600;">{verdict_title}</span>
+  </div>
+</div>
+
+<div class="section-label">Government &amp; Policy Recommendations</div>
+{rec_cards_html(recs["government"])}
+
+<div class="section-label page-break">Business &amp; Trade Recommendations</div>
+{rec_cards_html(recs["business"])}
+
+<div class="section-label">Farmer Recommendations</div>
+{rec_cards_html(recs["farmer"])}
+
+<div class="footer">
+  COCOStat &middot; Coconut Market Intelligence Dashboard &middot; Data: CDA &amp; HARTI Sri Lanka<br>
+  Prepared by M A C S Rathnayake &middot; UOW: w1999714 &middot; IIT: 20220508<br>
+  BSc (Hons) Business Data Analytics &middot; University of Westminster
+</div>
+
+</body></html>"""
+        return html.encode("utf-8")
+
+    html_bytes = build_html_report()
+    st.download_button(
+        label=("Download Recommendation Report (HTML→PDF)" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න (HTML→PDF)"),
+        data=html_bytes,
+        file_name=f"COCOStat_Recommendations_{datetime.now().strftime('%Y%m%d')}.html",
+        mime="text/html",
+        use_container_width=True)
 
 # ══ COMPARE ══════════════════════════════════════════════════════════════════
 elif t["nav"][4] in sec_name:
