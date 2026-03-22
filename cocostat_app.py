@@ -2755,9 +2755,9 @@ elif t["nav"][8] in sec_name:
         auctions = day_auctions[day]
         clr = day_colors_map[day]
         items_html = "".join([
-            f"<div style='padding:4px 0;border-bottom:1px solid #f0f5f2;'>"
-            f"<div style='font-size:.7rem;font-weight:700;color:#1e293b;white-space:nowrap;'> {name}</div>"
-            f"<div style='font-size:.63rem;color:#64748b;margin-left:18px;white-space:nowrap;'>{time}</div>"
+            f"<div style='padding:5px 0;border-bottom:1px solid #f0f5f2;text-align:center;'>"
+            f"<div style='font-size:.72rem;font-weight:700;color:#1a3328;'>{name}</div>"
+            f"<div style='font-size:.65rem;color:#64748b;'>{time}</div>"
             f"</div>"
             for name, time in auctions
         ])
