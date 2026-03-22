@@ -14,7 +14,7 @@ _logo_b64 = "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAARz0lEQVR4nO2a+3Mcx3H
 _logo_bytes = _b64.b64decode(_logo_b64)
 _app_logo = _PIL_Image.open(_io.BytesIO(_logo_bytes))
 st.set_page_config(
-    page_title="COCOStat – Coconut Market Intelligence",
+    page_title="COCOStat",
     page_icon=_app_logo,
     layout="wide",
     initial_sidebar_state="collapsed",
