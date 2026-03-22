@@ -1016,29 +1016,29 @@ elif t["nav"][6] in sec_name:
     with ps_col1:
         st.markdown("##### " + ("Configure Policy Levers" if lang=="en" else "ප්‍රතිපත්ති සකස් කරන්න"))
 
-        buffer_stock = st.slider(
-            " Buffer Stock Release (% of monthly supply)" if lang=="en" else " බෆර් තොග මුදාහැරීම (%)",
-            0, 30, 0, 1,
+        buffer_stock = st.number_input(
+            "Buffer Stock Release (% of monthly supply)" if lang=="en" else "බෆර් තොග මුදාහැරීම (%)",
+            min_value=0, max_value=30, value=0, step=1,
             help="Government releases stored nuts into market to reduce price pressure")
 
-        import_duty = st.slider(
-            " Import Duty Adjustment (%)" if lang=="en" else " ආනයන බද්ද (%)",
-            -20, 20, 0, 1,
+        import_duty = st.number_input(
+            "Import Duty Adjustment (%)" if lang=="en" else "ආනයන බද්ද (%)",
+            min_value=-20, max_value=20, value=0, step=1,
             help="Positive = increase duty (protect local farmers). Negative = reduce duty (lower consumer prices)")
 
-        subsidy_pct = st.slider(
-            " Farmer Input Subsidy (% cost reduction)" if lang=="en" else " ගොවි ආදාන සහාය (%)",
-            0, 40, 0, 2,
+        subsidy_pct = st.number_input(
+            "Farmer Input Subsidy (% cost reduction)" if lang=="en" else "ගොවි ආදාන සහාය (%)",
+            min_value=0, max_value=40, value=0, step=2,
             help="Subsidising fertiliser, pesticide and transport costs for farmers")
 
-        price_floor = st.slider(
-            "️ Minimum Price Floor (Rs.)" if lang=="en" else "️ අවම මිල (රු.)",
-            30, 80, int(current_price * 0.8), 1,
+        price_floor = st.number_input(
+            "Minimum Price Floor (Rs.)" if lang=="en" else "අවම මිල (රු.)",
+            min_value=30, max_value=80, value=int(current_price * 0.8), step=1,
             help="Government-guaranteed minimum purchase price for farmers")
 
-        export_quota = st.slider(
-            " Export Quota Restriction (% reduction)" if lang=="en" else " අපනයන සීමාව (% අඩු කිරීම)",
-            0, 50, 0, 5,
+        export_quota = st.number_input(
+            "Export Quota Restriction (% reduction)" if lang=="en" else "අපනයන සීමාව (% අඩු කිරීම)",
+            min_value=0, max_value=50, value=0, step=5,
             help="Restricting exports increases domestic supply and lowers local prices")
 
     with ps_col2:
