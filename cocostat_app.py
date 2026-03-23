@@ -169,7 +169,7 @@ T = {
         "nav": ["Overview & History","Market & Demand","Weather & Harvest","Forecast","Compare","Export & Trade",
                 "Policy & Recommendations","Farmer Profitability","Auction Details","Method"],
         "nav_icons":["","","","","","","","","",""],
-        "card_price_label":"Current Price","card_price_value":"Rs. 68.50","card_price_sub":"Per Nut (Auction)",
+        "card_price_label":"Current Price","card_price_value":"Rs. 74.80","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Stable","card_market_sub":"Normal conditions",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
         "card_forecast_label":"Future Trend","card_forecast_value":" Slight Rise","card_forecast_sub":"Next 12 Weeks",
@@ -249,7 +249,7 @@ T = {
         "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba \u0dc3\u0dc4 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0dc4 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8",
                 "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba"],
         "nav_icons":["","","","","","","","","",""],
-        "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 68.50","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
+        "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 74.80","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u200d\u0dba\u0dcf\u0dc3\u0dca\u0dae","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
         "card_forecast_label":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0","card_forecast_value":" \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dc5","card_forecast_sub":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12",
@@ -425,7 +425,7 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    current_price    = 68.50
+    current_price    = 74.80
     price_3m_ago     = float(history_df["price"].iloc[-4]) if len(history_df) >= 4 else current_price
     price_6m_ago     = float(history_df["price"].iloc[-7]) if len(history_df) >= 7 else current_price
     avg_12m_sb       = float(history_df["price"].tail(12).mean())
