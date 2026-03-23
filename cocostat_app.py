@@ -18,70 +18,84 @@ st.set_page_config(
 # DATA LOADERS
 # ─────────────────────────────────────────────
 import os
+import pathlib
 
 def _get_dataset_path():
-    """Locate the COCOStat dataset Excel file next to this script or in common locations."""
-    candidates = [
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "COCOStat_Master_Dataset.xlsx"),
-        os.path.join(os.getcwd(), "COCOStat_Master_Dataset.xlsx"),
-    ]
-    for p in candidates:
-        if os.path.exists(p):
-            return p
+    """Locate COCOStat_Master_Dataset.xlsx — works locally and on Streamlit Cloud."""
+    fname = "COCOStat_Master_Dataset.xlsx"
+    # 1. Same directory as this script (works locally and on Streamlit Cloud /mount/src/...)
+    try:
+        script_dir = pathlib.Path(__file__).resolve().parent
+        p = script_dir / fname
+        if p.exists():
+            return str(p)
+    except Exception:
+        pass
+    # 2. Current working directory
+    p = pathlib.Path(os.getcwd()) / fname
+    if p.exists():
+        return str(p)
+    # 3. Walk up from cwd up to 3 levels
+    base = pathlib.Path(os.getcwd())
+    for parent in [base] + list(base.parents)[:3]:
+        p = parent / fname
+        if p.exists():
+            return str(p)
     raise FileNotFoundError(
-        "COCOStat_Master_Dataset.xlsx not found. "
-        "Place it in the same directory as cocostat_app.py."
+        f"'{fname}' not found. Place it in the same directory as cocostat_app.py."
     )
+
+def _clean(df, numeric_col):
+    """Drop rows where numeric_col is not a real number (filters source-note rows etc.)."""
+    mask = df[numeric_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))
+    return df[mask].copy()
 
 @st.cache_data
 def load_data():
     """Load price, forecast and weekly data from CDA/HARTI dataset."""
     path = _get_dataset_path()
-    # Monthly prices
-    hist_raw = pd.read_excel(path, sheet_name="01_Monthly_Prices", header=3)
-    hist_raw.columns = [str(c).strip() for c in hist_raw.columns]
-    hist_raw = hist_raw[hist_raw["Date"].notna() & hist_raw["Price (Rs./Nut)"].apply(lambda x: isinstance(x, (int, float)))].copy()
+
+    # Monthly prices — header on row 5 (index 4, 0-based)
+    hist_raw = pd.read_excel(path, sheet_name="01_Monthly_Prices", header=4)
+    hist_raw = _clean(hist_raw, "Price (Rs./Nut)")
     hist = pd.DataFrame({
         "date": pd.to_datetime(hist_raw["Date"]),
-        "price": hist_raw["Price (Rs./Nut)"].round(2).values,
+        "price": hist_raw["Price (Rs./Nut)"].astype(float).round(2).values,
     })
     hist["regime"] = pd.cut(hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2]).astype(int)
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
     # Forecast
-    fc_raw = pd.read_excel(path, sheet_name="02_Price_Forecast", header=3)
-    fc_raw.columns = [str(c).strip() for c in fc_raw.columns]
-    fc_raw = fc_raw[fc_raw["Date"].notna() & fc_raw["Forecast Price (Rs./Nut)"].apply(lambda x: isinstance(x, (int, float)))].copy()
+    fc_raw = pd.read_excel(path, sheet_name="02_Price_Forecast", header=4)
+    fc_raw = _clean(fc_raw, "Forecast Price (Rs./Nut)")
     forecast = pd.DataFrame({
         "date": pd.to_datetime(fc_raw["Date"]),
-        "price": fc_raw["Forecast Price (Rs./Nut)"].round(2).values,
-        "upper": fc_raw["Upper Band (Rs./Nut)"].round(2).values,
-        "lower": fc_raw["Lower Band (Rs./Nut)"].round(2).values,
+        "price": fc_raw["Forecast Price (Rs./Nut)"].astype(float).round(2).values,
+        "upper": fc_raw["Upper Band (Rs./Nut)"].astype(float).round(2).values,
+        "lower": fc_raw["Lower Band (Rs./Nut)"].astype(float).round(2).values,
     })
 
     # Weekly
-    wk_raw = pd.read_excel(path, sheet_name="03_Weekly_Auction", header=3)
-    wk_raw.columns = [str(c).strip() for c in wk_raw.columns]
-    wk_raw = wk_raw[wk_raw["Date"].notna() & wk_raw["Price (Rs./Nut)"].apply(lambda x: isinstance(x, (int, float)))].copy()
+    wk_raw = pd.read_excel(path, sheet_name="03_Weekly_Auction", header=4)
+    wk_raw = _clean(wk_raw, "Price (Rs./Nut)")
     weekly = pd.DataFrame({
         "date": pd.to_datetime(wk_raw["Date"]),
-        "price": wk_raw["Price (Rs./Nut)"].round(2).values,
+        "price": wk_raw["Price (Rs./Nut)"].astype(float).round(2).values,
     })
     return hist, forecast, weekly
 
 @st.cache_data
 def load_weather_data():
-    """Load rainfall, temperature and yield index data from CRI/Meteorology dataset."""
+    """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="04_Weather_Harvest", header=3)
-    raw.columns = [str(c).strip() for c in raw.columns]
-    raw = raw[raw["Date"].notna() & raw["Rainfall (mm)"].apply(lambda x: isinstance(x, (int, float)))].copy()
+    raw = pd.read_excel(path, sheet_name="04_Weather_Harvest", header=4)
+    raw = _clean(raw, "Rainfall (mm)")
     return pd.DataFrame({
         "date": pd.to_datetime(raw["Date"]),
-        "rainfall_mm": raw["Rainfall (mm)"].round(1).values,
-        "temp_c": raw["Temperature (°C)"].round(1).values,
-        "yield_index": raw["Yield Index (0–110)"].round(1).values,
+        "rainfall_mm": raw["Rainfall (mm)"].astype(float).round(1).values,
+        "temp_c": raw["Temperature (°C)"].astype(float).round(1).values,
+        "yield_index": raw["Yield Index (0\u2013110)"].astype(float).round(1).values,
         "month": raw["Month Number"].astype(int).values,
         "year": raw["Year Number"].astype(int).values,
     })
@@ -90,9 +104,8 @@ def load_weather_data():
 def load_export_data():
     """Load export revenue and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="05_Export_Products", header=3)
-    raw.columns = [str(c).strip() for c in raw.columns]
-    raw = raw[raw["Year"].apply(lambda x: isinstance(x, (int, float)))].copy()
+    raw = pd.read_excel(path, sheet_name="05_Export_Products", header=4)
+    raw = _clean(raw, "Year")
     raw["Year"] = raw["Year"].astype(int)
     product_cols = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts", "Activated Carbon"]
     col_map = {
@@ -105,16 +118,15 @@ def load_export_data():
     }
     export_df = pd.DataFrame({"year": raw["Year"].values})
     for xl_col, app_col in col_map.items():
-        export_df[app_col] = raw[xl_col].values
+        export_df[app_col] = raw[xl_col].astype(float).values
     export_df["Total"] = export_df[product_cols].sum(axis=1)
 
-    dest_raw = pd.read_excel(path, sheet_name="06_Export_Destinations", header=3)
-    dest_raw.columns = [str(c).strip() for c in dest_raw.columns]
-    dest_raw = dest_raw[dest_raw["Country"].notna() & dest_raw["Country"].apply(lambda x: isinstance(x, str))].copy()
+    dest_raw = pd.read_excel(path, sheet_name="06_Export_Destinations", header=4)
+    dest_raw = dest_raw[dest_raw["Share (%)"].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x)=='nan'))].copy()
     destinations = pd.DataFrame({
         "Country": dest_raw["Country"].values,
-        "Share_pct": dest_raw["Share (%)"].values,
-        "Value_USD_M": dest_raw["Value (USD M)"].values,
+        "Share_pct": dest_raw["Share (%)"].astype(float).values,
+        "Value_USD_M": dest_raw["Value (USD M)"].astype(float).values,
     })
     return export_df, destinations
 
@@ -122,21 +134,19 @@ def load_export_data():
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="07_Global_Comparison", header=3)
-    raw.columns = [str(c).strip() for c in raw.columns]
-    raw = raw[raw["Year"].apply(lambda x: isinstance(x, (int, float)))].copy()
+    raw = pd.read_excel(path, sheet_name="07_Global_Comparison", header=4)
+    raw = _clean(raw, "Year")
     raw["Year"] = raw["Year"].astype(int)
     countries = ["Sri Lanka", "Indonesia", "Philippines", "India", "Vietnam"]
     global_df = pd.DataFrame({"year": raw["Year"].values})
     for c in countries:
-        global_df[c] = raw[c].values
+        global_df[c] = raw[c].astype(float).values
 
-    prod_raw = pd.read_excel(path, sheet_name="08_Global_Production", header=3)
-    prod_raw.columns = [str(c).strip() for c in prod_raw.columns]
-    prod_raw = prod_raw[prod_raw["Country"].notna() & prod_raw["Country"].apply(lambda x: isinstance(x, str))].copy()
+    prod_raw = pd.read_excel(path, sheet_name="08_Global_Production", header=4)
+    prod_raw = prod_raw[prod_raw["Production (Billion Nuts/Year)"].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x)=='nan'))].copy()
     production = pd.DataFrame({
         "Country": prod_raw["Country"].values,
-        "Production_B_nuts": prod_raw["Production (Billion Nuts/Year)"].values,
+        "Production_B_nuts": prod_raw["Production (Billion Nuts/Year)"].astype(float).values,
     })
     return global_df, production
 
