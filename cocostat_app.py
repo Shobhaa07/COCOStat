@@ -62,7 +62,7 @@ def load_data():
         "date": pd.to_datetime(hist_raw["Date"]),
         "price": hist_raw["Price (Rs./Nut)"].astype(float).round(2).values,
     })
-    hist["regime"] = pd.cut(hist["price"], bins=[0, 500, 750, 9999], labels=[0, 1, 2]).astype(int)
+    hist["regime"] = pd.cut(hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2]).astype(int)
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
@@ -77,7 +77,7 @@ def load_data():
     })
 
     # Weekly
-    wk_raw = pd.read_excel(path, sheet_name="03_Weekly_2024", header=4)
+    wk_raw = pd.read_excel(path, sheet_name="03_Weekly_Auction", header=4)
     wk_raw = _clean(wk_raw, "Price (Rs./Nut)")
     weekly = pd.DataFrame({
         "date": pd.to_datetime(wk_raw["Date"]),
@@ -89,7 +89,7 @@ def load_data():
 def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="05_Weather_Harvest", header=4)
+    raw = pd.read_excel(path, sheet_name="04_Weather_Harvest", header=4)
     raw = _clean(raw, "Rainfall (mm)")
     return pd.DataFrame({
         "date": pd.to_datetime(raw["Date"]),
@@ -104,7 +104,7 @@ def load_weather_data():
 def load_export_data():
     """Load export revenue and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="06_Export_Products", header=4)
+    raw = pd.read_excel(path, sheet_name="05_Export_Products", header=4)
     raw = _clean(raw, "Year")
     raw["Year"] = raw["Year"].astype(int)
     product_cols = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts", "Activated Carbon"]
@@ -121,7 +121,7 @@ def load_export_data():
         export_df[app_col] = raw[xl_col].astype(float).values
     export_df["Total"] = export_df[product_cols].sum(axis=1)
 
-    dest_raw = pd.read_excel(path, sheet_name="07_Export_Destinations", header=4)
+    dest_raw = pd.read_excel(path, sheet_name="06_Export_Destinations", header=4)
     dest_raw = dest_raw[dest_raw["Share (%)"].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x)=='nan'))].copy()
     destinations = pd.DataFrame({
         "Country": dest_raw["Country"].values,
@@ -134,7 +134,7 @@ def load_export_data():
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="08_Global_Comparison", header=4)
+    raw = pd.read_excel(path, sheet_name="07_Global_Comparison", header=4)
     raw = _clean(raw, "Year")
     raw["Year"] = raw["Year"].astype(int)
     countries = ["Sri Lanka", "Indonesia", "Philippines", "India", "Vietnam"]
@@ -142,7 +142,7 @@ def load_global_data():
     for c in countries:
         global_df[c] = raw[c].astype(float).values
 
-    prod_raw = pd.read_excel(path, sheet_name="09_Global_Production", header=4)
+    prod_raw = pd.read_excel(path, sheet_name="08_Global_Production", header=4)
     prod_raw = prod_raw[prod_raw["Production (Billion Nuts/Year)"].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x)=='nan'))].copy()
     production = pd.DataFrame({
         "Country": prod_raw["Country"].values,
@@ -169,15 +169,15 @@ T = {
         "nav": ["Overview & History","Market & Demand","Weather & Harvest","Forecast","Compare","Export & Trade",
                 "Policy & Recommendations","Farmer Profitability","Auction Details","Method"],
         "nav_icons":["","","","","","","","","",""],
-        "card_price_label":"Current Price","card_price_value":"Rs. 1,023","card_price_sub":"Per Nut (Auction)",
-        "card_market_label":"Market Condition","card_market_value":"⚠ Warning","card_market_sub":"Above warning level",
+        "card_price_label":"Current Price","card_price_value":"Rs. 95.00","card_price_sub":"Per Nut (Auction)",
+        "card_market_label":"Market Condition","card_market_value":"Elevated","card_market_sub":"Above crisis threshold",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
-        "card_forecast_label":"Future Trend","card_forecast_value":" Slight Rise","card_forecast_sub":"Next 12 Weeks",
+        "card_forecast_label":"Future Trend","card_forecast_value":" Continuing Rise","card_forecast_sub":"Next 12 Weeks",
         "regime_title":"What is the Current Market Situation?",
         "regime_select":"Select Market Type to Explore",
         "regime_options":[" Stable Market"," Warning Market"," Crisis Market"],
         "regime_desc":["Prices are normal and stable.","Prices are changing moderately.","Prices are very unstable."],
-        "regime_avg":["Rs. 213–500","Rs. 500–750","Rs. 750+"],
+        "regime_avg":["Rs. 52-65","Rs. 65-80","Rs. 80+"],
         "regime_vol":["Low","Medium","High"],
         "regime_avg_label":"Average Price","regime_vol_label":"Volatility","regime_status_label":"Status",
         "regime_status":[" OK"," Watch"," Alert"],
@@ -249,15 +249,15 @@ T = {
         "nav": ["\u0daf\u0dbb\u0dca\u0dc1\u0db1\u0dba \u0dc3\u0dc4 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dc3\u0dc4 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8","\u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab \u0dc3\u0dc4 \u0d85\u0dc3\u0dca\u0dc0\u0db1\u0dd4","\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba","\u0dc3\u0d82\u0dc3\u0db1\u0dca\u0daf\u0db1\u0dba","\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3\u0dcf\u0db8",
                 "\u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0dc3\u0dc4 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1","\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf\u0dc0","\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0dc0\u0dd2\u0dc3\u0dca\u0dad\u0dbb","\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf\u0dba"],
         "nav_icons":["","","","","","","","","",""],
-        "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 1,023","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
-        "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u26a0 \u0d85\u0dc0\u0dc0\u0dcf\u0daf","card_market_sub":"\u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0db8\u0da7\u0dca\u0da7\u0db8\u0d9a\u0da7 \u0d89\u0dc4\u0dc5\u0d9a\u0dca",
+        "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 95.00","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
+        "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u200d\u0dba\u0dcf\u0dc3\u0dca\u0dae","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
         "card_forecast_label":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0","card_forecast_value":" \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dc5","card_forecast_sub":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12",
         "regime_title":"\u0daf\u0dd0\u0db1\u0da7 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5\u0dda \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca\u0daf?",
         "regime_select":"\u0d9c\u0dc0\u0dda\u0DC2\u0dab\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0dd9\u0dc5\u0db3 \u0dc0\u0dbb\u0dca\u0d9c\u0dba\u0d9a\u0dca \u0dad\u0ddc\u0dbb\u0db1\u0dca\u0db1",
         "regime_options":[" \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"," \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"," \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"],
         "regime_desc":["\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2, \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba.","\u0db8\u0dd2\u0dbd \u0db8\u0db0\u0dca\u200d\u0dba\u0db8 \u0dbd\u0dd9\u0dc3 \u0dc0\u0dd9\u0db1\u0dc3\u0dca \u0dc0\u0dda.","\u0db8\u0dd2\u0dbd \u0d85\u0dad\u0dd2\u0DC1\u0dba\u0dd2\u0db1\u0dca \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2."],
-        "regime_avg":["\u0dbb\u0dd4. 213–500","\u0dbb\u0dd4. 500–750","\u0dbb\u0dd4. 750+"],
+        "regime_avg":["\u0dbb\u0dd4. 52-65","\u0dbb\u0dd4. 65-80","\u0dbb\u0dd4. 80+"],
         "regime_vol":["\u0d85\u0da9\u0dd4","\u0db8\u0db0\u0dca\u200d\u0dba\u0db8","\u0d89\u0dc4\u0dc5"],
         "regime_avg_label":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0db8\u0dd2\u0dbd","regime_vol_label":"\u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0","regime_status_label":"\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "regime_status":[" \u0dc4\u0ddc\u0db3\u0dba\u0dd2"," \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba"," \u0d85\u0dc0\u0daf\u0dcf\u0db1\u0db8"],
@@ -425,7 +425,7 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    current_price    = 1023.15
+    current_price    = 95.00
     price_3m_ago     = float(history_df["price"].iloc[-4]) if len(history_df) >= 4 else current_price
     price_6m_ago     = float(history_df["price"].iloc[-7]) if len(history_df) >= 7 else current_price
     avg_12m_sb       = float(history_df["price"].tail(12).mean())
@@ -454,8 +454,8 @@ with st.sidebar:
     }
     </style>""", unsafe_allow_html=True)
 
-    warn_threshold   = st.number_input(_warn_lbl,   min_value=300, max_value=700, value=500, step=10, key="warn_t")
-    crisis_threshold = st.number_input(_cris_lbl,   min_value=500, max_value=1200, value=750, step=10, key="cris_t")
+    warn_threshold   = st.number_input(_warn_lbl,   min_value=50, max_value=90,  value=65, step=1, key="warn_t")
+    crisis_threshold = st.number_input(_cris_lbl,   min_value=60, max_value=120, value=80, step=1, key="cris_t")
 
     # ── Risk Score Engine ──────────────────
     risk_score = 0
@@ -706,8 +706,8 @@ if t["nav"][0] in sec_name:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=recent["date"],y=recent["price"],fill="tozeroy",fillcolor="rgba(61,122,85,.1)",
             line=dict(color="#3d7a55",width=2.5),hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold:,.0f}",annotation_position="top left")
-        fig.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold:,.0f}",annotation_position="top left")
+        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+        fig.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
         fig.update_layout(title=dict(text=" "+("Recent 3-Year Price Trend" if lang=="en" else "\u0db8\u0dd0\u0dad \u0d9a\u0dcf\u0dbd \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"),font=dict(size=14,color="#1a3328")),
             height=280,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
@@ -744,8 +744,8 @@ if t["nav"][0] in sec_name:
     st.markdown(f"<div class='section-sub'>{t['price_calc_sub']}</div>",unsafe_allow_html=True)
     pc1,pc2,pc3=st.columns(3)
     with pc1: nuts=st.number_input(t["nuts_per_week"],1,100,10,1)
-    with pc2: pnow=st.number_input(t["current_price_input"],100.0,2000.0,1023.0,5.0)
-    with pc3: pnew=st.number_input(t["new_price_input"],100.0,2000.0,1100.0,5.0)
+    with pc2: pnow=st.number_input(t["current_price_input"],10.0,200.0,95.0,.5)
+    with pc3: pnew=st.number_input(t["new_price_input"],10.0,200.0,75.0,.5)
     dw=(pnew-pnow)*nuts; clrc="#ef4444" if dw>0 else "#5a9470"; arr="" if dw>0 else ""
     rc1,rc2,rc3=st.columns(3)
     for col,lbl,val in zip([rc1,rc2,rc3],[t["weekly_impact"],t["monthly_impact"],t["annual_impact"]],[dw,dw*4,dw*52]):
@@ -759,8 +759,8 @@ if t["nav"][0] in sec_name:
     fig_hist=go.Figure()
     fig_hist.add_trace(go.Scatter(x=history_df["date"],y=history_df["price"],fill="tozeroy",fillcolor="rgba(22,163,74,.08)",
         line=dict(color="#3d7a55",width=1.8),mode="lines",hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold:,.0f}",annotation_position="top left",annotation_font_color="#eab308")
-    fig_hist.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold:,.0f}",annotation_position="bottom left",annotation_font_color="#ef4444")
+    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left",annotation_font_color="#eab308")
+    fig_hist.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="bottom left",annotation_font_color="#ef4444")
     fig_hist.update_layout(height=360,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False,rangeslider=dict(visible=True),tickfont=dict(size=11)),
         yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
@@ -828,8 +828,8 @@ elif t["nav"][1] in sec_name:
         if not sub.empty:
             fig_r.add_trace(go.Scatter(x=sub["date"],y=sub["price"],mode="markers",
                 marker=dict(color=rc,size=5,opacity=.8),name=rn,hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold:,.0f}",annotation_position="top left")
-    fig_r.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold:,.0f}",annotation_position="top left")
+    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+    fig_r.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
     fig_r.update_layout(title=dict(text=" "+("Price History by Regime" if lang=="en" else "තත්ත්වය අනුව මිල ඉතිහාසය"),font=dict(size=14)),
         height=320,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs."),
@@ -903,8 +903,8 @@ elif t["nav"][3] in sec_name:
     fig_f.add_trace(go.Scatter(x=forecast_df["date"],y=forecast_df["price"],line=dict(color="#f59e0b",width=2.5,dash="dash"),
         name=t["forecast_pred_label"],mode="lines+markers",marker=dict(size=6,color="#f59e0b"),
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f" Rs.{warn_threshold:,.0f}",annotation_position="top left")
-    fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold:,.0f}",annotation_position="top left")
+    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
+    fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
     fig_f.add_vline(x=forecast_df["date"].iloc[0].timestamp()*1000,line_dash="dot",line_color="#94a3b8",
         annotation_text="Forecast \u2192" if lang=="en" else "\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba \u2192",annotation_position="top left")
     fig_f.update_layout(height=340,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
@@ -1077,7 +1077,7 @@ elif t["nav"][6] in sec_name:
 
         price_floor = st.number_input(
             "Minimum Price Floor (Rs.)" if lang=="en" else "අවම මිල (රු.)",
-            min_value=200, max_value=900, value=int(current_price * 0.8), step=10,
+            min_value=30, max_value=80, value=int(current_price * 0.8), step=1,
             help="Government-guaranteed minimum purchase price for farmers")
 
         export_quota = st.number_input(
@@ -1211,7 +1211,7 @@ elif t["nav"][6] in sec_name:
                 "#5a9470" if v <= current_price else "#ef4444"
                 for i, (n, v) in enumerate(scenarios.items())]
     _baseline_lbl = ("Baseline" if lang=="en" else "පාදම") + f" Rs.{current_price:.1f}"
-    _crisis_lbl = ("Crisis" if lang=="en" else "අර්බුද") + f" Rs.{crisis_threshold:,.0f}"
+    _crisis_lbl = ("Crisis" if lang=="en" else "අර්බුද") + f" Rs.{crisis_threshold}"
     s_labels = [f"<b>Rs.{v:.1f}</b> ({'+' if d>0 else ''}{d:.1f})"
                 for v, d in zip(s_prices, s_deltas)]
     fig_sc = go.Figure(go.Bar(
@@ -1226,7 +1226,7 @@ elif t["nav"][6] in sec_name:
                         font=dict(size=10, color="#64748b"), bgcolor="rgba(255,255,255,0.85)",
                         bordercolor="#64748b", borderwidth=1, y=1.08, yref="paper"))
     fig_sc.add_vline(x=warn_threshold, line_dash="dot", line_color="#eab308", line_width=1.5,
-        annotation=dict(text=f" Rs.{warn_threshold:,.0f}",
+        annotation=dict(text=f" Rs.{warn_threshold}",
                         font=dict(size=9, color="#b45309"), bgcolor="rgba(255,255,255,0.85)",
                         y=0.0, yref="paper"))
     fig_sc.add_vline(x=crisis_threshold, line_dash="dot", line_color="#ef4444", line_width=1.5,
@@ -1866,8 +1866,8 @@ elif t["nav"][4] in sec_name:
             fig_y.add_trace(go.Scatter(x=[mn[m-1] for m in yd["month"]],y=yd["price"],mode="lines+markers",name=str(yr),
                 line=dict(color=yc[idx%len(yc)],width=2.5),marker=dict(size=7),
                 hovertemplate=f"<b>{yr}</b> %{{x}}<br>Rs.%{{y:.2f}}<extra></extra>"))
-        fig_y.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold:,.0f}")
-        fig_y.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold:,.0f}")
+        fig_y.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}")
+        fig_y.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}")
         fig_y.update_layout(height=360,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs."),
             legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
@@ -2351,9 +2351,9 @@ elif t["nav"][2] in sec_name:
         secondary_y=True)
 
     fig_fw.add_hline(y=warn_threshold, line_dash="dash", line_color="#eab308",
-        annotation_text=f" Rs.{warn_threshold:,.0f}", secondary_y=True)
+        annotation_text=f" Rs.{warn_threshold}", secondary_y=True)
     fig_fw.add_hline(y=crisis_threshold, line_dash="dash", line_color="#ef4444",
-        annotation_text=f" Rs.{crisis_threshold:,.0f}", secondary_y=True)
+        annotation_text=f" Rs.{crisis_threshold}", secondary_y=True)
 
     fig_fw.update_layout(
         height=380, margin=dict(l=60,r=60,t=20,b=20),
@@ -2461,12 +2461,12 @@ elif t["nav"][2] in sec_name:
         # Warn / crisis lines
         fig_sc.add_hline(y=warn_threshold,
             line_dash="dot", line_color="#eab308", line_width=1.5,
-            annotation_text=f" Rs.{warn_threshold:,.0f}",
+            annotation_text=f" Rs.{warn_threshold}",
             annotation_position="top left",
             annotation_font=dict(size=9, color="#b45309"))
         fig_sc.add_hline(y=crisis_threshold,
             line_dash="dot", line_color="#ef4444", line_width=1.5,
-            annotation_text=f" Rs.{crisis_threshold:,.0f}",
+            annotation_text=f" Rs.{crisis_threshold}",
             annotation_position="top right",
             annotation_font=dict(size=9, color="#ef4444"))
 
@@ -2598,7 +2598,7 @@ elif t["nav"][7] in sec_name:
         trees_acre=st.number_input("Trees per Acre" if lang=="en" else "අක්කරයකට ගස්",min_value=20,max_value=80,value=40,step=5)
     with fi2:
         nuts_tree=st.number_input("Nuts per Tree/Year" if lang=="en" else "ගසකට ගෙඩි/වර්ෂය",min_value=30,max_value=120,value=60,step=5)
-        sell_price=st.number_input("Selling Price (Rs./nut)" if lang=="en" else "විකිණුම් මිල (රු./ගෙඩිය)",min_value=200,max_value=2000,value=int(current_price),step=10)
+        sell_price=st.number_input("Selling Price (Rs./nut)" if lang=="en" else "විකිණුම් මිල (රු./ගෙඩිය)",min_value=30,max_value=120,value=int(current_price),step=1)
     with fi3:
         labour_month=st.number_input("Labour Cost (Rs./month)" if lang=="en" else "කම්කරු පිරිවැය (රු./මාසය)",min_value=5000,max_value=50000,value=15000,step=1000)
         fert_year=st.number_input("Fertilizer & Inputs (Rs./yr)" if lang=="en" else "පොහොර & ආදාන (රු./වර්ෂය)",min_value=5000,max_value=100000,value=25000,step=5000)
@@ -2682,7 +2682,7 @@ elif t["nav"][7] in sec_name:
     divider()
 
     st.markdown("#### "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0db7 \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
-    ps=[200,300,400,500,600,700,800,900,1000,1100,1200,1300]
+    ps=[40,50,55,60,65,68.5,70,75,80,85,90,100]
     prf=[p*total_nuts-total_cost for p in ps]
     fig_ps=go.Figure(go.Bar(x=[f"Rs.{p}" for p in ps],y=prf,marker_color=["#5a9470" if v>0 else "#ef4444" for v in prf],
         text=[f"Rs.{v:,.0f}" for v in prf],textposition="outside",textfont=dict(size=9),
