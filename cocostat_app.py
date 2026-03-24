@@ -172,12 +172,12 @@ T = {
         "card_price_label":"Current Price","card_price_value":"Rs. 95.00","card_price_sub":"Per Nut (Auction)",
         "card_market_label":"Market Condition","card_market_value":"Elevated","card_market_sub":"Above crisis threshold",
         "card_demand_label":"Demand Response","card_demand_value":"Inelastic","card_demand_sub":"People still buy",
-        "card_forecast_label":"Future Trend","card_forecast_value":" Continuing Rise","card_forecast_sub":"Next 12 Weeks",
+        "card_forecast_label":"Future Trend","card_forecast_value":" Continuing Rise","card_forecast_sub":"Next 12 Months",
         "regime_title":"What is the Current Market Situation?",
         "regime_select":"Select Market Type to Explore",
         "regime_options":[" Stable Market"," Warning Market"," Crisis Market"],
         "regime_desc":["Prices are normal and stable.","Prices are changing moderately.","Prices are very unstable."],
-        "regime_avg":["Rs. 52-65","Rs. 65-80","Rs. 80+"],
+        "regime_avg":["Rs. 52-65","Rs. 65-80","Rs. 80-100+"],
         "regime_vol":["Low","Medium","High"],
         "regime_avg_label":"Average Price","regime_vol_label":"Volatility","regime_status_label":"Status",
         "regime_status":[" OK"," Watch"," Alert"],
@@ -190,9 +190,9 @@ T = {
             (" Warning Period","Moderate reaction to price volatility."),
             (" Crisis Period","People still buy coconuts even if price increases."),
         ],
-        "forecast_title":"What Will Happen to Prices in the Next 12 Weeks?",
-        "forecast_summary":" Prices are expected to increase slowly. No immediate crisis predicted.",
-        "forecast_week":"Wk","forecast_hist_label":"Historical","forecast_pred_label":"Forecast",
+        "forecast_title":"What Will Prices Do Over the Next 12 Months?",
+        "forecast_summary":" Prices are elevated above crisis level. Continued upward pressure expected.",
+        "forecast_week":"Mo","forecast_hist_label":"Historical","forecast_pred_label":"Forecast",
         "forecast_range_label":"Uncertainty Range",
         "policy_title":"What Should the Government Do Now?",
         "policy_sub":"Evidence-based policy recommendations based on current market regime.",
@@ -202,7 +202,7 @@ T = {
                           "Use buffer stocks and temporary price control."],
         "policy_priorities":[" Low"," Medium"," High"],
         "policy_active":"\u2190 Currently Active","policy_priority_label":"Priority:",
-        "history_title":"Market History (2015-2024)","history_sub":"Full 10-year auction price history. Hover to explore.",
+        "history_title":"Market History (2015-2025)","history_sub":"Full 10-year auction price history (2015–2025). Hover to explore.",
         "method_title":"How This System Works",
         "method_steps":["We studied 10 years of auction data.","We grouped market situations into 3 types.",
                         "We measured how people react to prices.","We predicted future prices."],
@@ -252,12 +252,12 @@ T = {
         "card_price_label":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd","card_price_value":"\u0dbb\u0dd4. 95.00","card_price_sub":"\u0db4\u0ddc\u0dbd\u0dca \u0d9c\u0dd9\u0da9\u0dd2\u0dba\u0d9a\u0da7 (\u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2)",
         "card_market_label":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba","card_market_value":"\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2","card_market_sub":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "card_demand_label":"\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba","card_demand_value":"\u0d85\u0db4\u0dca\u200d\u0dbb\u0dad\u0dca\u200d\u0dba\u0dcf\u0dc3\u0dca\u0dae","card_demand_sub":"\u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4 \u0db1\u0dd0\u0dad",
-        "card_forecast_label":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0","card_forecast_value":" \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dc5","card_forecast_sub":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12",
+        "card_forecast_label":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0","card_forecast_value":" \u0daf\u0dd2\u0d9c\u0da7\u0db8 \u0d89\u0dc4\u0dc5","card_forecast_sub":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dcf\u0dc3 12",
         "regime_title":"\u0daf\u0dd0\u0db1\u0da7 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5\u0dda \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca\u0daf?",
         "regime_select":"\u0d9c\u0dc0\u0dda\u0DC2\u0dab\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0dd9\u0dc5\u0db3 \u0dc0\u0dbb\u0dca\u0d9c\u0dba\u0d9a\u0dca \u0dad\u0ddc\u0dbb\u0db1\u0dca\u0db1",
         "regime_options":[" \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"," \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"," \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5"],
         "regime_desc":["\u0db8\u0dd2\u0dbd \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2, \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba.","\u0db8\u0dd2\u0dbd \u0db8\u0db0\u0dca\u200d\u0dba\u0db8 \u0dbd\u0dd9\u0dc3 \u0dc0\u0dd9\u0db1\u0dc3\u0dca \u0dc0\u0dda.","\u0db8\u0dd2\u0dbd \u0d85\u0dad\u0dd2\u0DC1\u0dba\u0dd2\u0db1\u0dca \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dba\u0dd2."],
-        "regime_avg":["\u0dbb\u0dd4. 52-65","\u0dbb\u0dd4. 65-80","\u0dbb\u0dd4. 80+"],
+        "regime_avg":["\u0dbb\u0dd4. 52-65","\u0dbb\u0dd4. 65-80","\u0dbb\u0dd4. 80-100+"],
         "regime_vol":["\u0d85\u0da9\u0dd4","\u0db8\u0db0\u0dca\u200d\u0dba\u0db8","\u0d89\u0dc4\u0dc5"],
         "regime_avg_label":"\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0db8\u0dd2\u0dbd","regime_vol_label":"\u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0","regime_status_label":"\u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba",
         "regime_status":[" \u0dc4\u0ddc\u0db3\u0dba\u0dd2"," \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0DC2\u0dab\u0dba"," \u0d85\u0dc0\u0daf\u0dcf\u0db1\u0db8"],
@@ -270,9 +270,9 @@ T = {
             (" \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0\u0da7 \u0db8\u0db0\u0dca\u200d\u0dba\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba\u0d9a\u0dca."),
             (" \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dc5 \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db4\u0ddc\u0dbd\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0db1\u0dd3."),
         ],
-        "forecast_title":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc3\u0dad\u0dd2 12 \u0dad\u0dd4\u0dbd \u0db8\u0dd2\u0dbd\u0da7 \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0dc3\u0dd2\u0daf\u0dc0\u0dda\u0daf?",
-        "forecast_summary":" \u0db8\u0dd2\u0dbd \u0dc3\u0dd9\u0db8\u0dd2\u0db1\u0dca \u0d89\u0dc4\u0dc5 \u0dba\u0dcf \u0dc4\u0dd0\u0d9a. \u0dc0\u0dc4\u0dcf\u0db8 \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf\u0dba\u0d9a\u0dca \u0d85\u0db4\u0dda\u0d9a\u0dca\u0DC2\u0dcf \u0db1\u0ddc\u0d9a\u0dd9\u0dbb\u0dda.",
-        "forecast_week":"\u0dc3\u0dad\u0dd2","forecast_hist_label":"\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","forecast_pred_label":"\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba",
+        "forecast_title":"\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dcf\u0dc3 12 \u0dad\u0dd4\u0dbd \u0db8\u0dd2\u0dbd \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0dc0\u0dda\u0dba\u0dd2?",
+        "forecast_summary":" \u0db8\u0dd2\u0dbd \u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf \u0dc3\u0dd3\u0db8\u0dcf\u0dc0\u0da7 \u0d89\u0dc4\u0dc5. \u0daf\u0dd2\u0d9c\u0da7\u0db8 \u0d89\u0dc4\u0dc5 \u0dba\u0dcf\u0db8\u0dda \u0dbd\u0d9a\u0dd4\u0dab\u0dd4.",
+        "forecast_week":"\u0db8\u0dcf\u0dc3\u0dba","forecast_hist_label":"\u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba","forecast_pred_label":"\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba",
         "forecast_range_label":"\u0d85\u0dc0\u0dd2\u0db1\u0dd2\u0DC1\u0da0\u0dd2\u0dad \u0db4\u0dbb\u0dcf\u0dc3\u0dba",
         "policy_title":"\u0daf\u0dd0\u0db1\u0da7 \u0dbb\u0da2\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca \u0d9a\u0dbd \u0dba\u0dd4\u0dad\u0dd4\u0daf?",
         "policy_sub":"\u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0dc0\u0dd9\u0dc5\u0db3 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba \u0db8\u0dad \u0db4\u0daf\u0db1\u0db8\u0dca \u0dc0\u0dd6 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0db4\u0dad\u0dca\u0dad\u0dd2 \u0db1\u0dd2\u0dbb\u0dca\u0daf\u0dda\u0DC1.",
@@ -416,7 +416,7 @@ with st.sidebar:
     t = T[lang]
     st.markdown("### " + ("Settings" if lang=="en" else "සැකසුම්"))
     regime_emojis = ["", "", ""]
-    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=0)
+    active_regime = st.selectbox(t["regime_select"], [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])], index=2)
     regime_idx = [f"{e}{o}" for e,o in zip(regime_emojis, t["regime_options"])].index(active_regime)
     st.markdown("---")
     st.markdown("### " + (" Navigation" if lang=="en" else " \u0dc3\u0d82\u0da0\u0dcf\u0dbd\u0db1\u0dba"))
@@ -489,9 +489,12 @@ with st.sidebar:
     else:
         risk_factors.append(("🟢", ("Low volatility" if lang=="en" else "අඩු අස්ථාවරතාව") + f": CV {cv_sb:.1f}%", 0))
     gap_to_crisis = crisis_threshold - current_price
-    if gap_to_crisis <= 5:
+    if gap_to_crisis <= 0:
         risk_score += 15
-        risk_factors.append(("🔴", ("Only" if lang=="en" else "අර්බුද සීමාවට") + f" Rs.{gap_to_crisis:.0f} " + ("below crisis level" if lang=="en" else "පමණයි"), 15))
+        risk_factors.append(("🔴", ("Price Rs." + f"{current_price:.0f}" + (" ABOVE crisis level" if lang=="en" else " අර්බුද සීමාව ඉක්මවා ඇත")), 15))
+    elif gap_to_crisis <= 5:
+        risk_score += 12
+        risk_factors.append(("🔴", ("Only" if lang=="en" else "අර්බුද සීමාවට") + f" Rs.{gap_to_crisis:.0f} " + ("below crisis level" if lang=="en" else "පමණයි"), 12))
     elif gap_to_crisis <= 12:
         risk_score += 8
         risk_factors.append(("🟡", f"Rs.{gap_to_crisis:.0f} " + ("buffer to crisis level" if lang=="en" else "අර්බුද සීමාවට"), 8))
@@ -745,7 +748,7 @@ if t["nav"][0] in sec_name:
     pc1,pc2,pc3=st.columns(3)
     with pc1: nuts=st.number_input(t["nuts_per_week"],1,100,10,1)
     with pc2: pnow=st.number_input(t["current_price_input"],10.0,200.0,95.0,.5)
-    with pc3: pnew=st.number_input(t["new_price_input"],10.0,200.0,75.0,.5)
+    with pc3: pnew=st.number_input(t["new_price_input"],10.0,200.0,100.0,.5)
     dw=(pnew-pnow)*nuts; clrc="#ef4444" if dw>0 else "#5a9470"; arr="" if dw>0 else ""
     rc1,rc2,rc3=st.columns(3)
     for col,lbl,val in zip([rc1,rc2,rc3],[t["weekly_impact"],t["monthly_impact"],t["annual_impact"]],[dw,dw*4,dw*52]):
@@ -892,7 +895,7 @@ elif t["nav"][1] in sec_name:
 # ══ FORECAST ════════════════════════════════════════════════════════════════
 elif t["nav"][3] in sec_name:
     section_header(" "+t["forecast_title"])
-    st.markdown(f"<div class='info-box-green'>{t['forecast_summary']}</div>",unsafe_allow_html=True)
+    st.markdown(f"<div class='info-box-red'>{t['forecast_summary']}</div>",unsafe_allow_html=True)
     hist_r=history_df.tail(16)
     fig_f=go.Figure()
     fig_f.add_trace(go.Scatter(x=pd.concat([forecast_df["date"],forecast_df["date"][::-1]]),
@@ -912,7 +915,7 @@ elif t["nav"][3] in sec_name:
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_f,use_container_width=True,config={"displayModeBar":"hover"})
 
-    st.markdown("#### "+("12-Week Forecast Details" if lang=="en" else "සති 12 අනාවැකි විස්තර"))
+    st.markdown("#### "+("12-Month Forecast Details" if lang=="en" else "මාස 12 අනාවැකි විස්තර"))
     wcols=st.columns(6)
     for i,(_,row) in enumerate(forecast_df.iterrows()):
         if i>=12: break
@@ -932,12 +935,12 @@ elif t["nav"][3] in sec_name:
         ["Avg Forecast" if lang=="en" else "සාමාන්‍ය අනාවැකිය",
          "Peak Price" if lang=="en" else "ඉහළම මිල",
          "Low Price" if lang=="en" else "පහළම මිල",
-         "Weeks >= Warning" if lang=="en" else "සති >= අවවාද",
-         "Weeks >= Crisis" if lang=="en" else "සති >= අර්බුද"],
+         "Months >= Warning" if lang=="en" else "මාස >= අවවාද",
+         "Months >= Crisis" if lang=="en" else "මාස >= අර්බුද"],
         [f"Rs.{fa:.1f}",f"Rs.{fmax:.1f}",f"Rs.{fmin:.1f}",
-         f"{ww} " + ("wks" if lang=="en" else "සති"),
-         f"{wc} " + ("wks" if lang=="en" else "සති")],
-        ["#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55"]):
+         f"{ww} " + ("mos" if lang=="en" else "මාස"),
+         f"{wc} " + ("mos" if lang=="en" else "මාස")],
+        ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
@@ -1077,7 +1080,7 @@ elif t["nav"][6] in sec_name:
 
         price_floor = st.number_input(
             "Minimum Price Floor (Rs.)" if lang=="en" else "අවම මිල (රු.)",
-            min_value=30, max_value=80, value=int(current_price * 0.8), step=1,
+            min_value=30, max_value=110, value=int(current_price * 0.8), step=1,
             help="Government-guaranteed minimum purchase price for farmers")
 
         export_quota = st.number_input(
@@ -1377,7 +1380,7 @@ elif t["nav"][6] in sec_name:
                  "MEDIUM","2-4 weeks" if _R=="en" else "සති 2-4","Requires product certification — SLSI contact" if _R=="en" else "නිෂ්පාදන සහතිකය අවශ්‍ය — SLSI සම්බන්ධ කරගන්න"),
                 ("",
                  "Weekly Price Tracking" if _R=="en" else "සතිපතා මිල නිරීක්ෂණය",
-                 "Monitor all 6 auction centres daily. Set automated alerts at Rs.70, Rs.75, Rs.80." if _R=="en" else "දිනපතා වෙන්දේසි මධ්‍යස්ථාන 6 ම නිරීක්ෂණය කරන්න. රු.70, රු.75, රු.80 හිදී ස්වයංක්‍රීය ඇඟවීම් සකස් කරන්න.",
+                 "Monitor all 6 auction centres daily. Set automated alerts at Rs.85, Rs.90, Rs.95." if _R=="en" else "දිනපතා වෙන්දේසි මධ්‍යස්ථාන 6 ම නිරීක්ෂණය කරන්න. රු.70, රු.75, රු.80 හිදී ස්වයංක්‍රීය ඇඟවීම් සකස් කරන්න.",
                  "HIGH","Immediate" if _R=="en" else "ක්ෂණිකව","COCOStat dashboard — set custom thresholds" if _R=="en" else "COCOStat පාලක පුවරුව — අභිරුචි සීමා සකස් කරන්න"),
             ],
             "farmer": [
@@ -1407,7 +1410,7 @@ elif t["nav"][6] in sec_name:
             "government": [
                 ("🆘",
                  "Emergency Price Control Activation" if _R=="en" else "හදිසි මිල පාලන සක්‍රිය කිරීම",
-                 "Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.85. Enforce at all retail levels." if _R=="en" else "පාරිභෝගික කටයුතු අධිකාරි පනත ක්‍රියාත්මක කරන්න — උපරිම මිල රු.85 ලෙස සකසන්න. සියලු සිල්ලර මට්ටම්වල ක්‍රියාත්මක කරන්න.",
+                 "Invoke the Consumer Affairs Authority Act — set ceiling price at Rs.105. Enforce at all retail levels." if _R=="en" else "පාරිභෝගික කටයුතු අධිකාරි පනත ක්‍රියාත්මක කරන්න — උපරිම මිල රු.85 ලෙස සකසන්න. සියලු සිල්ලර මට්ටම්වල ක්‍රියාත්මක කරන්න.",
                  "CRITICAL","Within 24hrs" if _R=="en" else "පැය 24 ඇතුළත","Cabinet emergency session — Rs. 50M enforcement budget" if _R=="en" else "කැබිනට් හදිසි රැස්වීම — රු. 50M ක්‍රියාත්මක කිරීමේ අයවැය"),
                 ("",
                  "Full Buffer Stock Emergency Release" if _R=="en" else "සම්පූර්ණ බෆර් තොග හදිසි මුදා හැරීම",
@@ -2598,7 +2601,7 @@ elif t["nav"][7] in sec_name:
         trees_acre=st.number_input("Trees per Acre" if lang=="en" else "අක්කරයකට ගස්",min_value=20,max_value=80,value=40,step=5)
     with fi2:
         nuts_tree=st.number_input("Nuts per Tree/Year" if lang=="en" else "ගසකට ගෙඩි/වර්ෂය",min_value=30,max_value=120,value=60,step=5)
-        sell_price=st.number_input("Selling Price (Rs./nut)" if lang=="en" else "විකිණුම් මිල (රු./ගෙඩිය)",min_value=30,max_value=120,value=int(current_price),step=1)
+        sell_price=st.number_input("Selling Price (Rs./nut)" if lang=="en" else "විකිණුම් මිල (රු./ගෙඩිය)",min_value=30,max_value=150,value=int(current_price),step=1)
     with fi3:
         labour_month=st.number_input("Labour Cost (Rs./month)" if lang=="en" else "කම්කරු පිරිවැය (රු./මාසය)",min_value=5000,max_value=50000,value=15000,step=1000)
         fert_year=st.number_input("Fertilizer & Inputs (Rs./yr)" if lang=="en" else "පොහොර & ආදාන (රු./වර්ෂය)",min_value=5000,max_value=100000,value=25000,step=5000)
@@ -2682,7 +2685,7 @@ elif t["nav"][7] in sec_name:
     divider()
 
     st.markdown("#### "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0db7 \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
-    ps=[40,50,55,60,65,68.5,70,75,80,85,90,100]
+    ps=[40,50,60,70,80,85,90,95,100,105,110,120]
     prf=[p*total_nuts-total_cost for p in ps]
     fig_ps=go.Figure(go.Bar(x=[f"Rs.{p}" for p in ps],y=prf,marker_color=["#5a9470" if v>0 else "#ef4444" for v in prf],
         text=[f"Rs.{v:,.0f}" for v in prf],textposition="outside",textfont=dict(size=9),
@@ -2912,9 +2915,9 @@ elif t["nav"][8] in sec_name:
     st.markdown("#### "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
     import plotly.graph_objects as go
 
-    gmins = [72, 58, 42, 85, 380]
-    gmaxs = [85, 72, 58, 110, 450]
-    gavgs = [78, 65, 50, 95, 415]
+    gmins = [88, 75, 58, 88, 390]
+    gmaxs = [105, 90, 75, 115, 460]
+    gavgs = [95, 82, 65, 100, 425]
     bar_colors = ["#3d7a55","#3d7a55","#3d7a55","#3d7a55","#3d7a55"]
 
     _grade_lbls = (
