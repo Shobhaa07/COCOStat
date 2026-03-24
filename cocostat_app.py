@@ -6,6 +6,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
+from streamlit_autorefresh import st_autorefresh
+st_autorefresh(interval=30000, key="cocostat_refresh")
 
 st.set_page_config(
     page_title="COCOStat",
@@ -50,7 +52,7 @@ def _clean(df, numeric_col):
     mask = df[numeric_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))
     return df[mask].copy()
 
-@st.cache_data
+@st.cache_data(ttl=30)
 def load_data():
     """Load price, forecast and weekly data from CDA/HARTI dataset."""
     path = _get_dataset_path()
@@ -85,7 +87,7 @@ def load_data():
     })
     return hist, forecast, weekly
 
-@st.cache_data
+@st.cache_data(ttl=30)
 def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
@@ -100,7 +102,7 @@ def load_weather_data():
         "year": raw["Year Number"].astype(int).values,
     })
 
-@st.cache_data
+@st.cache_data(ttl=30)
 def load_export_data():
     """Load export revenue and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
@@ -130,7 +132,7 @@ def load_export_data():
     })
     return export_df, destinations
 
-@st.cache_data
+@st.cache_data(ttl=30)
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
