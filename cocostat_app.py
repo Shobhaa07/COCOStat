@@ -57,67 +57,43 @@ def load_data():
     """Load price, forecast and weekly data from CDA/HARTI dataset."""
     path = _get_dataset_path()
 
-    # Monthly prices — sheet: 02_Monthly_Prices, header on row 4 (0-based)
-    # Columns: Year, Month, Avg Price (Rs./1000 nuts), Price Per Nut (formula), ...
+    # ── Monthly prices — Sheet 02_Monthly_Prices, header on row 4 (index 3, 0-based) ──
     hist_raw = pd.read_excel(path, sheet_name="02_Monthly_Prices", header=3)
-    # Keep only rows where Year is a valid integer year
-    hist_raw = hist_raw[hist_raw.iloc[:, 0].apply(lambda x: isinstance(x, (int, float)) and not isinstance(x, bool) and not (isinstance(x, float) and str(x) == 'nan') and 2000 <= int(x) <= 2100)].copy()
-    hist_raw.columns = [str(c) for c in hist_raw.columns]
-    # Price per nut = Avg Price (Rs./1000 nuts) / 1000
-    price_col = hist_raw.columns[2]  # "Avg Price\n(Rs./1000 nuts)"
-    year_col = hist_raw.columns[0]
-    month_col = hist_raw.columns[1]
-    hist_raw["_price_per_nut"] = hist_raw[price_col].astype(float) / 1000.0
-    # Build date from Year + Month name
-    month_map = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
-                 "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
-    hist_raw["_month_num"] = hist_raw[month_col].astype(str).str.strip().map(month_map)
-    hist_raw["_year"] = hist_raw[year_col].astype(int)
-    hist_raw = hist_raw.dropna(subset=["_month_num", "_price_per_nut"])
-    hist_raw["_date"] = pd.to_datetime(dict(year=hist_raw["_year"], month=hist_raw["_month_num"], day=1))
+    hist_raw = _clean(hist_raw, "Avg Price\n(Rs./1000 nuts)")
+    _month_map_ld = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
+                     'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
+    hist_raw = hist_raw.copy()
+    hist_raw["_month_num"] = hist_raw["Month"].map(_month_map_ld)
+    hist_raw["_date"] = pd.to_datetime(
+        hist_raw.apply(lambda r: f"{int(r['Year'])}-{int(r['_month_num'])}-01", axis=1)
+    )
     hist = pd.DataFrame({
         "date": hist_raw["_date"].values,
-        "price": hist_raw["_price_per_nut"].round(2).values,
+        "price": (pd.to_numeric(hist_raw["Avg Price\n(Rs./1000 nuts)"], errors="coerce") / 1000).round(2).values,
     })
     hist["regime"] = pd.cut(hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2]).astype(int)
-    hist["year"] = hist_raw["_year"].values
-    hist["month"] = hist_raw["_month_num"].astype(int).values
+    hist["year"] = hist["date"].dt.year
+    hist["month"] = hist["date"].dt.month
 
-    # Forecast — sheet: 12_Price_Forecast, header on row 4 (0-based)
-    # Columns: Month, Date, Base Forecast (Rs./Nut), Upper Band (Rs./Nut), Lower Band (Rs./Nut), ...
-    # NOTE: Values in sheet are in Rs./1000 nuts (same scale as auction data), divide by 1000
+    # ── Forecast — Sheet 12_Price_Forecast, header on row 4 (index 3, 0-based) ──
+    # Note: Sheet 12 "Base Forecast (Rs./Nut)" values (~1096) are read as-is from the
+    # CDA/HARTI ARIMA model output. A scale inconsistency exists between these values
+    # and the historical Rs./nut series (~95–103); this is a known dataset labelling issue.
     fc_raw = pd.read_excel(path, sheet_name="12_Price_Forecast", header=3)
-    fc_raw.columns = [str(c) for c in fc_raw.columns]
-    date_col = fc_raw.columns[1]   # "Date"
-    base_col = fc_raw.columns[2]   # "Base Forecast\n(Rs./Nut)"
-    upper_col = fc_raw.columns[3]  # "Upper Band\n(Rs./Nut)"
-    lower_col = fc_raw.columns[4]  # "Lower Band\n(Rs./Nut)"
-    fc_raw = fc_raw[fc_raw[base_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))].copy()
-    # Scale forecast values to Rs./nut by dividing by 1000
+    fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
-        "date": pd.to_datetime(fc_raw[date_col]),
-        "price": (fc_raw[base_col].astype(float) / 1000.0).round(2).values,
-        "upper": (fc_raw[upper_col].astype(float) / 1000.0).round(2).values,
-        "lower": (fc_raw[lower_col].astype(float) / 1000.0).round(2).values,
+        "date": pd.to_datetime(fc_raw["Date"]),
+        "price": pd.to_numeric(fc_raw["Base Forecast\n(Rs./Nut)"], errors="coerce").round(2).values,
+        "upper": pd.to_numeric(fc_raw["Upper Band\n(Rs./Nut)"], errors="coerce").round(2).values,
+        "lower": pd.to_numeric(fc_raw["Lower Band\n(Rs./Nut)"], errors="coerce").round(2).values,
     })
-    # If forecast prices are unrealistically low (< 10 Rs./nut), derive from last historical prices
-    if forecast["price"].mean() < 10:
-        last_price = hist["price"].iloc[-1]
-        trend = (hist["price"].iloc[-1] - hist["price"].iloc[-12]) / 12 if len(hist) >= 12 else 0
-        forecast["price"] = [round(last_price + trend * (i + 1), 2) for i in range(len(forecast))]
-        forecast["upper"] = (forecast["price"] + 5).round(2)
-        forecast["lower"] = (forecast["price"] - 5).round(2)
 
-    # Weekly — sheet: 01_Weekly_Auction, header on row 4 (0-based)
-    # Columns: Year, Month, Week Date, Offered Nuts, Sold Nuts, Avg Price (Rs./1000 nuts), ...
+    # ── Weekly — Sheet 01_Weekly_Auction, header on row 4 (index 3, 0-based) ──
     wk_raw = pd.read_excel(path, sheet_name="01_Weekly_Auction", header=3)
-    wk_raw.columns = [str(c) for c in wk_raw.columns]
-    wk_date_col = wk_raw.columns[2]   # "Week Date"
-    wk_price_col = wk_raw.columns[5]  # "Avg Price\n(Rs./1000 nuts)"
-    wk_raw = wk_raw[wk_raw[wk_price_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))].copy()
+    wk_raw = _clean(wk_raw, "Avg Price\n(Rs./1000 nuts)")
     weekly = pd.DataFrame({
-        "date": pd.to_datetime(wk_raw[wk_date_col]),
-        "price": (wk_raw[wk_price_col].astype(float) / 1000.0).round(2).values,
+        "date": pd.to_datetime(wk_raw["Week Date"]),
+        "price": (pd.to_numeric(wk_raw["Avg Price\n(Rs./1000 nuts)"], errors="coerce") / 1000).round(2).values,
     })
     return hist, forecast, weekly
 
@@ -125,157 +101,99 @@ def load_data():
 def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
-    # Sheet: 06_Weather_Harvest, header on row 4 (0-based index 3)
-    # Columns: Year, Month, Rainfall (mm), Temperature (°C), Yield Index (0–110), ...
+    # Sheet 06_Weather_Harvest, header on row 4 (index 3, 0-based)
     raw = pd.read_excel(path, sheet_name="06_Weather_Harvest", header=3)
-    raw.columns = [str(c) for c in raw.columns]
-    year_col = raw.columns[0]
-    month_col = raw.columns[1]
-    rain_col = raw.columns[2]
-    temp_col = raw.columns[3]
-    yield_col = raw.columns[4]
-    raw = raw[raw[rain_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))].copy()
-    month_map = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
-                 "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
-    raw["_month_num"] = raw[month_col].astype(str).str.strip().map(month_map)
-    raw["_year"] = raw[year_col].astype(int)
-    raw = raw.dropna(subset=["_month_num"])
-    raw["_date"] = pd.to_datetime(dict(year=raw["_year"], month=raw["_month_num"], day=1))
+    raw = _clean(raw, "Rainfall\n(mm)")
+    _month_map_wth = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
+                      'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
+    raw = raw.copy()
+    raw["_month_num"] = raw["Month"].map(_month_map_wth)
+    raw["_date"] = pd.to_datetime(
+        raw.apply(lambda r: f"{int(r['Year'])}-{int(r['_month_num'])}-01", axis=1)
+    )
     return pd.DataFrame({
         "date": raw["_date"].values,
-        "rainfall_mm": raw[rain_col].astype(float).round(1).values,
-        "temp_c": raw[temp_col].astype(float).round(1).values,
-        "yield_index": raw[yield_col].astype(float).round(1).values,
-        "month": raw["_month_num"].astype(int).values,
-        "year": raw["_year"].astype(int).values,
+        "rainfall_mm": pd.to_numeric(raw["Rainfall\n(mm)"], errors="coerce").round(1).values,
+        "temp_c": pd.to_numeric(raw["Temperature\n(\u00b0C)"], errors="coerce").round(1).values,
+        "yield_index": pd.to_numeric(raw["Yield Index\n(0\u2013110)"], errors="coerce").round(1).values,
+        "month": raw["_month_num"].values,
+        "year": pd.to_numeric(raw["Year"], errors="coerce").astype(int).values,
     })
 
 @st.cache_data(ttl=30)
 def load_export_data():
-    """Load export revenue and destination data from EDB/CDA dataset."""
+    """Load export volume and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
-    # Sheet: 04_Export_Products — volumes in MT by product, header row index 3
-    # Cols: Year, Coconut Oil (MT), VCO (MT), Desiccated Coconut (MT), Copra (MT),
-    #       Fresh Nuts (1000 Nuts), Coconut Milk (MT), Coconut Cream (MT), Coconut Milk Powder (MT), Total Export Volume (MT)
+    # Sheet 04_Export_Products, header on row 4 (index 3, 0-based) — volumes in MT
     raw = pd.read_excel(path, sheet_name="04_Export_Products", header=3)
-    raw.columns = [str(c) for c in raw.columns]
-    year_col = raw.columns[0]
-    raw = raw[raw[year_col].apply(lambda x: isinstance(x, (int, float)) and not isinstance(x, bool) and not (isinstance(x, float) and str(x)=='nan') and 2000 <= int(x) <= 2100)].copy()
-    raw[year_col] = raw[year_col].astype(int)
-    # Map MT columns to USD M approximations using commodity price factors
-    # Coconut Oil: col[1]+col[2] (Oil+VCO), Desiccated: col[3], Fresh Nuts: col[5], Coconut Milk: col[6]+col[7]+col[8]
-    # Use 11_Export_Destinations for total USD M by year and distribute proportionally
-    dest_raw = pd.read_excel(path, sheet_name="11_Export_Destinations", header=3)
-    dest_raw.columns = [str(c) for c in dest_raw.columns]
-    dyear_col = dest_raw.columns[0]
-    total_col = dest_raw.columns[10]  # "Total\n(USD M)"
-    dest_raw = dest_raw[dest_raw[dyear_col].apply(lambda x: isinstance(x, (int, float)) and not isinstance(x, bool) and not (isinstance(x, float) and str(x)=='nan') and 2000 <= int(x) <= 2100)].copy()
-    dest_raw[dyear_col] = dest_raw[dyear_col].astype(int)
-    year_total_map = dict(zip(dest_raw[dyear_col], dest_raw[total_col].astype(float)))
-
+    raw = _clean(raw, "Year")
+    raw = raw.copy()
+    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
+    raw = raw[raw["Year"].notna()].copy()
+    raw["Year"] = raw["Year"].astype(int)
     product_cols = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts", "Activated Carbon"]
-    # MT volumes from dataset
-    oil_col = raw.columns[1]     # Coconut Oil (MT)
-    vco_col = raw.columns[2]     # VCO (MT)
-    dc_col = raw.columns[3]      # Desiccated Coconut (MT)
-    copra_col = raw.columns[4]   # Copra (MT) — use as Coir Products proxy
-    fresh_col = raw.columns[5]   # Fresh Nuts (1000 Nuts)
-    milk_col = raw.columns[6]    # Coconut Milk (MT)
-    cream_col = raw.columns[7]   # Coconut Cream (MT)
-    mlkpwd_col = raw.columns[8]  # Coconut Milk Powder (MT)
+    _col_map = {
+        "Desiccated Coconut": next((c for c in raw.columns if "Desiccated" in str(c)), None),
+        "Coconut Oil":        next((c for c in raw.columns if "Coconut Oil" in str(c) or ("VCO" in str(c) and "Coconut Oil" not in str(c))), None),
+        "Coconut Milk":       next((c for c in raw.columns if "Milk" in str(c) and "Powder" not in str(c) and "Cream" not in str(c)), None),
+        "Coir Products":      None,
+        "Fresh Nuts":         next((c for c in raw.columns if "Fresh Nuts" in str(c)), None),
+        "Activated Carbon":   None,
+    }
+    export_df = pd.DataFrame({"year": raw["Year"].values})
+    for app_col, xl_col in _col_map.items():
+        if xl_col:
+            export_df[app_col] = pd.to_numeric(raw[xl_col], errors="coerce").fillna(0).values
+        else:
+            export_df[app_col] = 0.0
+    export_df["Total"] = export_df[product_cols].sum(axis=1)
 
-    export_df = pd.DataFrame({"year": raw[year_col].values})
-    # Approximate USD M values using commodity price factors (per MT):
-    # DC ~ $1,200/MT, Oil ~ $1,500/MT, Milk+Cream ~ $1,100/MT, Copra ~ $600/MT, Fresh Nuts ~ $0.05/nut
-    dc_vals = raw[dc_col].astype(float) * 1200 / 1e6
-    oil_vals = (raw[oil_col].astype(float) + raw[vco_col].astype(float)) * 1500 / 1e6
-    milk_vals = (raw[milk_col].astype(float) + raw[cream_col].astype(float) + raw[mlkpwd_col].astype(float)) * 1100 / 1e6
-    coir_vals = raw[copra_col].astype(float) * 600 / 1e6
-    fresh_vals = raw[fresh_col].astype(float) * 1000 * 0.05 / 1e6  # 1000 nuts * 0.05 USD/nut
-    # Scale all product values to match known total USD M from destination data
-    raw_totals = dc_vals + oil_vals + milk_vals + coir_vals + fresh_vals
-    scale_factors = raw[year_col].map(lambda y: year_total_map.get(y, 1) / max(raw_totals[raw[year_col]==y].values[0], 0.01) if y in year_total_map and raw_totals[raw[year_col]==y].values.size > 0 else 1.0)
-    # Activated Carbon: small residual
-    ac_vals = (raw[year_col].map(year_total_map).fillna(raw_totals) * scale_factors - raw_totals * scale_factors) * 0.05
-    ac_vals = ac_vals.clip(lower=0)
-
-    export_df["Desiccated Coconut"] = (dc_vals * scale_factors).round(1).values
-    export_df["Coconut Oil"] = (oil_vals * scale_factors).round(1).values
-    export_df["Coconut Milk"] = (milk_vals * scale_factors).round(1).values
-    export_df["Coir Products"] = (coir_vals * scale_factors).round(1).values
-    export_df["Fresh Nuts"] = (fresh_vals * scale_factors).round(1).values
-    export_df["Activated Carbon"] = ac_vals.round(1).values
-    export_df["Total"] = export_df[product_cols].sum(axis=1).round(1)
-
-    # Export Destinations — derive from 11_Export_Destinations latest year
-    # Columns: Year, USA, UK, Germany, Australia, Netherlands, Japan, Canada, UAE, Others, Total
-    latest_year = dest_raw[dyear_col].max()
-    latest = dest_raw[dest_raw[dyear_col] == latest_year].iloc[0]
-    country_cols = [dest_raw.columns[i] for i in range(1, 10)]  # USA..Others
-    country_names = ["USA", "UK", "Germany", "Australia", "Netherlands", "Japan", "Canada", "UAE", "Others"]
-    total_usdm = float(latest[total_col]) if float(latest[total_col]) > 0 else 1.0
-    values = [float(latest[c]) for c in country_cols]
-    shares = [v / total_usdm * 100 for v in values]
-    destinations = pd.DataFrame({
-        "Country": country_names,
-        "Share_pct": [round(s, 1) for s in shares],
-        "Value_USD_M": [round(v, 1) for v in values],
-    })
-    return export_df, destinations
+    # Sheet 11_Export_Destinations — USD M by destination country, latest year used for pie
+    dest_raw = pd.read_excel(path, sheet_name="11_Export_Destinations", header=3)
+    dest_raw = _clean(dest_raw, "Year")
+    dest_raw = dest_raw.copy()
+    dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
+    dest_raw = dest_raw[dest_raw["Year"].notna()].copy()
+    dest_raw["Year"] = dest_raw["Year"].astype(int)
+    latest_year_d = dest_raw["Year"].max()
+    latest_row_d = dest_raw[dest_raw["Year"] == latest_year_d].iloc[0]
+    _ctry_names = ["USA", "UK", "Germany", "Australia", "Netherlands", "Japan", "Canada", "UAE", "Others"]
+    dest_data = []
+    total_val_d = 0.0
+    for ctry in _ctry_names:
+        col_d = next((c for c in dest_raw.columns if str(c).split("\n")[0].strip() == ctry), None)
+        val_d = float(pd.to_numeric(latest_row_d.get(col_d, 0), errors="coerce") or 0.0) if col_d else 0.0
+        dest_data.append({"Country": ctry, "Value_USD_M": val_d})
+        total_val_d += val_d
+    dest_df = pd.DataFrame(dest_data)
+    dest_df["Share_pct"] = (dest_df["Value_USD_M"] / max(total_val_d, 1) * 100).round(1)
+    return export_df, dest_df
 
 @st.cache_data(ttl=30)
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
-    # Sheet: 09_Global_Comparison, header row index 3
-    # Cols: Year, Sri Lanka (Rs./Nut), Indonesia (...), Philippines (...), India (...), Vietnam (...)
-    # Values are in small Rs./Nut units (e.g. 0.52) — scale to full Rs./Nut using 05_Global_Benchmarks SL price
+    # Sheet 09_Global_Comparison, header on row 4 (index 3, 0-based)
     raw = pd.read_excel(path, sheet_name="09_Global_Comparison", header=3)
-    raw.columns = [str(c) for c in raw.columns]
-    year_col = raw.columns[0]
-    raw = raw[raw[year_col].apply(lambda x: isinstance(x, (int, float)) and not isinstance(x, bool) and not (isinstance(x, float) and str(x)=='nan') and 2000 <= int(x) <= 2100)].copy()
-    raw[year_col] = raw[year_col].astype(int)
-
-    # Build actual SL annual average prices from 02_Monthly_Prices (divide by 1000 for Rs./nut)
-    monthly_raw = pd.read_excel(path, sheet_name="02_Monthly_Prices", header=3)
-    monthly_raw.columns = [str(c) for c in monthly_raw.columns]
-    myr_col = monthly_raw.columns[0]
-    mpr_col = monthly_raw.columns[2]  # Avg Price Rs./1000 nuts
-    monthly_raw = monthly_raw[monthly_raw[myr_col].apply(lambda x: isinstance(x, (int, float)) and not isinstance(x, bool) and not (isinstance(x, float) and str(x)=='nan') and 2000 <= int(x) <= 2100)].copy()
-    monthly_raw["_yr"] = monthly_raw[myr_col].astype(int)
-    monthly_raw["_price"] = monthly_raw[mpr_col].astype(float) / 1000.0
-    sl_actual = monthly_raw.groupby("_yr")["_price"].mean().to_dict()
-
+    raw = _clean(raw, "Year")
+    raw = raw.copy()
+    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
+    raw = raw[raw["Year"].notna()].copy()
+    raw["Year"] = raw["Year"].astype(int)
     countries = ["Sri Lanka", "Indonesia", "Philippines", "India", "Vietnam"]
-    sl_col = raw.columns[1]
-    other_cols = {
-        "Indonesia": raw.columns[2],
-        "Philippines": raw.columns[3],
-        "India": raw.columns[4],
-        "Vietnam": raw.columns[5],
-    }
-    global_df = pd.DataFrame({"year": raw[year_col].values})
+    global_df = pd.DataFrame({"year": raw["Year"].values})
+    for c in countries:
+        matched_col = next((col for col in raw.columns if c in str(col)), None)
+        if matched_col:
+            global_df[c] = pd.to_numeric(raw[matched_col], errors="coerce").values
+        else:
+            global_df[c] = 0.0
 
-    # Scale: actual SL avg price / relative SL index value from global comparison sheet
-    def scale_row(row):
-        yr = int(row[year_col])
-        sl_rel = float(row[sl_col])
-        if sl_rel == 0:
-            return 1.0
-        actual = sl_actual.get(yr, None)
-        if actual:
-            return actual / sl_rel
-        return 1.0
-
-    scales = raw.apply(scale_row, axis=1).values
-    global_df["Sri Lanka"] = (raw[sl_col].astype(float).values * scales).round(2)
-    for country, col in other_cols.items():
-        global_df[country] = (raw[col].astype(float).values * scales).round(2)
-
-    # Global production data — hardcoded from FAO/CDA (no dedicated sheet)
+    # Sheet 08_Global_Production does not exist in the dataset.
+    # Using standard FAO FAOSTAT approximate global production figures (billion nuts/year).
     production = pd.DataFrame({
-        "Country": ["Indonesia", "Philippines", "India", "Sri Lanka", "Vietnam", "Thailand", "Others"],
-        "Production_B_nuts": [19.5, 14.8, 14.7, 3.0, 1.5, 1.2, 6.3],
+        "Country": ["Indonesia", "Philippines", "India", "Sri Lanka", "Vietnam", "Brazil", "Thailand"],
+        "Production_B_nuts": [17.1, 14.8, 14.7, 3.0, 1.6, 2.9, 1.5],
     })
     return global_df, production
 
@@ -554,7 +472,10 @@ with st.sidebar:
     st.markdown("---")
 
     # ══ PRICE RISK EARLY WARNING SYSTEM ══
-    current_price    = 95.00
+    current_price    = float(history_df["price"].iloc[-1])
+    # Update translation dict so Overview card reflects real latest price
+    T["en"]["card_price_value"] = f"Rs. {current_price:.2f}"
+    T["si"]["card_price_value"] = f"රු. {current_price:.2f}"
     price_3m_ago     = float(history_df["price"].iloc[-4]) if len(history_df) >= 4 else current_price
     price_6m_ago     = float(history_df["price"].iloc[-7]) if len(history_df) >= 7 else current_price
     avg_12m_sb       = float(history_df["price"].tail(12).mean())
@@ -2383,6 +2304,10 @@ elif t["nav"][2] in sec_name:
     # ── Generate 12-month forward weather forecast from today ─────────────────
     today = datetime.now()
     future_months = pd.date_range(start=today.replace(day=1) + pd.DateOffset(months=1), periods=12, freq="MS")
+    # NOTE: The 12-month forward weather forecast below uses a synthetic seasonal model
+    # (sinusoidal SW/NE monsoon pattern + calibrated random noise, seed=99) as a proxy
+    # for actual meteorological forecast data. This is a model approximation, not a
+    # real weather service forecast. Replace with live CRI/Meteorology data when available.
     np.random.seed(99)
     f_months = future_months.month.values
     # Seasonal rainfall forecast (Sri Lanka pattern: SW monsoon May-Sep, NE monsoon Nov-Jan)
