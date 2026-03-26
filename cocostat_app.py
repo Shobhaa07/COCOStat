@@ -84,7 +84,7 @@ def load_data():
         "date": pd.to_datetime(fc_raw["Date"]),
         "price": pd.to_numeric(fc_raw["Base Forecast\n(Rs./Nut)"], errors="coerce").round(2).values,
         "upper": pd.to_numeric(fc_raw["Upper Band\n(Rs./Nut)\n(+5 Rs.)"] if "Upper Band\n(Rs./Nut)\n(+5 Rs.)" in fc_raw.columns else fc_raw["Upper Band\n(Rs./Nut)"], errors="coerce").round(2).values,
-        "lower": pd.to_numeric(fc_raw["Lower Band\n(Rs./Nut)"], errors="coerce").round(2).values,
+        "lower": pd.to_numeric(fc_raw["Lower Band\n(Rs./Nut)\n(-5 Rs.)"] if "Lower Band\n(Rs./Nut)\n(-5 Rs.)" in fc_raw.columns else fc_raw["Lower Band\n(Rs./Nut)"], errors="coerce").round(2).values,
     })
 
     # ── Weekly — Sheet 01_Weekly_Auction, header on row 4 (index 3, 0-based) ──
