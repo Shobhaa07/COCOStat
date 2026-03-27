@@ -7,7 +7,8 @@ from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
 from streamlit_autorefresh import st_autorefresh
-st_autorefresh(interval=30000, key="cocostat_refresh")
+if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
+    st_autorefresh(interval=300000, key="datarefresh")
 
 st.set_page_config(
     page_title="COCOStat",
