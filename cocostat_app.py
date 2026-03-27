@@ -7,7 +7,6 @@ from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
 from streamlit_autorefresh import st_autorefresh
-st_autorefresh(interval=30000, key="cocostat_refresh")
 
 st.set_page_config(
     page_title="COCOStat",
@@ -739,6 +738,9 @@ REGIME_EMOJI = ["🟢","🟡","🔴"]
 # ─────────────────────────────────────────────
 sec_name = section.split(" ", 1)[1] if " " in section else section
 
+if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
+    st_autorefresh(interval=300000, key="cocostat_refresh")
+    
 # ══ OVERVIEW & HISTORY ═════════════════════════════════════════════════════
 if t["nav"][0] in sec_name:
     c1,c2,c3,c4 = st.columns(4)
