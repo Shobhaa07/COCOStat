@@ -9,6 +9,18 @@ import io
 from streamlit_autorefresh import st_autorefresh
 if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
     st_autorefresh(interval=300000, key="datarefresh")
+def safe_median(series):
+    series = series.replace([np.inf, -np.inf], np.nan).dropna()
+    if len(series) == 0:
+        return 0
+    return series.median()
+
+def trend_arrow(val, threshold=2):
+    if val > threshold:
+        return "↑"
+    elif val < -threshold:
+        return "↓"
+    return "→"
 
 st.set_page_config(
     page_title="COCOStat",
