@@ -1053,7 +1053,7 @@ elif t["nav"][6] in sec_name:
             col.plotly_chart(fig_g,use_container_width=True)
     divider()
     # ── Strategic Recommendations ───────────────────────────────────────────────
-    import plotly.graph_objects as go
+    
 
     # ── Hero banner ────────────────────────────────────────────────────────────
     _hero_title = " Strategic Decision Support Centre" if lang=="en" else " උපාය මාර්ගික තීරණ සහාය මධ්‍යස්ථානය"
@@ -3016,7 +3016,7 @@ elif t["nav"][8] in sec_name:
 
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
     st.markdown("#### "+("Current Auction Price Benchmarks (Rs. per nut)" if lang=="en" else "වත්මන් වෙන්දේසි මිල දණ්ඩ (රු. ගෙඩියකට)"))
-    import plotly.graph_objects as go
+   
 
     gmins = [88, 75, 58, 88, 390]
     gmaxs = [105, 90, 75, 115, 460]
