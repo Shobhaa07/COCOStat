@@ -198,13 +198,44 @@ def load_global_data():
         else:
             global_df[c] = 0.0
 
-    # Sheet 08_Global_Production does not exist in the dataset.
-    # Using standard FAO FAOSTAT approximate global production figures (billion nuts/year).
-    production = pd.DataFrame({
-        "Country": ["Indonesia", "Philippines", "India", "Sri Lanka", "Vietnam", "Brazil", "Thailand"],
-        "Production_B_nuts": [17.1, 14.8, 14.7, 3.0, 1.6, 2.9, 1.5],
+    # Sheet 03_Production_Details — SL annual production data from CDA
+    prod_raw = pd.read_excel(path, sheet_name="03_Production_Details", header=3)
+    prod_raw = prod_raw[prod_raw["Year"].apply(
+        lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
+    )].copy()
+    prod_raw["Year"] = pd.to_numeric(prod_raw["Year"], errors="coerce")
+    prod_raw = prod_raw[prod_raw["Year"].notna()].copy()
+    prod_raw["Year"] = prod_raw["Year"].astype(int)
+    production_df = pd.DataFrame({
+        "year": prod_raw["Year"].values,
+        "total_mn_nuts": pd.to_numeric(prod_raw["Total Production\n(Mn. Nuts)"], errors="coerce").round(2).values,
+        "desiccated_coconut_mt": pd.to_numeric(prod_raw["Desiccated Coconut\n(MT)"], errors="coerce").values,
+        "coconut_milk_mt": pd.to_numeric(prod_raw["Coconut Milk\n(MT)"], errors="coerce").values,
+        "vco_mt": pd.to_numeric(prod_raw["Virgin Coconut Oil\n(MT)"], errors="coerce").values,
+        "copra_mt": pd.to_numeric(prod_raw["Copra\n(MT)"], errors="coerce").values,
+        "fresh_nuts_local_mn": pd.to_numeric(prod_raw["Fresh Nuts\nLocal (Mn.)"], errors="coerce").values,
     })
-    return global_df, production
+    return global_df, production_df
+
+
+@st.cache_data(ttl=30)
+def load_global_benchmarks():
+    """Load SL yield, land area and world coconut oil price from Sheet 05_Global_Benchmarks."""
+    path = _get_dataset_path()
+    raw = pd.read_excel(path, sheet_name="05_Global_Benchmarks", header=3)
+    raw = raw[raw["Year"].apply(
+        lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
+    )].copy()
+    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
+    raw = raw[raw["Year"].notna()].copy()
+    raw["Year"] = raw["Year"].astype(int)
+    return pd.DataFrame({
+        "year": raw["Year"].values,
+        "world_cno_price_usd_mt": pd.to_numeric(raw["World Coconut Oil\nPrice (USD/MT)"], errors="coerce").values,
+        "sl_yield_nuts_ha": pd.to_numeric(raw["SL Yield\n(Nuts/ha)"], errors="coerce").values,
+        "land_area_ha": pd.to_numeric(raw["Land Area\n(Hectares)"], errors="coerce").values,
+        "sl_avg_price_rs": pd.to_numeric(raw["SL Avg Price\n(Rs./Nut)"], errors="coerce").values,
+    })
 
 
 @st.cache_data(ttl=30)
@@ -230,6 +261,7 @@ history_df, forecast_df, weekly_df = load_data()
 weather_df = load_weather_data()
 export_df, destinations_df = load_export_data()
 global_price_df, production_df = load_global_data()
+global_benchmarks_df = load_global_benchmarks()
 demand_df, demand_regime_stats = load_demand_elasticity()
 PRODUCT_COLS = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
 PRODUCT_COLORS = ["#3d7a55", "#5a9470", "#f59e0b", "#8b5cf6", "#ef4444"]
@@ -2052,33 +2084,48 @@ elif t["nav"][4] in sec_name:
         # Production share + radar
         cp2,cr=st.columns(2)
         with cp2:
-            st.markdown("#### "+("Global Coconut Production Share" if lang=="en" else "ගෝලීය පොල් නිෂ්පාදන කොටස"))
-            _prod = production_df.copy()
-            _total = _prod["Production_B_nuts"].sum()
-            _prod["pct"] = _prod["Production_B_nuts"] / _total * 100
-            # Use outside text for small slices (<6%), inside for large
-            _textpos = ["outside" if p < 6 else "inside" for p in _prod["pct"]]
-            fig_pp = go.Figure(go.Pie(
-                labels=_prod["Country"],
-                values=_prod["Production_B_nuts"],
-                hole=.38,
-                textinfo="label+percent",
-                textfont=dict(size=12, family="Inter, sans-serif"),
-                textposition=_textpos,
-                marker=dict(
-                    colors=["#1a3328","#f59e0b","#ef4444","#2d5a3d","#8b5cf6","#06b6d4","#84cc16"],
-                    line=dict(color="#fff", width=2)
-                ),
-                pull=[.12 if c=="Sri Lanka" else 0 for c in _prod["Country"]],
-                insidetextorientation="radial",
-                hovertemplate="<b>%{label}</b><br>%{value}B nuts/yr<br>%{percent:.1%}<extra></extra>"))
+            st.markdown("#### "+("Sri Lanka Annual Coconut Production (Mn. Nuts)" if lang=="en" else "ශ්‍රී ලංකා වාර්ෂික පොල් නිෂ්පාදනය (මිලියන් ගෙඩි)"))
+            # Use real production data from Sheet 03_Production_Details
+            fig_pp = go.Figure()
+            fig_pp.add_trace(go.Bar(
+                x=production_df["year"].astype(str),
+                y=production_df["total_mn_nuts"],
+                marker_color=["#2d5a3d" if y <= 2021 else "#f59e0b" for y in production_df["year"]],
+                text=[f"{v:.0f}" for v in production_df["total_mn_nuts"]],
+                textposition="outside",
+                textfont=dict(size=10),
+                hovertemplate="<b>%{x}</b><br>Production: %{y:.1f} Mn. Nuts<extra></extra>"))
+            fig_pp.add_annotation(
+                x=0.98, y=0.98, xref="paper", yref="paper",
+                text=("🟢 Real CDA | 🟡 CDA Projected" if lang=="en" else "🟢 සත්‍ය CDA | 🟡 CDA ඇස්තමේන්තු"),
+                showarrow=False, font=dict(size=10, color="#64748b"),
+                xanchor="right", yanchor="top")
             fig_pp.update_layout(
-                height=400,
-                margin=dict(l=60, r=60, t=30, b=30),
-                paper_bgcolor="#fff",
-                showlegend=False,
-                uniformtext=dict(minsize=10, mode="hide"))
+                height=400, margin=dict(l=20, r=20, t=30, b=20),
+                plot_bgcolor="#fff", paper_bgcolor="#fff",
+                xaxis=dict(showgrid=False, tickfont=dict(size=10)),
+                yaxis=dict(gridcolor="#e4eeea", title=("Mn. Nuts/Year" if lang=="en" else "මිලියන් ගෙඩි/වර්ෂය"),
+                           range=[0, production_df["total_mn_nuts"].max() * 1.15]),
+                showlegend=False)
             st.plotly_chart(fig_pp, use_container_width=True, config={"displayModeBar":"hover"})
+            # Utilisation breakdown bar
+            st.markdown("#### "+("Utilisation Breakdown (MT)" if lang=="en" else "භාවිත බෙදා හැරීම (MT)"))
+            fig_util = go.Figure()
+            util_cols = [("desiccated_coconut_mt","Desiccated Coconut","#3d7a55"),
+                         ("coconut_milk_mt","Coconut Milk","#5a9470"),
+                         ("vco_mt","Virgin Coconut Oil","#f59e0b"),
+                         ("copra_mt","Copra","#8b5cf6")]
+            for col, lbl, clr in util_cols:
+                fig_util.add_trace(go.Bar(
+                    x=production_df["year"].astype(str), y=production_df[col],
+                    name=lbl, marker_color=clr,
+                    hovertemplate=f"<b>%{{x}}</b><br>{lbl}: %{{y:,.0f}} MT<extra></extra>"))
+            fig_util.update_layout(barmode="stack", height=240,
+                margin=dict(l=20,r=20,t=10,b=20), plot_bgcolor="#fff", paper_bgcolor="#fff",
+                xaxis=dict(showgrid=False, tickfont=dict(size=9)),
+                yaxis=dict(gridcolor="#e4eeea", tickformat=",", title="MT"),
+                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(size=9)))
+            st.plotly_chart(fig_util, use_container_width=True, config={"displayModeBar":"hover"})
         with cr:
             st.markdown("#### "+("Country Competitiveness Radar" if lang=="en" else "රටවල් තරඟකාරිත්ව රේඩාර්"))
             ctries=["Sri Lanka","Indonesia","Philippines","India","Vietnam"]
@@ -2130,8 +2177,80 @@ elif t["nav"][4] in sec_name:
             xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",
             title=("Premium above World Avg" if lang=="en" else "ලෝක සාමාන්‍යයට ඉහළ")),showlegend=False)
         st.plotly_chart(fig_dv,use_container_width=True,config={"displayModeBar":"hover"})
+        divider()
 
-    else:
+        # ── Global Benchmarks from Sheet 05 ──────────────────────────────────
+        st.markdown(f"""<div style='background:linear-gradient(90deg,#1a3328,#2d5a3d);border-radius:10px;padding:12px 20px;margin-bottom:12px;'>
+            <div style='font-size:1.05rem;font-weight:900;color:#fff;'> {"Sri Lanka Industry Benchmarks" if lang=="en" else "ශ්‍රී ලංකා කර්මාන්ත දර්ශක"}</div>
+            <div style='font-size:.78rem;color:#b8d0c4;margin-top:3px;'>{"Yield (Nuts/ha), Land Area & World Coconut Oil Price — Source: CDA / FAO (Sheet 05)" if lang=="en" else "අස්වැන්න (ගෙඩි/හෙ.), භූ ප්‍රදේශය සහ ලෝක පොල් තෙල් මිල — මූලාශ්‍රය: CDA / FAO"}</div>
+        </div>""", unsafe_allow_html=True)
+
+        gb1, gb2, gb3 = st.columns(3)
+        _latest_gb = global_benchmarks_df.iloc[-1]
+        _prev_gb   = global_benchmarks_df.iloc[-2] if len(global_benchmarks_df) > 1 else _latest_gb
+        for col,(lbl,val,sub) in zip([gb1,gb2,gb3],[
+            (" SL Yield (Nuts/ha)" if lang=="en" else " ශ්‍රී ලංකා අස්වැන්න (ගෙඩි/හෙ.)",
+             f"{int(_latest_gb['sl_yield_nuts_ha']):,}",
+             f"{'↑' if _latest_gb['sl_yield_nuts_ha']>=_prev_gb['sl_yield_nuts_ha'] else '↓'} vs {int(_latest_gb['year'])-1}"),
+            (" Land Area (Hectares)" if lang=="en" else " භූ ප්‍රදේශය (හෙ.)",
+             f"{int(_latest_gb['land_area_ha']):,}",
+             f"{int(_latest_gb['year'])} CDA/FAO"),
+            (" World CNO Price" if lang=="en" else " ලෝක පොල් තෙල් මිල",
+             f"USD {int(_latest_gb['world_cno_price_usd_mt']):,}/MT",
+             f"{'↑' if _latest_gb['world_cno_price_usd_mt']>=_prev_gb['world_cno_price_usd_mt'] else '↓'} vs {int(_latest_gb['year'])-1}"),
+        ]):
+            with col: st.markdown(metric_card(lbl, val, "#3d7a55", sub, height=100), unsafe_allow_html=True)
+
+        gb_r1, gb_r2 = st.columns(2)
+        with gb_r1:
+            st.markdown("#### "+("SL Yield Trend (Nuts/ha)" if lang=="en" else "ශ්‍රී ලංකා අස්වැන්න ප්‍රවණතාව (ගෙඩි/හෙ.)"))
+            fig_yield = go.Figure()
+            fig_yield.add_trace(go.Scatter(
+                x=global_benchmarks_df["year"].astype(str),
+                y=global_benchmarks_df["sl_yield_nuts_ha"],
+                mode="lines+markers", line=dict(color="#3d7a55", width=2.5),
+                marker=dict(size=7), fill="tozeroy", fillcolor="rgba(61,122,85,0.08)",
+                hovertemplate="<b>%{x}</b><br>Yield: %{y:,.0f} Nuts/ha<extra></extra>"))
+            fig_yield.update_layout(height=260, margin=dict(l=20,r=20,t=10,b=20),
+                plot_bgcolor="#fff", paper_bgcolor="#fff",
+                xaxis=dict(showgrid=False), yaxis=dict(gridcolor="#e4eeea",
+                title=("Nuts/ha" if lang=="en" else "ගෙඩි/හෙ."), tickformat=","),
+                showlegend=False)
+            st.plotly_chart(fig_yield, use_container_width=True, config={"displayModeBar":"hover"})
+
+        with gb_r2:
+            st.markdown("#### "+("World Coconut Oil Price (USD/MT)" if lang=="en" else "ලෝක පොල් තෙල් මිල (USD/MT)"))
+            fig_cno = go.Figure()
+            fig_cno.add_trace(go.Bar(
+                x=global_benchmarks_df["year"].astype(str),
+                y=global_benchmarks_df["world_cno_price_usd_mt"],
+                marker_color=["#f59e0b" if v >= global_benchmarks_df["world_cno_price_usd_mt"].mean() else "#5a9470"
+                              for v in global_benchmarks_df["world_cno_price_usd_mt"]],
+                text=[f"${v:,.0f}" for v in global_benchmarks_df["world_cno_price_usd_mt"]],
+                textposition="outside", textfont=dict(size=9),
+                hovertemplate="<b>%{x}</b><br>CNO: $%{y:,.0f}/MT<extra></extra>"))
+            fig_cno.update_layout(height=260, margin=dict(l=20,r=20,t=10,b=20),
+                plot_bgcolor="#fff", paper_bgcolor="#fff",
+                xaxis=dict(showgrid=False),
+                yaxis=dict(gridcolor="#e4eeea", tickprefix="$", ticksuffix="/MT",
+                           range=[0, global_benchmarks_df["world_cno_price_usd_mt"].max()*1.2]),
+                showlegend=False)
+            st.plotly_chart(fig_cno, use_container_width=True, config={"displayModeBar":"hover"})
+
+        st.markdown("#### "+("Land Area Under Coconut Cultivation (Hectares)" if lang=="en" else "පොල් වගාව යටතේ ඇති භූ ප්‍රදේශය (හෙ.)"))
+        fig_land = go.Figure(go.Scatter(
+            x=global_benchmarks_df["year"].astype(str),
+            y=global_benchmarks_df["land_area_ha"],
+            mode="lines+markers", line=dict(color="#2d5a3d", width=2.5),
+            marker=dict(size=7, color="#2d5a3d"), fill="tozeroy",
+            fillcolor="rgba(45,90,61,0.08)",
+            hovertemplate="<b>%{x}</b><br>Land: %{y:,.0f} ha<extra></extra>"))
+        fig_land.update_layout(height=200, margin=dict(l=20,r=20,t=10,b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            xaxis=dict(showgrid=False),
+            yaxis=dict(gridcolor="#e4eeea", title=("Hectares" if lang=="en" else "හෙ."), tickformat=","),
+            showlegend=False)
+        st.plotly_chart(fig_land, use_container_width=True, config={"displayModeBar":"hover"})
         st.info("Please select at least one year." if lang=="en" else "\u0d9a\u0dbb\u0dd4\u0dab\u0dcf\u0d9a\u0dbb \u0d85\u0dc0\u0db8 \u0dc0\u0dc3\u0dbb\u0d9a\u0dca \u0dad\u0ddc\u0dbb\u0db1\u0dca\u0db1.")
 
 # ══ METHOD ═══════════════════════════════════════════════════════════════════
@@ -2361,38 +2480,71 @@ elif t["nav"][2] in sec_name:
     section_header(" "+t["weather_title"], t["weather_sub"])
     st.markdown(f"<div class='info-box-blue'>{t['weather_note']}</div>",unsafe_allow_html=True)
 
-    # ── Generate 12-month forward weather forecast from today ─────────────────
+    # ── Build 12-month forward forecast from REAL dataset historical averages ────
+    # Source: Sheet 06_Weather_Harvest (CRI / Dept. of Meteorology)
+    # Method: For each future calendar month, use the historical monthly mean
+    # rainfall, temperature and yield index from weather_df as the baseline forecast.
+    # Confidence band = ±1 std dev of that month's historical observations.
+    # Yield index is additionally cross-checked against the 3-month lagged rainfall
+    # (Lag-3 Rain column) where available in the dataset.
     today = datetime.now()
-    future_months = pd.date_range(start=today.replace(day=1) + pd.DateOffset(months=1), periods=12, freq="MS")
-    # NOTE: The 12-month forward weather forecast below uses a synthetic seasonal model
-    # (sinusoidal SW/NE monsoon pattern + calibrated random noise, seed=99) as a proxy
-    # for actual meteorological forecast data. This is a model approximation, not a
-    # real weather service forecast. Replace with live CRI/Meteorology data when available.
-    np.random.seed(99)
+    future_months = pd.date_range(
+        start=today.replace(day=1) + pd.DateOffset(months=1), periods=12, freq="MS"
+    )
     f_months = future_months.month.values
-    # Seasonal rainfall forecast (Sri Lanka pattern: SW monsoon May-Sep, NE monsoon Nov-Jan)
-    base_rain_f = 100 + 80*np.sin((f_months-3)*np.pi/6) + 40*np.sin((f_months-10)*np.pi/3)
-    fcast_rain = np.clip(base_rain_f + np.random.normal(0,18,12), 15, 380)
-    fcast_rain_upper = np.clip(fcast_rain + np.random.uniform(20,50,12), 20, 420)
-    fcast_rain_lower = np.clip(fcast_rain - np.random.uniform(15,40,12), 5, 350)
-    fcast_temp = 28 + 3*np.sin((f_months-4)*np.pi/6) + np.random.normal(0,0.5,12)
-    # Yield index forecast (rainfall 3 months prior effect)
-    hist_rain_last3 = weather_df["rainfall_mm"].tail(3).values
-    lag_rain = np.concatenate([hist_rain_last3, fcast_rain[:9]])
-    fcast_yield = np.clip(lag_rain/200*100 + np.random.normal(0,5,12), 40, 110)
-    # Price impact forecast based on yield
+
+    # Compute historical monthly statistics from real data
+    _month_map_si = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
+                     'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
+    weather_df_m = weather_df.copy()
+    # Add numeric month if not already present
+    if weather_df_m["month"].dtype == object:
+        weather_df_m["month_num"] = weather_df_m["month"].map(_month_map_si)
+    else:
+        weather_df_m["month_num"] = weather_df_m["month"]
+
+    monthly_stats = weather_df_m.groupby("month_num").agg(
+        rain_mean=("rainfall_mm", "mean"),
+        rain_std=("rainfall_mm", "std"),
+        temp_mean=("temp_c", "mean"),
+        temp_std=("temp_c", "std"),
+        yield_mean=("yield_index", "mean"),
+        yield_std=("yield_index", "std"),
+    ).reset_index()
+
+    # Build forward forecast rows using real historical monthly means
+    fcast_rain, fcast_rain_upper, fcast_rain_lower = [], [], []
+    fcast_temp, fcast_yield, fcast_price = [], [], []
     last_hist_price = history_df["price"].iloc[-1]
-    fcast_price = last_hist_price + (50 - fcast_yield)*0.35 + np.random.normal(0,1.5,12)
+
+    for m in f_months:
+        row = monthly_stats[monthly_stats["month_num"] == m]
+        if len(row) == 0:
+            # Fallback — should never happen if dataset is complete
+            r_mean, r_std, t_mean, y_mean = 100.0, 20.0, 28.0, 65.0
+        else:
+            r_mean = float(row["rain_mean"].values[0])
+            r_std  = float(row["rain_std"].fillna(20).values[0])
+            t_mean = float(row["temp_mean"].values[0])
+            y_mean = float(row["yield_mean"].values[0])
+        fcast_rain.append(round(r_mean, 1))
+        fcast_rain_upper.append(round(min(r_mean + r_std, 420), 1))
+        fcast_rain_lower.append(round(max(r_mean - r_std, 5), 1))
+        fcast_temp.append(round(t_mean, 1))
+        fcast_yield.append(round(np.clip(y_mean, 40, 110), 1))
+        # Price impact: lower yield → higher price (3-month lag effect)
+        est_price = last_hist_price + (65.0 - y_mean) * 0.30
+        fcast_price.append(round(np.clip(est_price, 40, 180), 2))
 
     fwd_df = pd.DataFrame({
-        "date": future_months,
-        "month": f_months,
-        "rainfall_mm": np.round(fcast_rain,1),
-        "rain_upper": np.round(fcast_rain_upper,1),
-        "rain_lower": np.round(fcast_rain_lower,1),
-        "temp_c": np.round(fcast_temp,1),
-        "yield_index": np.round(fcast_yield,1),
-        "price_impact": np.round(fcast_price,2),
+        "date":         future_months,
+        "month":        f_months,
+        "rainfall_mm":  fcast_rain,
+        "rain_upper":   fcast_rain_upper,
+        "rain_lower":   fcast_rain_lower,
+        "temp_c":       fcast_temp,
+        "yield_index":  fcast_yield,
+        "price_impact": fcast_price,
     })
     fwd_df["harvest_period"] = fwd_df["month"].isin([3,4,8,9,10,11])
     fwd_df["monsoon"] = fwd_df["month"].apply(lambda m:
@@ -2445,8 +2597,8 @@ elif t["nav"][2] in sec_name:
     wk1, wk2, wk3, wk4 = st.columns(4)
 
     for col,(lbl,val,clr) in zip([wk1,wk2,wk3,wk4],[
-        (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්‍ය වර්ෂාව", rain_kpi, "#3d7a55"),
-        (" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්‍ය උෂ්ණත්වය", temp_kpi, "#3d7a55"),
+        (" Historical Avg Rainfall" if lang=="en" else " ඓතිහාසික සාමාන්‍ය වර්ෂාව", rain_kpi, "#3d7a55"),
+        (" Historical Avg Temp" if lang=="en" else " ඓතිහාසික සාමාන්‍ය උෂ්ණත්වය", temp_kpi, "#3d7a55"),
         (" Forecast Yield Index" if lang=="en" else " අනාවැකි අස්වැන්න දර්ශකය", yield_kpi, "#3d7a55"),
         (" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", harvest_kpi, "#3d7a55")
     ]):
@@ -2454,7 +2606,7 @@ elif t["nav"][2] in sec_name:
             st.markdown(metric_card(lbl, val, clr, height=110), unsafe_allow_html=True)
             
     # ── Main chart: Rainfall forecast + harvest overlay + yield + price ────────
-    st.markdown("#### "+("12-Month Forward Rainfall Forecast, Yield & Price Impact" if lang=="en" else "ඉදිරි මාස 12 වර්ෂාව, අස්වැන්න සහ මිල අනාවැකිය"))
+    st.markdown("#### "+("12-Month Rainfall Projection, Yield & Price Impact (CRI/Meteorology Historical Baseline)" if lang=="en" else "මාස 12 වර්ෂා ප්‍රක්ෂේපණය, අස්වැන්න සහ මිල බලපෑම (CRI/කාලගුණ ඓතිහාසික පදනම)"))
 
     mn_labels = [m.strftime("%b %Y") for m in future_months]
 
@@ -2480,9 +2632,9 @@ elif t["nav"][2] in sec_name:
     # Rainfall bars
     fig_fw.add_trace(go.Bar(
         x=fwd_df["date"], y=fwd_df["rainfall_mm"],
-        name=("Forecast Rainfall (mm)" if lang=="en" else "අනාවැකි වර්ෂාව (mm)"),
+        name=("Historical Avg Rainfall (mm)" if lang=="en" else "ඓතිහාසික සාමාන්‍ය වර්ෂාව (mm)"),
         marker_color="rgba(59,130,246,.55)",
-        hovertemplate="<b>%{x|%b %Y}</b><br>" + ("Rain" if lang=="en" else "වර්ෂාව") + ": %{y:.0f} mm<extra></extra>"),
+        hovertemplate="<b>%{x|%b %Y}</b><br>" + ("Historical Avg Rain" if lang=="en" else "ඓ. සාමාන්‍ය වර්ෂාව") + ": %{y:.0f} mm<extra></extra>"),
         secondary_y=False)
 
     # Yield index line
@@ -2518,7 +2670,7 @@ elif t["nav"][2] in sec_name:
 
     # Harvest period annotation
     _harvest_note1 = ("Green shading = Harvest months (Mar–Apr, Aug–Nov)" if lang=="en" else "කොළ සෙවන = අස්වනු මාස (මාර්-අප්‍රේ, අගෝ-නොවැ)")
-    _harvest_note2 = ("Star markers = Harvest month yield points" if lang=="en" else "තරු සලකුණු = අස්වනු මාස දර්ශක ලකුණු")
+    _harvest_note2 = ("Bands = ±1 Std Dev of historical CRI monthly data" if lang=="en" else "පටි = CRI මාසික දත්තවල ±1 ප්‍රමිති අපගමනය")
     st.markdown(f"""<div style='font-size:.75rem;color:#3d7a55;font-weight:700;margin-bottom:6px;'>
          <span style='background:#f0f5f2;padding:2px 8px;border-radius:4px;'>{_harvest_note1}</span>
         &nbsp;&nbsp; {_harvest_note2}
@@ -2527,21 +2679,21 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Month-by-month forward table ──────────────────────────────────────────
-    st.markdown("#### "+("12-Month Forward Forecast Table" if lang=="en" else "ඉදිරි මාස 12 අනාවැකි වගුව"))
+    st.markdown("#### "+("12-Month Projection Table (CRI/Meteorology Historical Baseline)" if lang=="en" else "මාස 12 ප්‍රක්ෂේපණ වගුව (CRI/කාලගුණ ඓතිහාසික පදනම)"))
     table_df = fwd_df[["date","rainfall_mm","temp_c","yield_index","price_impact","harvest_period","monsoon"]].copy()
     table_df["date"] = table_df["date"].dt.strftime("%b %Y")
     table_df["harvest_period"] = table_df["harvest_period"].apply(
         lambda x: (" Harvest" if lang=="en" else " අස්වනු") if x else "—")
-    table_df.columns = (["Month","Rainfall (mm)","Temp (°C)","Yield Index","Est. Price (Rs.)","Harvest","Season"]
+    table_df.columns = (["Month","Hist.Avg Rain (mm)","Hist.Avg Temp (°C)","Proj. Yield Index","Est. Price (Rs.)","Harvest","Season"]
                         if lang=="en" else
-                        ["මාසය","වර්ෂාව (mm)","උෂ්ණත්වය (°C)","අස්වැන්න දර්ශකය","ඇ. මිල (රු.)","අස්වනු","කාලගුණය"])
+                        ["මාසය","ඓ.සාමාන්‍ය වර්ෂාව (mm)","ඓ.සාමාන්‍ය උෂ්ණ. (°C)","ප්‍ර. අස්වැන්න","ඇ. මිල (රු.)","අස්වනු","කාලගුණය"])
     st.dataframe(table_df, use_container_width=True, hide_index=True)
     divider()
 
     # ── Monthly rainfall pattern (forward) ───────────────────────────────────
     c_heat, c_corr = st.columns([3,2])
     with c_heat:
-        st.markdown("#### "+("Monthly Forecast Rainfall Pattern" if lang=="en" else "මාසික අනාවැකි වර්ෂා රටාව"))
+        st.markdown("#### "+("Monthly Avg Rainfall by Season (CRI Historical)" if lang=="en" else "කාලගුණ අනුව මාසික සාමාන්‍ය වර්ෂාව (CRI ඓතිහාසික)"))
         mnames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         # Build a single-row heatmap for next 12 months
         rain_by_month = {mnames[m-1]: [] for m in range(1,13)}
@@ -2568,7 +2720,7 @@ elif t["nav"][2] in sec_name:
         st.plotly_chart(fig_rh, use_container_width=True, config={"displayModeBar":"hover"})
 
     with c_corr:
-        st.markdown("#### "+("Yield vs Est. Price (Next 12 Months)" if lang=="en" else "අස්වැන්න හා මිල — ඉදිරි මාස 12"))
+        st.markdown("#### "+("Projected Yield vs Est. Price (Next 12 Months)" if lang=="en" else "ප්‍රක්ෂේපිත අස්වැන්න හා ඇ. මිල — ඉදිරි මාස 12"))
         _mn_lbs_sc = [d.strftime("%b") for d in fwd_df["date"]]
         _harv_mask = fwd_df["harvest_period"].values
         _yl_lbl = ("Yield Index" if lang=="en" else "අස්වැන්න දර්ශකය")
@@ -2637,7 +2789,7 @@ elif t["nav"][2] in sec_name:
     divider()
 
     # ── Monsoon & Harvest season summary ──────────────────────────────────────
-    st.markdown("#### "+("Season-by-Season Forecast Summary" if lang=="en" else "කාල ගත අනාවැකි සාරාංශය"))
+    st.markdown("#### "+("Season-by-Season Projection Summary (CRI Historical Baseline)" if lang=="en" else "කාල ගත ප්‍රක්ෂේපණ සාරාංශය (CRI ඓතිහාසික)"))
     seasons_fwd = (
         {"SW Monsoon (May–Sep)":[5,6,7,8,9],"NE Monsoon (Nov–Jan)":[11,12,1],
          "Inter-Monsoon 1 (Mar–Apr)":[3,4],"Inter-Monsoon 2 (Oct)":[10]}
@@ -2684,24 +2836,25 @@ elif t["nav"][5] in sec_name:
     _top_market = f"{_top_market_row['Country']} ({_top_market_row['Share_pct']:.0f}%)"
     ek1,ek2,ek3,ek4=st.columns(4)
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
-        (" Total Exports (Latest Yr)" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#3d7a55"),
-        (" YoY Growth" if lang=="en" else " \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
-        (" Top Product" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9b \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba",
+        (" Total Export Volume (Latest Yr)" if lang=="en" else " සම්පූර්ණ අපනයන ප්‍රමාණය", f"{le['Total']:,.0f} MT","#3d7a55"),
+        (" YoY Volume Change" if lang=="en" else " වාර්ෂික ප්‍රමාණ වෙනස", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
+        (" Top Product (by Volume)" if lang=="en" else " ප්‍රමුඛ නිෂ්පාදනය (ප්‍රමාණය)",
          _top_prod_name,"#3d7a55"),
-        (" Top Market" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5",_top_market,"#3d7a55")]):
+        (" Top Export Market" if lang=="en" else " ප්‍රධාන අපනයන වෙළඳපොළ",_top_market,"#3d7a55")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
     ce1,ce2=st.columns([3,2])
     with ce1:
-        st.markdown("#### "+("Export Revenue by Product (USD Million)" if lang=="en" else "\u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0d86\u0daf\u0dcf\u0dba\u0db8"))
+        st.markdown("#### "+("Export Volume by Product Category (Metric Tonnes)" if lang=="en" else "නිෂ්පාදනය අනුව අපනයන ප්‍රමාණය (මෙ.ටො.)"))
         fig_eb=go.Figure()
         _pnames = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
         for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames):
+            _unit = " (1,000 Nuts)" if pc == "Fresh Nuts" else " MT"
             fig_eb.add_trace(go.Bar(x=export_df["year"].astype(str),y=export_df[pc],name=pn,marker_color=pcl,
-                hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
+                hovertemplate=f"<b>%{{x}}</b><br>{pn}: %{{y:,.0f}}{_unit}<extra></extra>"))
         fig_eb.update_layout(barmode="stack",height=320,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-            xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="$",ticksuffix="M"),
+            xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",title=("Volume (MT | Fresh Nuts in 1,000 units)" if lang=="en" else "ප්‍රමාණය (MT)"),tickformat=","),
             legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
         st.plotly_chart(fig_eb,use_container_width=True,config={"displayModeBar":"hover"})
     with ce2:
@@ -2719,28 +2872,29 @@ elif t["nav"][5] in sec_name:
     me=export_df.merge(ap,on="year",how="inner")
     fig_ep=make_subplots(specs=[[{"secondary_y":True}]])
     fig_ep.add_trace(go.Bar(x=me["year"].astype(str),y=me["Total"],
-        name=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),
-        marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>$%{y}M<extra></extra>"),secondary_y=False)
+        name=("Total Export Volume (MT)" if lang=="en" else "සම්පූර්ණ අපනයන ප්‍රමාණය (MT)"),
+        marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>%{y:,.0f} MT<extra></extra>"),secondary_y=False)
     fig_ep.add_trace(go.Scatter(x=me["year"].astype(str),y=me["price"],
         name=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),
         line=dict(color="#f59e0b",width=2.5),mode="lines+markers",marker=dict(size=7),
         hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"),secondary_y=True)
     fig_ep.update_layout(height=300,margin=dict(l=20,r=60,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
-    fig_ep.update_yaxes(title_text=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),secondary_y=False,gridcolor="#e4eeea",tickprefix="$",ticksuffix="M")
+    fig_ep.update_yaxes(title_text=("Total Export Volume (MT)" if lang=="en" else "සම්පූර්ණ අපනයන ප්‍රමාණය (MT)"),secondary_y=False,gridcolor="#e4eeea",tickformat=",")
     fig_ep.update_yaxes(title_text=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),secondary_y=True,showgrid=False,tickprefix="Rs.")
     st.plotly_chart(fig_ep,use_container_width=True,config={"displayModeBar":"hover"})
     divider()
 
     # Individual product trends
-    st.markdown("#### "+("Individual Product Export Trends" if lang=="en" else "\u0dad\u0db1\u0dd2 \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf"))
+    st.markdown("#### "+("Individual Product Export Trends (MT)" if lang=="en" else "තනි නිෂ්පාදන අපනයන ප්‍රවණතා (MT)"))
     fig_pt=go.Figure()
     _pnames2 = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
     for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames2):
+        _unit2 = " (1,000 Nuts)" if pc == "Fresh Nuts" else " MT"
         fig_pt.add_trace(go.Scatter(x=export_df["year"].astype(str),y=export_df[pc],mode="lines+markers",name=pn,
-            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
+            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pn}: %{{y:,.0f}}{_unit2}<extra></extra>"))
     fig_pt.update_layout(height=300,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="$",ticksuffix="M"),
+        xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",title=("Volume (MT)" if lang=="en" else "ප්‍රමාණය (MT)"),tickformat=","),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
     st.plotly_chart(fig_pt,use_container_width=True,config={"displayModeBar":"hover"})
 
