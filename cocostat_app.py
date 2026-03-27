@@ -3160,7 +3160,7 @@ elif t["nav"][8] in sec_name:
             ]
         )
         for icon, title, desc in seller_rules:
-            st.markdown(f"""<div style='background:#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 8px 8px 0;
+            st.markdown(f"""<div style='background':#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 8px 8px 0;
                 padding:10px 14px;margin-bottom:8px;'>
                 <div style='font-size:.75rem;font-weight:800;color:#1a3328;'>{icon} {title}</div>
                 <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
