@@ -744,14 +744,14 @@ st.markdown(f"""
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
-def metric_card(label, value, clr="#3d7a55", sub=None, height=110, val_size="1.4rem"):
+def metric_card(label, value, clr="#3d7a55", sub=None, height=110, val_size="1.25rem"):
     sub_html = (f"<div style='display:inline-block;background:#f0f5f2;color:#2d5a3d;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid #b8d0c4;margin-top:4px;'>{sub}</div>"
                 if sub else
                 "<span style='display:none;'></span>")
     return (f"<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid #3d7a55;border-radius:10px;padding:14px 16px;"
             f"min-height:{height}px;display:flex;flex-direction:column;justify-content:space-between;'>"
             f"<div style='font-size:.65rem;font-weight:700;color:#2d5a3d;text-transform:uppercase;letter-spacing:.8px;line-height:1.4;margin-bottom:4px;'>{label}</div>"
-            f"<div style='font-size:{val_size};font-weight:900;color:#1a3328;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>{value}</div>"
+            f"<div style='font-size:{val_size};font-weight:900;color:#1a3328;line-height:1.2;word-break:break-word;overflow-wrap:anywhere;'>{value}</div>"
             f"{sub_html}</div>")
 
 def section_header(title, sub=None):
@@ -1180,7 +1180,7 @@ elif t["nav"][6] in sec_name:
         ("️ " + ("Market Regime" if lang=="en" else "වෙළඳ තත්ත්වය"), regime_labels[regime_now], "#3d7a55"),
     ]
     for col,(lbl,val,clr) in zip([sn1,sn2,sn3,sn4,sn5], snap_data):
-        with col: st.markdown(metric_card(lbl, val, clr, height=95), unsafe_allow_html=True)
+        with col: st.markdown(metric_card(lbl, val, clr, height=95, val_size="1.05rem"), unsafe_allow_html=True)
     divider()
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -2780,7 +2780,7 @@ elif t["nav"][7] in sec_name:
         ((" Net Profit" if net_profit>0 else " Net Loss") if lang=="en" else (" \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0dbd\u0dcf\u0db7\u0dba" if net_profit>0 else " \u0dbd\u0dcf\u0db7 \u0d85\u0dc0"),
          f"Rs.{net_profit:,.0f}",pc_),
         (" Profit Margin" if lang=="en" else " \u0dbd\u0dcf\u0db7 \u0db8\u0dcf\u0daf\u0dd2\u0dbd\u0dd2\u0dba",f"{margin:.1f}%",pc_)]):
-        with col: st.markdown(metric_card(lbl,val,clr,height=90),unsafe_allow_html=True)
+        with col: st.markdown(metric_card(lbl,val,clr,height=90,val_size="1.05rem"),unsafe_allow_html=True)
     divider()
 
     cw,cb=st.columns([3,2])
