@@ -141,14 +141,13 @@ def load_export_data():
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
     raw = raw[raw["Year"].notna()].copy()
     raw["Year"] = raw["Year"].astype(int)
-    product_cols = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts", "Activated Carbon"]
+    PRODUCT_COLS_EXPORT = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
     _col_map = {
         "Desiccated Coconut": next((c for c in raw.columns if "Desiccated" in str(c)), None),
-        "Coconut Oil":        next((c for c in raw.columns if "Coconut Oil" in str(c) or ("VCO" in str(c) and "Coconut Oil" not in str(c))), None),
-        "Coconut Milk":       next((c for c in raw.columns if "Milk" in str(c) and "Powder" not in str(c) and "Cream" not in str(c)), None),
-        "Coir Products":      None,
+        "Coconut Oil":        next((c for c in raw.columns if "Coconut Oil" in str(c)), None),
+        "Coconut Milk":       next((c for c in raw.columns if "Milk" in str(c) and "Powder" not in str(c) and "Cream" not in str(c) and "Coconut" in str(c)), None),
+        "Coir Products":      next((c for c in raw.columns if "Coir" in str(c)), None),
         "Fresh Nuts":         next((c for c in raw.columns if "Fresh Nuts" in str(c)), None),
-        "Activated Carbon":   None,
     }
     export_df = pd.DataFrame({"year": raw["Year"].values})
     for app_col, xl_col in _col_map.items():
@@ -156,7 +155,7 @@ def load_export_data():
             export_df[app_col] = pd.to_numeric(raw[xl_col], errors="coerce").fillna(0).values
         else:
             export_df[app_col] = 0.0
-    export_df["Total"] = export_df[product_cols].sum(axis=1)
+    export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
 
     # Sheet 11_Export_Destinations — USD M by destination country, latest year used for pie
     dest_raw = pd.read_excel(path, sheet_name="11_Export_Destinations", header=3)
@@ -207,13 +206,34 @@ def load_global_data():
     })
     return global_df, production
 
+
+@st.cache_data(ttl=30)
+def load_demand_elasticity():
+    """Load real price elasticity data from Sheet 07_Demand_Elasticity."""
+    path = _get_dataset_path()
+    raw = pd.read_excel(path, sheet_name="07_Demand_Elasticity", header=3)
+    raw = raw[raw["Year"].apply(
+        lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
+    )].copy()
+    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
+    raw = raw[raw["Year"].notna()].copy()
+    raw["Regime_clean"] = raw["Regime"].str.replace(r"[\U0001F7E2\U0001F7E1\U0001F534]\s*", "", regex=True).str.strip()
+    regime_stats = {}
+    for regime, grp in raw.groupby("Regime_clean"):
+        regime_stats[regime] = {
+            "elasticity": round(float(grp["Elasticity\nCoefficient"].mean()), 3),
+            "sensitivity": round(float(grp["Sensitivity\nLevel (%)"].mean()), 1),
+        }
+    return raw, regime_stats
+
 history_df, forecast_df, weekly_df = load_data()
 weather_df = load_weather_data()
 export_df, destinations_df = load_export_data()
 global_price_df, production_df = load_global_data()
-PRODUCT_COLS = ["Desiccated Coconut","Coconut Oil","Coconut Milk","Coir Products","Fresh Nuts","Activated Carbon"]
-PRODUCT_COLORS = ["#3d7a55","#5a9470","#f59e0b","#8b5cf6","#ef4444","#06b6d4"]
-PRODUCT_NAMES_SI = ["වියළි පොල්","පොල් තෙල්","පොල් කිරි","කොයිර් නිෂ්පාදන","නැවුම් ගෙඩි","සක්‍රිය කාබන්"]
+demand_df, demand_regime_stats = load_demand_elasticity()
+PRODUCT_COLS = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
+PRODUCT_COLORS = ["#3d7a55", "#5a9470", "#f59e0b", "#8b5cf6", "#ef4444"]
+PRODUCT_NAMES_SI = ["විය෇ි පොල්", "පොල් තෙල්", "පොල් කිරි", "කොයිර් නිෂ්පාදන", "නැවුම් ගෙඩි"]
 
 # ─────────────────────────────────────────────
 # TRANSLATIONS
@@ -241,7 +261,7 @@ T = {
         "demand_title":"Do People Reduce Buying When Prices Increase?",
         "demand_note":" Demand is mostly inelastic \u2014 people must buy coconuts because it is an essential food.",
         "demand_bar_title":"Price Sensitivity Level (%)","demand_periods":["Stable Period","Warning Period","Crisis Period"],
-        "demand_sens":[35,22,12],
+        "demand_sens":[],  # computed dynamically from Sheet 07
         "demand_cards":[
             (" Stable Period","People react slightly to price changes."),
             (" Warning Period","Moderate reaction to price volatility."),
@@ -321,7 +341,7 @@ T = {
         "demand_title":"\u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dc5 \u0d9c\u0dd2\u0dba \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca \u0db8\u0dd2\u0dbd\u0daf\u0dd3 \u0d9c\u0dd9\u0db1\u0dd3\u0db8 \u0d85\u0da9\u0dd4 \u0d9a\u0dbb\u0dba\u0dd2\u0daf?",
         "demand_note":" \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dad\u0dca\u200d\u0dba\u0dc0\u0DC1\u0dca\u200d\u0dba \u0d86\u0dc4\u0dcf\u0dbb\u0dba\u0d9a\u0dca \u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dc5 \u0d9c\u0dd2\u0dba\u0dad\u0dca \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0db1\u0dca\u0db1\u0dda \u0db1\u0dd0\u0dad.",
         "demand_bar_title":"\u0db8\u0dd2\u0dbd \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf \u0db8\u0da7\u0dca\u0da7\u0db8 (%)","demand_periods":["\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb","\u0d85\u0dc0\u0dc0\u0dcf\u0daf","\u0d85\u0dbb\u0dca\u0db6\u0dd4\u0daf"],
-        "demand_sens":[35,22,12],
+        "demand_sens":[],  # computed dynamically from Sheet 07
         "demand_cards":[
             (" \u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0dc0\u0dd3\u0db8\u0dca \u0dc0\u0dbd\u0da7 \u0da7\u0dd2\u0d9a\u0d9a\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb \u0daf\u0d9a\u0dca\u0dc0\u0dba\u0dd2."),
             (" \u0d85\u0dc0\u0dc0\u0dcf\u0daf \u0d9a\u0dcf\u0dbd\u0dba","\u0db8\u0dd2\u0dbd \u0d85\u0dc3\u0dca\u0dae\u0dcf\u0dc0\u0dbb\u0dad\u0dcf\u0dc0\u0da7 \u0db8\u0db0\u0dca\u200d\u0dba\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba\u0d9a\u0dca."),
@@ -756,11 +776,40 @@ if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
 # ══ OVERVIEW & HISTORY ═════════════════════════════════════════════════════
 if t["nav"][0] in sec_name:
     c1,c2,c3,c4 = st.columns(4)
+    # ── KPI cards — all data-driven from dataset ──────────────────────────────
+    _kpi_price = f"Rs. {current_price:.2f}"
+    # Market condition from current regime
+    _regime_labels_kpi = (
+        ["Stable", "Warning", "Crisis"] if lang == "en"
+        else ["ස්ථාවර", "අවවාද", "අර්බුද"]
+    )
+    _kpi_market = _regime_labels_kpi[int(history_df["regime"].iloc[-1])]
+    _kpi_market_sub = (
+        ["Below warning threshold", "Above warning level", "Above crisis level"][int(history_df["regime"].iloc[-1])]
+        if lang == "en" else
+        ["අවවාද සීමාවට පහත", "අවවාද සීමාව ඉක්මවා", "අර්බුද සීමාව ඉක්මවා"][int(history_df["regime"].iloc[-1])]
+    )
+    # Demand response from Sheet 07 — use current regime
+    _regime_key = ["Stable", "Warning", "Crisis"][int(history_df["regime"].iloc[-1])]
+    _elast = demand_regime_stats.get(_regime_key, {}).get("elasticity", -0.20)
+    _kpi_demand = "Inelastic" if lang == "en" else "අප්‍රත්‍යාස්ථ"
+    _kpi_demand_sub = f"ε = {_elast:.2f}" + (" (inelastic)" if lang == "en" else " (ලාංකීය)")
+    # Forecast trend from Sheet 12
+    _fc_next = forecast_df["price"].iloc[0] if len(forecast_df) > 0 else current_price
+    _fc_last = forecast_df["price"].iloc[-1] if len(forecast_df) > 0 else current_price
+    _fc_chg = _fc_last - current_price
+    if _fc_chg > 2:
+        _kpi_fc = (" Rising" if lang == "en" else " ↑ ඉහළ")
+    elif _fc_chg < -2:
+        _kpi_fc = (" Falling" if lang == "en" else " ↓ පහළ")
+    else:
+        _kpi_fc = (" Stable" if lang == "en" else " → ස්ථාවර")
+    _kpi_fc_sub = f"Rs.{_fc_last:.1f} by {forecast_df['date'].iloc[-1].strftime('%b %Y')}" if len(forecast_df) > 0 else ""
     cards = [
-        (" "+t["card_price_label"], t["card_price_value"], "#3d7a55", t["card_price_sub"]),
-        (" "+t["card_market_label"], " "+t["card_market_value"], "#3d7a55", t["card_market_sub"]),
-        (" "+t["card_demand_label"], t["card_demand_value"], "#3d7a55", t["card_demand_sub"]),
-        (" "+t["card_forecast_label"], t["card_forecast_value"], "#3d7a55", t["card_forecast_sub"]),
+        (" " + t["card_price_label"], _kpi_price, "#3d7a55", t["card_price_sub"]),
+        (" " + t["card_market_label"], _kpi_market, "#3d7a55", _kpi_market_sub),
+        (" " + t["card_demand_label"], _kpi_demand, "#3d7a55", _kpi_demand_sub),
+        (" " + t["card_forecast_label"], _kpi_fc, "#3d7a55", _kpi_fc_sub),
     ]
     for col,(label,value,clr,sub) in zip([c1,c2,c3,c4], cards):
         with col: st.markdown(metric_card(label,value,clr,sub,130), unsafe_allow_html=True)
@@ -919,9 +968,15 @@ elif t["nav"][1] in sec_name:
     st.markdown(f"<div class='info-box-blue'>{t['demand_note']}</div>",unsafe_allow_html=True)
     c1,c2=st.columns(2)
     with c1:
-        fig_d=go.Figure(go.Bar(x=t["demand_periods"],y=t["demand_sens"],
+        # Sensitivity values from Sheet 07
+        _sens_vals = [
+            demand_regime_stats.get("Stable", {}).get("sensitivity", 32.0),
+            demand_regime_stats.get("Warning", {}).get("sensitivity", 23.0),
+            demand_regime_stats.get("Crisis", {}).get("sensitivity", 12.5),
+        ]
+        fig_d=go.Figure(go.Bar(x=t["demand_periods"],y=_sens_vals,
             marker=dict(color=REGIME_COLORS,line=dict(width=0)),
-            text=[f"{v}%" for v in t["demand_sens"]],textposition="outside",width=.5))
+            text=[f"{v:.1f}%" for v in _sens_vals],textposition="outside",width=.5))
         fig_d.update_layout(title=dict(text=t["demand_bar_title"],font=dict(size=14)),
             height=280,margin=dict(l=20,r=20,t=50,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             yaxis=dict(gridcolor="#e4eeea",range=[0,50]),xaxis=dict(showgrid=False),showlegend=False)
@@ -933,10 +988,16 @@ elif t["nav"][1] in sec_name:
                 <div style='font-size:.88rem;color:#475569;line-height:1.5;'>{desc}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Price Elasticity of Demand" if lang=="en" else "ඉල්ලුම් ස්ථිතිස්ථිකය"))
+    # Elasticity cards — real values from Sheet 07
+    _el_stable = demand_regime_stats.get("Stable", {}).get("elasticity", -0.33)
+    _el_warning = demand_regime_stats.get("Warning", {}).get("elasticity", -0.20)
+    _el_crisis = demand_regime_stats.get("Crisis", {}).get("elasticity", -0.12)
     e1,e2,e3=st.columns(3)
-    for col,(ev,ep,ec,eb) in zip([e1,e2,e3],[("-0.35","Stable" if lang=="en" else "ස්ථාවර","#5a9470","#f0f5f2"),
-                                             ("-0.22","Warning" if lang=="en" else "අවවාද","#eab308","#fef9c3"),
-                                             ("-0.12","Crisis" if lang=="en" else "අර්බුද","#ef4444","#fee2e2")]):
+    for col,(ev,ep,ec,eb) in zip([e1,e2,e3],[
+        (f"{_el_stable:.2f}", "Stable" if lang=="en" else "ස්ථාවර", "#5a9470", "#f0f5f2"),
+        (f"{_el_warning:.2f}", "Warning" if lang=="en" else "අවවාද", "#eab308", "#fef9c3"),
+        (f"{_el_crisis:.2f}", "Crisis" if lang=="en" else "අර්බුද", "#ef4444", "#fee2e2"),
+    ]):
         with col:
             st.markdown(f"""<div style='background:{eb};border-radius:12px;padding:16px;text-align:center;height:110px;display:flex;flex-direction:column;justify-content:center;'>
                 <div style='font-size:.72rem;font-weight:700;color:#64748b;margin-bottom:4px;'>{"Elasticity" if lang=="en" else "ස්ථිතිස්ථිකය"} - {ep}</div>
@@ -946,7 +1007,13 @@ elif t["nav"][1] in sec_name:
     st.markdown("#### "+("Demand Curve by Regime" if lang=="en" else "තත්ත්වය අනුව ඉල්ලුම් වක්‍රය"))
     pr=np.linspace(40,100,60); bq=1000; bp=60
     fig_dc=go.Figure()
-    for (lbl,el),clr in zip({"Stable":-0.35,"Warning":-0.22,"Crisis":-0.12}.items(),REGIME_COLORS):
+    # Demand curve using real elasticity from Sheet 07
+    _dc_elasticities = {
+        "Stable": demand_regime_stats.get("Stable", {}).get("elasticity", -0.33),
+        "Warning": demand_regime_stats.get("Warning", {}).get("elasticity", -0.20),
+        "Crisis": demand_regime_stats.get("Crisis", {}).get("elasticity", -0.12),
+    }
+    for (lbl,el),clr in zip(_dc_elasticities.items(),REGIME_COLORS):
         q=bq*(pr/bp)**el
         fig_dc.add_trace(go.Scatter(x=q,y=pr,mode="lines",name=lbl,line=dict(color=clr,width=2.5),
             hovertemplate=f"<b>{lbl}</b><br>Price: Rs.%{{y:.1f}}<br>Qty: %{{x:.0f}}<extra></extra>"))
@@ -1037,10 +1104,22 @@ elif t["nav"][6] in sec_name:
                 <div style='font-weight:700;font-size:.82rem;color:#1a3328;'>{st_}</div></div>""",unsafe_allow_html=True)
     divider()
     st.markdown("#### "+("Policy Effectiveness Indicators" if lang=="en" else "ප්‍රතිපත්ති ඵලදාව දර්ශක"))
-    indics=[("Price Stability" if lang=="en" else "මිල ස්ථාවරතා",72,"#3d7a55"),
-            ("Supply Chain" if lang=="en" else "සැපයුම් දාමය",58,"#3d7a55"),
-            ("Farmer Support" if lang=="en" else "ගොවි සහාය",64,"#3d7a55"),
-            ("Market Transparency" if lang=="en" else "වෙළෙඳ විනිවිද",80,"#3d7a55")]
+    # Policy effectiveness indicators — computed from real data
+    _stable_months_pct = int((history_df["regime"] == 0).sum() / len(history_df) * 100)
+    _cv_12m = float(history_df["price"].tail(12).std() / history_df["price"].tail(12).mean() * 100)
+    _price_stab_score = max(10, min(90, 100 - int(_cv_12m * 2)))
+    _export_growth = float((export_df["Total"].iloc[-1] - export_df["Total"].iloc[-3]) / max(export_df["Total"].iloc[-3], 1) * 100) if len(export_df) >= 3 else 0
+    _supply_score = max(20, min(85, 50 + int(_export_growth / 2)))
+    _farmer_margin = float(history_df["price"].tail(12).mean()) - 65
+    _farmer_score = max(20, min(85, 50 + int(_farmer_margin * 0.8)))
+    _stable_pct = _stable_months_pct
+    _transparency_score = max(50, min(90, 60 + _stable_pct // 5))
+    indics=[
+        ("Price Stability" if lang=="en" else "මිල ස්ථාවරතා", _price_stab_score, "#3d7a55"),
+        ("Supply Chain" if lang=="en" else "සැපයුම් දාමය", _supply_score, "#3d7a55"),
+        ("Farmer Support" if lang=="en" else "ගොවි සහාය", _farmer_score, "#3d7a55"),
+        ("Market Transparency" if lang=="en" else "වෙළෙඳ විනිවිද", _transparency_score, "#3d7a55"),
+    ]
     ic=st.columns(4)
     for col,(lbl,sc_,clr) in zip(ic,indics):
         with col:
@@ -1828,38 +1907,6 @@ elif t["nav"][6] in sec_name:
     # ── Download summary report ────────────────────────────────────────────────
     st.markdown("##### " + ("Export Recommendation Report" if lang=="en" else "නිර්දේශ වාර්තාව බාගන්න"))
     from datetime import datetime
-    report_lines = [
-        f"COCOStat – Strategic Recommendation Report",
-        f"{'Generated' if lang=='en' else 'ජනනය කළ දිනය'}: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-        f"{'Current Market Regime' if lang=='en' else 'වත්මන් වෙළඳ තත්ත්වය'}: {regime_name}",
-        f"{'Current Price' if lang=='en' else 'වත්මන් මිල'}: Rs. {current_price:.2f}",
-        f"{'12-Month Average' if lang=='en' else 'මාස 12 සාමාන්‍යය'}: Rs. {avg_12m:.2f}",
-        f"{'Price Volatility (CV)' if lang=='en' else 'මිල අස්ථාවරතාව (CV)'}: {cv:.1f}%",
-        "",
-        "=" * 60,
-        "POLICY SIMULATOR RESULTS" if lang=="en" else "ප්‍රතිපත්ති අනුකරණ ප්‍රතිඵල",
-        "=" * 60,
-        f"{'Buffer Stock Release' if lang=='en' else 'බෆර් තොග මුදා හැරීම'}: {buffer_stock}%",
-        f"{'Import Duty Change' if lang=='en' else 'ආනයන බදු වෙනස'}: {import_duty:+}%",
-        f"{'Farmer Subsidy' if lang=='en' else 'ගොවි සහාය'}: {subsidy_pct}%",
-        f"{'Price Floor' if lang=='en' else 'අවම මිල'}: Rs. {price_floor}",
-        f"{'Export Quota Cut' if lang=='en' else 'අපනයන සීමා කප්පාදු'}: {export_quota}%",
-        f"{'Projected Price' if lang=='en' else 'ඉදිරි මිල'}: Rs. {price_impact:.2f} ({delta_pct:+.1f}%)",
-        f"{'Policy Verdict' if lang=='en' else 'ප්‍රතිපත්ති තීරණය'}: {verdict_title}",
-        "",
-        "=" * 60,
-        f"{'GOVERNMENT RECOMMENDATIONS' if lang=='en' else 'රජු නිර්දේශ'} ({regime_name})",
-        "=" * 60,
-    ]
-    for icon, title, desc, priority, timing, resource in recs["government"]:
-        report_lines += [f"\n[{priority}] {title}", f" {desc}", f" ⏱ {timing} | {resource}"]
-    report_lines += ["", "=" * 60, f"{'BUSINESS RECOMMENDATIONS' if lang=='en' else 'ව්‍යාපාර නිර්දේශ'} ({regime_name})", "=" * 60]
-    for icon, title, desc, priority, timing, resource in recs["business"]:
-        report_lines += [f"\n[{priority}] {title}", f" {desc}", f" ⏱ {timing} | {resource}"]
-    report_lines += ["", "=" * 60, f"{'FARMER RECOMMENDATIONS' if lang=='en' else 'ගොවි නිර්දේශ'} ({regime_name})", "=" * 60]
-    for icon, title, desc, priority, timing, resource in recs["farmer"]:
-        report_lines += [f"\n[{priority}] {title}", f" {desc}", f" ⏱ {timing} | {resource}"]
-    report_lines += ["", "─" * 60, "COCOStat · Coconut Market Intelligence · CDA & HARTI Sri Lanka"]
 
     import io
     import csv as csv_mod
@@ -2230,7 +2277,7 @@ elif t["nav"][9] in sec_name:
          "Regime distribution is calculated across the full 2015–2024 dataset."),
         ("02", "Price Elasticity of Demand",
          "Demand sensitivity is measured per regime using percentage-change analysis of price and quantity data "
-         "from CDA auction records. Elasticity coefficients: Stable −0.35, Warning −0.22, Crisis −0.12. "
+         "from CDA auction records. Elasticity coefficients (Sheet 07 data). "
          "Demand for coconuts is confirmed as price-inelastic across all regimes."),
         ("03", "Price Forecasting",
          "Short-term (12-week) price forecasts are produced using a trend projection model calibrated "
@@ -2273,7 +2320,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Data Processing</td><td>Pandas, NumPy</td></tr>
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
-        <tr><td>Price Elasticity (by regime)</td><td>Stable: −0.35 &nbsp;|&nbsp; Warning: −0.22 &nbsp;|&nbsp; Crisis: −0.12</td></tr>
+        <tr><td>Price Elasticity (by regime)</td><td>Stable: {demand_regime_stats.get("Stable",{}).get("elasticity","\u22120.33")} &nbsp;|&nbsp; Warning: {demand_regime_stats.get("Warning",{}).get("elasticity","\u22120.20")} &nbsp;|&nbsp; Crisis: {demand_regime_stats.get("Crisis",{}).get("elasticity","\u22120.12")}</td></tr>
         <tr><td>Forecast Horizon</td><td>12 weeks (short-term) &nbsp;|&nbsp; 12 months (medium-term)</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
@@ -2630,13 +2677,18 @@ elif t["nav"][5] in sec_name:
     # KPI row
     le=export_df.iloc[-1]; pe=export_df.iloc[-2]
     yoy=(le["Total"]-pe["Total"])/pe["Total"]*100; yoy_clr="#3d7a55"
+    # Compute top product and top market from real data
+    _top_prod_col = max(PRODUCT_COLS, key=lambda c: le.get(c, 0))
+    _top_prod_name = _top_prod_col if lang=="en" else PRODUCT_NAMES_SI[PRODUCT_COLS.index(_top_prod_col)]
+    _top_market_row = destinations_df.sort_values("Share_pct", ascending=False).iloc[0]
+    _top_market = f"{_top_market_row['Country']} ({_top_market_row['Share_pct']:.0f}%)"
     ek1,ek2,ek3,ek4=st.columns(4)
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
         (" Total Exports (Latest Yr)" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#3d7a55"),
         (" YoY Growth" if lang=="en" else " \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
         (" Top Product" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9b \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba",
-         "Desiccated\nCoconut" if lang=="en" else "වියළි පොල්","#3d7a55"),
-        (" Top Market" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5","USA (22%)","#3d7a55")]):
+         _top_prod_name,"#3d7a55"),
+        (" Top Market" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5",_top_market,"#3d7a55")]):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
