@@ -2836,7 +2836,7 @@ elif t["nav"][7] in sec_name:
         st.markdown(f"""<div style='background:#f8fafc;border:2px solid {bec};border-radius:10px;padding:12px;text-align:center;margin-top:8px;'>
             <div style='font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:4px;'>{"Break-Even Price" if lang=="en" else "\u0DC1\u0dda\u0DC2-\u0dc3\u0dca\u0dae\u0dcf\u0db1 \u0db8\u0dd2\u0dbd"}</div>
             <div style='font-size:1.4rem;font-weight:900;color:{bec};'>Rs.{be_price:.2f}</div>
-            <div style=\'font-size:.78rem;color:{bec};margin-top:4px;\'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} {"current" if lang=="en" else "වත්මනින්"}</div></div>""",unsafe_allow_html=True)
+            <div style='font-size:.78rem;color:{bec};margin-top:4px;'>{chr(9989) if bev>0 else chr(10060)} Rs.{abs(bev):.2f} {"above" if bev>0 else "below"} {"current" if lang=="en" else "වත්මනින්"}</div></div>""",unsafe_allow_html=True)
     divider()
 
     st.markdown("#### "+("Profit Sensitivity to Selling Price" if lang=="en" else "\u0dc0\u0dd2\u0d9a\u0dd2\u0dab\u0dd4\u0db8\u0dca \u0db8\u0dd2\u0dbd\u0da7 \u0dbd\u0dcf\u0db7 \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0"))
@@ -3061,9 +3061,9 @@ elif t["nav"][8] in sec_name:
                 <div style='font-size:.6rem;font-weight:800;color:{clr};text-transform:uppercase;letter-spacing:2px;'>{_step_lbl} {num}</div>
                 <div style='font-size:.85rem;font-weight:800;color:#1a3328;margin:6px 0 8px;'>{title}</div>
                 <div style='font-size:.7rem;color:#374151;line-height:1.55;flex:1;'>{desc}</div>
-                <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:8px;background:{clr}11;
                 <div style='font-size:.65rem;color:{clr};font-weight:600;margin-top:8px;background:{clr}22;
                     border:1px solid {clr}55;padding:5px 7px;border-radius:5px;line-height:1.4;flex-shrink:0;'>{note}</div>
+            </div>""", unsafe_allow_html=True)
     divider()
 
     # ── Price Grades & Benchmarks ──────────────────────────────────────────────
@@ -3160,7 +3160,7 @@ elif t["nav"][8] in sec_name:
             ]
         )
         for icon, title, desc in seller_rules:
-            st.markdown(f"""<div style='background':#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 8px 8px 0;
+            st.markdown(f"""<div style='background:#f0f5f2;border-left:4px solid #3d7a55;border-radius:0 8px 8px 0;
                 padding:10px 14px;margin-bottom:8px;'>
                 <div style='font-size:.75rem;font-weight:800;color:#1a3328;'>{icon} {title}</div>
                 <div style='font-size:.7rem;color:#374151;margin-top:3px;line-height:1.5;'>{desc}</div>
