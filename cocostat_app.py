@@ -1,26 +1,13 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-def safe_median(series):
-    series = series.replace([np.inf, -np.inf], np.nan).dropna()
-    if len(series) == 0:
-        return 0
-    return series.median()
-
-def trend_arrow(val, threshold=2):
-    if val > threshold:
-        return "↑"
-    elif val < -threshold:
-        return "↓"
-    return "→"
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
 from streamlit_autorefresh import st_autorefresh
-if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
-    st_autorefresh(interval=300000, key="datarefresh")
+st_autorefresh(interval=30000, key="cocostat_refresh")
 
 st.set_page_config(
     page_title="COCOStat",
