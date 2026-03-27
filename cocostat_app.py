@@ -1897,10 +1897,10 @@ elif t["nav"][6] in sec_name:
         items_html = "".join([f"<div style='font-size:.7rem;color:#374151;padding:5px 0;border-bottom:1px solid #f0f5f2;line-height:1.4;'>{a}</div>" for a in action_items])
         with col:
             st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:4px solid #3d7a55;
-                border-radius:10px;padding:14px 12px;'>
+                border-radius:10px;padding:14px 12px;min-height:220px;display:flex;flex-direction:column;'>
                 <div style='font-size:.7rem;font-weight:900;color:{clr};text-transform:uppercase;
                     letter-spacing:1px;margin-bottom:10px;'>{period}</div>
-                {items_html}
+                <div style='flex:1;'>{items_html}</div>
             </div>""", unsafe_allow_html=True)
     divider()
 
