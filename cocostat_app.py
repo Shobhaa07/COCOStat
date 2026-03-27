@@ -1,6 +1,18 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+def safe_median(series):
+    series = series.replace([np.inf, -np.inf], np.nan).dropna()
+    if len(series) == 0:
+        return 0
+    return series.median()
+
+def trend_arrow(val, threshold=2):
+    if val > threshold:
+        return "↑"
+    elif val < -threshold:
+        return "↓"
+    return "→"
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -1961,7 +1973,7 @@ elif t["nav"][4] in sec_name:
 
         # Global KPI row
         sl_l = global_price_df["Sri Lanka"].iloc[-1]
-        w_avg = global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1].mean()
+        w_avg = safe_median(global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1])
         sl_vs = sl_l - w_avg; sv_clr = "#3d7a55"
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
