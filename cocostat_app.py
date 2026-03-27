@@ -1,6 +1,18 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+def safe_median(series):
+    series = series.replace([np.inf, -np.inf], np.nan).dropna()
+    if len(series) == 0:
+        return 0
+    return series.median()
+
+def trend_arrow(val, threshold=2):
+    if val > threshold:
+        return "↑"
+    elif val < -threshold:
+        return "↓"
+    return "→"
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
