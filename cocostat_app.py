@@ -2340,19 +2340,54 @@ elif t["nav"][2] in sec_name:
         ("Inter-Monsoon" if lang=="en" else "අන්තර් මෝසම"))
 
     # ── KPI Row (forward-looking) ─────────────────────────────────────────────
-    avg_frain = fwd_df["rainfall_mm"].mean()
-    avg_fyield = fwd_df["yield_index"].mean()
-    avg_ftemp = fwd_df["temp_c"].mean()
-    harvest_months_count = int(fwd_df["harvest_period"].sum())
-    hist_avg_rain = weather_df["rainfall_mm"].mean()
-    rain_diff = avg_frain - hist_avg_rain
+# ── KPI Row (forward-looking) ─────────────────────────────────────────────
+
+# Clean + robust stats (avoid NaN / noise impact)
+fwd_clean = fwd_df.replace([np.inf, -np.inf], np.nan).dropna()
+
+# Use median instead of mean for stability
+avg_frain = fwd_clean["rainfall_mm"].median()
+avg_ftemp = fwd_clean["temp_c"].median()
+avg_fyield = fwd_clean["yield_index"].median()
+
+# Historical baseline (cleaned)
+hist_clean = weather_df.replace([np.inf, -np.inf], np.nan).dropna()
+hist_avg_rain = hist_clean["rainfall_mm"].median()
+hist_avg_temp = hist_clean["temp_c"].median()
+hist_avg_yield = hist_clean["yield_index"].median()
+
+# Differences (trend indicators)
+rain_diff = avg_frain - hist_avg_rain
+temp_diff = avg_ftemp - hist_avg_temp
+yield_diff = avg_fyield - hist_avg_yield
+
+# Harvest months
+harvest_months_count = int(fwd_df["harvest_period"].sum())
+
+# Direction arrows
+def trend_arrow(val):
+    if val > 2:
+        return "↑"
+    elif val < -2:
+        return "↓"
+    return "→"
+
+rain_trend = trend_arrow(rain_diff)
+temp_trend = trend_arrow(temp_diff)
+yield_trend = trend_arrow(yield_diff)
+
+# Format values
+rain_kpi = f"{avg_frain:.0f} mm ({rain_trend})"
+temp_kpi = f"{avg_ftemp:.1f} °C ({temp_trend})"
+yield_kpi = f"{avg_fyield:.0f}/100 ({yield_trend})"
+harvest_kpi = f"{harvest_months_count} " + ("months" if lang=="en" else "මාස")
 
     wk1,wk2,wk3,wk4 = st.columns(4)
     for col,(lbl,val,clr) in zip([wk1,wk2,wk3,wk4],[
-        (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්‍ය වර්ෂාව", f"{avg_frain:.0f} mm", "#3d7a55"),
-        (" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්‍ය උෂ්ණත්වය", f"{avg_ftemp:.1f} °C", "#3d7a55"),
-        (" Forecast Yield Index" if lang=="en" else " අනාවැකි අස්වැන්න දර්ශකය", f"{avg_fyield:.0f}/100", "#3d7a55"),
-        (" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", f"{harvest_months_count} " + ("months" if lang=="en" else "මාස"), "#3d7a55")]):
+       (" Forecast Avg Rainfall" if lang=="en" else " අනාවැකි සාමාන්‍ය වර්ෂාව", rain_kpi, "#3d7a55"),
+(" Forecast Avg Temp" if lang=="en" else " අනාවැකි සාමාන්‍ය උෂ්ණත්වය", temp_kpi, "#3d7a55"),
+(" Forecast Yield Index" if lang=="en" else " අනාවැකි අස්වැන්න දර්ශකය", yield_kpi, "#3d7a55"),
+(" Harvest Months (12m)" if lang=="en" else " අස්වනු මාස (12m)", harvest_kpi, "#3d7a55"):
         with col: st.markdown(metric_card(lbl,val,clr,height=110),unsafe_allow_html=True)
     divider()
 
