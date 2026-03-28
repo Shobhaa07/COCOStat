@@ -1092,6 +1092,123 @@ elif t["nav"][3] in sec_name:
         ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
+    # ── Forecast vs Actual 2025 ───────────────────────────────────────────────
+    divider()
+    st.markdown("#### " + ("12-Month Forecast vs Actual Prices — 2025" if lang=="en" else "මාස 12 අනාවැකිය හා 2025 සැබෑ මිල සංසන්දනය"))
+    st.markdown(
+        f"<div class='info-box-blue'>"
+        + ("Actual 2025 auction prices sourced from CDA/HARTI official data. Months without actual data show forecast only."
+           if lang=="en" else
+           "2025 සැබෑ වෙන්දේසි මිල CDA/HARTI නිල දත්ත වලින් ලබා ගන්නා ලදී. සැබෑ දත්ත නොමැති මාස සඳහා අනාවැකිය පමණ දැක්වේ.")
+        + "</div>", unsafe_allow_html=True)
+
+    # Actual 2025 monthly average prices (Rs. per nut) — sourced from CDA auction data
+    # Sources: EconomyNext / CDA official auction results
+    actual_2025 = {
+        1:  145.69,   # Jan 9 auction: 145,687/1000 nuts
+        2:  140.00,   # Feb: price capped at 140,000/1000
+        3:  145.35,   # Mar 6: 145,345/1000
+        4:  155.00,   # Apr: auction ~155 (wholesale 190-210 range)
+        5:  173.00,   # May: avg of highest 180 & lowest 166
+        6:  155.00,   # Jun: reported auction ~155 range
+        7:  149.47,   # Jul 24: 149,468/1000
+        8:  133.62,   # Aug 16: 133,623/1000
+    }
+
+    # Align forecast_df months for 2025
+    fc_2025 = forecast_df.copy()
+    fc_2025 = fc_2025[fc_2025["date"].dt.year == 2025].copy()
+
+    fig_fa = go.Figure()
+
+    # Uncertainty band (forecast)
+    if not fc_2025.empty:
+        fig_fa.add_trace(go.Scatter(
+            x=pd.concat([fc_2025["date"], fc_2025["date"][::-1]]),
+            y=pd.concat([fc_2025["upper"], fc_2025["lower"][::-1]]),
+            fill="toself", fillcolor="rgba(245,158,11,0.12)",
+            line=dict(color="rgba(0,0,0,0)"),
+            name=t["forecast_range_label"],
+            hoverinfo="skip"))
+
+        # Forecast line
+        fig_fa.add_trace(go.Scatter(
+            x=fc_2025["date"], y=fc_2025["price"],
+            mode="lines+markers",
+            line=dict(color="#f59e0b", width=2.5, dash="dash"),
+            marker=dict(size=7, color="#f59e0b", symbol="diamond"),
+            name=t["forecast_pred_label"],
+            hovertemplate="<b>%{x|%b %Y}</b><br>Forecast: Rs.%{y:.2f}<extra></extra>"))
+
+    # Actual prices line
+    actual_dates = []
+    actual_prices = []
+    for month_num in sorted(actual_2025.keys()):
+        actual_dates.append(pd.Timestamp(f"2025-{month_num:02d}-01"))
+        actual_prices.append(actual_2025[month_num])
+
+    fig_fa.add_trace(go.Scatter(
+        x=actual_dates, y=actual_prices,
+        mode="lines+markers",
+        line=dict(color="#3d7a55", width=3),
+        marker=dict(size=10, color="#3d7a55", symbol="circle",
+                    line=dict(color="#fff", width=2)),
+        name=("Actual CDA Price" if lang=="en" else "CDA සැබෑ මිල"),
+        hovertemplate="<b>%{x|%b %Y}</b><br>Actual: Rs.%{y:.2f}<extra></extra>"))
+
+    # Threshold lines
+    fig_fa.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+        annotation_text=f" Rs.{warn_threshold}",
+        annotation_position="top left",
+        annotation_font_color="#b45309")
+    fig_fa.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+        annotation_text=f" Rs.{crisis_threshold}",
+        annotation_position="top left",
+        annotation_font_color="#ef4444")
+
+    fig_fa.update_layout(
+        height=360,
+        margin=dict(l=80, r=20, t=20, b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11),
+                   dtick="M1", tickformat="%b %Y"),
+        yaxis=dict(gridcolor="#e4eeea", tickprefix="Rs.", tickfont=dict(size=11)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+
+    st.plotly_chart(fig_fa, use_container_width=True, config={"displayModeBar": "hover"})
+
+    # Accuracy summary table
+    if not fc_2025.empty:
+        st.markdown("#### " + ("Forecast vs Actual Accuracy" if lang=="en" else "අනාවැකි හා සැබෑ නිරවද්‍යතාව"))
+        acc_rows = []
+        month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        for _, frow in fc_2025.iterrows():
+            m = frow["date"].month
+            if m in actual_2025:
+                fp = frow["price"]
+                ap = actual_2025[m]
+                diff = ap - fp
+                pct = diff / fp * 100 if fp != 0 else 0
+                within_band = frow["lower"] <= ap <= frow["upper"]
+                acc_rows.append({
+                    ("Month" if lang=="en" else "මාසය"): month_names[m-1] + " 2025",
+                    ("Forecast (Rs.)" if lang=="en" else "අනාවැකිය (රු.)"): round(fp, 2),
+                    ("Actual (Rs.)" if lang=="en" else "සැබෑ (රු.)"): round(ap, 2),
+                    ("Difference (Rs.)" if lang=="en" else "වෙනස (රු.)"): round(diff, 2),
+                    ("Error (%)" if lang=="en" else "දෝෂය (%)"): f"{pct:+.1f}%",
+                    ("Within Band" if lang=="en" else "පරාසය තුළ"): ("✅ Yes" if within_band else "❌ No"),
+                })
+        if acc_rows:
+            st.dataframe(pd.DataFrame(acc_rows), use_container_width=True, hide_index=True)
+            err_key = "Error (%)" if lang=="en" else "දෝෂය (%)"
+            avg_err = sum(abs(float(r[err_key].replace("+","").replace("%",""))) for r in acc_rows) / len(acc_rows)
+            st.markdown(
+                f"<div class='info-box-green'>"
+                + (f"Average Forecast Error: ±{avg_err:.1f}% across {len(acc_rows)} available months in 2025."
+                   if lang=="en" else
+                   f"සාමාන්‍ය අනාවැකි දෝෂය: 2025 ලබා ගත හැකි මාස {len(acc_rows)} සඳහා ±{avg_err:.1f}%.")
+                + "</div>", unsafe_allow_html=True)
+
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
 elif t["nav"][6] in sec_name:
     section_header(" "+t["policy_title"], t["policy_sub"])
