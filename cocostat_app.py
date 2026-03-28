@@ -1290,6 +1290,122 @@ elif t["nav"][3] in sec_name:
             ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
             with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
+    # ── 2026 Forecast vs Actual (mirrors 2025 section — uses Sheet 02 actuals) ─
+    divider()
+    st.markdown("#### " + ("2026 Forecast vs Actual Prices" if lang=="en" else "2026 අනාවැකිය හා සැබෑ මිල සංසන්දනය"))
+    st.markdown(
+        f"<div class='info-box-blue'>"
+        + ("Actual 2026 monthly prices are loaded directly from the dataset (Sheet 02) as they become available. "
+           "The 2026 ARIMA forecast (Jan–Dec 2026) was trained on 2015–2025 data."
+           if lang=="en" else
+           "2026 සැබෑ මාසික මිල දත්ත ගොනුවෙන් (Sheet 02) කෙලින්ම පූරණය කෙරේ. "
+           "2026 ARIMA අනාවැකිය 2015–2025 දත්ත මත පුහුණු කෙරිණ.")
+        + "</div>", unsafe_allow_html=True)
+
+    # Pull actual 2026 prices from history_df (Sheet 02) — available months only
+    actual_2026_df = history_df[history_df["year"] == 2026].copy()
+    actual_2026_dict = {int(row["month"]): float(row["price"])
+                        for _, row in actual_2026_df.iterrows()}
+
+    fig_fa26 = go.Figure()
+
+    # Uncertainty band for 2026 forecast
+    if not fc_2026.empty:
+        fig_fa26.add_trace(go.Scatter(
+            x=pd.concat([fc_2026["date"], fc_2026["date"][::-1]]),
+            y=pd.concat([fc_2026["upper"], fc_2026["lower"][::-1]]),
+            fill="toself", fillcolor="rgba(245,158,11,0.12)",
+            line=dict(color="rgba(0,0,0,0)"),
+            name=t["forecast_range_label"], hoverinfo="skip"))
+        # 2026 forecast line
+        fig_fa26.add_trace(go.Scatter(
+            x=fc_2026["date"], y=fc_2026["price"],
+            mode="lines+markers",
+            line=dict(color="#f59e0b", width=2.5, dash="dash"),
+            marker=dict(size=7, color="#f59e0b", symbol="diamond"),
+            name=("2026 ARIMA Forecast" if lang=="en" else "2026 ARIMA අනාවැකිය"),
+            hovertemplate="<b>%{x|%b %Y}</b><br>Forecast: Rs.%{y:.2f}<extra></extra>"))
+
+    # Actual 2026 line — sourced from history_df (Sheet 02), shown only where data exists
+    if not actual_2026_df.empty:
+        fig_fa26.add_trace(go.Scatter(
+            x=actual_2026_df["date"], y=actual_2026_df["price"],
+            mode="lines+markers",
+            line=dict(color="#3d7a55", width=3),
+            marker=dict(size=10, color="#3d7a55", symbol="circle",
+                        line=dict(color="#fff", width=2)),
+            name=("Actual CDA Price 2026" if lang=="en" else "2026 CDA සැබෑ මිල"),
+            hovertemplate="<b>%{x|%b %Y}</b><br>Actual: Rs.%{y:.2f}<extra></extra>"))
+    else:
+        # No 2026 actuals yet — show informational annotation
+        fig_fa26.add_annotation(
+            text=("No 2026 actual prices available yet in dataset" if lang=="en"
+                  else "2026 සැබෑ මිල දත්ත ගොනුවේ තවම නොමැත"),
+            xref="paper", yref="paper", x=0.5, y=0.5,
+            showarrow=False, font=dict(size=13, color="#94a3b8"))
+
+    fig_fa26.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+        annotation_text=f" Rs.{warn_threshold}", annotation_position="top left",
+        annotation_font_color="#b45309")
+    fig_fa26.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+        annotation_text=f" Rs.{crisis_threshold}", annotation_position="top left",
+        annotation_font_color="#ef4444")
+    fig_fa26.update_layout(
+        height=360, margin=dict(l=80, r=20, t=20, b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11), dtick="M1", tickformat="%b %Y"),
+        yaxis=dict(gridcolor="#e4eeea", tickprefix="Rs.", tickfont=dict(size=11)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+    st.plotly_chart(fig_fa26, use_container_width=True, config={"displayModeBar": "hover"})
+
+    # ── 2026 Accuracy table — shown only for months where actuals exist ────────
+    st.markdown("#### " + ("2026 Forecast vs Actual Accuracy" if lang=="en" else "2026 අනාවැකි නිරවද්‍යතාව"))
+    if not fc_2026.empty and actual_2026_dict:
+        acc_rows_26 = []
+        month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        for _, frow in fc_2026.iterrows():
+            m = int(frow["date"].month)
+            if m in actual_2026_dict:
+                fp = frow["price"]
+                ap = actual_2026_dict[m]
+                diff = ap - fp
+                pct = diff / fp * 100 if fp != 0 else 0
+                within_band = frow["lower"] <= ap <= frow["upper"]
+                acc_rows_26.append({
+                    ("Month" if lang=="en" else "මාසය"): month_names[m-1] + " 2026",
+                    ("Forecast (Rs.)" if lang=="en" else "අනාවැකිය (රු.)"): round(fp, 2),
+                    ("Actual (Rs.)" if lang=="en" else "සැබෑ (රු.)"): round(ap, 2),
+                    ("Difference (Rs.)" if lang=="en" else "වෙනස (රු.)"): round(diff, 2),
+                    ("Error (%)" if lang=="en" else "දෝෂය (%)"): f"{pct:+.1f}%",
+                    ("Within Band" if lang=="en" else "පරාසය තුළ"): ("✅ Yes" if within_band else "❌ No"),
+                })
+        if acc_rows_26:
+            st.dataframe(pd.DataFrame(acc_rows_26), use_container_width=True, hide_index=True)
+            err_key_26 = "Error (%)" if lang=="en" else "දෝෂය (%)"
+            avg_err_26 = sum(abs(float(r[err_key_26].replace("+","").replace("%",""))) for r in acc_rows_26) / len(acc_rows_26)
+            st.markdown(
+                f"<div class='info-box-green'>"
+                + (f"Average Forecast Error: ±{avg_err_26:.1f}% across {len(acc_rows_26)} months in 2026. "
+                   "Note: ARIMA trained on 2015–2025 data. Accuracy improves as more monthly actuals are added."
+                   if lang=="en" else
+                   f"සාමාන්‍ය අනාවැකි දෝෂය: 2026 මාස {len(acc_rows_26)} සඳහා ±{avg_err_26:.1f}%. "
+                   "ARIMA 2015–2025 දත්ත මත පුහුණු කෙරිණ. මාසික සැබෑ දත්ත වැඩිවන විට නිරවද්‍යතාව වැඩිදියුණු වේ.")
+                + "</div>", unsafe_allow_html=True)
+        else:
+            st.markdown(
+                f"<div class='info-box-blue'>"
+                + ("No 2026 actual prices available yet. This table will populate automatically as CDA publishes monthly prices in the dataset."
+                   if lang=="en" else
+                   "2026 සැබෑ මිල දත්ත තවම නොමැත. CDA මාසික මිල ප්‍රකාශිත කිරීමෙන් පසු මෙම වගුව ස්වයංක්‍රීයව පිරිපිහිටනු ඇත.")
+                + "</div>", unsafe_allow_html=True)
+    else:
+        st.markdown(
+            f"<div class='info-box-blue'>"
+            + ("No 2026 actual prices available yet. This table will populate automatically as CDA publishes monthly prices in the dataset."
+               if lang=="en" else
+               "2026 සැබෑ මිල දත්ත තවම නොමැත. CDA මාසික මිල ප්‍රකාශිත කිරීමෙන් පසු මෙම වගුව ස්වයංක්‍රීයව පිරිපිහිටනු ඇත.")
+            + "</div>", unsafe_allow_html=True)
+
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
 elif t["nav"][6] in sec_name:
     section_header(" "+t["policy_title"], t["policy_sub"])
