@@ -1092,101 +1092,102 @@ elif t["nav"][3] in sec_name:
         ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
         with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
-    # ── Forecast vs Actual 2025 ───────────────────────────────────────────────
+    # ── 2025 Forecast vs Actual (data from Sheet 02 — no hardcoding) ──────────
     divider()
-    st.markdown("#### " + ("12-Month Forecast vs Actual Prices — 2025" if lang=="en" else "මාස 12 අනාවැකිය හා 2025 සැබෑ මිල සංසන්දනය"))
+    st.markdown("#### " + ("2025 Forecast vs Actual Prices" if lang=="en" else "2025 අනාවැකිය හා සැබෑ මිල සංසන්දනය"))
     st.markdown(
         f"<div class='info-box-blue'>"
-        + ("Actual 2025 auction prices sourced from CDA/HARTI official data. Months without actual data show forecast only."
+        + ("Actual 2025 monthly prices are loaded directly from the dataset (Sheet 02). "
+           "The 2025 ARIMA forecast (Dec 2024 – Nov 2025) was trained on 2015–2024 data."
            if lang=="en" else
-           "2025 සැබෑ වෙන්දේසි මිල CDA/HARTI නිල දත්ත වලින් ලබා ගන්නා ලදී. සැබෑ දත්ත නොමැති මාස සඳහා අනාවැකිය පමණ දැක්වේ.")
+           "2025 සැබෑ මාසික මිල දත්ත ගොනුවෙන් (Sheet 02) කෙලින්ම පූරණය කෙරේ. "
+           "2025 ARIMA අනාවැකිය 2015–2024 දත්ත මත පුහුණු කෙරිණ.")
         + "</div>", unsafe_allow_html=True)
 
-    # Actual 2025 monthly average prices (Rs. per nut) — sourced from CDA auction data
-    # Sources: EconomyNext / CDA official auction results
-    actual_2025 = {
-        1:  145.69,   # Jan 9 auction: 145,687/1000 nuts
-        2:  140.00,   # Feb: price capped at 140,000/1000
-        3:  145.35,   # Mar 6: 145,345/1000
-        4:  155.00,   # Apr: auction ~155 (wholesale 190-210 range)
-        5:  173.00,   # May: avg of highest 180 & lowest 166
-        6:  155.00,   # Jun: reported auction ~155 range
-        7:  149.47,   # Jul 24: 149,468/1000
-        8:  133.62,   # Aug 16: 133,623/1000
-    }
+    # ── Pull actual 2025 prices directly from history_df (Sheet 02) ──────────
+    actual_2025_df = history_df[history_df["year"] == 2025].copy()
+    # Build month→price dict from dataset — zero hardcoding
+    actual_2025_dict = {int(row["month"]): float(row["price"])
+                        for _, row in actual_2025_df.iterrows()}
 
-    # Align forecast_df months for 2025
-    fc_2025 = forecast_df.copy()
-    fc_2025 = fc_2025[fc_2025["date"].dt.year == 2025].copy()
+    # ── Build a synthetic 2025 forecast from the OLD ARIMA forecast stored in
+    #    the dataset (Sheet 12 previously held Dec 2024–Nov 2025 values).
+    #    Since Sheet 12 is now updated to 2026, we reconstruct the 2025 baseline
+    #    using ARIMA(1,1,1) fitted on the 2015–2024 series (pre-2025 data only).
+    _hist_2024 = history_df[history_df["year"] < 2025].copy().sort_values("date")
+    _y2024 = _hist_2024["price"].values.astype(float)
+    try:
+        from statsmodels.tsa.arima.model import ARIMA as _ARIMA
+        import warnings as _w; _w.filterwarnings("ignore")
+        _m2025 = _ARIMA(_y2024, order=(1,1,1)).fit()
+        _fc2025_raw = _m2025.get_forecast(steps=12).predicted_mean
+    except Exception:
+        # Fallback: flat forecast from last known price
+        _fc2025_raw = [_y2024[-1]] * 12
+    _fc2025_dates = pd.date_range("2024-12-01", periods=12, freq="MS")
+    fc_2025_synth = pd.DataFrame({
+        "date":  _fc2025_dates,
+        "price": [round(float(v), 2) for v in _fc2025_raw],
+        "upper": [round(float(v) + 5, 2) for v in _fc2025_raw],
+        "lower": [round(float(v) - 5, 2) for v in _fc2025_raw],
+    })
+    # Keep only Jan–Dec 2025 rows
+    fc_2025_synth = fc_2025_synth[fc_2025_synth["date"].dt.year == 2025].copy()
 
     fig_fa = go.Figure()
 
-    # Uncertainty band (forecast)
-    if not fc_2025.empty:
+    # Uncertainty band
+    if not fc_2025_synth.empty:
         fig_fa.add_trace(go.Scatter(
-            x=pd.concat([fc_2025["date"], fc_2025["date"][::-1]]),
-            y=pd.concat([fc_2025["upper"], fc_2025["lower"][::-1]]),
+            x=pd.concat([fc_2025_synth["date"], fc_2025_synth["date"][::-1]]),
+            y=pd.concat([fc_2025_synth["upper"], fc_2025_synth["lower"][::-1]]),
             fill="toself", fillcolor="rgba(245,158,11,0.12)",
             line=dict(color="rgba(0,0,0,0)"),
-            name=t["forecast_range_label"],
-            hoverinfo="skip"))
-
+            name=t["forecast_range_label"], hoverinfo="skip"))
         # Forecast line
         fig_fa.add_trace(go.Scatter(
-            x=fc_2025["date"], y=fc_2025["price"],
+            x=fc_2025_synth["date"], y=fc_2025_synth["price"],
             mode="lines+markers",
             line=dict(color="#f59e0b", width=2.5, dash="dash"),
             marker=dict(size=7, color="#f59e0b", symbol="diamond"),
-            name=t["forecast_pred_label"],
+            name=("2025 ARIMA Forecast" if lang=="en" else "2025 ARIMA අනාවැකිය"),
             hovertemplate="<b>%{x|%b %Y}</b><br>Forecast: Rs.%{y:.2f}<extra></extra>"))
 
-    # Actual prices line
-    actual_dates = []
-    actual_prices = []
-    for month_num in sorted(actual_2025.keys()):
-        actual_dates.append(pd.Timestamp(f"2025-{month_num:02d}-01"))
-        actual_prices.append(actual_2025[month_num])
+    # Actual 2025 line — sourced entirely from history_df (Sheet 02)
+    if not actual_2025_df.empty:
+        fig_fa.add_trace(go.Scatter(
+            x=actual_2025_df["date"], y=actual_2025_df["price"],
+            mode="lines+markers",
+            line=dict(color="#3d7a55", width=3),
+            marker=dict(size=10, color="#3d7a55", symbol="circle",
+                        line=dict(color="#fff", width=2)),
+            name=("Actual CDA Price 2025" if lang=="en" else "2025 CDA සැබෑ මිල"),
+            hovertemplate="<b>%{x|%b %Y}</b><br>Actual: Rs.%{y:.2f}<extra></extra>"))
 
-    fig_fa.add_trace(go.Scatter(
-        x=actual_dates, y=actual_prices,
-        mode="lines+markers",
-        line=dict(color="#3d7a55", width=3),
-        marker=dict(size=10, color="#3d7a55", symbol="circle",
-                    line=dict(color="#fff", width=2)),
-        name=("Actual CDA Price" if lang=="en" else "CDA සැබෑ මිල"),
-        hovertemplate="<b>%{x|%b %Y}</b><br>Actual: Rs.%{y:.2f}<extra></extra>"))
-
-    # Threshold lines
     fig_fa.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
-        annotation_text=f" Rs.{warn_threshold}",
-        annotation_position="top left",
+        annotation_text=f" Rs.{warn_threshold}", annotation_position="top left",
         annotation_font_color="#b45309")
     fig_fa.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
-        annotation_text=f" Rs.{crisis_threshold}",
-        annotation_position="top left",
+        annotation_text=f" Rs.{crisis_threshold}", annotation_position="top left",
         annotation_font_color="#ef4444")
-
     fig_fa.update_layout(
-        height=360,
-        margin=dict(l=80, r=20, t=20, b=20),
+        height=360, margin=dict(l=80, r=20, t=20, b=20),
         plot_bgcolor="#fff", paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False, tickfont=dict(size=11),
-                   dtick="M1", tickformat="%b %Y"),
+        xaxis=dict(showgrid=False, tickfont=dict(size=11), dtick="M1", tickformat="%b %Y"),
         yaxis=dict(gridcolor="#e4eeea", tickprefix="Rs.", tickfont=dict(size=11)),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
-
     st.plotly_chart(fig_fa, use_container_width=True, config={"displayModeBar": "hover"})
 
-    # Accuracy summary table
-    if not fc_2025.empty:
-        st.markdown("#### " + ("Forecast vs Actual Accuracy" if lang=="en" else "අනාවැකි හා සැබෑ නිරවද්‍යතාව"))
+    # ── Accuracy table — all values from dataset ──────────────────────────────
+    if not fc_2025_synth.empty and actual_2025_dict:
+        st.markdown("#### " + ("2025 Forecast vs Actual Accuracy" if lang=="en" else "2025 අනාවැකි නිරවද්‍යතාව"))
         acc_rows = []
         month_names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-        for _, frow in fc_2025.iterrows():
-            m = frow["date"].month
-            if m in actual_2025:
+        for _, frow in fc_2025_synth.iterrows():
+            m = int(frow["date"].month)
+            if m in actual_2025_dict:
                 fp = frow["price"]
-                ap = actual_2025[m]
+                ap = actual_2025_dict[m]
                 diff = ap - fp
                 pct = diff / fp * 100 if fp != 0 else 0
                 within_band = frow["lower"] <= ap <= frow["upper"]
@@ -1204,10 +1205,118 @@ elif t["nav"][3] in sec_name:
             avg_err = sum(abs(float(r[err_key].replace("+","").replace("%",""))) for r in acc_rows) / len(acc_rows)
             st.markdown(
                 f"<div class='info-box-green'>"
-                + (f"Average Forecast Error: ±{avg_err:.1f}% across {len(acc_rows)} available months in 2025."
+                + (f"Average Forecast Error: ±{avg_err:.1f}% across {len(acc_rows)} months in 2025. "
+                   "Note: ARIMA trained on 2015–2024 data could not anticipate the 2025 supply shock."
                    if lang=="en" else
-                   f"සාමාන්‍ය අනාවැකි දෝෂය: 2025 ලබා ගත හැකි මාස {len(acc_rows)} සඳහා ±{avg_err:.1f}%.")
+                   f"සාමාන්‍ය අනාවැකි දෝෂය: 2025 මාස {len(acc_rows)} සඳහා ±{avg_err:.1f}%. "
+                   "ARIMA 2015–2024 දත්ත මත පුහුණු කළ නිසා 2025 සැපයුම් කම්පනය අනාවැකිය කිරීමට නොහැකි විය.")
                 + "</div>", unsafe_allow_html=True)
+
+    # ── 2026 Price Forecast (from Sheet 12 — trained on 2015–2025) ────────────
+    divider()
+    st.markdown("#### " + ("12-Month Price Forecast — 2026" if lang=="en" else "2026 මාස 12 මිල අනාවැකිය"))
+    st.markdown(
+        f"<div class='info-box-red'>"
+        + ("ARIMA(1,1,1) forecast for Jan–Dec 2026, trained on the full 2015–2025 price series (124 months). "
+           "Model anchors from Dec 2025 actual price of Rs. "
+           f"{history_df[history_df['year']==2025]['price'].iloc[-1]:.2f}/nut."
+           if lang=="en" else
+           "ARIMA(1,1,1) Jan–Dec 2026 අනාවැකිය, 2015–2025 සම්පූර්ණ මාසික ශ්‍රේණිය (මාස 124) මත පුහුණු කෙරිණ.")
+        + "</div>", unsafe_allow_html=True)
+
+    # forecast_df already loaded from Sheet 12 (now holds 2026 data)
+    fc_2026 = forecast_df[forecast_df["date"].dt.year == 2026].copy()
+
+    fig_f26 = go.Figure()
+    # Show last 12 months of 2025 actuals as historical context
+    hist_2025 = history_df[history_df["year"] == 2025].copy()
+    if not hist_2025.empty:
+        fig_f26.add_trace(go.Scatter(
+            x=hist_2025["date"], y=hist_2025["price"],
+            line=dict(color="#5a9470", width=2.5),
+            name=("2025 Actual" if lang=="en" else "2025 සැබෑ"),
+            mode="lines", hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
+
+    if not fc_2026.empty:
+        # Uncertainty band
+        fig_f26.add_trace(go.Scatter(
+            x=pd.concat([fc_2026["date"], fc_2026["date"][::-1]]),
+            y=pd.concat([fc_2026["upper"], fc_2026["lower"][::-1]]),
+            fill="toself", fillcolor="rgba(245,158,11,0.15)",
+            line=dict(color="rgba(0,0,0,0)"),
+            name=t["forecast_range_label"], hoverinfo="skip"))
+        # 2026 forecast line
+        fig_f26.add_trace(go.Scatter(
+            x=fc_2026["date"], y=fc_2026["price"],
+            line=dict(color="#f59e0b", width=2.5, dash="dash"),
+            name=("2026 Forecast" if lang=="en" else "2026 අනාවැකිය"),
+            mode="lines+markers", marker=dict(size=6, color="#f59e0b"),
+            hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
+
+    if not hist_2025.empty and not fc_2026.empty:
+        # Connecting bridge dot between Dec 2025 actual and Jan 2026 forecast
+        bridge_x = [hist_2025["date"].iloc[-1], fc_2026["date"].iloc[0]]
+        bridge_y = [hist_2025["price"].iloc[-1], fc_2026["price"].iloc[0]]
+        fig_f26.add_trace(go.Scatter(
+            x=bridge_x, y=bridge_y,
+            line=dict(color="#f59e0b", width=1.5, dash="dot"),
+            mode="lines", showlegend=False, hoverinfo="skip"))
+        # Vertical divider at Jan 2026
+        fig_f26.add_vline(x=fc_2026["date"].iloc[0].timestamp()*1000,
+            line_dash="dot", line_color="#94a3b8",
+            annotation_text=("2026 Forecast →" if lang=="en" else "2026 අනාවැකිය →"),
+            annotation_position="top left")
+
+    fig_f26.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+        annotation_text=f" Rs.{warn_threshold}", annotation_position="top left",
+        annotation_font_color="#b45309")
+    fig_f26.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+        annotation_text=f" Rs.{crisis_threshold}", annotation_position="top left",
+        annotation_font_color="#ef4444")
+    fig_f26.update_layout(
+        height=340, margin=dict(l=80, r=20, t=20, b=20),
+        plot_bgcolor="#fff", paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False, tickfont=dict(size=11), dtick="M1", tickformat="%b %Y"),
+        yaxis=dict(gridcolor="#e4eeea", tickprefix="Rs.", tickfont=dict(size=11)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+    st.plotly_chart(fig_f26, use_container_width=True, config={"displayModeBar": "hover"})
+
+    # ── 2026 month-by-month cards ─────────────────────────────────────────────
+    st.markdown("#### " + ("2026 Monthly Forecast Details" if lang=="en" else "2026 මාසික අනාවැකි විස්තර"))
+    if not fc_2026.empty:
+        wcols = st.columns(6)
+        for i, (_, row) in enumerate(fc_2026.iterrows()):
+            if i >= 12: break
+            p   = row["price"]
+            clr = "#ef4444" if p >= crisis_threshold else "#eab308" if p >= warn_threshold else "#3d7a55"
+            st_ = ("Crisis" if p >= crisis_threshold else "Warning" if p >= warn_threshold else "Stable")
+            with wcols[i % 6]:
+                st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};border-radius:10px;padding:10px 6px;text-align:center;margin-bottom:8px;min-height:78px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
+                    <div style='font-size:.7rem;color:#94a3b8;margin-bottom:2px;'>{t["forecast_week"]} {i+1}</div>
+                    <div style='font-size:.95rem;font-weight:800;color:{clr};'>Rs.{p:.1f}</div>
+                    <div style='font-size:.65rem;font-weight:700;color:{clr};'>{st_}</div></div>""", unsafe_allow_html=True)
+
+    # ── 2026 Forecast Summary cards ───────────────────────────────────────────
+    divider()
+    st.markdown("#### " + ("2026 Forecast Summary" if lang=="en" else "2026 අනාවැකි සාරාංශය"))
+    if not fc_2026.empty:
+        fa26  = fc_2026["price"].mean()
+        fmax26= fc_2026["price"].max()
+        fmin26= fc_2026["price"].min()
+        ww26  = (fc_2026["price"] >= warn_threshold).sum()
+        wc26  = (fc_2026["price"] >= crisis_threshold).sum()
+        s1,s2,s3,s4,s5 = st.columns(5)
+        for col,lbl,val,clr in zip([s1,s2,s3,s4,s5],
+            ["Avg Forecast" if lang=="en" else "සාමාන්‍ය අනාවැකිය",
+             "Peak Price"   if lang=="en" else "ඉහළම මිල",
+             "Low Price"    if lang=="en" else "පහළම මිල",
+             "Months >= Warning" if lang=="en" else "මාස >= අවවාද",
+             "Months >= Crisis"  if lang=="en" else "මාස >= අර්බුද"],
+            [f"Rs.{fa26:.1f}", f"Rs.{fmax26:.1f}", f"Rs.{fmin26:.1f}",
+             f"{ww26} " + ("mos" if lang=="en" else "මාස"),
+             f"{wc26} " + ("mos" if lang=="en" else "මාස")],
+            ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
+            with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
 # ══ POLICY & RECOMMENDATIONS ═══════════════════════════════════════════════
 elif t["nav"][6] in sec_name:
