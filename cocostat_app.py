@@ -316,7 +316,7 @@ T = {
         "weather_sub":"How rainfall, temperature, and drought affect coconut yields and prices.",
         "weather_note":" Coconut yields are highly sensitive to rainfall. Drought pushes prices up within 3-6 months.",
         "export_title":" Export & Trade Analysis",
-        "export_sub":"Sri Lanka coconut export volumes, product categories, and revenue trends (2015-2024).",
+        "export_sub":"Sri Lanka coconut export volumes, product categories, and revenue trends (2015-2025).",
         "export_note":" Export demand creates upward price pressure domestically. Strong export seasons often coincide with local price spikes.",
         "farmer_title":" Farmer Profitability Calculator",
         "farmer_sub":"Estimate net farm income based on your land size, yield, costs, and current market price.",
@@ -378,7 +378,7 @@ T = {
                           "\u0db6\u0dc6\u0dbb\u0dca \u0dad\u0ddc\u0d9c \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb \u0dad\u0dcf\u0dc0\u0d9a\u0dcf\u0dbd\u0dd2\u0d9a \u0db8\u0dd2\u0dbd \u0db4\u0dcf\u0dbd\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1."],
         "policy_priorities":[" \u0d85\u0da9\u0dd4"," \u0db8\u0db0\u0dca\u200d\u0dba\u0db8"," \u0d89\u0dc4\u0dc5"],
         "policy_active":"\u2190 \u0daf\u0dd0\u0db1\u0da7 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dad\u0dca\u0db8\u0d9a\u0dba\u0dd2","policy_priority_label":"\u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9b\u0dad\u0dcf\u0dc0:",
-        "history_title":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba (2015-2024)","history_sub":"\u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0dc0\u0dc3\u0dbb 10 \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0db8\u0dd2\u0dbd \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba.",
+        "history_title":"\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba (2015-2025)","history_sub":"\u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0dc0\u0dc3\u0dbb 10 \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0db8\u0dd2\u0dbd \u0d89\u0dad\u0dd2\u0dc4\u0dcf\u0dc3\u0dba.",
         "method_title":"\u0db8\u0dda\u0db8 \u0db4\u0daf\u0dca\u0db0\u0dad\u0dd2\u0dba \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf \u0d9a\u0dbb\u0db1\u0dca \u0d86\u0d9a\u0dcf\u0dbb\u0dba",
         "method_steps":["\u0dc0\u0dc3\u0dbb 10\u0d9a \u0dc0\u0dd9\u0db1\u0dca\u0daf\u0dda\u0dc3\u0dd2 \u0daf\u0dad\u0dca\u0dad \u0d85\u0daf\u0dca\u0dba\u0dba\u0db1\u0dba \u0d9a\u0dbd\u0dcf.","\u0dc0\u0dd9\u0dc5\u0db3\u0db4\u0ddc\u0dc5 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0 3\u0d9a\u0dca \u0dc4\u0db3\u0dd4\u0db1\u0dcf\u0d9c\u0dad\u0dca\u0dad\u0dcf.","\u0db8\u0dd2\u0dbd\u0da7 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0da0\u0dcf\u0dbb\u0dba \u0db8\u0dd0\u0db1 \u0db6\u0dd0\u0dbd\u0dd4\u0dc0\u0dcf.","\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0db8\u0dd2\u0dbd \u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2 \u0d9a\u0dbd\u0dcf."],
         "footer_researcher":"පර්යේෂක","footer_ids":"ශිෂ්‍ය අංක","footer_programme":"පාඨමාලාව",
@@ -394,7 +394,7 @@ T = {
         "weather_sub":"\u0dc0\u0dbb\u0dca\u0DC2\u0dcf\u0dc0 \u0dc3\u0dc4 \u0d8b\u0DC2\u0dca\u0dab\u0dad\u0dca\u0dc0\u0dba \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1\u0da7 \u0dc3\u0dc4 \u0db8\u0dd2\u0dbd\u0da7 \u0db6\u0dbd\u0db4\u0dcf\u0db1 \u0d86\u0d9a\u0dcf\u0dbb\u0dba.",
         "weather_note":" \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1 \u0dc0\u0dbb\u0dca\u0DC2\u0dcf\u0db4\u0dad\u0db1\u0dba\u0da7 \u0d89\u0dad\u0dcf \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dba\u0dd2. \u0db1\u0dd2\u0dba\u0d82 \u0d9a\u0dcf\u0dbd\u0dba \u0db8\u0dcf\u0dc3 3-6 \u0d87\u0dad\u0dd4\u0dbd\u0dad \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dc5 \u0db1\u0d82\u0dc0\u0dba\u0dd2.",
         "export_title":"\u0d85\u0db4\u0db1\u0dba\u0db1 \u0dc3\u0dc4 \u0dc0\u0dd9\u0dc5\u0db3 \u0dc0\u0dd2\u0DC1\u0dca\u0dbd\u0dda\u0DC2\u0dab\u0dba",
-        "export_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab, \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d9a\u0dcf\u0dab\u0dca\u0da9 \u0dc3\u0dc4 \u0d86\u0daf\u0dcf\u0dba\u0db8\u0dca \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf (2015-2024).",
+        "export_sub":"\u0DC1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf \u0db4\u0ddc\u0dbd\u0dca \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab, \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0d9a\u0dcf\u0dab\u0dca\u0da9 \u0dc3\u0dc4 \u0d86\u0daf\u0dcf\u0dba\u0db8\u0dca \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf (2015-2025).",
         "export_note":" \u0d85\u0db4\u0db1\u0dba\u0db1 \u0d89\u0dbd\u0dca\u0dbd\u0dd4\u0db8 \u0daf\u0dda\u0DC1\u0dd3\u0dba \u0db8\u0dd2\u0dbd \u0d89\u0dc4\u0dc5 \u0db1\u0d82\u0dc0\u0dba\u0dd2.",
         "farmer_title":"\u0d9c\u0ddc\u0dc0\u0dd2 \u0dbd\u0dcf\u0db7\u0daf\u0dcf\u0dba\u0dd2\u0dad\u0dcf \u0d9a\u0dd0\u0dbd\u0dca\u0d9a\u0dd2\u0dba\u0dd4\u0dbd\u0dda\u0da7\u0dbb\u0dba",
         "farmer_sub":"\u0d85\u0dc3\u0dca\u0dc0\u0dd0\u0db1\u0dca\u0db1, \u0db4\u0dd2\u0dbb\u0dd2\u0dc0\u0dd0\u0dba \u0dc3\u0dc4 \u0dc0\u0dad\u0dca\u0db8\u0db1\u0dca \u0db8\u0dd2\u0dbd \u0db8\u0dad \u0d9c\u0ddc\u0dc0\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0DC1\u0dd4\u0daf\u0dca\u0db0 \u0d86\u0daf\u0dcf\u0dba\u0db8 \u0d9c\u0dab\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.",
@@ -1063,34 +1063,6 @@ elif t["nav"][3] in sec_name:
         xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_f,use_container_width=True,config={"displayModeBar":"hover"})
-
-    st.markdown("#### "+("12-Month Forecast Details" if lang=="en" else "මාස 12 අනාවැකි විස්තර"))
-    wcols=st.columns(6)
-    for i,(_,row) in enumerate(forecast_df.iterrows()):
-        if i>=12: break
-        p=row["price"]; clr="#ef4444" if p>=crisis_threshold else "#eab308" if p>=warn_threshold else "#3d7a55"
-        st_=("Crisis" if p>=crisis_threshold else "Warning" if p>=warn_threshold else "Stable")
-        with wcols[i%6]:
-            st.markdown(f"""<div style='background:#fff;border:1px solid #b8d0c4;border-top:3px solid {clr};border-radius:10px;padding:10px 6px;text-align:center;margin-bottom:8px;min-height:78px;display:flex;flex-direction:column;justify-content:center;align-items:center;'>
-                <div style='font-size:.7rem;color:#94a3b8;margin-bottom:2px;'>{t["forecast_week"]} {i+1}</div>
-                <div style='font-size:.95rem;font-weight:800;color:{clr};'>Rs.{p:.1f}</div>
-                <div style='font-size:.65rem;font-weight:700;color:{clr};'>{st_}</div></div>""",unsafe_allow_html=True)
-    divider()
-    st.markdown("#### "+("Forecast Summary" if lang=="en" else "අනාවැකි සාරාංශය"))
-    fa=forecast_df["price"].mean(); fmax=forecast_df["price"].max(); fmin=forecast_df["price"].min()
-    ww=(forecast_df["price"]>=warn_threshold).sum(); wc=(forecast_df["price"]>=crisis_threshold).sum()
-    s1,s2,s3,s4,s5=st.columns(5)
-    for col,lbl,val,clr in zip([s1,s2,s3,s4,s5],
-        ["Avg Forecast" if lang=="en" else "සාමාන්‍ය අනාවැකිය",
-         "Peak Price" if lang=="en" else "ඉහළම මිල",
-         "Low Price" if lang=="en" else "පහළම මිල",
-         "Months >= Warning" if lang=="en" else "මාස >= අවවාද",
-         "Months >= Crisis" if lang=="en" else "මාස >= අර්බුද"],
-        [f"Rs.{fa:.1f}",f"Rs.{fmax:.1f}",f"Rs.{fmin:.1f}",
-         f"{ww} " + ("mos" if lang=="en" else "මාස"),
-         f"{wc} " + ("mos" if lang=="en" else "මාස")],
-        ["#ef4444","#ef4444","#eab308","#eab308","#ef4444"]):
-        with col: st.markdown(metric_card(lbl,val,clr,height=80),unsafe_allow_html=True)
 
     # ── 2025 Forecast vs Actual (data from Sheet 02 — no hardcoding) ──────────
     divider()
@@ -2431,7 +2403,7 @@ elif t["nav"][9] in sec_name:
 
     sections = [
         ("01", "Overview &amp; History",
-         "Monthly auction price records from 2015 to 2024, sourced from CDA and HARTI. "
+         "Monthly auction price records from 2015 to 2025, sourced from CDA and HARTI. "
          "Includes 3-year trend chart, seasonal heatmap, price impact calculator, and annual average analysis."),
         ("02", "Market &amp; Demand",
          "Three-tier market regime classification (Stable / Warning / Crisis) based on CDA price thresholds. "
@@ -2443,11 +2415,11 @@ elif t["nav"][9] in sec_name:
          "12-week ahead price forecast with confidence intervals based on historical CDA auction records. "
          "Weekly price projections with regime-based colour indicators."),
         ("05", "Compare",
-         "Year-over-year price comparison across the full 2015–2024 dataset. "
+         "Year-over-year price comparison across the full 2015–2025 dataset. "
          "Segmentation by year, month, market regime, and agricultural season."),
         ("06", "Export &amp; Trade",
          "Export volume and revenue data sourced from the Sri Lanka Export Development Board (EDB) and CDA. "
-         "Covers six product categories across nine destination markets (2015–2024)."),
+         "Covers six product categories across nine destination markets (2015–2025)."),
         ("07", "Policy &amp; Recommendations",
          "Evidence-based policy simulator with five intervention levers. "
          "Tailored recommendations for Government policymakers, Businesses, and Farmers "
@@ -2487,19 +2459,19 @@ elif t["nav"][9] in sec_name:
       <tbody>
         <tr><td>Coconut Auction Prices</td>
             <td>Coconut Development Authority (CDA)</td>
-            <td>2015 – 2024 &nbsp;|&nbsp; Monthly</td><td>Monthly</td></tr>
+            <td>2015 – 2025 &nbsp;|&nbsp; Monthly</td><td>Monthly</td></tr>
         <tr><td>Market Auction Operations</td>
             <td>HARTI Economic Centres</td>
             <td>All 6 Auction Centres</td><td>Weekly</td></tr>
         <tr><td>Rainfall &amp; Temperature</td>
             <td>Department of Meteorology, Sri Lanka</td>
-            <td>2015 – 2024 &nbsp;|&nbsp; Monthly</td><td>Monthly</td></tr>
+            <td>2015 – 2025 &nbsp;|&nbsp; Monthly</td><td>Monthly</td></tr>
         <tr><td>Coconut Yield &amp; Production</td>
             <td>Coconut Research Institute (CRI)</td>
-            <td>2015 – 2024 &nbsp;|&nbsp; Annual</td><td>Annual</td></tr>
+            <td>2015 – 2025 &nbsp;|&nbsp; Annual</td><td>Annual</td></tr>
         <tr><td>Export Volumes &amp; Revenue</td>
             <td>Sri Lanka Export Development Board (EDB)</td>
-            <td>2015 – 2024 &nbsp;|&nbsp; Annual</td><td>Annual</td></tr>
+            <td>2015 – 2025 &nbsp;|&nbsp; Annual</td><td>Annual</td></tr>
         <tr><td>Global Market Prices</td>
             <td>EDB &amp; CDA International Reports</td>
             <td>5 Countries &nbsp;|&nbsp; Annual</td><td>Annual</td></tr>
@@ -2519,7 +2491,7 @@ elif t["nav"][9] in sec_name:
         ("01", "Market Regime Classification",
          "Auction prices are classified into three market regimes using threshold analysis based on "
          "CDA price benchmarks: Stable (below Rs. 65), Warning (Rs. 65–80), and Crisis (above Rs. 80). "
-         "Regime distribution is calculated across the full 2015–2024 dataset."),
+         "Regime distribution is calculated across the full 2015–2025 dataset."),
         ("02", "Price Elasticity of Demand",
          "Demand sensitivity is measured per regime using percentage-change analysis of price and quantity data "
          "from CDA auction records. Elasticity coefficients (Sheet 07 data). "
@@ -2634,7 +2606,7 @@ elif t["nav"][9] in sec_name:
     with r1:
         st.markdown("""<div class='m-ref'>
           <div class='m-ref-head'>Government &amp; Institutional Sources</div>
-          <div class='m-ref-item'>Coconut Development Authority (CDA) &mdash; Annual Reports 2015–2024 &nbsp;|&nbsp; <em>cda.gov.lk</em></div>
+          <div class='m-ref-item'>Coconut Development Authority (CDA) &mdash; Annual Reports 2015–2025 &nbsp;|&nbsp; <em>cda.gov.lk</em></div>
           <div class='m-ref-item'>Coconut Research Institute (CRI) &mdash; Agronomic Data &amp; Yield Records &nbsp;|&nbsp; <em>cri.gov.lk</em></div>
           <div class='m-ref-item'>HARTI Economic Centres &mdash; Auction Price Series &nbsp;|&nbsp; <em>harti.gov.lk</em></div>
           <div class='m-ref-item'>Sri Lanka Export Development Board (EDB) &mdash; Export Statistics &nbsp;|&nbsp; <em>srilankabusiness.com</em></div>
