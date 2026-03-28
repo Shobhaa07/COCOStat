@@ -1,6 +1,13 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+from datetime import datetime, timedelta
+import io
+from streamlit_autorefresh import st_autorefresh
+
 def safe_median(series):
     series = series.replace([np.inf, -np.inf], np.nan).dropna()
     if len(series) == 0:
@@ -13,12 +20,6 @@ def trend_arrow(val, threshold=2):
     elif val < -threshold:
         return "↓"
     return "→"
-import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
-from datetime import datetime, timedelta
-import io
-from streamlit_autorefresh import st_autorefresh
 
 st.set_page_config(
     page_title="COCOStat",
@@ -226,11 +227,29 @@ def load_demand_elasticity():
         }
     return raw, regime_stats
 
-history_df, forecast_df, weekly_df = load_data()
-weather_df = load_weather_data()
-export_df, destinations_df = load_export_data()
-global_price_df, production_df = load_global_data()
-demand_df, demand_regime_stats = load_demand_elasticity()
+try:
+    history_df, forecast_df, weekly_df = load_data()
+    weather_df = load_weather_data()
+    export_df, destinations_df = load_export_data()
+    global_price_df, production_df = load_global_data()
+    demand_df, demand_regime_stats = load_demand_elasticity()
+except FileNotFoundError as _e:
+    st.error("⚠️ Dataset file not found — COCOStat cannot start.")
+    st.markdown(
+        "**Please ensure `COCOStat_Master_Dataset.xlsx` is placed in the same folder as this app.**\n\n"
+        f"Details: `{_e}`"
+    )
+    st.stop()
+except Exception as _e:
+    st.error("⚠️ Failed to load the dataset — an unexpected error occurred.")
+    st.markdown(
+        "Possible causes:\n"
+        "- The Excel file is open in another programme (close it and refresh)\n"
+        "- The file is corrupt or a different version\n"
+        "- A required Python package is missing\n\n"
+        f"Details: `{_e}`"
+    )
+    st.stop()
 PRODUCT_COLS = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
 PRODUCT_COLORS = ["#3d7a55", "#5a9470", "#f59e0b", "#8b5cf6", "#ef4444"]
 PRODUCT_NAMES_SI = ["වියළි පොල්", "පොල් තෙල්", "පොල් කිරි", "කොයිර් නිෂ්පාදන", "නැවුම් ගෙඩි"]
@@ -2309,9 +2328,62 @@ elif t["nav"][9] in sec_name:
                     f"</div>",
                     unsafe_allow_html=True)
 
+    # ── Live Dataset Verification ─────────────────────────────────────────────
+    st.markdown("<div class='m-section-title'>Live Dataset Verification</div>", unsafe_allow_html=True)
+
+    # Compute live stats from loaded dataframes
+    _m_total_monthly   = len(history_df)
+    _m_total_weekly    = len(weekly_df)
+    _m_total_weather   = len(weather_df)
+    _m_total_export    = len(export_df)
+    _m_total_demand    = len(demand_df)
+    _m_total_forecast  = len(forecast_df)
+    _m_date_min        = history_df["date"].min().strftime("%b %Y") if len(history_df) > 0 else "—"
+    _m_date_max        = history_df["date"].max().strftime("%b %Y") if len(history_df) > 0 else "—"
+    _m_current_price   = round(float(history_df["price"].iloc[-1]), 2) if len(history_df) > 0 else 0
+    _m_price_min       = round(float(history_df["price"].min()), 2)
+    _m_price_max       = round(float(history_df["price"].max()), 2)
+    _m_price_avg       = round(float(history_df["price"].mean()), 2)
+    _m_cagr            = round(((_m_current_price / float(history_df["price"].iloc[0])) ** (1/9) - 1) * 100, 2) if len(history_df) > 0 and float(history_df["price"].iloc[0]) > 0 else 0
+    _m_regime_counts   = history_df["regime"].value_counts().to_dict()
+    _m_stable_pct      = round(_m_regime_counts.get(0, 0) / max(_m_total_monthly, 1) * 100, 1)
+    _m_warning_pct     = round(_m_regime_counts.get(1, 0) / max(_m_total_monthly, 1) * 100, 1)
+    _m_crisis_pct      = round(_m_regime_counts.get(2, 0) / max(_m_total_monthly, 1) * 100, 1)
+    _m_el_stable       = demand_regime_stats.get("Stable",  {}).get("elasticity", "—")
+    _m_el_warning      = demand_regime_stats.get("Warning", {}).get("elasticity", "—")
+    _m_el_crisis       = demand_regime_stats.get("Crisis",  {}).get("elasticity", "—")
+    _m_fc_start        = forecast_df["date"].min().strftime("%b %Y") if len(forecast_df) > 0 else "—"
+    _m_fc_end          = forecast_df["date"].max().strftime("%b %Y") if len(forecast_df) > 0 else "—"
+    _m_fc_base         = round(float(forecast_df["price"].mean()), 2) if len(forecast_df) > 0 else 0
+    _m_rain_avg        = round(float(weather_df["rainfall_mm"].mean()), 1) if len(weather_df) > 0 else 0
+    _m_yield_avg       = round(float(weather_df["yield_index"].mean()), 1) if len(weather_df) > 0 else 0
+
+    st.markdown(f"""<div class='m-tbl'><table>
+      <thead><tr><th>Metric</th><th>Computed Value</th><th>Source Sheet</th></tr></thead>
+      <tbody>
+        <tr><td>Monthly price records loaded</td><td><strong>{_m_total_monthly}</strong> records ({_m_date_min} – {_m_date_max})</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Weekly auction records loaded</td><td><strong>{_m_total_weekly}</strong> records</td><td>01_Weekly_Auction</td></tr>
+        <tr><td>Weather &amp; harvest records loaded</td><td><strong>{_m_total_weather}</strong> monthly observations</td><td>06_Weather_Harvest</td></tr>
+        <tr><td>Export volume records loaded</td><td><strong>{_m_total_export}</strong> annual records</td><td>04_Export_Products</td></tr>
+        <tr><td>Elasticity observations loaded</td><td><strong>{_m_total_demand}</strong> annual observations</td><td>07_Demand_Elasticity</td></tr>
+        <tr><td>Forecast months loaded</td><td><strong>{_m_total_forecast}</strong> months ({_m_fc_start} – {_m_fc_end})</td><td>12_Price_Forecast</td></tr>
+        <tr><td>Latest price (most recent month)</td><td><strong>Rs. {_m_current_price:.2f} / nut</strong></td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Historical price range</td><td>Rs. {_m_price_min:.2f} – Rs. {_m_price_max:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Historical average price</td><td>Rs. {_m_price_avg:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Price CAGR (9-year)</td><td>{_m_cagr:+.2f}% per year</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Regime distribution (Stable / Warning / Crisis)</td><td>{_m_stable_pct}% &nbsp;/&nbsp; {_m_warning_pct}% &nbsp;/&nbsp; {_m_crisis_pct}%</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
+        <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
+        <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
+        <tr><td>ARIMA forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>12_Price_Forecast</td></tr>
+        <tr><td>Average monthly rainfall (dataset)</td><td>{_m_rain_avg} mm</td><td>06_Weather_Harvest</td></tr>
+        <tr><td>Average yield index (dataset)</td><td>{_m_yield_avg}</td><td>06_Weather_Harvest</td></tr>
+      </tbody>
+    </table></div>""", unsafe_allow_html=True)
+
     # ── Technical Specifications ───────────────────────────────────────────────
     st.markdown("<div class='m-section-title'>Technical Specifications</div>", unsafe_allow_html=True)
-    st.markdown("""<div class='m-tbl'><table>
+    st.markdown(f"""<div class='m-tbl'><table>
       <thead><tr><th>Component</th><th>Specification</th></tr></thead>
       <tbody>
         <tr><td>Programming Language</td><td>Python 3.13</td></tr>
@@ -2320,7 +2392,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Data Processing</td><td>Pandas, NumPy</td></tr>
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
-        <tr><td>Price Elasticity (by regime)</td><td>Stable: {demand_regime_stats.get("Stable",{}).get("elasticity","\u22120.33")} &nbsp;|&nbsp; Warning: {demand_regime_stats.get("Warning",{}).get("elasticity","\u22120.20")} &nbsp;|&nbsp; Crisis: {demand_regime_stats.get("Crisis",{}).get("elasticity","\u22120.12")}</td></tr>
+        <tr><td>Price Elasticity (by regime)</td><td>Stable: {_m_el_stable} &nbsp;|&nbsp; Warning: {_m_el_warning} &nbsp;|&nbsp; Crisis: {_m_el_crisis}</td></tr>
         <tr><td>Forecast Horizon</td><td>12 weeks (short-term) &nbsp;|&nbsp; 12 months (medium-term)</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
