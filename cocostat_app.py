@@ -2858,7 +2858,7 @@ elif t["nav"][5] in sec_name:
     _top_market = f"{_top_market_row['Country']} ({_top_market_row['Share_pct']:.0f}%)"
     ek1,ek2,ek3,ek4=st.columns(4)
     for col,(lbl,val,clr) in zip([ek1,ek2,ek3,ek4],[
-        (" Total Exports (Latest Yr)" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"${le['Total']}M","#3d7a55"),
+        (" Total Exports (Latest Yr)" if lang=="en" else " \u0dc3\u0db8\u0dca\u0db4\u0dd6\u0dbb\u0dca\u0dab \u0d85\u0db4\u0db1\u0dba\u0db1", f"{le['Total']:,.0f} MT","#3d7a55"),
         (" YoY Growth" if lang=="en" else " \u0dc0\u0dcf\u0dbb\u0dca\u0DC2\u0dd2\u0d9a \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba", f"{'+'if yoy>0 else ''}{yoy:.1f}%",yoy_clr),
         (" Top Product" if lang=="en" else " \u0db4\u0dca\u200d\u0dbb\u0db8\u0dd4\u0d9b \u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba",
          _top_prod_name,"#3d7a55"),
@@ -2868,14 +2868,14 @@ elif t["nav"][5] in sec_name:
 
     ce1,ce2=st.columns([3,2])
     with ce1:
-        st.markdown("#### "+("Export Revenue by Product (USD Million)" if lang=="en" else "\u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0d86\u0daf\u0dcf\u0dba\u0db8"))
+        st.markdown("#### "+("Export Volume by Product (MT)" if lang=="en" else "\u0db1\u0dd2\u0DC2\u0dca\u0db4\u0dcf\u0daf\u0db1\u0dba \u0d85\u0db1\u0dd4\u0dc0 \u0d85\u0db4\u0db1\u0dba\u0db1 \u0db4\u0dbb\u0dd2\u0db8\u0dcf\u0dc0 (MT)"))
         fig_eb=go.Figure()
         _pnames = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
         for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames):
             fig_eb.add_trace(go.Bar(x=export_df["year"].astype(str),y=export_df[pc],name=pn,marker_color=pcl,
-                hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
+                hovertemplate=f"<b>%{{x}}</b><br>{pn}: %{{y:,.0f}} MT<extra></extra>"))
         fig_eb.update_layout(barmode="stack",height=320,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-            xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="$",ticksuffix="M"),
+            xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",ticksuffix=" MT"),
             legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
         st.plotly_chart(fig_eb,use_container_width=True,config={"displayModeBar":"hover"})
     with ce2:
@@ -2893,15 +2893,15 @@ elif t["nav"][5] in sec_name:
     me=export_df.merge(ap,on="year",how="inner")
     fig_ep=make_subplots(specs=[[{"secondary_y":True}]])
     fig_ep.add_trace(go.Bar(x=me["year"].astype(str),y=me["Total"],
-        name=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),
-        marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>$%{y}M<extra></extra>"),secondary_y=False)
+        name=("Export Volume (MT)" if lang=="en" else "අපනයන පරිමාව (MT)"),
+        marker_color="rgba(22,163,74,.5)",hovertemplate="<b>%{x}</b><br>%{y:,.0f} MT<extra></extra>"),secondary_y=False)
     fig_ep.add_trace(go.Scatter(x=me["year"].astype(str),y=me["price"],
         name=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),
         line=dict(color="#f59e0b",width=2.5),mode="lines+markers",marker=dict(size=7),
         hovertemplate="<b>%{x}</b><br>Rs.%{y:.2f}<extra></extra>"),secondary_y=True)
     fig_ep.update_layout(height=300,margin=dict(l=20,r=60,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
-    fig_ep.update_yaxes(title_text=("Export Revenue ($M)" if lang=="en" else "අපනයන ආදායම ($M)"),secondary_y=False,gridcolor="#e4eeea",tickprefix="$",ticksuffix="M")
+    fig_ep.update_yaxes(title_text=("Export Volume (MT)" if lang=="en" else "අපනයන පරිමාව (MT)"),secondary_y=False,gridcolor="#e4eeea",ticksuffix=" MT")
     fig_ep.update_yaxes(title_text=("Domestic Price (Rs.)" if lang=="en" else "දේශීය මිල (රු.)"),secondary_y=True,showgrid=False,tickprefix="Rs.")
     st.plotly_chart(fig_ep,use_container_width=True,config={"displayModeBar":"hover"})
     divider()
@@ -2912,9 +2912,9 @@ elif t["nav"][5] in sec_name:
     _pnames2 = PRODUCT_NAMES_SI if lang=="si" else PRODUCT_COLS
     for pc,pcl,pn in zip(PRODUCT_COLS,PRODUCT_COLORS,_pnames2):
         fig_pt.add_trace(go.Scatter(x=export_df["year"].astype(str),y=export_df[pc],mode="lines+markers",name=pn,
-            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pn}: $%{{y}}M<extra></extra>"))
+            line=dict(color=pcl,width=2),marker=dict(size=6),hovertemplate=f"<b>%{{x}}</b><br>{pn}: %{{y:,.0f}} MT<extra></extra>"))
     fig_pt.update_layout(height=300,margin=dict(l=20,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="$",ticksuffix="M"),
+        xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",ticksuffix=" MT"),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,font=dict(size=10)))
     st.plotly_chart(fig_pt,use_container_width=True,config={"displayModeBar":"hover"})
 
