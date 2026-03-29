@@ -2140,9 +2140,10 @@ elif t["nav"][4] in sec_name:
         sl_l = global_price_df["Sri Lanka"].iloc[-1]
         w_avg = safe_median(global_price_df[["Indonesia","Philippines","India","Vietnam"]].iloc[-1])
         sl_vs = sl_l - w_avg; sv_clr = "#3d7a55"
+        _sl_latest_year = int(global_price_df["year"].iloc[-1])
         gk1,gk2,gk3,gk4 = st.columns(4)
         for col,(lbl,val,clr) in zip([gk1,gk2,gk3,gk4],[
-            ("SL Price (2024)" if lang=="en" else "ශ්‍රී ලංකා මිල 2024", f"Rs.{sl_l:.0f}", "#3d7a55"),
+            (("SL Price (" + str(_sl_latest_year) + ")") if lang=="en" else ("ශ්‍රී ලංකා මිල " + str(_sl_latest_year)), f"Rs.{sl_l:.0f}", "#3d7a55"),
             ("World Avg Price" if lang=="en" else "ලෝක සාමාන්‍ය", f"Rs.{w_avg:.0f}", "#3d7a55"),
             ("SL Premium" if lang=="en" else "ශ්‍රී ලංකා වෙනස", f"{'+' if sl_vs>0 else ''}{sl_vs:.0f} Rs ({(sl_vs/w_avg*100):+.1f}%)", sv_clr),
             ("World Rank" if lang=="en" else "ලෝක ශ්‍රේණිය", "3rd Largest Producer" if lang=="en" else "3 වැනි නිෂ්පාදකයා", "#3d7a55")]):
