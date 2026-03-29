@@ -840,10 +840,10 @@ if t["nav"][0] in sec_name:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=recent["date"],y=recent["price"],fill="tozeroy",fillcolor="rgba(61,122,85,.1)",
             line=dict(color="#3d7a55",width=2.5),hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
-        fig.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
+        fig.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"Warning Rs.{warn_threshold}",annotation_position="top right",annotation_font_color="#eab308",annotation_font_size=11)
+        fig.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"Crisis Rs.{crisis_threshold}",annotation_position="top right",annotation_font_color="#ef4444",annotation_font_size=11)
         fig.update_layout(title=dict(text=" "+("Recent 3-Year Price Trend" if lang=="en" else "\u0db8\u0dd0\u0dad \u0d9a\u0dcf\u0dbd \u0db8\u0dd2\u0dbd \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dab\u0dad\u0dcf\u0dc0"),font=dict(size=14,color="#1a3328")),
-            height=280,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
+            height=280,margin=dict(l=80,r=120,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
             xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":"hover"})
     with col_stats:
@@ -893,10 +893,10 @@ if t["nav"][0] in sec_name:
     fig_hist=go.Figure()
     fig_hist.add_trace(go.Scatter(x=history_df["date"],y=history_df["price"],fill="tozeroy",fillcolor="rgba(22,163,74,.08)",
         line=dict(color="#3d7a55",width=1.8),mode="lines",hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left",annotation_font_color="#eab308")
-    fig_hist.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="bottom left",annotation_font_color="#ef4444")
-    fig_hist.update_layout(height=360,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-        xaxis=dict(showgrid=False,rangeslider=dict(visible=True),tickfont=dict(size=11)),
+    fig_hist.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"Warning Rs.{warn_threshold}",annotation_position="top right",annotation_font_color="#eab308",annotation_font_size=11)
+    fig_hist.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"Crisis Rs.{crisis_threshold}",annotation_position="top right",annotation_font_color="#ef4444",annotation_font_size=11)
+    fig_hist.update_layout(height=380,margin=dict(l=80,r=120,t=20,b=60),plot_bgcolor="#fff",paper_bgcolor="#fff",
+        xaxis=dict(showgrid=False,rangeslider=dict(visible=True,thickness=0.08),tickfont=dict(size=11)),
         yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),showlegend=False)
     st.plotly_chart(fig_hist,use_container_width=True,config={"displayModeBar":"hover"})
     st.markdown("#### "+("Summary Statistics" if lang=="en" else "සාරාංශ සංඛ්‍යාන"))
@@ -913,9 +913,14 @@ if t["nav"][0] in sec_name:
     with cp:
         rc=history_df["regime"].value_counts().sort_index()
         fig_pie=go.Figure(go.Pie(labels=t["regime_options"],values=rc.values,hole=.5,
-            marker=dict(colors=REGIME_COLORS),textinfo="label+percent",textfont=dict(size=11)))
-        fig_pie.update_layout(title=dict(text=" "+("Regime Distribution" if lang=="en" else "තත්ත්ව බෙදා හැරීම"),font=dict(size=13)),
-            height=300,margin=dict(l=20,r=20,t=50,b=20),paper_bgcolor="#fff",showlegend=False)
+            marker=dict(colors=REGIME_COLORS),textinfo="percent",textfont=dict(size=12,color="#fff"),
+            hovertemplate="<b>%{label}</b><br>%{value} months<br>%{percent}<extra></extra>"))
+        fig_pie.update_layout(
+            title=dict(text=" "+("Regime Distribution" if lang=="en" else "තත්ත්ව බෙදා හැරීම"),font=dict(size=13)),
+            height=300,margin=dict(l=20,r=20,t=50,b=10),paper_bgcolor="#fff",
+            showlegend=True,
+            legend=dict(orientation="h",yanchor="top",y=-0.02,xanchor="center",x=0.5,
+                        font=dict(size=11),itemsizing="constant"))
         st.plotly_chart(fig_pie,use_container_width=True,config={"displayModeBar":"hover"})
     with cy:
         aa=history_df.groupby("year")["price"].mean().reset_index()
@@ -962,10 +967,10 @@ elif t["nav"][1] in sec_name:
         if not sub.empty:
             fig_r.add_trace(go.Scatter(x=sub["date"],y=sub["price"],mode="markers",
                 marker=dict(color=rc,size=5,opacity=.8),name=rn,hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
-    fig_r.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
+    fig_r.add_hline(y=warn_threshold,line_dash="dash",line_color="#eab308",annotation_text=f"Warning Rs.{warn_threshold}",annotation_position="top right",annotation_font_color="#eab308",annotation_font_size=11)
+    fig_r.add_hline(y=crisis_threshold,line_dash="dash",line_color="#ef4444",annotation_text=f"Crisis Rs.{crisis_threshold}",annotation_position="top right",annotation_font_color="#ef4444",annotation_font_size=11)
     fig_r.update_layout(title=dict(text=" "+("Price History by Regime" if lang=="en" else "තත්ත්වය අනුව මිල ඉතිහාසය"),font=dict(size=14)),
-        height=320,margin=dict(l=80,r=20,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
+        height=320,margin=dict(l=80,r=120,t=40,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs."),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_r,use_container_width=True,config={"displayModeBar":"hover"})
@@ -1055,11 +1060,11 @@ elif t["nav"][3] in sec_name:
     fig_f.add_trace(go.Scatter(x=forecast_df["date"],y=forecast_df["price"],line=dict(color="#f59e0b",width=2.5,dash="dash"),
         name=t["forecast_pred_label"],mode="lines+markers",marker=dict(size=6,color="#f59e0b"),
         hovertemplate="<b>%{x|%b %Y}</b><br>Rs.%{y:.2f}<extra></extra>"))
-    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f" Rs.{warn_threshold}",annotation_position="top left")
-    fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f" Rs.{crisis_threshold}",annotation_position="top left")
+    fig_f.add_hline(y=warn_threshold,line_dash="dot",line_color="#eab308",annotation_text=f"Warning Rs.{warn_threshold}",annotation_position="top right",annotation_font_color="#eab308",annotation_font_size=11)
+    fig_f.add_hline(y=crisis_threshold,line_dash="dot",line_color="#ef4444",annotation_text=f"Crisis Rs.{crisis_threshold}",annotation_position="top right",annotation_font_color="#ef4444",annotation_font_size=11)
     fig_f.add_vline(x=forecast_df["date"].iloc[0].timestamp()*1000,line_dash="dot",line_color="#94a3b8",
         annotation_text="Forecast \u2192" if lang=="en" else "\u0d85\u0db1\u0dcf\u0dc0\u0dd0\u0d9a\u0dd2\u0dba \u2192",annotation_position="top left")
-    fig_f.update_layout(height=340,margin=dict(l=80,r=20,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
+    fig_f.update_layout(height=340,margin=dict(l=80,r=120,t=20,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
         xaxis=dict(showgrid=False,tickfont=dict(size=11)),yaxis=dict(gridcolor="#e4eeea",tickprefix="Rs.",tickfont=dict(size=11)),
         legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1))
     st.plotly_chart(fig_f,use_container_width=True,config={"displayModeBar":"hover"})
@@ -2226,8 +2231,9 @@ elif t["nav"][9] in sec_name:
          "Rainfall and temperature data from the Department of Meteorology. "
          "Yield index forecasts using a 3-month lagged rainfall model aligned with SW and NE monsoon seasons."),
         ("04", "Forecast",
-         "12-week ahead price forecast with confidence intervals based on historical CDA auction records. "
-         "Weekly price projections with regime-based colour indicators."),
+         "12-month ahead price forecast with upper and lower confidence bands based on a seasonal "
+         "ARIMA-based framework calibrated to historical CDA auction records (2015–2025). "
+         "Monthly price projections are colour-coded by market regime threshold."),
         ("05", "Compare",
          "Year-over-year price comparison across the full 2015–2025 dataset. "
          "Segmentation by year, month, market regime, and agricultural season."),
@@ -2311,9 +2317,10 @@ elif t["nav"][9] in sec_name:
          "from CDA auction records. Elasticity coefficients (Sheet 07 data). "
          "Demand for coconuts is confirmed as price-inelastic across all regimes."),
         ("03", "Price Forecasting",
-         "Short-term (12-week) price forecasts are produced using a trend projection model calibrated "
-         "against historical CDA weekly auction data, with a ±Rs. 5 confidence interval. "
-         "Medium-term (12-month) forecasts apply a seasonal ARIMA-based framework."),
+         "12-month ahead price forecasts are produced using a seasonal ARIMA-based framework "
+         "calibrated against historical CDA auction price records (2015–2025). "
+         "Confidence bands of ±5 Rs./nut are applied to upper and lower projections. "
+         "Forecasts are sourced from Sheet 12_Price_Forecast and presented with regime-coded colour indicators."),
         ("04", "Weather–Yield Correlation",
          "Coconut yield indices are derived from CRI agronomic records correlated with Department of "
          "Meteorology rainfall data using a 3-month lag structure, consistent with the known "
@@ -2405,7 +2412,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
         <tr><td>Price Elasticity (by regime)</td><td>Stable: {_m_el_stable} &nbsp;|&nbsp; Warning: {_m_el_warning} &nbsp;|&nbsp; Crisis: {_m_el_crisis}</td></tr>
-        <tr><td>Forecast Horizon</td><td>12 weeks (short-term) &nbsp;|&nbsp; 12 months (medium-term)</td></tr>
+        <tr><td>Forecast Horizon</td><td>12 months (ARIMA-based, with ±5 Rs./nut confidence bands)</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
         <tr><td>Transport Cost (farm model)</td><td>5% of gross revenue</td></tr>
@@ -2698,8 +2705,8 @@ elif t["nav"][2] in sec_name:
         # Warn / crisis lines
         fig_sc.add_hline(y=warn_threshold,
             line_dash="dot", line_color="#eab308", line_width=1.5,
-            annotation_text=f" Rs.{warn_threshold}",
-            annotation_position="top left",
+            annotation_text=f"Warning Rs.{warn_threshold}",
+            annotation_position="top right",
             annotation_font=dict(size=9, color="#b45309"))
         fig_sc.add_hline(y=crisis_threshold,
             line_dash="dot", line_color="#ef4444", line_width=1.5,
