@@ -64,13 +64,51 @@ def _clean(df, numeric_col):
     mask = df[numeric_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))
     return df[mask].copy()
 
+# ── Sheet name resolver ───────────────────────────────────────────────────────
+# Matches sheets by keyword suffix so the app works regardless of the numeric
+# prefix (e.g. "10_Price_Forecast" and "12_Price_Forecast" both resolve via
+# the keyword "Price_Forecast").
+_SHEET_KEYWORDS = {
+    "Weekly_Auction":      None,
+    "Monthly_Prices":      None,
+    "Export_Products":     None,
+    "Weather_Harvest":     None,
+    "Demand_Elasticity":   None,
+    "Global_Comparison":   None,
+    "Export_Destinations": None,
+    "Price_Forecast":      None,
+}
+
+@st.cache_data(ttl=30)
+def _get_sheet_map():
+    """Return a dict mapping keyword → actual sheet name for the current workbook."""
+    from openpyxl import load_workbook
+    path = _get_dataset_path()
+    wb = load_workbook(path, read_only=True)
+    sheet_map = {}
+    for keyword in _SHEET_KEYWORDS:
+        match = next((s for s in wb.sheetnames if keyword in s), None)
+        if match is None:
+            raise ValueError(
+                f"Cannot find a sheet containing '{keyword}' in "
+                f"{path}.\nAvailable sheets: {wb.sheetnames}"
+            )
+        sheet_map[keyword] = match
+    return sheet_map
+
+def _sheet(keyword):
+    """Return the actual sheet name for a given keyword (resolved at runtime)."""
+    return _get_sheet_map()[keyword]
+
+# ─────────────────────────────────────────────────────────────────────────────
+
 @st.cache_data(ttl=30)
 def load_data():
     """Load price, forecast and weekly data from CDA/HARTI dataset."""
     path = _get_dataset_path()
 
-    # ── Monthly prices — Sheet 02_Monthly_Prices, header on row 4 (index 3, 0-based) ──
-    hist_raw = pd.read_excel(path, sheet_name="02_Monthly_Prices", header=3)
+    # ── Monthly prices (keyword: Monthly_Prices) ──────────────────────────────
+    hist_raw = pd.read_excel(path, sheet_name=_sheet("Monthly_Prices"), header=3)
     hist_raw = _clean(hist_raw, "Avg Price\n(Rs./1000 nuts)")
     _month_map_ld = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
                      'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
@@ -87,9 +125,8 @@ def load_data():
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
-    # ── Forecast — Sheet 10_Price_Forecast, header on row 4 (index 3, 0-based) ──
-    # Stores ARIMA(1,1,1) 12-month forecasts in Rs./Nut (~116 Rs./nut for Jan–Dec 2026).
-    fc_raw = pd.read_excel(path, sheet_name="10_Price_Forecast", header=3)
+    # ── Forecast (keyword: Price_Forecast) — ARIMA(1,1,1) 12-month forecasts ──
+    fc_raw = pd.read_excel(path, sheet_name=_sheet("Price_Forecast"), header=3)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
         "date": pd.to_datetime(fc_raw["Date"]),
@@ -98,8 +135,8 @@ def load_data():
         "lower": pd.to_numeric(fc_raw["Lower Band\n(Rs./Nut)\n(-5 Rs.)"] if "Lower Band\n(Rs./Nut)\n(-5 Rs.)" in fc_raw.columns else fc_raw["Lower Band\n(Rs./Nut)"], errors="coerce").round(2).values,
     })
 
-    # ── Weekly — Sheet 01_Weekly_Auction, header on row 4 (index 3, 0-based) ──
-    wk_raw = pd.read_excel(path, sheet_name="01_Weekly_Auction", header=3)
+    # ── Weekly (keyword: Weekly_Auction) ──────────────────────────────────────
+    wk_raw = pd.read_excel(path, sheet_name=_sheet("Weekly_Auction"), header=3)
     wk_raw = _clean(wk_raw, "Avg Price\n(Rs./1000 nuts)")
     weekly = pd.DataFrame({
         "date": pd.to_datetime(wk_raw["Week Date"]),
@@ -111,8 +148,8 @@ def load_data():
 def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
-    # Sheet 06_Weather_Harvest, header on row 4 (index 3, 0-based)
-    raw = pd.read_excel(path, sheet_name="06_Weather_Harvest", header=3)
+    # keyword: Weather_Harvest
+    raw = pd.read_excel(path, sheet_name=_sheet("Weather_Harvest"), header=3)
     raw = _clean(raw, "Rainfall\n(mm)")
     _month_map_wth = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
                       'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
@@ -134,8 +171,8 @@ def load_weather_data():
 def load_export_data():
     """Load export volume and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
-    # Sheet 04_Export_Products, header on row 4 (index 3, 0-based) — volumes in MT
-    raw = pd.read_excel(path, sheet_name="04_Export_Products", header=3)
+    # keyword: Export_Products
+    raw = pd.read_excel(path, sheet_name=_sheet("Export_Products"), header=3)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
@@ -157,8 +194,8 @@ def load_export_data():
             export_df[app_col] = 0.0
     export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
 
-    # Sheet 09_Export_Destinations — USD M by destination country, latest year used for pie
-    dest_raw = pd.read_excel(path, sheet_name="09_Export_Destinations", header=3)
+    # keyword: Export_Destinations — USD M by destination country, latest year used for pie
+    dest_raw = pd.read_excel(path, sheet_name=_sheet("Export_Destinations"), header=3)
     dest_raw = _clean(dest_raw, "Year")
     dest_raw = dest_raw.copy()
     dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
@@ -182,8 +219,8 @@ def load_export_data():
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
-    # Sheet 08_Global_Comparison, header on row 4 (index 3, 0-based)
-    raw = pd.read_excel(path, sheet_name="08_Global_Comparison", header=3)
+    # keyword: Global_Comparison
+    raw = pd.read_excel(path, sheet_name=_sheet("Global_Comparison"), header=3)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
@@ -209,9 +246,9 @@ def load_global_data():
 
 @st.cache_data(ttl=30)
 def load_demand_elasticity():
-    """Load real price elasticity data from Sheet 07_Demand_Elasticity."""
+    """Load real price elasticity data from the Demand_Elasticity sheet."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name="07_Demand_Elasticity", header=3)
+    raw = pd.read_excel(path, sheet_name=_sheet("Demand_Elasticity"), header=3)
     raw = raw[raw["Year"].apply(
         lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
     )].copy()
