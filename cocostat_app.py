@@ -6,6 +6,9 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 import io
+# st_autorefresh is used to auto-reload the Forecast, Live, and Weather tabs
+# every 5 minutes (300,000 ms) so that any dataset update is reflected without
+# a manual page refresh. Remove this import only if static-only deployment is intended.
 from streamlit_autorefresh import st_autorefresh
 
 def safe_median(series):
@@ -13,13 +16,6 @@ def safe_median(series):
     if len(series) == 0:
         return 0
     return series.median()
-
-def trend_arrow(val, threshold=2):
-    if val > threshold:
-        return "↑"
-    elif val < -threshold:
-        return "↓"
-    return "→"
 
 st.set_page_config(
     page_title="COCOStat",
@@ -79,7 +75,7 @@ _SHEET_KEYWORDS = {
     "Price_Forecast":      None,
 }
 
-@st.cache_data(ttl=30)
+@st.cache_resource
 def _get_sheet_map():
     """Return a dict mapping keyword → actual sheet name for the current workbook."""
     from openpyxl import load_workbook
@@ -102,7 +98,7 @@ def _sheet(keyword):
 
 # ─────────────────────────────────────────────────────────────────────────────
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=3600)
 def load_data():
     """Load price, forecast and weekly data from CDA/HARTI dataset."""
     path = _get_dataset_path()
@@ -121,7 +117,10 @@ def load_data():
         "date": hist_raw["_date"].values,
         "price": (pd.to_numeric(hist_raw["Avg Price\n(Rs./1000 nuts)"], errors="coerce") / 1000).round(2).values,
     })
-    hist["regime"] = pd.cut(hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2]).astype(int)
+    hist["price"] = hist["price"].where(hist["price"] > 0)  # guard: treat 0/negative as NaN
+    hist["regime"] = pd.cut(
+        hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2], include_lowest=True
+    ).astype("Int64").fillna(0).astype(int)
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
@@ -144,7 +143,7 @@ def load_data():
     })
     return hist, forecast, weekly
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=3600)
 def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
@@ -167,7 +166,7 @@ def load_weather_data():
         "year": pd.to_numeric(raw["Year"], errors="coerce").astype(int).values,
     })
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=3600)
 def load_export_data():
     """Load export volume and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
@@ -215,7 +214,7 @@ def load_export_data():
     dest_df["Share_pct"] = (dest_df["Value_USD_M"] / max(total_val_d, 1) * 100).round(1)
     return export_df, dest_df
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=3600)
 def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
@@ -244,7 +243,7 @@ def load_global_data():
     return global_df, production
 
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=3600)
 def load_demand_elasticity():
     """Load real price elasticity data from the Demand_Elasticity sheet."""
     path = _get_dataset_path()
@@ -286,6 +285,53 @@ except Exception as _e:
         f"Details: `{_e}`"
     )
     st.stop()
+
+# ── Data Validation ───────────────────────────────────────────────────────────
+# Runs once at startup. Catches data integrity problems early so the dashboard
+# never silently renders nonsense. Any assertion failure surfaces as a clear
+# error rather than a downstream KeyError or blank chart.
+def _validate_datasets(hist, forecast, weekly, weather, export, demand):
+    errors = []
+
+    # Record counts must be non-zero
+    if len(hist) == 0:
+        errors.append("Monthly price history is empty.")
+    if len(forecast) == 0:
+        errors.append("Forecast data is empty.")
+    if len(weekly) == 0:
+        errors.append("Weekly auction data is empty.")
+    if len(weather) == 0:
+        errors.append("Weather/harvest data is empty.")
+    if len(export) == 0:
+        errors.append("Export volume data is empty.")
+    if len(demand) == 0:
+        errors.append("Demand elasticity data is empty.")
+
+    # Required columns must exist
+    for col in ("date", "price", "regime", "year", "month"):
+        if col not in hist.columns:
+            errors.append(f"Monthly history missing column: '{col}'.")
+    for col in ("date", "price", "upper", "lower"):
+        if col not in forecast.columns:
+            errors.append(f"Forecast missing column: '{col}'.")
+
+    # Price values must be in a plausible range (Rs. 5 – Rs. 500 per nut)
+    valid_prices = hist["price"].dropna()
+    if len(valid_prices) > 0:
+        if valid_prices.min() < 5:
+            errors.append(f"Suspiciously low price detected: Rs.{valid_prices.min():.2f}/nut.")
+        if valid_prices.max() > 500:
+            errors.append(f"Suspiciously high price detected: Rs.{valid_prices.max():.2f}/nut.")
+
+    if errors:
+        st.error("⚠️ Dataset validation failed — one or more data integrity checks did not pass:")
+        for e in errors:
+            st.markdown(f"- {e}")
+        st.stop()
+
+_validate_datasets(history_df, forecast_df, weekly_df, weather_df, export_df, demand_df)
+# ─────────────────────────────────────────────────────────────────────────────
+
 PRODUCT_COLS = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
 PRODUCT_COLORS = ["#3d7a55", "#5a9470", "#f59e0b", "#8b5cf6", "#ef4444"]
 PRODUCT_NAMES_SI = ["වියළි පොල්", "පොල් තෙල්", "පොල් කිරි", "කොයිර් නිෂ්පාදන", "නැවුම් ගෙඩි"]
