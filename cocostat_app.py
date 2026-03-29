@@ -88,9 +88,8 @@ def load_data():
     hist["month"] = hist["date"].dt.month
 
     # ── Forecast — Sheet 10_Price_Forecast, header on row 4 (index 3, 0-based) ──
-    # Sheet 10 stores ARIMA(1,1,1) forecasts in Rs./Nut (proper scale: ~103-105 Rs./nut).
-    # These are consistent with the historical price series (Nov 2024 = 102.31 Rs./nut).
-    fc_raw = pd.read_excel(path, sheet_name="12_Price_Forecast", header=3)
+    # Stores ARIMA(1,1,1) 12-month forecasts in Rs./Nut (~116 Rs./nut for Jan–Dec 2026).
+    fc_raw = pd.read_excel(path, sheet_name="10_Price_Forecast", header=3)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
         "date": pd.to_datetime(fc_raw["Date"]),
@@ -159,7 +158,7 @@ def load_export_data():
     export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
 
     # Sheet 09_Export_Destinations — USD M by destination country, latest year used for pie
-    dest_raw = pd.read_excel(path, sheet_name="11_Export_Destinations", header=3)
+    dest_raw = pd.read_excel(path, sheet_name="09_Export_Destinations", header=3)
     dest_raw = _clean(dest_raw, "Year")
     dest_raw = dest_raw.copy()
     dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
@@ -184,7 +183,7 @@ def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
     # Sheet 08_Global_Comparison, header on row 4 (index 3, 0-based)
-    raw = pd.read_excel(path, sheet_name="09_Global_Comparison", header=3)
+    raw = pd.read_excel(path, sheet_name="08_Global_Comparison", header=3)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
@@ -199,7 +198,7 @@ def load_global_data():
         else:
             global_df[c] = 0.0
 
-    # Sheet 08_Global_Production does not exist in the dataset.
+    # Global production data is not in the dataset (no dedicated sheet).
     # Using standard FAO FAOSTAT approximate global production figures (billion nuts/year).
     production = pd.DataFrame({
         "Country": ["Indonesia", "Philippines", "India", "Sri Lanka", "Vietnam", "Brazil", "Thailand"],
@@ -813,7 +812,7 @@ if t["nav"][0] in sec_name:
     _elast = demand_regime_stats.get(_regime_key, {}).get("elasticity", -0.20)
     _kpi_demand = "Inelastic" if lang == "en" else "අප්‍රත්‍යාස්ථ"
     _kpi_demand_sub = f"ε = {_elast:.2f}" + (" (inelastic)" if lang == "en" else " (ලාංකීය)")
-    # Forecast trend from Sheet 12
+    # Forecast trend from Sheet 10_Price_Forecast
     _fc_next = forecast_df["price"].iloc[0] if len(forecast_df) > 0 else current_price
     _fc_last = forecast_df["price"].iloc[-1] if len(forecast_df) > 0 else current_price
     _fc_chg = _fc_last - current_price
@@ -2320,7 +2319,7 @@ elif t["nav"][9] in sec_name:
          "12-month ahead price forecasts are produced using a seasonal ARIMA-based framework "
          "calibrated against historical CDA auction price records (2015–2025). "
          "Confidence bands of ±5 Rs./nut are applied to upper and lower projections. "
-         "Forecasts are sourced from Sheet 12_Price_Forecast and presented with regime-coded colour indicators."),
+         "Forecasts are sourced from Sheet 10_Price_Forecast and presented with regime-coded colour indicators."),
         ("04", "Weather–Yield Correlation",
          "Coconut yield indices are derived from CRI agronomic records correlated with Department of "
          "Meteorology rainfall data using a 3-month lag structure, consistent with the known "
@@ -2385,7 +2384,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Weather &amp; harvest records loaded</td><td><strong>{_m_total_weather}</strong> monthly observations</td><td>06_Weather_Harvest</td></tr>
         <tr><td>Export volume records loaded</td><td><strong>{_m_total_export}</strong> annual records</td><td>04_Export_Products</td></tr>
         <tr><td>Elasticity observations loaded</td><td><strong>{_m_total_demand}</strong> annual observations</td><td>07_Demand_Elasticity</td></tr>
-        <tr><td>Forecast months loaded</td><td><strong>{_m_total_forecast}</strong> months ({_m_fc_start} – {_m_fc_end})</td><td>12_Price_Forecast</td></tr>
+        <tr><td>Forecast months loaded</td><td><strong>{_m_total_forecast}</strong> months ({_m_fc_start} – {_m_fc_end})</td><td>10_Price_Forecast</td></tr>
         <tr><td>Latest price (most recent month)</td><td><strong>Rs. {_m_current_price:.2f} / nut</strong></td><td>02_Monthly_Prices</td></tr>
         <tr><td>Historical price range</td><td>Rs. {_m_price_min:.2f} – Rs. {_m_price_max:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
         <tr><td>Historical average price</td><td>Rs. {_m_price_avg:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
@@ -2394,7 +2393,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
-        <tr><td>ARIMA forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>12_Price_Forecast</td></tr>
+        <tr><td>ARIMA forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
         <tr><td>Average monthly rainfall (dataset)</td><td>{_m_rain_avg} mm</td><td>06_Weather_Harvest</td></tr>
         <tr><td>Average yield index (dataset)</td><td>{_m_yield_avg}</td><td>06_Weather_Harvest</td></tr>
       </tbody>
