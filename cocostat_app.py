@@ -90,7 +90,7 @@ def load_data():
     # ── Forecast — Sheet 10_Price_Forecast, header on row 4 (index 3, 0-based) ──
     # Sheet 10 stores ARIMA(1,1,1) forecasts in Rs./Nut (proper scale: ~103-105 Rs./nut).
     # These are consistent with the historical price series (Nov 2024 = 102.31 Rs./nut).
-    fc_raw = pd.read_excel(path, sheet_name="10_Price_Forecast", header=3)
+    fc_raw = pd.read_excel(path, sheet_name="12_Price_Forecast", header=3)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
         "date": pd.to_datetime(fc_raw["Date"]),
@@ -159,7 +159,7 @@ def load_export_data():
     export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
 
     # Sheet 09_Export_Destinations — USD M by destination country, latest year used for pie
-    dest_raw = pd.read_excel(path, sheet_name="09_Export_Destinations", header=3)
+    dest_raw = pd.read_excel(path, sheet_name="11_Export_Destinations", header=3)
     dest_raw = _clean(dest_raw, "Year")
     dest_raw = dest_raw.copy()
     dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
@@ -184,7 +184,7 @@ def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
     # Sheet 08_Global_Comparison, header on row 4 (index 3, 0-based)
-    raw = pd.read_excel(path, sheet_name="08_Global_Comparison", header=3)
+    raw = pd.read_excel(path, sheet_name="09_Global_Comparison", header=3)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
