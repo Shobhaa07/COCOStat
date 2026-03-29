@@ -88,7 +88,7 @@ def load_data():
     hist["month"] = hist["date"].dt.month
 
     # ── Forecast — Sheet 10_Price_Forecast, header on row 4 (index 3, 0-based) ──
-    # Sheet 12 stores ARIMA(1,1,1) forecasts in Rs./Nut (proper scale: ~103-105 Rs./nut).
+    # Sheet 10 stores ARIMA(1,1,1) forecasts in Rs./Nut (proper scale: ~103-105 Rs./nut).
     # These are consistent with the historical price series (Nov 2024 = 102.31 Rs./nut).
     fc_raw = pd.read_excel(path, sheet_name="10_Price_Forecast", header=3)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
