@@ -124,7 +124,7 @@ def load_data():
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
-    # ── Forecast (keyword: Price_Forecast) — ARIMA(1,1,1) 12-month forecasts ──
+    # ── Forecast (keyword: Price_Forecast) — SARIMAX(1,1,1) 12-month forecasts ──
     fc_raw = pd.read_excel(path, sheet_name=_sheet("Price_Forecast"), header=3)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
@@ -2315,7 +2315,7 @@ elif t["nav"][9] in sec_name:
          "Yield index forecasts using a 3-month lagged rainfall model aligned with SW and NE monsoon seasons."),
         ("04", "Forecast",
          "12-month ahead price forecast with upper and lower confidence bands based on a seasonal "
-         "ARIMA-based framework calibrated to historical CDA auction records (2015–2025). "
+         "SARIMAX-based framework calibrated to historical CDA auction records (2015–2025). "
          "Monthly price projections are colour-coded by market regime threshold."),
         ("05", "Compare",
          "Year-over-year price comparison across the full 2015–2025 dataset. "
@@ -2400,7 +2400,7 @@ elif t["nav"][9] in sec_name:
          "from CDA auction records. Elasticity coefficients (Sheet 07 data). "
          "Demand for coconuts is confirmed as price-inelastic across all regimes."),
         ("03", "Price Forecasting",
-         "12-month ahead price forecasts are produced using a seasonal ARIMA-based framework "
+         "12-month ahead price forecasts are produced using a seasonal SARIMAX-based framework "
          "calibrated against historical CDA auction price records (2015–2025). "
          "Confidence bands of ±5 Rs./nut are applied to upper and lower projections. "
          "Forecasts are sourced from Sheet 10_Price_Forecast and presented with regime-coded colour indicators."),
@@ -2477,7 +2477,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
-        <tr><td>ARIMA forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
+        <tr><td>SARIMAX forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
         <tr><td>Average monthly rainfall (dataset)</td><td>{_m_rain_avg} mm</td><td>06_Weather_Harvest</td></tr>
         <tr><td>Average yield index (dataset)</td><td>{_m_yield_avg}</td><td>06_Weather_Harvest</td></tr>
       </tbody>
@@ -2495,7 +2495,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
         <tr><td>Price Elasticity (by regime)</td><td>Stable: {_m_el_stable} &nbsp;|&nbsp; Warning: {_m_el_warning} &nbsp;|&nbsp; Crisis: {_m_el_crisis}</td></tr>
-        <tr><td>Forecast Horizon</td><td>12 months (ARIMA-based, with ±5 Rs./nut confidence bands)</td></tr>
+        <tr><td>Forecast Horizon</td><td>12 months (SARIMAX-based, with ±5 Rs./nut confidence bands)</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
         <tr><td>Transport Cost (farm model)</td><td>5% of gross revenue</td></tr>
