@@ -104,7 +104,7 @@ def load_data():
     path = _get_dataset_path()
 
     # ── Monthly prices (keyword: Monthly_Prices) ──────────────────────────────
-    hist_raw = pd.read_excel(path, sheet_name=_sheet("Monthly_Prices"), header=3)
+    hist_raw = pd.read_excel(path, sheet_name=_sheet("Monthly_Prices"), header=1)
     hist_raw = _clean(hist_raw, "Avg Price\n(Rs./1000 nuts)")
     _month_map_ld = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
                      'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
@@ -124,8 +124,8 @@ def load_data():
     hist["year"] = hist["date"].dt.year
     hist["month"] = hist["date"].dt.month
 
-    # ── Forecast (keyword: Price_Forecast) — SARIMAX(1,1,1)(1,1,1,12) 12-month forecasts (exog: Palm Oil Price, Inflation) ──
-    fc_raw = pd.read_excel(path, sheet_name=_sheet("Price_Forecast"), header=3)
+    # ── Forecast (keyword: Price_Forecast) — SARIMA(1,1,1)(1,1,1,12) 12-month forecasts ──
+    fc_raw = pd.read_excel(path, sheet_name=_sheet("Price_Forecast"), header=1)
     fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
     forecast = pd.DataFrame({
         "date": pd.to_datetime(fc_raw["Date"]),
@@ -135,7 +135,7 @@ def load_data():
     })
 
     # ── Weekly (keyword: Weekly_Auction) ──────────────────────────────────────
-    wk_raw = pd.read_excel(path, sheet_name=_sheet("Weekly_Auction"), header=3)
+    wk_raw = pd.read_excel(path, sheet_name=_sheet("Weekly_Auction"), header=1)
     wk_raw = _clean(wk_raw, "Avg Price\n(Rs./1000 nuts)")
     weekly = pd.DataFrame({
         "date": pd.to_datetime(wk_raw["Week Date"]),
@@ -148,7 +148,7 @@ def load_weather_data():
     """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
     path = _get_dataset_path()
     # keyword: Weather_Harvest
-    raw = pd.read_excel(path, sheet_name=_sheet("Weather_Harvest"), header=3)
+    raw = pd.read_excel(path, sheet_name=_sheet("Weather_Harvest"), header=1)
     raw = _clean(raw, "Rainfall\n(mm)")
     _month_map_wth = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
                       'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
@@ -171,7 +171,7 @@ def load_export_data():
     """Load export volume and destination data from EDB/CDA dataset."""
     path = _get_dataset_path()
     # keyword: Export_Products
-    raw = pd.read_excel(path, sheet_name=_sheet("Export_Products"), header=3)
+    raw = pd.read_excel(path, sheet_name=_sheet("Export_Products"), header=1)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
@@ -194,7 +194,7 @@ def load_export_data():
     export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
 
     # keyword: Export_Destinations — USD M by destination country, latest year used for pie
-    dest_raw = pd.read_excel(path, sheet_name=_sheet("Export_Destinations"), header=3)
+    dest_raw = pd.read_excel(path, sheet_name=_sheet("Export_Destinations"), header=1)
     dest_raw = _clean(dest_raw, "Year")
     dest_raw = dest_raw.copy()
     dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
@@ -219,7 +219,7 @@ def load_global_data():
     """Load global price comparison and production data from FAO/CDA dataset."""
     path = _get_dataset_path()
     # keyword: Global_Comparison
-    raw = pd.read_excel(path, sheet_name=_sheet("Global_Comparison"), header=3)
+    raw = pd.read_excel(path, sheet_name=_sheet("Global_Comparison"), header=1)
     raw = _clean(raw, "Year")
     raw = raw.copy()
     raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
@@ -247,7 +247,7 @@ def load_global_data():
 def load_demand_elasticity():
     """Load real price elasticity data from the Demand_Elasticity sheet."""
     path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name=_sheet("Demand_Elasticity"), header=3)
+    raw = pd.read_excel(path, sheet_name=_sheet("Demand_Elasticity"), header=1)
     raw = raw[raw["Year"].apply(
         lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
     )].copy()
@@ -2315,7 +2315,7 @@ elif t["nav"][9] in sec_name:
          "Yield index forecasts using a 3-month lagged rainfall model aligned with SW and NE monsoon seasons."),
         ("04", "Forecast",
          "12-month ahead price forecast with upper and lower confidence bands based on a seasonal "
-         "SARIMAX(1,1,1)(1,1,1,12) model calibrated to historical CDA auction records (2015–2025). "
+         "SARIMA(1,1,1)(1,1,1,12) model calibrated to historical CDA auction records (2015–2025). "
          "Monthly price projections are colour-coded by market regime threshold."),
         ("05", "Compare",
          "Year-over-year price comparison across the full 2015–2025 dataset. "
@@ -2396,16 +2396,16 @@ elif t["nav"][9] in sec_name:
         ("01", "Market Regime Classification",
          "Two parallel regime systems are used: (1) A threshold-based system on monthly Rs./1000-nut prices "
          "(Stable ≤65k, Warning 65–80k, Crisis >80k) for macroeconomic KPIs and policy analysis. "
-         "(2) A Gaussian Mixture Model (GMM, K=3) on weekly auction features for short-run trading regime analysis and elasticity estimation. "
-         "GMM is selected over K-Means because it models elliptical, non-spherical clusters and provides probabilistic regime membership scores. "
+         "(2) A K-Means clustering system on weekly return features for short-run trading regime analysis and elasticity estimation. "
+         "K-Means assignments are temporally smoothed with a 4-week rolling mode filter to enforce regime persistence. "
          "The two systems operate at different granularities and are documented separately."),
         ("02", "Price Elasticity of Demand",
-         "Demand sensitivity is measured per regime using OLS log-log regression (HC3-robust) on CDA monthly data (aggregated from weekly auction records). "
+         "Demand sensitivity is measured per regime using OLS log-log regression (HC3-robust) on CDA weekly auction data. "
          "Note: In auction markets, price and quantity are simultaneously determined, so OLS estimates may reflect "
          "simultaneity bias. Coefficients are presented as descriptive elasticity estimates. "
          "Demand for coconuts is confirmed as price-inelastic across all regimes (|ε| < 1)."),
         ("03", "Price Forecasting",
-         "12-month ahead price forecasts are produced using a SARIMAX(1,1,1)(1,1,1,12) model with Palm Oil Price and Inflation (%) as exogenous variables, "
+         "12-month ahead price forecasts are produced using a SARIMA(1,1,1)(1,1,1,12) model "
          "calibrated against historical CDA auction price records (2015–2025). "
          "Confidence bands represent the model-derived 95% prediction intervals from get_forecast().conf_int(). "
          "Forecasts are sourced from Sheet 10_Price_Forecast and presented with regime-coded colour indicators."),
@@ -2482,7 +2482,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
-        <tr><td>SARIMAX(1,1,1)(1,1,1,12) forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
+        <tr><td>SARIMA(1,1,1)(1,1,1,12) forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
         <tr><td>Average monthly rainfall (dataset)</td><td>{_m_rain_avg} mm</td><td>06_Weather_Harvest</td></tr>
         <tr><td>Average yield index (dataset)</td><td>{_m_yield_avg}</td><td>06_Weather_Harvest</td></tr>
       </tbody>
@@ -2500,7 +2500,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
         <tr><td>Price Elasticity (by regime)</td><td>Stable: {_m_el_stable} &nbsp;|&nbsp; Warning: {_m_el_warning} &nbsp;|&nbsp; Crisis: {_m_el_crisis}</td></tr>
-        <tr><td>Forecast Horizon</td><td>12 months — SARIMAX(1,1,1)(1,1,1,12) with Palm Oil Price & Inflation exogenous variables; model-derived 95% prediction intervals</td></tr>
+        <tr><td>Forecast Horizon</td><td>12 months — SARIMA(1,1,1)(1,1,1,12) with model-derived 95% prediction intervals</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
         <tr><td>Transport Cost (farm model)</td><td>5% of gross revenue</td></tr>
