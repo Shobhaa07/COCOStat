@@ -25,15 +25,16 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# DATA LOADERS
+# DATA LOADERS  (JSON-based — no Excel required)
 # ─────────────────────────────────────────────
 import os
+import json
 import pathlib
 
-def _get_dataset_path():
-    """Locate COCOStat_Master_Dataset.xlsx — works locally and on Streamlit Cloud."""
-    fname = "COCOStat_Master_Dataset.xlsx"
-    # 1. Same directory as this script (works locally and on Streamlit Cloud /mount/src/...)
+def _get_json_path():
+    """Locate cocostat_data.json — works locally and on Streamlit Cloud."""
+    fname = "cocostat_data.json"
+    # 1. Same directory as this script
     try:
         script_dir = pathlib.Path(__file__).resolve().parent
         p = script_dir / fname
@@ -52,215 +53,122 @@ def _get_dataset_path():
         if p.exists():
             return str(p)
     raise FileNotFoundError(
-        f"'{fname}' not found. Place it in the same directory as cocostat_app.py."
+        f"'{fname}' not found. Run generate_cocostat_json.py first, "
+        f"then place {fname} in the same directory as cocostat_app.py."
     )
 
-def _clean(df, numeric_col):
-    """Drop rows where numeric_col is not a real number (filters source-note rows etc.)."""
-    mask = df[numeric_col].apply(lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == 'nan'))
-    return df[mask].copy()
-
-# ── Sheet name resolver ───────────────────────────────────────────────────────
-# Matches sheets by keyword suffix so the app works regardless of the numeric
-# prefix (e.g. "10_Price_Forecast" and "12_Price_Forecast" both resolve via
-# the keyword "Price_Forecast").
-_SHEET_KEYWORDS = {
-    "Weekly_Auction":      None,
-    "Monthly_Prices":      None,
-    "Export_Products":     None,
-    "Weather_Harvest":     None,
-    "Demand_Elasticity":   None,
-    "Global_Comparison":   None,
-    "Export_Destinations": None,
-    "Price_Forecast":      None,
-}
-
-@st.cache_resource
-def _get_sheet_map():
-    """Return a dict mapping keyword → actual sheet name for the current workbook."""
-    from openpyxl import load_workbook
-    path = _get_dataset_path()
-    wb = load_workbook(path, read_only=True)
-    sheet_map = {}
-    for keyword in _SHEET_KEYWORDS:
-        match = next((s for s in wb.sheetnames if keyword in s), None)
-        if match is None:
-            raise ValueError(
-                f"Cannot find a sheet containing '{keyword}' in "
-                f"{path}.\nAvailable sheets: {wb.sheetnames}"
-            )
-        sheet_map[keyword] = match
-    return sheet_map
-
-def _sheet(keyword):
-    """Return the actual sheet name for a given keyword (resolved at runtime)."""
-    return _get_sheet_map()[keyword]
-
-# ─────────────────────────────────────────────────────────────────────────────
+@st.cache_data(ttl=3600)
+def _load_json():
+    """Load and cache the full cocostat_data.json file."""
+    path = _get_json_path()
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 @st.cache_data(ttl=3600)
 def load_data():
-    """Load price, forecast and weekly data from CDA/HARTI dataset."""
-    path = _get_dataset_path()
+    """Load price, forecast and weekly data from cocostat_data.json."""
+    data = _load_json()
 
-    # ── Monthly prices (keyword: Monthly_Prices) ──────────────────────────────
-    hist_raw = pd.read_excel(path, sheet_name=_sheet("Monthly_Prices"), header=1)
-    hist_raw = _clean(hist_raw, "Avg Price\n(Rs./1000 nuts)")
-    _month_map_ld = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
-                     'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
-    hist_raw = hist_raw.copy()
-    hist_raw["_month_num"] = hist_raw["Month"].map(_month_map_ld)
-    hist_raw["_date"] = pd.to_datetime(
-        hist_raw.apply(lambda r: f"{int(r['Year'])}-{int(r['_month_num'])}-01", axis=1)
-    )
-    hist = pd.DataFrame({
-        "date": hist_raw["_date"].values,
-        "price": (pd.to_numeric(hist_raw["Avg Price\n(Rs./1000 nuts)"], errors="coerce") / 1000).round(2).values,
-    })
-    hist["price"] = hist["price"].where(hist["price"] > 0)  # guard: treat 0/negative as NaN
-    hist["regime"] = pd.cut(
-        hist["price"], bins=[0, 65, 80, 999], labels=[0, 1, 2], include_lowest=True
-    ).astype("Int64").fillna(0).astype(int)
-    hist["year"] = hist["date"].dt.year
-    hist["month"] = hist["date"].dt.month
+    # ── Monthly price history ─────────────────────────────────────────────────
+    hist = pd.DataFrame(data["history"])
+    hist["date"]   = pd.to_datetime(hist["date"])
+    hist["price"]  = pd.to_numeric(hist["price"],  errors="coerce").round(2)
+    hist["regime"] = pd.to_numeric(hist["regime"], errors="coerce").fillna(0).astype(int)
+    hist["year"]   = hist["date"].dt.year
+    hist["month"]  = hist["date"].dt.month
+    hist["price"]  = hist["price"].where(hist["price"] > 0)
 
-    # ── Forecast (keyword: Price_Forecast) — SARIMA(1,1,1)(1,1,1,12) 12-month forecasts ──
-    fc_raw = pd.read_excel(path, sheet_name=_sheet("Price_Forecast"), header=1)
-    fc_raw = _clean(fc_raw, "Base Forecast\n(Rs./Nut)")
-    forecast = pd.DataFrame({
-        "date": pd.to_datetime(fc_raw["Date"]),
-        "price": pd.to_numeric(fc_raw["Base Forecast\n(Rs./Nut)"], errors="coerce").round(2).values,
-        "upper": pd.to_numeric(fc_raw["Upper Band\n(Rs./Nut)\n(+5 Rs.)"] if "Upper Band\n(Rs./Nut)\n(+5 Rs.)" in fc_raw.columns else fc_raw["Upper Band\n(Rs./Nut)"], errors="coerce").round(2).values,
-        "lower": pd.to_numeric(fc_raw["Lower Band\n(Rs./Nut)\n(-5 Rs.)"] if "Lower Band\n(Rs./Nut)\n(-5 Rs.)" in fc_raw.columns else fc_raw["Lower Band\n(Rs./Nut)"], errors="coerce").round(2).values,
-    })
+    # ── Forecast ──────────────────────────────────────────────────────────────
+    forecast = pd.DataFrame(data["forecast"])
+    forecast["date"]  = pd.to_datetime(forecast["date"])
+    forecast["price"] = pd.to_numeric(forecast["price"], errors="coerce").round(2)
+    forecast["upper"] = pd.to_numeric(forecast["upper"], errors="coerce").round(2)
+    forecast["lower"] = pd.to_numeric(forecast["lower"], errors="coerce").round(2)
 
-    # ── Weekly (keyword: Weekly_Auction) ──────────────────────────────────────
-    wk_raw = pd.read_excel(path, sheet_name=_sheet("Weekly_Auction"), header=1)
-    wk_raw = _clean(wk_raw, "Avg Price\n(Rs./1000 nuts)")
-    weekly = pd.DataFrame({
-        "date": pd.to_datetime(wk_raw["Week Date"]),
-        "price": (pd.to_numeric(wk_raw["Avg Price\n(Rs./1000 nuts)"], errors="coerce") / 1000).round(2).values,
-    })
+    # ── Weekly auction ────────────────────────────────────────────────────────
+    weekly = pd.DataFrame(data["weekly"])
+    weekly["date"]  = pd.to_datetime(weekly["date"])
+    weekly["price"] = pd.to_numeric(weekly["price"], errors="coerce").round(2)
+
     return hist, forecast, weekly
 
 @st.cache_data(ttl=3600)
 def load_weather_data():
-    """Load rainfall, temperature and yield index from CRI/Meteorology dataset."""
-    path = _get_dataset_path()
-    # keyword: Weather_Harvest
-    raw = pd.read_excel(path, sheet_name=_sheet("Weather_Harvest"), header=1)
-    raw = _clean(raw, "Rainfall\n(mm)")
-    _month_map_wth = {'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
-                      'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
-    raw = raw.copy()
-    raw["_month_num"] = raw["Month"].map(_month_map_wth)
-    raw["_date"] = pd.to_datetime(
-        raw.apply(lambda r: f"{int(r['Year'])}-{int(r['_month_num'])}-01", axis=1)
-    )
-    return pd.DataFrame({
-        "date": raw["_date"].values,
-        "rainfall_mm": pd.to_numeric(raw["Rainfall\n(mm)"], errors="coerce").round(1).values,
-        "temp_c": pd.to_numeric(raw["Temperature\n(\u00b0C)"], errors="coerce").round(1).values,
-        "yield_index": pd.to_numeric(raw["Yield Index\n(0\u2013110)"], errors="coerce").round(1).values,
-        "month": raw["_month_num"].values,
-        "year": pd.to_numeric(raw["Year"], errors="coerce").astype(int).values,
-    })
+    """Load rainfall, temperature and yield index from cocostat_data.json."""
+    data = _load_json()
+    weather = pd.DataFrame(data["weather"])
+    weather["date"]        = pd.to_datetime(weather["date"])
+    weather["rainfall_mm"] = pd.to_numeric(weather["rainfall_mm"], errors="coerce").round(1)
+    weather["temp_c"]      = pd.to_numeric(weather["temp_c"],      errors="coerce").round(1)
+    weather["yield_index"] = pd.to_numeric(weather["yield_index"], errors="coerce").round(1)
+    weather["month"]       = pd.to_numeric(weather["month"],       errors="coerce").astype(int)
+    weather["year"]        = pd.to_numeric(weather["year"],        errors="coerce").astype(int)
+    return weather
 
 @st.cache_data(ttl=3600)
 def load_export_data():
-    """Load export volume and destination data from EDB/CDA dataset."""
-    path = _get_dataset_path()
-    # keyword: Export_Products
-    raw = pd.read_excel(path, sheet_name=_sheet("Export_Products"), header=1)
-    raw = _clean(raw, "Year")
-    raw = raw.copy()
-    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
-    raw = raw[raw["Year"].notna()].copy()
-    raw["Year"] = raw["Year"].astype(int)
-    PRODUCT_COLS_EXPORT = ["Desiccated Coconut", "Coconut Oil", "Coconut Milk", "Coir Products", "Fresh Nuts"]
-    _col_map = {
-        "Desiccated Coconut": next((c for c in raw.columns if "Desiccated" in str(c)), None),
-        "Coconut Oil":        next((c for c in raw.columns if "Coconut Oil" in str(c)), None),
-        "Coconut Milk":       next((c for c in raw.columns if "Milk" in str(c) and "Powder" not in str(c) and "Cream" not in str(c) and "Coconut" in str(c)), None),
-        "Coir Products":      next((c for c in raw.columns if "Coir" in str(c)), None),
-        "Fresh Nuts":         next((c for c in raw.columns if "Fresh Nuts" in str(c)), None),
-    }
-    export_df = pd.DataFrame({"year": raw["Year"].values})
-    for app_col, xl_col in _col_map.items():
-        if xl_col:
-            export_df[app_col] = pd.to_numeric(raw[xl_col], errors="coerce").fillna(0).values
-        else:
-            export_df[app_col] = 0.0
-    export_df["Total"] = export_df[PRODUCT_COLS_EXPORT].sum(axis=1)
+    """Load export volume and destination data from cocostat_data.json."""
+    data = _load_json()
 
-    # keyword: Export_Destinations — USD M by destination country, latest year used for pie
-    dest_raw = pd.read_excel(path, sheet_name=_sheet("Export_Destinations"), header=1)
-    dest_raw = _clean(dest_raw, "Year")
-    dest_raw = dest_raw.copy()
-    dest_raw["Year"] = pd.to_numeric(dest_raw["Year"], errors="coerce")
-    dest_raw = dest_raw[dest_raw["Year"].notna()].copy()
-    dest_raw["Year"] = dest_raw["Year"].astype(int)
-    latest_year_d = dest_raw["Year"].max()
-    latest_row_d = dest_raw[dest_raw["Year"] == latest_year_d].iloc[0]
-    _ctry_names = ["USA", "UK", "Germany", "Australia", "Netherlands", "Japan", "Canada", "UAE", "Others"]
-    dest_data = []
-    total_val_d = 0.0
-    for ctry in _ctry_names:
-        col_d = next((c for c in dest_raw.columns if str(c).split("\n")[0].strip() == ctry), None)
-        val_d = float(pd.to_numeric(latest_row_d.get(col_d, 0), errors="coerce") or 0.0) if col_d else 0.0
-        dest_data.append({"Country": ctry, "Value_USD_M": val_d})
-        total_val_d += val_d
-    dest_df = pd.DataFrame(dest_data)
-    dest_df["Share_pct"] = (dest_df["Value_USD_M"] / max(total_val_d, 1) * 100).round(1)
+    export_df = pd.DataFrame(data["export"])
+    export_df["year"] = pd.to_numeric(export_df["year"], errors="coerce").astype(int)
+    for col in ["Desiccated Coconut", "Coconut Oil", "Coconut Milk",
+                "Coir Products", "Fresh Nuts", "Total"]:
+        if col in export_df.columns:
+            export_df[col] = pd.to_numeric(export_df[col], errors="coerce").fillna(0)
+        else:
+            export_df[col] = 0.0
+
+    dest_df = pd.DataFrame(data["destinations"])
+    dest_df["Value_USD_M"] = pd.to_numeric(dest_df["Value_USD_M"], errors="coerce").fillna(0)
+    dest_df["Share_pct"]   = pd.to_numeric(dest_df["Share_pct"],   errors="coerce").fillna(0)
+
     return export_df, dest_df
 
 @st.cache_data(ttl=3600)
 def load_global_data():
-    """Load global price comparison and production data from FAO/CDA dataset."""
-    path = _get_dataset_path()
-    # keyword: Global_Comparison
-    raw = pd.read_excel(path, sheet_name=_sheet("Global_Comparison"), header=1)
-    raw = _clean(raw, "Year")
-    raw = raw.copy()
-    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
-    raw = raw[raw["Year"].notna()].copy()
-    raw["Year"] = raw["Year"].astype(int)
-    countries = ["Sri Lanka", "Indonesia", "Philippines", "India", "Vietnam"]
-    global_df = pd.DataFrame({"year": raw["Year"].values})
-    for c in countries:
-        matched_col = next((col for col in raw.columns if c in str(col)), None)
-        if matched_col:
-            global_df[c] = pd.to_numeric(raw[matched_col], errors="coerce").values
+    """Load global price comparison and production data from cocostat_data.json."""
+    data = _load_json()
+
+    global_df = pd.DataFrame(data["global_price"])
+    global_df["year"] = pd.to_numeric(global_df["year"], errors="coerce").astype(int)
+    for c in ["Sri Lanka", "Indonesia", "Philippines", "India", "Vietnam"]:
+        if c in global_df.columns:
+            global_df[c] = pd.to_numeric(global_df[c], errors="coerce")
         else:
             global_df[c] = 0.0
 
-    # Global production data is not in the dataset (no dedicated sheet).
-    # Using standard FAO FAOSTAT approximate global production figures (billion nuts/year).
-    production = pd.DataFrame({
-        "Country": ["Indonesia", "Philippines", "India", "Sri Lanka", "Vietnam", "Brazil", "Thailand"],
-        "Production_B_nuts": [17.1, 14.8, 14.7, 3.0, 1.6, 2.9, 1.5],
-    })
+    production = pd.DataFrame(data["production"])
+    production["Production_B_nuts"] = pd.to_numeric(
+        production["Production_B_nuts"], errors="coerce"
+    )
     return global_df, production
-
 
 @st.cache_data(ttl=3600)
 def load_demand_elasticity():
-    """Load real price elasticity data from the Demand_Elasticity sheet."""
-    path = _get_dataset_path()
-    raw = pd.read_excel(path, sheet_name=_sheet("Demand_Elasticity"), header=1)
-    raw = raw[raw["Year"].apply(
-        lambda x: isinstance(x, (int, float)) and not (isinstance(x, float) and str(x) == "nan")
-    )].copy()
-    raw["Year"] = pd.to_numeric(raw["Year"], errors="coerce")
-    raw = raw[raw["Year"].notna()].copy()
-    raw["Regime_clean"] = raw["Regime"].str.replace(r"[\U0001F7E2\U0001F7E1\U0001F534]\s*", "", regex=True).str.strip()
+    """Load real price elasticity data from cocostat_data.json."""
+    data = _load_json()
+
+    demand = pd.DataFrame(data["demand"])
+    demand["Year"] = pd.to_numeric(demand["Year"], errors="coerce")
+    demand = demand[demand["Year"].notna()].copy()
+
+    # Build regime_stats dict matching the original app's structure
+    raw_stats = data.get("regime_stats", {})
     regime_stats = {}
-    for regime, grp in raw.groupby("Regime_clean"):
+    for regime, vals in raw_stats.items():
         regime_stats[regime] = {
-            "elasticity": round(float(grp["Elasticity\nCoefficient"].mean()), 3),
-            "sensitivity": round(float(grp["Sensitivity\nLevel (%)"].mean()), 1),
+            "elasticity":  round(float(vals.get("elasticity",  -0.20)), 3),
+            "sensitivity": round(float(vals.get("sensitivity",  20.0)), 1),
         }
-    return raw, regime_stats
+    # Ensure all three regimes exist with sensible defaults
+    for r, default_e, default_s in [("Stable", -0.46, 45.7),
+                                      ("Warning", -0.81, 80.6),
+                                      ("Crisis",  -1.37, 137.3)]:
+        if r not in regime_stats:
+            regime_stats[r] = {"elasticity": default_e, "sensitivity": default_s}
+
+    return demand, regime_stats
 
 try:
     history_df, forecast_df, weekly_df = load_data()
@@ -269,9 +177,10 @@ try:
     global_price_df, production_df = load_global_data()
     demand_df, demand_regime_stats = load_demand_elasticity()
 except FileNotFoundError as _e:
-    st.error("⚠️ Dataset file not found — COCOStat cannot start.")
+    st.error("⚠️ Data file not found — COCOStat cannot start.")
     st.markdown(
-        "**Please ensure `COCOStat_Master_Dataset.xlsx` is placed in the same folder as this app.**\n\n"
+        "**Please run `generate_cocostat_json.py` first to create `cocostat_data.json`, "
+        "then place it in the same folder as this app.**\n\n"
         f"Details: `{_e}`"
     )
     st.stop()
@@ -279,8 +188,7 @@ except Exception as _e:
     st.error("⚠️ Failed to load the dataset — an unexpected error occurred.")
     st.markdown(
         "Possible causes:\n"
-        "- The Excel file is open in another programme (close it and refresh)\n"
-        "- The file is corrupt or a different version\n"
+        "- `cocostat_data.json` is missing or corrupt — re-run `generate_cocostat_json.py`\n"
         "- A required Python package is missing\n\n"
         f"Details: `{_e}`"
     )
