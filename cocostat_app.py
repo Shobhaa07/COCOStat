@@ -436,8 +436,8 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
-  section[data-testid="stSidebar"][aria-expanded="true"]{min-width:270px!important;max-width:270px!important;width:270px!important}
-  section[data-testid="stSidebar"][aria-expanded="true"]>div{width:270px!important}
+  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important;transition:width .3s ease,min-width .3s ease,max-width .3s ease}
+  section[data-testid="stSidebar"]>div{width:270px!important}
 }
 @media(max-width:767px){
   section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
