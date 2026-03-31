@@ -438,18 +438,6 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 @media(min-width:768px){
   section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
   section[data-testid="stSidebar"]>div{width:270px!important}
-  /* Sidebar collapsed: main content fills full width */
-  [data-testid="stAppViewContainer"]:has([data-testid="stSidebar"][aria-expanded="false"]) .main,
-  [data-testid="stAppViewContainer"]:has([data-testid="stSidebar"][aria-expanded="false"]) section.main{
-    margin-left:0!important;width:100vw!important;max-width:100vw!important;transition:all .3s ease;
-  }
-  [data-testid="stAppViewContainer"]:has([data-testid="stSidebar"][aria-expanded="false"]) .main .block-container{
-    max-width:100%!important;padding-left:1.5rem!important;padding-right:1.5rem!important;
-  }
-  /* Sidebar open: restore normal layout */
-  [data-testid="stAppViewContainer"]:has([data-testid="stSidebar"][aria-expanded="true"]) .main{
-    transition:all .3s ease;
-  }
 }
 @media(max-width:767px){
   section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
@@ -482,6 +470,36 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
 @media(max-width:767px){.section-header{font-size:1.15rem!important}.section-sub{font-size:.8rem!important}}
 </style>
 <script>
+(function(){
+  function applyLayout(){
+    var doc = window.parent.document;
+    var sidebar = doc.querySelector('[data-testid="stSidebar"]');
+    var main = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
+    if(!sidebar || !main) return;
+    if(sidebar.getAttribute('aria-expanded') === 'false'){
+      main.style.setProperty('margin-left','0','important');
+      main.style.setProperty('width','100vw','important');
+      main.style.setProperty('max-width','100vw','important');
+    } else {
+      main.style.removeProperty('margin-left');
+      main.style.removeProperty('width');
+      main.style.removeProperty('max-width');
+    }
+  }
+  function init(){
+    var doc = window.parent.document;
+    var sidebar = doc.querySelector('[data-testid="stSidebar"]');
+    if(!sidebar){ setTimeout(init, 200); return; }
+    applyLayout();
+    var obs = new MutationObserver(applyLayout);
+    obs.observe(sidebar, {attributes:true, attributeFilter:['aria-expanded']});
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+  [300,800,1500].forEach(function(d){ setTimeout(init,d); });
+})();
+</script><script>
 (function(){
   function fix(){
     var m=window.innerWidth<=767;
