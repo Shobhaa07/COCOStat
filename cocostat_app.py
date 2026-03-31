@@ -431,12 +431,13 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
 html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a3328}
 #MainMenu,footer,header{visibility:hidden}
+
 .main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
-  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important;transform:none!important}
-  section[data-testid="stSidebar"]>div{width:270px!important;transform:none!important}
+  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
+  section[data-testid="stSidebar"]>div{width:270px!important}
 }
 @media(max-width:767px){
   section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
@@ -750,6 +751,7 @@ with st.sidebar:
       <div style='font-size:.75rem;color:#2d5a3d;line-height:1.6;'>BSc (Hons) Business Data Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
+
 
 
 # ─────────────────────────────────────────────
