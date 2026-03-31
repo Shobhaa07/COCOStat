@@ -433,6 +433,7 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 #MainMenu,footer{visibility:hidden}
 
 .main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
+[data-testid="stAppViewContainer"]>.main{transition:margin-left 0.3s ease,width 0.3s ease,max-width 0.3s ease}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
@@ -474,30 +475,51 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
   function applyLayout(){
     var doc = window.parent.document;
     var sidebar = doc.querySelector('[data-testid="stSidebar"]');
-    var main = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
+    var main    = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
+    var appView = doc.querySelector('[data-testid="stAppViewContainer"]');
     if(!sidebar || !main) return;
-    if(sidebar.getAttribute('aria-expanded') === 'false'){
-      main.style.setProperty('margin-left','0','important');
-      main.style.setProperty('width','100vw','important');
-      main.style.setProperty('max-width','100vw','important');
+
+    /* Add smooth transition once on first call */
+    if(!main.dataset.cocoTransitionSet){
+      main.style.transition = 'margin-left 0.3s ease, width 0.3s ease, max-width 0.3s ease';
+      main.dataset.cocoTransitionSet = '1';
+    }
+
+    var isCollapsed = sidebar.getAttribute('aria-expanded') === 'false';
+
+    if(isCollapsed){
+      /* Sidebar hidden — content fills full viewport */
+      main.style.setProperty('margin-left', '0px', 'important');
+      main.style.setProperty('width', '100vw', 'important');
+      main.style.setProperty('max-width', '100vw', 'important');
     } else {
-      main.style.removeProperty('margin-left');
-      main.style.removeProperty('width');
-      main.style.removeProperty('max-width');
+      /* Sidebar visible — measure its actual rendered width */
+      var sbWidth = sidebar.getBoundingClientRect().width;
+      if(sbWidth < 10){ sbWidth = 274; } /* fallback if not yet rendered */
+      main.style.setProperty('margin-left', sbWidth + 'px', 'important');
+      main.style.setProperty('width', 'calc(100vw - ' + sbWidth + 'px)', 'important');
+      main.style.setProperty('max-width', 'calc(100vw - ' + sbWidth + 'px)', 'important');
     }
   }
+
   function init(){
     var doc = window.parent.document;
     var sidebar = doc.querySelector('[data-testid="stSidebar"]');
     if(!sidebar){ setTimeout(init, 200); return; }
     applyLayout();
+    /* Watch aria-expanded for toggle changes */
     var obs = new MutationObserver(applyLayout);
-    obs.observe(sidebar, {attributes:true, attributeFilter:['aria-expanded']});
+    obs.observe(sidebar, {attributes: true, attributeFilter: ['aria-expanded']});
+    /* Also watch sidebar size changes (e.g. resize) */
+    if(window.ResizeObserver){
+      new ResizeObserver(applyLayout).observe(sidebar);
+    }
   }
-  if(document.readyState==='loading'){
+
+  if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', init);
   } else { init(); }
-  [300,800,1500].forEach(function(d){ setTimeout(init,d); });
+  [300, 600, 1000, 2000].forEach(function(d){ setTimeout(applyLayout, d); });
 })();
 </script><script>
 (function(){
