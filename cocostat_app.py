@@ -436,7 +436,7 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
-  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important;transition:width .3s ease,min-width .3s ease,max-width .3s ease}
+  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
   section[data-testid="stSidebar"]>div{width:270px!important}
 }
 @media(max-width:767px){
@@ -470,6 +470,36 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
 @media(max-width:767px){.section-header{font-size:1.15rem!important}.section-sub{font-size:.8rem!important}}
 </style>
 <script>
+(function(){
+  function applyLayout(){
+    var doc = window.parent.document;
+    var sidebar = doc.querySelector('[data-testid="stSidebar"]');
+    var main = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
+    if(!sidebar || !main) return;
+    if(sidebar.getAttribute('aria-expanded') === 'false'){
+      main.style.setProperty('margin-left','0','important');
+      main.style.setProperty('width','100vw','important');
+      main.style.setProperty('max-width','100vw','important');
+    } else {
+      main.style.removeProperty('margin-left');
+      main.style.removeProperty('width');
+      main.style.removeProperty('max-width');
+    }
+  }
+  function init(){
+    var doc = window.parent.document;
+    var sidebar = doc.querySelector('[data-testid="stSidebar"]');
+    if(!sidebar){ setTimeout(init, 200); return; }
+    applyLayout();
+    var obs = new MutationObserver(applyLayout);
+    obs.observe(sidebar, {attributes:true, attributeFilter:['aria-expanded']});
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+  [300,800,1500].forEach(function(d){ setTimeout(init,d); });
+})();
+</script><script>
 (function(){
   function fix(){
     var m=window.innerWidth<=767;
