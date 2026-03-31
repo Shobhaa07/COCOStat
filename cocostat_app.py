@@ -431,6 +431,19 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
 html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a3328}
 #MainMenu,footer,header{visibility:hidden}
+/* Sidebar toggle button */
+[data-testid="stButton"][aria-label="Show or hide the navigation sidebar"] button,
+button[kind="secondary"]:has(+ *){white-space:nowrap}
+div[data-testid="stButton"]:has(button[key="sidebar_toggle_btn"]) button,
+div[data-testid="stButton"] button[data-testid="baseButton-secondary"]{
+    background:#f0f5f2!important;border:1.5px solid #3d7a55!important;
+    color:#2d5a3d!important;font-size:.78rem!important;font-weight:700!important;
+    padding:5px 14px!important;border-radius:20px!important;
+    cursor:pointer!important;transition:all .2s!important;
+}
+div[data-testid="stButton"] button[data-testid="baseButton-secondary"]:hover{
+    background:#3d7a55!important;color:#fff!important;
+}
 .main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
@@ -750,6 +763,49 @@ with st.sidebar:
       <div style='font-size:.75rem;color:#2d5a3d;line-height:1.6;'>BSc (Hons) Business Data Analytics<br>University of Westminster</div>
     </div>
     """, unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
+# SIDEBAR TOGGLE BUTTON
+# ─────────────────────────────────────────────
+if "sidebar_open" not in st.session_state:
+    st.session_state.sidebar_open = True
+
+def _toggle_sidebar():
+    st.session_state.sidebar_open = not st.session_state.sidebar_open
+
+_btn_label = "◀  Hide Panel" if st.session_state.sidebar_open else "▶  Show Panel"
+st.button(
+    _btn_label,
+    key="sidebar_toggle_btn",
+    on_click=_toggle_sidebar,
+    help="Show or hide the navigation sidebar",
+    type="secondary",
+)
+
+# Inject JS that clicks Streamlit's native collapse/expand arrow
+if st.session_state.sidebar_open:
+    _js_action = """
+    (function(){
+        var btn = window.parent.document.querySelector('[data-testid="collapsedControl"]');
+        var sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){
+            var rect = sidebar.getBoundingClientRect();
+            if(rect.width < 10){ if(btn) btn.click(); }
+        }
+    })();
+    """
+else:
+    _js_action = """
+    (function(){
+        var btn = window.parent.document.querySelector('[data-testid="collapsedControl"]');
+        var sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){
+            var rect = sidebar.getBoundingClientRect();
+            if(rect.width > 10){ if(btn) btn.click(); }
+        }
+    })();
+    """
+st.markdown(f"<script>{_js_action}</script>", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # HERO BANNER
