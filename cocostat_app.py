@@ -430,7 +430,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;600;700&display=swap');
 html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a3328}
-#MainMenu,footer,header{visibility:hidden}
+#MainMenu,footer{visibility:hidden}
 
 .main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
