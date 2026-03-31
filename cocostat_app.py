@@ -439,6 +439,10 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
   section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
   section[data-testid="stSidebar"]>div{width:270px!important}
 }
+/* Smooth transition on main content when sidebar toggles */
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] ~ section,
+section[data-testid="stSidebar"] ~ .main{transition:all 0.3s ease!important}
 /* When sidebar is collapsed, expand main content to full width */
 section[data-testid="stSidebar"][aria-expanded="false"]{min-width:0!important;max-width:0!important;width:0!important;overflow:hidden!important}
 section[data-testid="stSidebar"][aria-expanded="false"] ~ section,
