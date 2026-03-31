@@ -145,6 +145,20 @@ def load_global_data():
     return global_df, production
 
 @st.cache_data(ttl=3600)
+def load_weekly_regime_counts():
+    """Return weekly regime counts (GMM on weekly data) from cocostat_data.json."""
+    data = _load_json()
+    wrc = data.get("weekly_regime_counts", {})
+    # Returns dict: {0: count, 1: count, 2: count} and total
+    counts = {
+        0: wrc.get("Stable",  {}).get("count", 228),
+        1: wrc.get("Warning", {}).get("count", 204),
+        2: wrc.get("Crisis",  {}).get("count",  85),
+    }
+    total = wrc.get("total_weeks", 517)
+    return counts, total
+
+@st.cache_data(ttl=3600)
 def load_demand_elasticity():
     """Load real price elasticity data from cocostat_data.json."""
     data = _load_json()
@@ -176,6 +190,7 @@ try:
     export_df, destinations_df = load_export_data()
     global_price_df, production_df = load_global_data()
     demand_df, demand_regime_stats = load_demand_elasticity()
+    weekly_regime_counts, weekly_regime_total = load_weekly_regime_counts()
 except FileNotFoundError as _e:
     st.error("⚠️ Data file not found — COCOStat cannot start.")
     st.markdown(
@@ -901,12 +916,14 @@ if t["nav"][0] in sec_name:
     divider()
     cp,cy=st.columns(2)
     with cp:
-        rc=history_df["regime"].value_counts().sort_index()
-        fig_pie=go.Figure(go.Pie(labels=t["regime_options"],values=rc.values,hole=.5,
+        # Use weekly GMM regime counts (from notebook clust_df — 517 weekly observations)
+        _wk_vals = [weekly_regime_counts.get(i, 0) for i in range(3)]
+        _wk_lbl  = "weeks" if lang=="en" else "සති"
+        fig_pie=go.Figure(go.Pie(labels=t["regime_options"],values=_wk_vals,hole=.5,
             marker=dict(colors=REGIME_COLORS),textinfo="percent",textfont=dict(size=12,color="#fff"),
-            hovertemplate="<b>%{label}</b><br>%{value} months<br>%{percent}<extra></extra>"))
+            hovertemplate="<b>%{label}</b><br>%{value} " + _wk_lbl + "<br>%{percent}<extra></extra>"))
         fig_pie.update_layout(
-            title=dict(text=" "+("Regime Distribution" if lang=="en" else "තත්ත්ව බෙදා හැරීම"),font=dict(size=13)),
+            title=dict(text=" "+("Regime Distribution (Weekly)" if lang=="en" else "තත්ත්ව බෙදා හැරීම (සතිපතා)"),font=dict(size=13)),
             height=300,margin=dict(l=20,r=20,t=50,b=10),paper_bgcolor="#fff",
             showlegend=True,
             legend=dict(orientation="h",yanchor="top",y=-0.02,xanchor="center",x=0.5,
@@ -966,16 +983,15 @@ elif t["nav"][1] in sec_name:
     st.plotly_chart(fig_r,use_container_width=True,config={"displayModeBar":"hover"})
     divider()
     st.markdown("#### "+("Regime Statistics" if lang=="en" else "තත්ත්ව සංඛ්‍යාන"))
-    rc_counts=history_df["regime"].value_counts().sort_index()
     sc1,sc2,sc3=st.columns(3)
     for i,col in enumerate([sc1,sc2,sc3]):
-        cnt=rc_counts.get(i,0); pct=cnt/len(history_df)*100
+        cnt=weekly_regime_counts.get(i,0); pct=cnt/max(weekly_regime_total,1)*100
         with col:
             st.markdown(f"""<div style='background:{REGIME_BGS[i]};border-radius:12px;padding:14px;text-align:center;height:110px;display:flex;flex-direction:column;justify-content:center;'>
                 <div style='font-size:1.8rem;margin-bottom:4px;'>{REGIME_EMOJI[i]}</div>
                 <div style='font-weight:800;color:{REGIME_COLORS[i]};font-size:1rem;margin-bottom:4px;'>{t["regime_options"][i]}</div>
                 <div style='font-size:1.6rem;font-weight:900;color:{REGIME_COLORS[i]};'>{pct:.0f}%</div>
-                <div style='font-size:.8rem;color:#64748b;'>{cnt} {"මාස" if lang=="si" else "months"}</div></div>""",unsafe_allow_html=True)
+                <div style='font-size:.8rem;color:#64748b;'>{cnt} {"සති" if lang=="si" else "weeks"}</div></div>""",unsafe_allow_html=True)
     divider()
     # ── Demand Analysis ────────────────────────────────────────────────────────
     section_header(" "+t["demand_title"])
@@ -2360,10 +2376,10 @@ elif t["nav"][9] in sec_name:
     _m_price_max       = round(float(history_df["price"].max()), 2)
     _m_price_avg       = round(float(history_df["price"].mean()), 2)
     _m_cagr            = round(((_m_current_price / float(history_df["price"].iloc[0])) ** (1/9) - 1) * 100, 2) if len(history_df) > 0 and float(history_df["price"].iloc[0]) > 0 else 0
-    _m_regime_counts   = history_df["regime"].value_counts().to_dict()
-    _m_stable_pct      = round(_m_regime_counts.get(0, 0) / max(_m_total_monthly, 1) * 100, 1)
-    _m_warning_pct     = round(_m_regime_counts.get(1, 0) / max(_m_total_monthly, 1) * 100, 1)
-    _m_crisis_pct      = round(_m_regime_counts.get(2, 0) / max(_m_total_monthly, 1) * 100, 1)
+    _m_regime_counts   = weekly_regime_counts
+    _m_stable_pct      = round(_m_regime_counts.get(0, 0) / max(weekly_regime_total, 1) * 100, 1)
+    _m_warning_pct     = round(_m_regime_counts.get(1, 0) / max(weekly_regime_total, 1) * 100, 1)
+    _m_crisis_pct      = round(_m_regime_counts.get(2, 0) / max(weekly_regime_total, 1) * 100, 1)
     _m_el_stable       = demand_regime_stats.get("Stable",  {}).get("elasticity", "—")
     _m_el_warning      = demand_regime_stats.get("Warning", {}).get("elasticity", "—")
     _m_el_crisis       = demand_regime_stats.get("Crisis",  {}).get("elasticity", "—")
@@ -2386,7 +2402,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Historical price range</td><td>Rs. {_m_price_min:.2f} – Rs. {_m_price_max:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
         <tr><td>Historical average price</td><td>Rs. {_m_price_avg:.2f} / nut</td><td>02_Monthly_Prices</td></tr>
         <tr><td>Price CAGR (9-year)</td><td>{_m_cagr:+.2f}% per year</td><td>02_Monthly_Prices</td></tr>
-        <tr><td>Regime distribution (Stable / Warning / Crisis)</td><td>{_m_stable_pct}% &nbsp;/&nbsp; {_m_warning_pct}% &nbsp;/&nbsp; {_m_crisis_pct}%</td><td>02_Monthly_Prices</td></tr>
+        <tr><td>Regime distribution — Weekly GMM (Stable / Warning / Crisis)</td><td>{_m_stable_pct}% &nbsp;/&nbsp; {_m_warning_pct}% &nbsp;/&nbsp; {_m_crisis_pct}% &nbsp;({weekly_regime_total} weeks)</td><td>01_Weekly_Auction</td></tr>
         <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
