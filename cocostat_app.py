@@ -432,13 +432,18 @@ st.markdown("""
 html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;background:#fff;color:#1a3328}
 #MainMenu,footer{visibility:hidden}
 
-.main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important}
+.main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important;max-width:100%!important;transition:padding-left 0.3s ease,padding-right 0.3s ease}
 [data-testid="stAppViewContainer"]>.main{transition:margin-left 0.3s ease,width 0.3s ease,max-width 0.3s ease}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
   section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
   section[data-testid="stSidebar"]>div{width:270px!important}
+  /* When sidebar is collapsed on desktop, let main fill full width */
+  section[data-testid="stSidebar"][aria-expanded="false"]~[data-testid="stAppViewContainer"]>.main,
+  section[data-testid="stSidebar"][aria-expanded="false"]+[data-testid="stAppViewContainer"]>.main{
+    margin-left:0!important;width:100vw!important;max-width:100vw!important;
+  }
 }
 @media(max-width:767px){
   section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
@@ -476,29 +481,40 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
     var doc = window.parent.document;
     var sidebar = doc.querySelector('[data-testid="stSidebar"]');
     var main    = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
-    var appView = doc.querySelector('[data-testid="stAppViewContainer"]');
+    var block   = doc.querySelector('.main .block-container');
     if(!sidebar || !main) return;
 
-    /* Add smooth transition once on first call */
+    /* Ensure smooth transition on main and block-container */
     if(!main.dataset.cocoTransitionSet){
-      main.style.transition = 'margin-left 0.3s ease, width 0.3s ease, max-width 0.3s ease';
+      main.style.transition  = 'margin-left 0.3s ease, width 0.3s ease, max-width 0.3s ease';
+      if(block) block.style.transition = 'max-width 0.3s ease, padding-left 0.3s ease';
       main.dataset.cocoTransitionSet = '1';
     }
 
     var isCollapsed = sidebar.getAttribute('aria-expanded') === 'false';
 
     if(isCollapsed){
-      /* Sidebar hidden — content fills full viewport */
-      main.style.setProperty('margin-left', '0px', 'important');
-      main.style.setProperty('width', '100vw', 'important');
-      main.style.setProperty('max-width', '100vw', 'important');
+      /* Sidebar hidden — expand content to fill full viewport */
+      main.style.setProperty('margin-left',  '0px',   'important');
+      main.style.setProperty('width',        '100vw', 'important');
+      main.style.setProperty('max-width',    '100vw', 'important');
+      if(block){
+        block.style.setProperty('max-width',    '100%',  'important');
+        block.style.setProperty('padding-left',  '1rem', 'important');
+        block.style.setProperty('padding-right', '1rem', 'important');
+      }
     } else {
-      /* Sidebar visible — measure its actual rendered width */
+      /* Sidebar visible — push content right by sidebar width */
       var sbWidth = sidebar.getBoundingClientRect().width;
-      if(sbWidth < 10){ sbWidth = 274; } /* fallback if not yet rendered */
-      main.style.setProperty('margin-left', sbWidth + 'px', 'important');
-      main.style.setProperty('width', 'calc(100vw - ' + sbWidth + 'px)', 'important');
-      main.style.setProperty('max-width', 'calc(100vw - ' + sbWidth + 'px)', 'important');
+      if(sbWidth < 10){ sbWidth = 274; }
+      main.style.setProperty('margin-left', sbWidth + 'px',                  'important');
+      main.style.setProperty('width',       'calc(100vw - ' + sbWidth + 'px)', 'important');
+      main.style.setProperty('max-width',   'calc(100vw - ' + sbWidth + 'px)', 'important');
+      if(block){
+        block.style.setProperty('max-width',    '100%',  'important');
+        block.style.setProperty('padding-left',  '1rem', 'important');
+        block.style.setProperty('padding-right', '1rem', 'important');
+      }
     }
   }
 
@@ -507,19 +523,21 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
     var sidebar = doc.querySelector('[data-testid="stSidebar"]');
     if(!sidebar){ setTimeout(init, 200); return; }
     applyLayout();
-    /* Watch aria-expanded for toggle changes */
+    /* Watch aria-expanded for collapse/expand toggles */
     var obs = new MutationObserver(applyLayout);
     obs.observe(sidebar, {attributes: true, attributeFilter: ['aria-expanded']});
-    /* Also watch sidebar size changes (e.g. resize) */
+    /* Also reapply on sidebar resize */
     if(window.ResizeObserver){
       new ResizeObserver(applyLayout).observe(sidebar);
     }
+    /* Reapply on window resize */
+    window.parent.addEventListener('resize', applyLayout);
   }
 
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', init);
   } else { init(); }
-  [300, 600, 1000, 2000].forEach(function(d){ setTimeout(applyLayout, d); });
+  [200, 400, 800, 1500, 3000].forEach(function(d){ setTimeout(applyLayout, d); });
 })();
 </script><script>
 (function(){
