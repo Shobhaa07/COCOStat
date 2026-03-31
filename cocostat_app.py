@@ -21,7 +21,7 @@ st.set_page_config(
     page_title="COCOStat",
     page_icon=None,
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ─────────────────────────────────────────────
