@@ -436,19 +436,9 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
 @media(min-width:768px){
-  section[data-testid="stSidebar"]{min-width:270px!important;max-width:270px!important;width:270px!important}
-  section[data-testid="stSidebar"]>div{width:270px!important}
+  section[data-testid="stSidebar"][aria-expanded="true"]{min-width:270px!important;max-width:270px!important;width:270px!important}
+  section[data-testid="stSidebar"][aria-expanded="true"]>div{width:270px!important}
 }
-/* Smooth transition on main content when sidebar toggles */
-section[data-testid="stSidebar"],
-section[data-testid="stSidebar"] ~ section,
-section[data-testid="stSidebar"] ~ .main{transition:all 0.3s ease!important}
-/* When sidebar is collapsed, expand main content to full width */
-section[data-testid="stSidebar"][aria-expanded="false"]{min-width:0!important;max-width:0!important;width:0!important;overflow:hidden!important}
-section[data-testid="stSidebar"][aria-expanded="false"] ~ section,
-section[data-testid="stSidebar"][aria-expanded="false"] ~ .main{margin-left:0!important;width:100vw!important;max-width:100vw!important}
-section[data-testid="stSidebar"][aria-expanded="false"] ~ section .block-container,
-section[data-testid="stSidebar"][aria-expanded="false"] ~ .main .block-container{max-width:100%!important;padding-left:1rem!important;padding-right:1rem!important}
 @media(max-width:767px){
   section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;min-width:82vw!important;max-width:82vw!important;width:82vw!important;z-index:9998!important;box-shadow:4px 0 24px rgba(0,0,0,.18)!important}
   section[data-testid="stSidebar"]>div{width:82vw!important}
