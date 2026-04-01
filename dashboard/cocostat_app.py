@@ -1102,6 +1102,61 @@ elif t["nav"][3] in sec_name:
                     <div style='font-size:.95rem;font-weight:800;color:{clr};'>Rs.{p:.1f}</div>
                     <div style='font-size:.65rem;font-weight:700;color:{clr};'>{st_}</div></div>""", unsafe_allow_html=True)
 
+    # ── 2026 Monthly Forecast Chart ───────────────────────────────────────────
+    divider()
+    if not fc_2026.empty:
+        month_labels = [f"Mo {i+1}" for i in range(len(fc_2026))]
+        bar_colors = [
+            "#ef4444" if p >= crisis_threshold else "#eab308" if p >= warn_threshold else "#3d7a55"
+            for p in fc_2026["price"]
+        ]
+        fig_bar = go.Figure()
+        fig_bar.add_trace(go.Bar(
+            x=month_labels,
+            y=fc_2026["price"],
+            marker_color=bar_colors,
+            text=[f"Rs.{p:.1f}" for p in fc_2026["price"]],
+            textposition="outside",
+            textfont=dict(size=11, color="#1a3328"),
+            hovertemplate="<b>%{x}</b><br>Price: Rs.%{y:.1f}<extra></extra>",
+            name=("Forecast Price" if lang=="en" else "අනාවැකි මිල"),
+        ))
+        fig_bar.add_trace(go.Scatter(
+            x=month_labels,
+            y=fc_2026["price"],
+            mode="lines+markers",
+            line=dict(color="#1a3328", width=1.5, dash="dot"),
+            marker=dict(size=6, color="#1a3328"),
+            hoverinfo="skip",
+            name=("Trend" if lang=="en" else "ප්‍රවණතාව"),
+        ))
+        fig_bar.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+            annotation_text=f"Crisis Rs.{crisis_threshold}",
+            annotation_position="top right",
+            annotation_font_color="#ef4444", annotation_font_size=10)
+        fig_bar.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+            annotation_text=f"Warning Rs.{warn_threshold}",
+            annotation_position="bottom right",
+            annotation_font_color="#eab308", annotation_font_size=10)
+        fig_bar.update_layout(
+            title=dict(
+                text=("2026 Monthly Forecast Price Overview" if lang=="en" else "2026 මාසික අනාවැකි මිල දළ විශ්ලේෂණය"),
+                font=dict(size=14, color="#1a3328"), x=0, xanchor="left"
+            ),
+            height=320,
+            margin=dict(l=60, r=120, t=50, b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+            yaxis=dict(
+                title=("Price (Rs.)" if lang=="en" else "මිල (රු.)"),
+                gridcolor="#e4eeea", tickprefix="Rs.", tickfont=dict(size=11),
+                range=[fc_2026["price"].min() * 0.92, fc_2026["price"].max() * 1.08]
+            ),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            bargap=0.35,
+        )
+        st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": "hover"})
+
     # ── 2026 Forecast Summary cards ───────────────────────────────────────────
     divider()
     st.markdown("#### " + ("2026 Forecast Summary" if lang=="en" else "2026 අනාවැකි සාරාංශය"))
