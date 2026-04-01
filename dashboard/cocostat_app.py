@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -492,35 +493,6 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
   var ob=new MutationObserver(fix);
   function start(){if(document.body)ob.observe(document.body,{childList:true,subtree:true});else setTimeout(start,100);}
   start();[500,1500,3000].forEach(function(d){setTimeout(fix,d);});
-
-  // ── Scroll to top on every navigation change ──────────────────────────────
-  // Streamlit re-renders the page on each radio selection; scrolling the main
-  // content area back to (0,0) ensures the client always sees the section top.
-  function scrollTop(){
-    var main=document.querySelector('[data-testid="stAppViewContainer"] > .main');
-    if(main){main.scrollTop=0;}
-    window.scrollTo(0,0);
-  }
-  scrollTop();
-  var stOb=new MutationObserver(function(mutations){
-    for(var i=0;i<mutations.length;i++){
-      if(mutations[i].addedNodes.length>0){scrollTop();break;}
-    }
-  });
-  function startST(){
-    var root=document.querySelector('[data-testid="stAppViewContainer"]');
-    if(root){stOb.observe(root,{childList:true,subtree:false});}
-    else{setTimeout(startST,200);}
-  }
-  startST();
-  // Intercept sidebar radio clicks directly for instant response
-  document.addEventListener('click',function(e){
-    var lbl=e.target.closest('label');
-    if(lbl&&lbl.closest('[data-testid="stSidebar"]')){
-      setTimeout(scrollTop,80);
-      setTimeout(scrollTop,300);
-    }
-  },true);
 })();
 </script>
 """, unsafe_allow_html=True)
@@ -831,6 +803,32 @@ REGIME_EMOJI = ["🟢","🟡","🔴"]
 # PAGE ROUTING
 # ─────────────────────────────────────────────
 sec_name = section.split(" ", 1)[1] if " " in section else section
+
+# ── Scroll to top on every navigation change ─────────────────────────────────
+# st.components.v1.html runs inside an iframe but can reach the parent window,
+# making it the most reliable way to scroll in Streamlit on every re-run.
+components.html("""
+<script>
+  (function(){
+    function doScroll(){
+      try{
+        // Target the Streamlit main scrollable block
+        var sel='[data-testid="stAppViewContainer"] > section.main, \
+                 [data-testid="stAppViewContainer"] > .main, \
+                 .main > .block-container';
+        var els=window.parent.document.querySelectorAll(sel);
+        els.forEach(function(el){el.scrollTop=0;});
+        window.parent.scrollTo(0,0);
+        window.parent.document.documentElement.scrollTop=0;
+        window.parent.document.body.scrollTop=0;
+      }catch(e){}
+    }
+    doScroll();
+    setTimeout(doScroll,50);
+    setTimeout(doScroll,150);
+  })();
+</script>
+""", height=0)
 
 if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
     st_autorefresh(interval=300000, key="cocostat_refresh")
