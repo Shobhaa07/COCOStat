@@ -435,7 +435,7 @@ html,body,[class*="css"]{font-family:'Inter','Noto Sans Sinhala',sans-serif;back
 
 /* ── Core layout ── */
 [data-testid="stAppViewContainer"]{display:flex!important;flex-direction:row!important;width:100vw!important;max-width:100vw!important;overflow-x:hidden!important}
-[data-testid="stAppViewContainer"]>.main{flex:1 1 0%!important;min-width:0!important;width:0!important;max-width:100%!important;transition:all 0.3s ease}
+[data-testid="stAppViewContainer"]>.main{flex:1 1 0%!important;min-width:0!important;width:0!important;max-width:100%!important;transition:all 0.3s ease;overflow-y:auto!important;height:100vh!important}
 .main .block-container{background:#fff;padding-top:0!important;padding-bottom:2rem;padding-left:1rem!important;padding-right:1rem!important;max-width:100%!important;width:100%!important}
 [data-testid="stAppViewContainer"]>section>div{padding-top:0!important}
 [data-testid="stVerticalBlock"]{gap:.5rem}
@@ -805,30 +805,28 @@ REGIME_EMOJI = ["🟢","🟡","🔴"]
 sec_name = section.split(" ", 1)[1] if " " in section else section
 
 # ── Scroll to top on every navigation change ─────────────────────────────────
-# st.components.v1.html runs inside an iframe but can reach the parent window,
-# making it the most reliable way to scroll in Streamlit on every re-run.
+# .main now has overflow-y:auto + height:100vh so it is the scroll container.
+# components.html runs in an iframe with access to window.parent.
 components.html("""
 <script>
-  (function(){
-    function doScroll(){
-      try{
-        // Target the Streamlit main scrollable block
-        var sel='[data-testid="stAppViewContainer"] > section.main, \
-                 [data-testid="stAppViewContainer"] > .main, \
-                 .main > .block-container';
-        var els=window.parent.document.querySelectorAll(sel);
-        els.forEach(function(el){el.scrollTop=0;});
-        window.parent.scrollTo(0,0);
-        window.parent.document.documentElement.scrollTop=0;
-        window.parent.document.body.scrollTop=0;
-      }catch(e){}
-    }
-    doScroll();
-    setTimeout(doScroll,50);
-    setTimeout(doScroll,150);
-  })();
+(function(){
+  function scrollToTop(){
+    var p = window.parent;
+    var doc = p.document;
+    // Target the .main element which is the scroll container
+    var main = doc.querySelector('[data-testid="stAppViewContainer"] > .main');
+    if(main){ main.scrollTop = 0; }
+    // Also reset html/body/window just in case
+    doc.documentElement.scrollTop = 0;
+    doc.body.scrollTop = 0;
+    p.scrollTo(0, 0);
+  }
+  scrollToTop();
+  setTimeout(scrollToTop, 100);
+  setTimeout(scrollToTop, 300);
+})();
 </script>
-""", height=0)
+""", height=0, scrolling=False)
 
 if ("Forecast" in sec_name) or ("Live" in sec_name) or ("Weather" in sec_name):
     st_autorefresh(interval=300000, key="cocostat_refresh")
