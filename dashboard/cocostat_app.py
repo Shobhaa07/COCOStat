@@ -492,6 +492,35 @@ div[data-testid="stSidebar"] h3{color:#2d5a3d!important;font-size:.72rem!importa
   var ob=new MutationObserver(fix);
   function start(){if(document.body)ob.observe(document.body,{childList:true,subtree:true});else setTimeout(start,100);}
   start();[500,1500,3000].forEach(function(d){setTimeout(fix,d);});
+
+  // ── Scroll to top on every navigation change ──────────────────────────────
+  // Streamlit re-renders the page on each radio selection; scrolling the main
+  // content area back to (0,0) ensures the client always sees the section top.
+  function scrollTop(){
+    var main=document.querySelector('[data-testid="stAppViewContainer"] > .main');
+    if(main){main.scrollTop=0;}
+    window.scrollTo(0,0);
+  }
+  scrollTop();
+  var stOb=new MutationObserver(function(mutations){
+    for(var i=0;i<mutations.length;i++){
+      if(mutations[i].addedNodes.length>0){scrollTop();break;}
+    }
+  });
+  function startST(){
+    var root=document.querySelector('[data-testid="stAppViewContainer"]');
+    if(root){stOb.observe(root,{childList:true,subtree:false});}
+    else{setTimeout(startST,200);}
+  }
+  startST();
+  // Intercept sidebar radio clicks directly for instant response
+  document.addEventListener('click',function(e){
+    var lbl=e.target.closest('label');
+    if(lbl&&lbl.closest('[data-testid="stSidebar"]')){
+      setTimeout(scrollTop,80);
+      setTimeout(scrollTop,300);
+    }
+  },true);
 })();
 </script>
 """, unsafe_allow_html=True)
@@ -2326,54 +2355,34 @@ elif t["nav"][9] in sec_name:
     st.markdown("<div class='m-section-title'>Analytical Methodology</div>", unsafe_allow_html=True)
 
     methods = [
-        ("01", "Market Regime Classification — Gaussian Mixture Model",
-         "Market regimes are identified using a Gaussian Mixture Model (GMM, K=3) applied to weekly CDA auction data (2015–2025). "
-         "GMM was selected over K-Means because it models elliptical, non-spherical clusters and produces probabilistic "
-         "regime memberships — critical for financial regime detection where price distributions are heteroskedastic. "
-         "Feature set: 3-week rolling average price, 3-week price volatility, price momentum (Δ3w), sell-through rate, "
-         "Palm Oil price, and inflation. Features are standardised (zero mean, unit variance) before fitting. "
-         "Model selection used BIC across K=2–5; K=3 minimised BIC and was validated with Silhouette, "
-         "Calinski-Harabasz, and Davies-Bouldin scores. Regimes are labelled Stable / Warning / Crisis in ascending price order. "
-         "A parallel threshold system (Stable ≤ Rs.65/nut, Warning Rs.65–80, Crisis > Rs.80) is used for macroeconomic KPIs "
-         "and policy analysis at monthly granularity."),
+        ("01", "Market Regime Classification",
+         "Two parallel regime systems are used: (1) A threshold-based system on monthly Rs./1000-nut prices "
+         "(Stable ≤65k, Warning 65–80k, Crisis >80k) for macroeconomic KPIs and policy analysis. "
+         "(2) A K-Means clustering system on weekly return features for short-run trading regime analysis and elasticity estimation. "
+         "K-Means assignments are temporally smoothed with a 4-week rolling mode filter to enforce regime persistence. "
+         "The two systems operate at different granularities and are documented separately."),
         ("02", "Price Elasticity of Demand",
-         "Demand sensitivity is measured per GMM regime using log-log OLS regression (HC3 heteroskedasticity-robust standard errors) "
-         "on CDA weekly auction data. The log-log specification is: ln(Sold Nuts) = α + ε·ln(Avg Price) + u, "
-         "where ε is the price elasticity coefficient. Monthly regime labels are assigned by aggregating weekly GMM regimes "
-         "using the modal regime per month. "
-         "Note: In auction markets, price and quantity are simultaneously determined, so OLS estimates may reflect simultaneity bias; "
-         "coefficients are presented as descriptive regime-conditional elasticity estimates. "
-         "Across all three regimes, demand is confirmed price-inelastic (|ε| &lt; 1), consistent with coconut as a staple commodity."),
-        ("03", "Stationarity Testing &amp; SARIMAX Forecasting",
-         "The monthly price series (aggregated from CDA weekly records) is tested for stationarity using ADF (H₀: unit root) "
-         "and KPSS (H₀: stationary) tests. The series is non-stationary in levels but stationary after first differencing, "
-         "confirming integration order I(1). "
-         "12-month ahead forecasts are produced using a SARIMAX(1,1,1)(1,1,1,12) model with exogenous regressors "
-         "(Palm Oil price, CPI inflation). Model order was selected by grid-search over SARIMA(p,d,q)(P,D,Q,12) minimising AIC/BIC. "
-         "Backtest accuracy on a held-out 12-month test set: MAE, RMSE, MAPE, and R² are reported in the Live Dataset Verification table. "
-         "Confidence bands represent model-derived 95% prediction intervals from statsmodels get_forecast().conf_int()."),
-        ("04", "Weather–Yield &amp; Climate Impact Analysis",
-         "Monthly rainfall and temperature data (Department of Meteorology, Sri Lanka) are correlated with CRI coconut yield indices "
-         "using a 3-month lag structure, consistent with the physiological response time of coconut palms to rainfall stress. "
-         "A drought flag is applied when monthly rainfall falls below the dataset minimum threshold. "
-         "Yield index is modelled as a function of lagged rainfall (lag-3 mm) and temperature. "
-         "Seasonality is characterised across SW Monsoon (May–Sep), NE Monsoon (Nov–Jan), and two Inter-Monsoon periods. "
-         "Monthly seasonal price indices (base 100 = annual mean) quantify intra-year supply-side price cycles."),
-        ("05", "Descriptive Statistics &amp; Exploratory Analysis",
-         "Full descriptive statistics are computed for the weekly auction series: mean, std, min/max, 25th/75th percentiles, "
-         "skewness, kurtosis, and coefficient of variation (CV%). "
-         "Annual averages and YoY price change (%) are derived from weekly-to-monthly aggregation. "
-         "Sell-through rate (Sold / Offered Nuts, capped at 100%) is used as a demand-side market efficiency indicator. "
-         "Export analytics cover six product categories (Desiccated Coconut, Coconut Oil, Coconut Milk, Coir, Fresh Nuts, VCO) "
-         "with CAGR computed over the 2015–2025 period. "
-         "Global farmgate price comparisons (Rs./nut equivalent) are benchmarked against Indonesia, Philippines, India, and Vietnam."),
-        ("06", "Regime Transition Matrix &amp; Farmer Profitability",
-         "A first-order Markov regime transition probability matrix is estimated from the GMM weekly regime sequence, "
-         "capturing persistence and switching probabilities among Stable, Warning, and Crisis states. "
+         "Demand sensitivity is measured per regime using OLS log-log regression (HC3-robust) on CDA weekly auction data. "
+         "Note: In auction markets, price and quantity are simultaneously determined, so OLS estimates may reflect "
+         "simultaneity bias. Coefficients are presented as descriptive elasticity estimates. "
+         "Demand for coconuts is confirmed as price-inelastic across all regimes (|ε| < 1)."),
+        ("03", "Price Forecasting",
+         "12-month ahead price forecasts are produced using a SARIMA(1,1,1)(1,1,1,12) model "
+         "calibrated against historical CDA auction price records (2015–2025). "
+         "Confidence bands represent the model-derived 95% prediction intervals from get_forecast().conf_int(). "
+         "Forecasts are sourced from Sheet 10_Price_Forecast and presented with regime-coded colour indicators."),
+        ("04", "Weather–Yield Correlation",
+         "Coconut yield indices are derived from CRI agronomic records correlated with Department of "
+         "Meteorology rainfall data using a 3-month lag structure, consistent with the known "
+         "physiological response time of coconut palms to rainfall stress."),
+        ("05", "Policy Impact Simulation",
+         "Five policy intervention levers (buffer stock release, import duty adjustment, farmer input subsidy, "
+         "minimum price floor, export quota restriction) are modelled using linear impact coefficients "
+         "calibrated against historical CDA and Ministry of Agriculture policy outcomes."),
+        ("06", "Farmer Profitability Model",
          "Net farm income is calculated as: Gross Revenue − (Labour + Fertilizer + Transport + Other Costs). "
-         "Transport and other costs are modelled as fixed percentages of gross revenue (5% and 3% respectively). "
          "Input benchmarks are sourced from CDA smallholder studies and the Department of Agriculture. "
-         "Break-even price and profit sensitivity are computed for user-defined farm area and yield parameters."),
+         "Break-even price and profit sensitivity are computed for user-defined farm parameters."),
     ]
 
     for i in range(0, 6, 2):
@@ -2480,12 +2489,6 @@ elif t["nav"][9] in sec_name:
           <div class='m-ref-head'>Academic &amp; Technical References</div>
           <div class='m-ref-item'>Hamilton, J.D. (1989). <em>A New Approach to the Economic Analysis of Nonstationary Time Series.</em> Econometrica, 57(2), 357–384.</div>
           <div class='m-ref-item'>Box, G.E.P. &amp; Jenkins, G.M. (1976). <em>Time Series Analysis: Forecasting and Control.</em> Holden-Day.</div>
-          <div class='m-ref-item'>Dempster, A.P., Laird, N.M. &amp; Rubin, D.B. (1977). <em>Maximum Likelihood from Incomplete Data via the EM Algorithm.</em> J. Royal Statistical Society B, 39(1), 1–38. <em>(GMM/EM basis)</em></div>
-          <div class='m-ref-item'>MacKinnon, J.G. (1994). <em>Approximate Asymptotic Distribution Functions for Unit-Root and Cointegration Tests.</em> J. Business &amp; Economic Statistics, 12(2), 167–176. <em>(ADF test)</em></div>
-          <div class='m-ref-item'>Kwiatkowski, D. et al. (1992). <em>Testing the Null Hypothesis of Stationarity against the Alternative of a Unit Root.</em> J. Econometrics, 54, 159–178. <em>(KPSS test)</em></div>
-          <div class='m-ref-item'>Seabold, S. &amp; Perktold, J. (2010). <em>statsmodels: Econometric and Statistical Modelling with Python.</em> Proc. 9th SciPy Conference. <em>(SARIMAX, ADF, KPSS)</em></div>
-          <div class='m-ref-item'>Pedregosa, F. et al. (2011). <em>Scikit-learn: Machine Learning in Python.</em> JMLR, 12, 2825–2830. <em>(GaussianMixture, StandardScaler, silhouette_score)</em></div>
-          <div class='m-ref-item'>Virtanen, P. et al. (2020). <em>SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python.</em> Nature Methods, 17, 261–272. <em>(scipy.stats, hierarchical clustering)</em></div>
           <div class='m-ref-item'>Streamlit Inc. (2024). <em>Streamlit Documentation.</em> docs.streamlit.io</div>
           <div class='m-ref-item'>Plotly Technologies Inc. (2024). <em>Plotly Python Graphing Library.</em> plotly.com/python</div>
           <div class='m-ref-item' style='margin-top:14px;padding-top:12px;border-top:1px solid #222;
