@@ -32,8 +32,8 @@ import json
 import pathlib
 
 def _get_json_path():
-    """Locate cocostat_JSON.json — works locally and on Streamlit Cloud."""
-    fname = "cocostat_JSON.json"
+    """Locate cocostat_data.json — works locally and on Streamlit Cloud."""
+    fname = "cocostat_data.json"
     # 1. Same directory as this script
     try:
         script_dir = pathlib.Path(__file__).resolve().parent
