@@ -101,12 +101,18 @@ def load_weather_data():
     """Load rainfall, temperature and yield index from cocostat_data.json."""
     data = _load_json()
     weather = pd.DataFrame(data["weather"])
-    weather["date"]        = pd.to_datetime(weather["date"])
+    # new JSON has no "date" field — build it from year + month
+    _month_map = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
+                  "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
+    weather["year"]  = pd.to_numeric(weather["year"],  errors="coerce").astype(int)
+    weather["month"] = weather["month"].map(_month_map).fillna(
+                           pd.to_numeric(weather["month"], errors="coerce")).astype(int)
+    weather["date"]  = pd.to_datetime(
+                           weather["year"].astype(str) + "-" +
+                           weather["month"].astype(str).str.zfill(2) + "-01")
     weather["rainfall_mm"] = pd.to_numeric(weather["rainfall_mm"], errors="coerce").round(1)
     weather["temp_c"]      = pd.to_numeric(weather["temp_c"],      errors="coerce").round(1)
     weather["yield_index"] = pd.to_numeric(weather["yield_index"], errors="coerce").round(1)
-    weather["month"]       = pd.to_numeric(weather["month"],       errors="coerce").astype(int)
-    weather["year"]        = pd.to_numeric(weather["year"],        errors="coerce").astype(int)
     return weather
 
 @st.cache_data(ttl=3600)
