@@ -205,7 +205,7 @@ def load_demand_elasticity():
     """Load real price elasticity data from cocostat_data.json."""
     data = _load_json()
 
-    demand = pd.DataFrame(data["demand"])
+    demand = pd.DataFrame(data["demand_elasticity"])
     demand["Year"] = pd.to_numeric(demand["Year"], errors="coerce")
     demand = demand[demand["Year"].notna()].copy()
 
