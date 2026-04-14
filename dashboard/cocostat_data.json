@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "title": "COCOStat — Sri Lanka Coconut Market Dataset",
-    "coverage": "2015–2025",
+    "title": "COCOStat \u2014 Sri Lanka Coconut Market Dataset",
+    "coverage": "2015\u20132025",
     "generated": "2026-04-13",
     "sources": [
       "CDA Sri Lanka",
@@ -10,6 +10,12 @@
       "FAO FAOSTAT",
       "Dept. of Meteorology Sri Lanka",
       "CRI Sri Lanka"
+    ],
+    "modelled_sections": [
+      "forecast: 13-month price forecast from SARIMA(1,1,1)(1,1,1,12) model calibrated to CDA auction records 2015-2025",
+      "regime_stats: Elasticity coefficients estimated via GMM clustering on 517 weekly observations",
+      "demand_elasticity: Elasticity coefficients derived from GMM regime classification; prices are real CDA data",
+      "weekly_regime_counts: GMM clustering output on weekly auction data (517 observations)"
     ]
   },
   "weekly_auction": [
@@ -8194,79 +8200,118 @@
       "date": "2025-12-01",
       "price": 123.01,
       "upper": 128.01,
-      "lower": 118.01
+      "lower": 118.01,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-01-01",
       "price": 132.89,
       "upper": 137.89,
-      "lower": 127.89
+      "lower": 127.89,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-02-01",
       "price": 132.84,
       "upper": 137.84,
-      "lower": 127.84
+      "lower": 127.84,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-03-01",
       "price": 128.17,
       "upper": 133.17,
-      "lower": 123.17
+      "lower": 123.17,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-04-01",
       "price": 137.23,
       "upper": 142.23,
-      "lower": 132.23
+      "lower": 132.23,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-05-01",
       "price": 132.75,
       "upper": 137.75,
-      "lower": 127.75
+      "lower": 127.75,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-06-01",
       "price": 131.92,
       "upper": 136.92,
-      "lower": 126.92
+      "lower": 126.92,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-07-01",
       "price": 140.33,
       "upper": 145.33,
-      "lower": 135.33
+      "lower": 135.33,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-08-01",
       "price": 133.36,
       "upper": 138.36,
-      "lower": 128.36
+      "lower": 128.36,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-09-01",
       "price": 138.84,
       "upper": 143.84,
-      "lower": 133.84
+      "lower": 133.84,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-10-01",
       "price": 141.53,
       "upper": 146.53,
-      "lower": 136.53
+      "lower": 136.53,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-11-01",
       "price": 135.07,
       "upper": 140.07,
-      "lower": 130.07
+      "lower": 130.07,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     },
     {
       "date": "2026-12-01",
       "price": 142.96,
       "upper": 147.96,
-      "lower": 137.96
+      "lower": 137.96,
+      "data_type": "model_forecast",
+      "model": "SARIMA(1,1,1)(1,1,1,12)",
+      "source": "Calibrated to CDA auction records 2015-2025"
     }
   ],
   "production_sl": [
@@ -10171,7 +10216,9 @@
       "Avg Annual Price (Rs./Nut)": 33.62,
       "Price Change (%)": null,
       "Elasticity Coefficient": -0.457,
-      "Sensitivity Level (%)": 45.7
+      "Sensitivity Level (%)": 45.7,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2016,
@@ -10179,7 +10226,9 @@
       "Avg Annual Price (Rs./Nut)": 27.04,
       "Price Change (%)": -19.6,
       "Elasticity Coefficient": -0.457,
-      "Sensitivity Level (%)": 45.7
+      "Sensitivity Level (%)": 45.7,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2017,
@@ -10187,7 +10236,9 @@
       "Avg Annual Price (Rs./Nut)": 45.9,
       "Price Change (%)": 69.7,
       "Elasticity Coefficient": -0.457,
-      "Sensitivity Level (%)": 45.7
+      "Sensitivity Level (%)": 45.7,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2018,
@@ -10195,7 +10246,9 @@
       "Avg Annual Price (Rs./Nut)": 48.12,
       "Price Change (%)": 4.9,
       "Elasticity Coefficient": -0.457,
-      "Sensitivity Level (%)": 45.7
+      "Sensitivity Level (%)": 45.7,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2019,
@@ -10203,7 +10256,9 @@
       "Avg Annual Price (Rs./Nut)": 26.22,
       "Price Change (%)": -45.5,
       "Elasticity Coefficient": -0.457,
-      "Sensitivity Level (%)": 45.7
+      "Sensitivity Level (%)": 45.7,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2020,
@@ -10211,7 +10266,9 @@
       "Avg Annual Price (Rs./Nut)": 49.54,
       "Price Change (%)": 88.9,
       "Elasticity Coefficient": -0.806,
-      "Sensitivity Level (%)": 80.6
+      "Sensitivity Level (%)": 80.6,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2021,
@@ -10219,7 +10276,9 @@
       "Avg Annual Price (Rs./Nut)": 56.19,
       "Price Change (%)": 13.4,
       "Elasticity Coefficient": -0.806,
-      "Sensitivity Level (%)": 80.6
+      "Sensitivity Level (%)": 80.6,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2022,
@@ -10227,7 +10286,9 @@
       "Avg Annual Price (Rs./Nut)": 60.21,
       "Price Change (%)": 7.2,
       "Elasticity Coefficient": -1.373,
-      "Sensitivity Level (%)": 137.3
+      "Sensitivity Level (%)": 137.3,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2023,
@@ -10235,7 +10296,9 @@
       "Avg Annual Price (Rs./Nut)": 70.96,
       "Price Change (%)": 17.8,
       "Elasticity Coefficient": -1.373,
-      "Sensitivity Level (%)": 137.3
+      "Sensitivity Level (%)": 137.3,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2024,
@@ -10243,7 +10306,9 @@
       "Avg Annual Price (Rs./Nut)": 79.56,
       "Price Change (%)": 12.1,
       "Elasticity Coefficient": -0.806,
-      "Sensitivity Level (%)": 80.6
+      "Sensitivity Level (%)": 80.6,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     },
     {
       "Year": 2025,
@@ -10251,7 +10316,9 @@
       "Avg Annual Price (Rs./Nut)": 137.61,
       "Price Change (%)": 73.0,
       "Elasticity Coefficient": -0.806,
-      "Sensitivity Level (%)": 80.6
+      "Sensitivity Level (%)": 80.6,
+      "price_data": "real_cda",
+      "elasticity_source": "GMM_model_estimate"
     }
   ],
   "regime_stats": {
@@ -10266,7 +10333,8 @@
     "Crisis": {
       "elasticity": -1.373,
       "sensitivity": 137.3
-    }
+    },
+    "_note": "Elasticity coefficients estimated from GMM regime clustering on 517 weekly CDA auction observations"
   },
   "weekly_regime_counts": {
     "Stable": {
@@ -10282,6 +10350,7 @@
       "share_pct": 16.4
     },
     "total_weeks": 517,
-    "note": "total_weeks reflects weeks after 3-week rolling window drop (565 raw - 48 = 517 clustered)"
+    "note": "total_weeks reflects weeks after 3-week rolling window drop (565 raw - 48 = 517 clustered)",
+    "_model": "GMM (Gaussian Mixture Model) clustering on weekly price volatility features"
   }
 }
