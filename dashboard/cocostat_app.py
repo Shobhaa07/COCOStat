@@ -214,7 +214,7 @@ def load_demand_elasticity():
     regime_stats = {}
     for regime, vals in raw_stats.items():
         regime_stats[regime] = {
-            "elasticity":  round(float(vals.get("elasticity",  -0.20)), 3),
+            "elasticity":  round(float(vals.get("elasticity",  -0.46)), 3),
             "sensitivity": round(float(vals.get("sensitivity",  20.0)), 1),
         }
     # Ensure all three regimes exist with sensible defaults
@@ -866,7 +866,7 @@ if t["nav"][0] in sec_name:
     )
     # Demand response from Sheet 07 — use current regime
     _regime_key = ["Stable", "Warning", "Crisis"][int(history_df["regime"].iloc[-1])]
-    _elast = demand_regime_stats.get(_regime_key, {}).get("elasticity", -0.20)
+    _elast = demand_regime_stats.get(_regime_key, {}).get("elasticity", -0.46)
     _kpi_demand = "Inelastic" if lang == "en" else "අප්‍රත්‍යාස්ථ"
     _kpi_demand_sub = f"ε = {_elast:.2f}" + (" (inelastic)" if lang == "en" else " (ලාංකීය)")
     # Forecast trend from Sheet 10_Price_Forecast
@@ -1070,9 +1070,9 @@ elif t["nav"][1] in sec_name:
     divider()
     st.markdown("#### "+("Price Elasticity of Demand" if lang=="en" else "ඉල්ලුම් ස්ථිතිස්ථිකය"))
     # Elasticity cards — real values from Sheet 07
-    _el_stable = demand_regime_stats.get("Stable", {}).get("elasticity", -0.33)
-    _el_warning = demand_regime_stats.get("Warning", {}).get("elasticity", -0.20)
-    _el_crisis = demand_regime_stats.get("Crisis", {}).get("elasticity", -0.12)
+    _el_stable = demand_regime_stats.get("Stable", {}).get("elasticity", -0.46)
+    _el_warning = demand_regime_stats.get("Warning", {}).get("elasticity", -0.81)
+    _el_crisis = demand_regime_stats.get("Crisis", {}).get("elasticity", -1.37)
     e1,e2,e3=st.columns(3)
     for col,(ev,ep,ec,eb) in zip([e1,e2,e3],[
         (f"{_el_stable:.2f}", "Stable" if lang=="en" else "ස්ථාවර", "#5a9470", "#f0f5f2"),
@@ -1090,9 +1090,9 @@ elif t["nav"][1] in sec_name:
     fig_dc=go.Figure()
     # Demand curve using real elasticity from Sheet 07
     _dc_elasticities = {
-        "Stable": demand_regime_stats.get("Stable", {}).get("elasticity", -0.33),
-        "Warning": demand_regime_stats.get("Warning", {}).get("elasticity", -0.20),
-        "Crisis": demand_regime_stats.get("Crisis", {}).get("elasticity", -0.12),
+        "Stable": demand_regime_stats.get("Stable", {}).get("elasticity", -0.46),
+        "Warning": demand_regime_stats.get("Warning", {}).get("elasticity", -0.81),
+        "Crisis": demand_regime_stats.get("Crisis", {}).get("elasticity", -1.37),
     }
     for (lbl,el),clr in zip(_dc_elasticities.items(),REGIME_COLORS):
         q=bq*(pr/bp)**el
@@ -2290,7 +2290,7 @@ elif t["nav"][9] in sec_name:
          "Yield index forecasts using a 3-month lagged rainfall model aligned with SW and NE monsoon seasons."),
         ("04", "Forecast",
          "12-month ahead price forecast with upper and lower confidence bands based on a seasonal "
-         "SARIMA(1,1,1)(1,1,1,12) model calibrated to historical CDA auction records (2015–2025). "
+         "SARIMA(1,1,2)(1,1,1,12) model calibrated to historical CDA auction records (2015–2025). "
          "Monthly price projections are colour-coded by market regime threshold."),
         ("05", "Compare",
          "Year-over-year price comparison across the full 2015–2025 dataset. "
@@ -2372,8 +2372,8 @@ elif t["nav"][9] in sec_name:
          "Market regimes are identified using a Gaussian Mixture Model (GMM, K=3) applied to weekly CDA auction data (2015–2025). "
          "GMM was selected over K-Means because it models elliptical, non-spherical clusters and produces probabilistic "
          "regime memberships — critical for financial regime detection where price distributions are heteroskedastic. "
-         "Feature set: 3-week rolling average price, 3-week price volatility, price momentum (Δ3w), sell-through rate, "
-         "Palm Oil price, and inflation. Features are standardised (zero mean, unit variance) before fitting. "
+         "Feature set: 3-week rolling average price, 3-week price volatility, price momentum (Δ3w), and sell-through rate. "
+         "Features are standardised (zero mean, unit variance) before fitting. "
          "Model selection used BIC across K=2–5; K=3 minimised BIC and was validated with Silhouette, "
          "Calinski-Harabasz, and Davies-Bouldin scores. Regimes are labelled Stable / Warning / Crisis in ascending price order. "
          "A parallel threshold system (Stable ≤ Rs.65/nut, Warning Rs.65–80, Crisis > Rs.80) is used for macroeconomic KPIs "
@@ -2385,12 +2385,13 @@ elif t["nav"][9] in sec_name:
          "using the modal regime per month. "
          "Note: In auction markets, price and quantity are simultaneously determined, so OLS estimates may reflect simultaneity bias; "
          "coefficients are presented as descriptive regime-conditional elasticity estimates. "
-         "Across all three regimes, demand is confirmed price-inelastic (|ε| &lt; 1), consistent with coconut as a staple commodity."),
+         "In the Stable and Warning regimes, demand is price-inelastic (|ε| &lt; 1), consistent with coconut as a staple commodity. "
+         "In the Crisis regime, demand turns price-elastic (|ε| &gt; 1), reflecting consumer substitution under extreme price pressure."),
         ("03", "Stationarity Testing &amp; SARIMAX Forecasting",
          "The monthly price series (aggregated from CDA weekly records) is tested for stationarity using ADF (H₀: unit root) "
          "and KPSS (H₀: stationary) tests. The series is non-stationary in levels but stationary after first differencing, "
          "confirming integration order I(1). "
-         "12-month ahead forecasts are produced using a SARIMAX(1,1,1)(1,1,1,12) model with exogenous regressors "
+         "12-month ahead forecasts are produced using a SARIMAX(1,1,2)(1,1,1,12) model with exogenous regressors "
          "(Palm Oil price, CPI inflation). Model order was selected by grid-search over SARIMA(p,d,q)(P,D,Q,12) minimising AIC/BIC. "
          "Backtest accuracy on a held-out 12-month test set: MAE, RMSE, MAPE, and R² are reported in the Live Dataset Verification table. "
          "Confidence bands represent model-derived 95% prediction intervals from statsmodels get_forecast().conf_int()."),
@@ -2477,7 +2478,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Price elasticity — Stable regime</td><td>{_m_el_stable}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Warning regime</td><td>{_m_el_warning}</td><td>07_Demand_Elasticity</td></tr>
         <tr><td>Price elasticity — Crisis regime</td><td>{_m_el_crisis}</td><td>07_Demand_Elasticity</td></tr>
-        <tr><td>SARIMA(1,1,1)(1,1,1,12) forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
+        <tr><td>SARIMA(1,1,2)(1,1,1,12) forecast average (base)</td><td>Rs. {_m_fc_base:.2f} / nut</td><td>10_Price_Forecast</td></tr>
         <tr><td>Average monthly rainfall (dataset)</td><td>{_m_rain_avg} mm</td><td>06_Weather_Harvest</td></tr>
         <tr><td>Average yield index (dataset)</td><td>{_m_yield_avg}</td><td>06_Weather_Harvest</td></tr>
       </tbody>
@@ -2495,7 +2496,7 @@ elif t["nav"][9] in sec_name:
         <tr><td>Language Support</td><td>Bilingual — English &amp; Sinhala (Unicode / ZWJ)</td></tr>
         <tr><td>Price Regime Thresholds</td><td>Stable &lt; Rs.65 &nbsp;|&nbsp; Warning Rs.65–80 &nbsp;|&nbsp; Crisis &gt; Rs.80</td></tr>
         <tr><td>Price Elasticity (by regime)</td><td>Stable: {_m_el_stable} &nbsp;|&nbsp; Warning: {_m_el_warning} &nbsp;|&nbsp; Crisis: {_m_el_crisis}</td></tr>
-        <tr><td>Forecast Horizon</td><td>12 months — SARIMA(1,1,1)(1,1,1,12) with model-derived 95% prediction intervals</td></tr>
+        <tr><td>Forecast Horizon</td><td>12 months — SARIMA(1,1,2)(1,1,1,12) with model-derived 95% prediction intervals</td></tr>
         <tr><td>Rainfall Lag (yield model)</td><td>3 months</td></tr>
         <tr><td>Policy Lever Coefficients</td><td>Buffer Stock: −0.12/% &nbsp;|&nbsp; Import Duty: +0.08/% &nbsp;|&nbsp; Export Quota: −0.06/%</td></tr>
         <tr><td>Transport Cost (farm model)</td><td>5% of gross revenue</td></tr>
