@@ -213,6 +213,8 @@ def load_demand_elasticity():
     raw_stats = data.get("regime_stats", {})
     regime_stats = {}
     for regime, vals in raw_stats.items():
+        if not isinstance(vals, dict):
+            continue
         regime_stats[regime] = {
             "elasticity":  round(float(vals.get("elasticity",  -0.46)), 3),
             "sensitivity": round(float(vals.get("sensitivity",  20.0)), 1),
