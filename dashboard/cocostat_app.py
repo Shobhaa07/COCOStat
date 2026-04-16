@@ -2371,54 +2371,70 @@ elif t["nav"][9] in sec_name:
 
     methods = [
         ("01", "Market Regime Classification — Gaussian Mixture Model",
-         "Market regimes are identified using a Gaussian Mixture Model (GMM, K=3) applied to weekly CDA auction data (2015–2025). "
-         "GMM was selected over K-Means because it models elliptical, non-spherical clusters and produces probabilistic "
-         "regime memberships — critical for financial regime detection where price distributions are heteroskedastic. "
-         "Feature set: 3-week rolling average price, 3-week price volatility, price momentum (Δ3w), and sell-through rate. "
-         "Features are standardised (zero mean, unit variance) before fitting. "
-         "Model selection used BIC across K=2–5; K=3 minimised BIC and was validated with Silhouette, "
-         "Calinski-Harabasz, and Davies-Bouldin scores. Regimes are labelled Stable / Warning / Crisis in ascending price order. "
-         "A parallel threshold system (Stable ≤ Rs.65/nut, Warning Rs.65–80, Crisis > Rs.80) is used for macroeconomic KPIs "
-         "and policy analysis at monthly granularity."),
-        ("02", "Price Elasticity of Demand",
-         "Demand sensitivity is measured per GMM regime using log-log OLS regression (HC3 heteroskedasticity-robust standard errors) "
-         "on CDA weekly auction data. The log-log specification is: ln(Sold Nuts) = α + ε·ln(Avg Price) + u, "
-         "where ε is the price elasticity coefficient. Monthly regime labels are assigned by aggregating weekly GMM regimes "
-         "using the modal regime per month. "
-         "Note: In auction markets, price and quantity are simultaneously determined, so OLS estimates may reflect simultaneity bias; "
-         "coefficients are presented as descriptive regime-conditional elasticity estimates. "
-         "In the Stable and Warning regimes, demand is price-inelastic (|ε| &lt; 1), consistent with coconut as a staple commodity. "
-         "In the Crisis regime, demand turns price-elastic (|ε| &gt; 1), reflecting consumer substitution under extreme price pressure."),
+         "Market regimes are identified using a Gaussian Mixture Model (GMM, K=3) fitted on weekly CDA auction data (2015–2025). "
+         "GMM was selected over K-Means because it models elliptical, non-spherical clusters and provides probabilistic regime "
+         "memberships — critical for financial regime detection where price distributions are heteroskedastic. "
+         "Feature engineering produces five inputs: average auction price, sell-through rate (capped at 1.0), "
+         "3-week rolling price volatility, 3-week price momentum (Δ3w), and inflation. "
+         "All features are standardised (zero mean, unit variance) using StandardScaler before fitting. "
+         "Model selection sweeps K=2–6 comparing BIC and AIC; K=3 minimises BIC. "
+         "The final GMM uses 20 initialisations (n_init=20) for stability and is validated with Silhouette, "
+         "Calinski-Harabasz, and Davies-Bouldin scores. Regimes are labelled Stable / Warning / Crisis by ascending mean price. "
+         "A parallel threshold system (Stable &lt; Rs.65/nut, Warning Rs.65–80, Crisis &gt; Rs.80) is used for monthly KPI displays."),
+        ("02", "Price Elasticity of Demand — Log-Log OLS by Regime",
+         "Demand sensitivity is measured per GMM regime using log-log OLS regression with HC3 heteroskedasticity-robust standard errors "
+         "on weekly CDA auction data. The specification is: ln(Sold Nuts) = α + ε·ln(Avg Price) + u, "
+         "where ε is the price elasticity of demand. Weekly GMM regime labels are aggregated to monthly level using the modal "
+         "regime per month; these monthly labels are then merged back onto weekly observations for regime-split regression. "
+         "An arc elasticity (median Δln Q / Δln P) is computed as a cross-check. "
+         "95% confidence intervals are reported alongside OLS coefficients, p-values, and R². "
+         "In Stable and Warning regimes demand is inelastic (|ε| &lt; 1), consistent with coconut as a staple commodity. "
+         "In the Crisis regime demand turns elastic (|ε| &gt; 1), reflecting consumer substitution under extreme price pressure. "
+         "Note: OLS estimates may reflect simultaneity bias in auction settings; coefficients are presented as descriptive "
+         "regime-conditional elasticity estimates."),
         ("03", "Stationarity Testing &amp; SARIMAX Forecasting",
-         "The monthly price series (aggregated from CDA weekly records) is tested for stationarity using ADF (H₀: unit root) "
-         "and KPSS (H₀: stationary) tests. The series is non-stationary in levels but stationary after first differencing, "
-         "confirming integration order I(1). "
-         "12-month ahead forecasts are produced using a SARIMAX(1,1,2)(1,1,1,12) model with exogenous regressors "
-         "(Palm Oil price, CPI inflation). Model order was selected by grid-search over SARIMA(p,d,q)(P,D,Q,12) minimising AIC/BIC. "
-         "Backtest accuracy on a held-out 12-month test set: MAE, RMSE, MAPE, and R² are reported in the Live Dataset Verification table. "
+         "Stationarity is assessed on the weekly price series using ADF (H₀: unit root) and KPSS (H₀: stationary) tests. "
+         "The series is non-stationary in levels but stationary after first differencing, confirming integration order I(1). "
+         "ACF and PACF plots of both the level and first-differenced series guide seasonal order identification. "
+         "The model is estimated on monthly data aggregated from weekly records, with two exogenous regressors: "
+         "Palm Oil price and CPI inflation. An eight-candidate grid search over SARIMA(p,d,q)(P,D,Q,12) minimises AIC; "
+         "SARIMAX(1,1,2)(1,1,1,12) is selected. Backtest accuracy is evaluated on a held-out 2025 test set "
+         "reporting MAE, RMSE, MAPE, and R². A forward 52-week (12-month) forecast for 2026 is produced by refitting "
+         "the model on the full series and projecting future exogenous variables using the last available seasonal pattern. "
          "Confidence bands represent model-derived 95% prediction intervals from statsmodels get_forecast().conf_int()."),
         ("04", "Weather–Yield &amp; Climate Impact Analysis",
-         "Monthly rainfall and temperature data (Department of Meteorology, Sri Lanka) are correlated with CRI coconut yield indices "
-         "using a 3-month lag structure, consistent with the physiological response time of coconut palms to rainfall stress. "
-         "A drought flag is applied when monthly rainfall falls below the dataset minimum threshold. "
-         "Yield index is modelled as a function of lagged rainfall (lag-3 mm) and temperature. "
-         "Seasonality is characterised across SW Monsoon (May–Sep), NE Monsoon (Nov–Jan), and two Inter-Monsoon periods. "
+         "Monthly rainfall and temperature data from the Department of Meteorology are sourced alongside CRI coconut yield "
+         "indices. A 3-month lag structure is applied to rainfall (Lag3_Rain), consistent with the physiological response "
+         "time of coconut palms to water stress. A binary drought flag is set when monthly rainfall falls below a defined "
+         "minimum threshold in the dataset. "
+         "Yield index is modelled as a function of lagged rainfall and temperature. "
+         "Seasonality is characterised across four periods: SW Monsoon (May–Sep), NE Monsoon (Nov–Jan), "
+         "and two Inter-Monsoon windows (Mar–Apr and Oct). "
+         "The forward weather forecast uses deterministic seasonal climatology normals from CRI and the Department of "
+         "Meteorology, with upper/lower bands derived from historical monthly standard deviations. "
          "Monthly seasonal price indices (base 100 = annual mean) quantify intra-year supply-side price cycles."),
         ("05", "Descriptive Statistics &amp; Exploratory Analysis",
-         "Full descriptive statistics are computed for the weekly auction series: mean, std, min/max, 25th/75th percentiles, "
-         "skewness, kurtosis, and coefficient of variation (CV%). "
-         "Annual averages and YoY price change (%) are derived from weekly-to-monthly aggregation. "
-         "Sell-through rate (Sold / Offered Nuts, capped at 100%) is used as a demand-side market efficiency indicator. "
-         "Export analytics cover six product categories (Desiccated Coconut, Coconut Oil, Coconut Milk, Coir, Fresh Nuts, VCO) "
-         "with CAGR computed over the 2015–2025 period. "
-         "Global farmgate price comparisons (Rs./nut equivalent) are benchmarked against Indonesia, Philippines, India, and Vietnam."),
-        ("06", "Regime Transition Matrix &amp; Farmer Profitability",
-         "A first-order Markov regime transition probability matrix is estimated from the GMM weekly regime sequence, "
-         "capturing persistence and switching probabilities among Stable, Warning, and Crisis states. "
-         "Net farm income is calculated as: Gross Revenue − (Labour + Fertilizer + Transport + Other Costs). "
-         "Transport and other costs are modelled as fixed percentages of gross revenue (5% and 3% respectively). "
-         "Input benchmarks are sourced from CDA smallholder studies and the Department of Agriculture. "
-         "Break-even price and profit sensitivity are computed for user-defined farm area and yield parameters."),
+         "Full descriptive statistics are computed for the weekly auction series across six variables: "
+         "average price, offered nuts, sold nuts, Palm Oil price, inflation, and sell-through rate. "
+         "Metrics include count, mean, std, min/max, 25th/75th percentiles, skewness, kurtosis, and CV%. "
+         "Sell-through rate (Sold / Offered Nuts) is capped at 1.0 (100%) to correct anomalous values before use "
+         "in clustering and descriptive analysis. Annual averages and YoY price change (%) are derived from "
+         "weekly-to-monthly-to-annual aggregation. "
+         "Export analytics cover six product categories: Desiccated Coconut, Coconut Oil, Coconut Milk, "
+         "Coir Products, Fresh Nuts, and Copra, sourced from the Sri Lanka Export Development Board (EDB). "
+         "Fresh Nuts are reported in units of 1,000 nuts; all other categories in metric tonnes (MT). "
+         "Global farmgate price comparisons (Rs./nut equivalent) benchmark Sri Lanka against Indonesia, Philippines, India, and Vietnam."),
+        ("06", "Regime Transition Analysis &amp; Farmer Profitability",
+         "Regime transition dynamics are visualised from the GMM weekly regime sequence to characterise persistence "
+         "and switching patterns among Stable, Warning, and Crisis states. "
+         "The annual dominant regime is determined by the modal weekly regime per year and merged with annual auction "
+         "and elasticity data to produce the yearly market dynamics summary table. "
+         "Net farm income is calculated as: Gross Revenue − (Labour + Fertilizer + Transport + Other Costs), "
+         "where transport is fixed at 5% of gross revenue and other costs at 3%. "
+         "Input benchmarks (trees per acre, nuts per tree, labour and fertilizer costs) are sourced from CDA "
+         "smallholder studies and the Department of Agriculture. "
+         "Break-even price and profit sensitivity across a Rs.40–Rs.120 price range are computed for user-defined "
+         "farm area and yield parameters, enabling farm-level scenario analysis."),
     ]
 
     for i in range(0, 6, 2):
