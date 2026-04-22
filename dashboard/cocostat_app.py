@@ -1060,9 +1060,10 @@ elif t["nav"][1] in sec_name:
         fig_d=go.Figure(go.Bar(x=t["demand_periods"],y=_sens_vals,
             marker=dict(color=REGIME_COLORS,line=dict(width=0)),
             text=[f"{v:.1f}%" for v in _sens_vals],textposition="outside",width=.5))
+        _sens_max = max(_sens_vals) if _sens_vals else 50
         fig_d.update_layout(title=dict(text=t["demand_bar_title"],font=dict(size=14)),
             height=280,margin=dict(l=20,r=20,t=50,b=20),plot_bgcolor="#fff",paper_bgcolor="#fff",
-            yaxis=dict(gridcolor="#e4eeea",range=[0,50]),xaxis=dict(showgrid=False),showlegend=False)
+            yaxis=dict(gridcolor="#e4eeea",range=[0,_sens_max*1.25]),xaxis=dict(showgrid=False),showlegend=False)
         st.plotly_chart(fig_d,use_container_width=True,config={"displayModeBar":"hover"})
     with c2:
         for i,(period,desc) in enumerate(t["demand_cards"]):
@@ -1145,6 +1146,44 @@ elif t["nav"][3] in sec_name:
                     <div style='font-size:.7rem;color:#94a3b8;margin-bottom:2px;'>{t["forecast_week"]} {i+1}</div>
                     <div style='font-size:.95rem;font-weight:800;color:{clr};'>Rs.{p:.1f}</div>
                     <div style='font-size:.65rem;font-weight:700;color:{clr};'>{st_}</div></div>""", unsafe_allow_html=True)
+
+    # ── 2026 Forecast Bar Chart ───────────────────────────────────────────────
+    if not fc_2026.empty:
+        _fc_labels = []
+        _fc_prices = []
+        _fc_colors = []
+        for i, (_, row) in enumerate(fc_2026.iterrows()):
+            if i >= 12: break
+            p = row["price"]
+            _fc_labels.append(row["date"].strftime("%b"))
+            _fc_prices.append(p)
+            if p >= crisis_threshold:
+                _fc_colors.append("#ef4444")
+            elif p >= warn_threshold:
+                _fc_colors.append("#eab308")
+            else:
+                _fc_colors.append("#3d7a55")
+        fig_fc_bar = go.Figure(go.Bar(
+            x=_fc_labels, y=_fc_prices,
+            marker=dict(color=_fc_colors, line=dict(width=0)),
+            text=[f"Rs.{p:.1f}" for p in _fc_prices],
+            textposition="outside", width=0.6,
+        ))
+        _fc_price_max = max(_fc_prices) if _fc_prices else 100
+        fig_fc_bar.add_hline(y=warn_threshold, line_dash="dot", line_color="#eab308",
+            annotation_text=f"Warning Rs.{warn_threshold}", annotation_position="top right",
+            annotation_font_color="#eab308", annotation_font_size=11)
+        fig_fc_bar.add_hline(y=crisis_threshold, line_dash="dot", line_color="#ef4444",
+            annotation_text=f"Crisis Rs.{crisis_threshold}", annotation_position="top right",
+            annotation_font_color="#ef4444", annotation_font_size=11)
+        fig_fc_bar.update_layout(
+            title=dict(text=("2026 Monthly Forecast Prices (Rs./nut)" if lang=="en" else "2026 මාසික අනාවැකි මිල (රු./ගෙඩිය)"), font=dict(size=14)),
+            height=320, margin=dict(l=20, r=120, t=50, b=20),
+            plot_bgcolor="#fff", paper_bgcolor="#fff",
+            yaxis=dict(gridcolor="#e4eeea", tickprefix="Rs.", range=[0, _fc_price_max * 1.2]),
+            xaxis=dict(showgrid=False), showlegend=False,
+        )
+        st.plotly_chart(fig_fc_bar, use_container_width=True, config={"displayModeBar": "hover"})
 
     # ── 2026 Forecast Summary cards ───────────────────────────────────────────
     divider()
